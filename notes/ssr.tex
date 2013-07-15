@@ -59,10 +59,10 @@
 \end{rem}
 
 \begin{prop}
-    For all $m>1$, there is a $(5m+3)$-element SSR instance that has an element that must move at least $m$ times in any solution sequence.
+    For all $m>1$, there is a $(5m+3)$-element SSR instance that has an element that must move at least $2m+1$ times in any solution sequence.
 \end{prop}
 \begin{proof}
     The elements are $x_1, \dots, x_{2m+1}$ of weight $3$, $a_1, \dots, a_{3m+1}$ of weight $2$, and $b$ of weight $1$.
-    Let $k=6m$ and $c=6m+3$. The starting configuration is $x_1, \dots, x_{2m+1}$, and the target is $a_1, \dots, a_{3m+1}, b$. For $i=0, 1, \dots, 2m$, consider the first move after which there are precisely $2m-i$ of the $a$ elements inside. That means the $a$'s and possibly $b$ inside at this point must sum to $3i$. If $i$ is odd then, since $b$ is the only element with odd weight, $b$ must be inside at this point; similarly if $i$ is even then $b$ must be outside. So element $b$ moves at least $m$ times.
+    Let $k=6m$ and $c=6m+3$. The starting configuration is $x_1, \dots, x_{2m+1}$, and the target is $a_1, \dots, a_{3m+1}, b$. For $i=0, 1, \dots, 2m$, consider the first move after which there are precisely $2m-i$ of the $a$ elements inside. That means the $a$'s and possibly $b$ inside at this point must sum to $3i$. If $i$ is odd then, since $b$ is the only element with odd weight, $b$ must be inside at this point; similarly if $i$ is even then $b$ must be outside. So element $b$ moves at least $2m$ times. Since it must end up inside, it must move an odd number of times altogether, so at least $2m+1$ times.
 \end{proof}
 \end{document}
