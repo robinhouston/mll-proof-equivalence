@@ -25,8 +25,8 @@
 \end{prop}
 \begin{proof}
     The ordinary subset sum problem may be reduced to subset sum reconfiguration. Given elements
-    $a_1, \dots, a_m$ with target sum $t$, build an SSR instance with elements $a_1, \dots, a_m$,
-    $t_1$ and $t_2$, threshold values $k=t$ and $c=2t$, starting configuration $t_1$ and ending configuration
+    $a_1, \dots, a_m$ with target sum $t$, build an SSR instance with elements $a_1, \dots, a_m$ having the corresponding weights,
+    $t_1$ and $t_2$ having weight $t$, threshold values $k=t$ and $c=2t$, starting configuration $t_1$ and ending configuration
     $t_2$. At some point element $t_1$ must move from inside to outside: the first time it does, the
     inside set during the move must consist of some collection of $a$ elements that sum to $t$.
 \end{proof}
@@ -65,7 +65,7 @@
 \end{prop}
 \begin{proof}
     The elements are $x_1, \dots, x_{2m+1}$ of weight $3$, $a_1, \dots, a_{3m+1}$ of weight $2$, and $b$ of weight $1$.
-    Let $k=6m$ and $c=6m+3$. The starting configuration is $x_1, \dots, x_{2m+1}$, and the target is $a_1, \dots, a_{3m+1}, b$. For $i=0, 1, \dots, 2m$, consider the first move after which there are precisely $2m-i$ of the $x$ elements inside. That means the $a$'s and possibly $b$ inside at this point must sum to $3i$. If $i$ is odd then, since $b$ is the only element with odd weight, $b$ must be inside at this point; similarly if $i$ is even then $b$ must be outside. So element $b$ moves at least $2m$ times. Since it must end up inside, it must move an odd number of times altogether, so at least $2m+1$ times.
+    Let $k=6m$ and $c=6m+3$. The starting configuration is $x_1, \dots, x_{2m+1}$, and the target is $a_1, \dots, a_{3m+1}, b$. For $i=0, 1, \dots, 2m$, consider the first move after which there are precisely $2m-i$ of the $x$ elements inside. That means the $a$'s and possibly $b$ inside at this point must sum to $3i$. If $i$ is odd then, since the $a$'s all have even weight, $b$ must be inside at this point; similarly if $i$ is even then $b$ must be outside. So element $b$ moves at least $2m+1$ times.
 \end{proof}
 
 \section*{New finding}
@@ -84,7 +84,7 @@
     The starting configuration is $x_1, \dots, x_{2m+1}$,
     and the target is $a_1, \dots, a_{3m+1}, b_1, \dots, b_m$.
     %
-    For $i=0, 1, \dots, 2m$, consider the first move after which there are precisely $2m-i$ of the $x$ elements inside. That means the $a$'s and $b$'s inside at this point must sum to $3im$. If $i$ is odd then, since the $a$'s all weigh $2m$, all the $b$'s must be inside at this point; similarly if $i$ is even then the $b$'s must all be outside. So the $b$ elements each move at least $2m$ times, and in fact $2m+1$ times since they move.
+    For $i=0, 1, \dots, 2m$, consider the first move after which there are precisely $2m-i$ of the $x$ elements inside. That means the $a$'s and $b$'s inside at this point must sum to $3im$. If $i$ is odd then, since the $a$'s all weigh $2m$, all the $b$'s must be inside at this point; similarly if $i$ is even then the $b$'s must all be outside. So the $b$ elements each move at least $2m+1$ times.
     %
     Therefore the total number of moves must be at least $(2m+1) + (3m+1) + (2m+1)m$, which is equal to $2m^2+6m+2$ as required.
 \end{proof}
