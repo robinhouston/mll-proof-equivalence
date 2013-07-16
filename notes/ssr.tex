@@ -17,6 +17,8 @@
 \linespread{1.1}\selectfont
 
 \noindent This is a brief summary of everything I know about the subset sum reconfiguration problem as of four o'clock in the afternoon of Monday the 15th of July. It is brief by necessity, because I know so little.
+%
+\textbf{Update on Tuesday}: I found out another thing.
 
 \begin{prop}
     Subset sum reconfiguration is weakly NP-hard. \textup(Demaine--Ito\textup)
@@ -29,7 +31,7 @@
     inside set during the move must consist of some collection of $a$ elements that sum to $t$.
 \end{proof}
 
-\begin{prop}\label{prop-diameter}
+\begin{prop}\label{prop:diameter}
     For all $n>1$, there is an $n$-element SSR instance whose configuration graph has diameter $2n-2$.
 \end{prop}
 \begin{proof}
@@ -55,14 +57,35 @@
 \end{proof}
 
 \begin{rem}
-    The lower bound exhibited in Proposition~\ref{prop-diameter} is optimal for $n<8$. I have verified this by exhaustive enumeration using the program \texttt{ssr\_graphs.py}.
+    The lower bound exhibited in Proposition~\ref{prop:diameter} is optimal for $n<8$. I have verified this by exhaustive enumeration using the program \texttt{ssr\_graphs.py}.
 \end{rem}
 
-\begin{prop}
-    For all $m>1$, there is a $(5m+3)$-element SSR instance that has an element that must move at least $2m+1$ times in any solution sequence.
+\begin{prop}\label{prop:element-moves-a-lot}
+    For all $m$, there is a $(5m+3)$-element SSR instance that has an element that must move at least $2m+1$ times in any solution sequence.
 \end{prop}
 \begin{proof}
     The elements are $x_1, \dots, x_{2m+1}$ of weight $3$, $a_1, \dots, a_{3m+1}$ of weight $2$, and $b$ of weight $1$.
-    Let $k=6m$ and $c=6m+3$. The starting configuration is $x_1, \dots, x_{2m+1}$, and the target is $a_1, \dots, a_{3m+1}, b$. For $i=0, 1, \dots, 2m$, consider the first move after which there are precisely $2m-i$ of the $a$ elements inside. That means the $a$'s and possibly $b$ inside at this point must sum to $3i$. If $i$ is odd then, since $b$ is the only element with odd weight, $b$ must be inside at this point; similarly if $i$ is even then $b$ must be outside. So element $b$ moves at least $2m$ times. Since it must end up inside, it must move an odd number of times altogether, so at least $2m+1$ times.
+    Let $k=6m$ and $c=6m+3$. The starting configuration is $x_1, \dots, x_{2m+1}$, and the target is $a_1, \dots, a_{3m+1}, b$. For $i=0, 1, \dots, 2m$, consider the first move after which there are precisely $2m-i$ of the $x$ elements inside. That means the $a$'s and possibly $b$ inside at this point must sum to $3i$. If $i$ is odd then, since $b$ is the only element with odd weight, $b$ must be inside at this point; similarly if $i$ is even then $b$ must be outside. So element $b$ moves at least $2m$ times. Since it must end up inside, it must move an odd number of times altogether, so at least $2m+1$ times.
+\end{proof}
+
+\section*{New finding}
+\noindent The construction of Proposition~\ref{prop:element-moves-a-lot} can be modified to give a quadratic lower bound for the diameter of the reconfiguration graph.
+\begin{prop}
+    For all $m$, there is a $(6m+2)$-element SSR instance that requires $2m^2+6m+2$ moves.
+\end{prop}
+\begin{proof}
+    The elements are
+    $x_1, \dots, x_{2m+1}$ of weight $3m$,
+    $a_1, \dots, a_{3m+1}$ of weight $2m$,
+    and $b_1, \dots, b_m$ of weight $1$.
+    %
+    Let $k=6m^2$ and $c=6m^2+3m$.
+    %
+    The starting configuration is $x_1, \dots, x_{2m+1}$,
+    and the target is $a_1, \dots, a_{3m+1}, b_1, \dots, b_m$.
+    %
+    For $i=0, 1, \dots, 2m$, consider the first move after which there are precisely $2m-i$ of the $x$ elements inside. That means the $a$'s and $b$'s inside at this point must sum to $3im$. If $i$ is odd then, since the $a$'s all weigh $2m$, all the $b$'s must be inside at this point; similarly if $i$ is even then the $b$'s must all be outside. So the $b$ elements each move at least $2m$ times, and in fact $2m+1$ times since they move.
+    %
+    Therefore the total number of moves must be at least $(2m+1) + (3m+1) + (2m+1)m$, which is equal to $2m^2+6m+2$ as required.
 \end{proof}
 \end{document}
