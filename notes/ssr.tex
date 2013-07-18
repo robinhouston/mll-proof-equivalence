@@ -90,7 +90,7 @@
     Therefore the total number of moves must be at least $(2m+1) + (3m+1) + (2m+1)m$, which is equal to $2m^2+6m+2$ as required.
 \end{proof}
 
-\noindent On the other hand, the instances constructed in Propositions~\ref{prop:element-moves-a-lot} and~\ref{prop:quadratic-bound} have a property that makes them easy to recognise as solvable -- in linear time, if we assume the elements are already sorted by weight, or $O(n \log n)$ time if we have to sort them -- without the need to construct an actual solution.
+\noindent On the other hand, the instances constructed in Propositions~\ref{prop:element-moves-a-lot} and~\ref{prop:quadratic-bound} have a property that makes them easy to recognise as solvable without the need to construct an actual solution.
 \begin{lemma}\label{lemma:reduction}
     Suppose we have an SSR instance with element set $E$, threshold $k$ and capacity $c$. By abuse of notation we shall also refer to the whole instance as $E$. Let $a$ and $z$ be elements of minimal and maximal weight respectively. If $w(z) > c-k$ or $w(a) < c-k-w(z) + 2$ then either $E$ is trivially unsolvable or else there is an element $e\in E$ and a (smaller) instance with element set $E' = E-\{e\}$ that is equivalent to the original in the sense that $E'$ is solvable iff $E$ is.
 \end{lemma}
@@ -120,6 +120,6 @@
     for all $i$ then the instance is solvable. Note that this condition does not mention the start or target packings, so in fact such instances have the property that any valid packing is reachable from any other.
 \end{prop}
 \begin{rem}
-    Let us say that an instance satisfying the property of Proposition~\ref{prop:iterated-reduction} is \textit{completely reducible}. The instances exhibited in Propositions~\ref{prop:element-moves-a-lot} and~\ref{prop:quadratic-bound} are completely reducible.
+    Let us say that an instance satisfying the property of Proposition~\ref{prop:iterated-reduction} is \textit{completely reducible}. The instances exhibited in Proposition~\ref{prop:element-moves-a-lot} are completely reducible. The instances exhibited in Proposition~\ref{prop:quadratic-bound} are not completely reducible, but can be reduced to a form that has a linear bound on the length of the solution sequence.
 \end{rem}
 \end{document}
