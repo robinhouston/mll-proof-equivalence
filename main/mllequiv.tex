@@ -1,0 +1,45 @@
+\documentclass{robinminion}
+
+
+\usepackage{amsthm}
+\usepackage[round]{natbib}
+\usepackage{mllequiv,willemtools}
+
+\makeTheoremDefs
+
+
+\author{Willem Heijltjes and Robin Houston}
+\title{The proof equivalence problem for multiplicative linear logic is \textsc{pspace}-complete v0.3}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+MLL proof equivalence is the problem of deciding whether two proofs are related by a series of rule permutations.
+%
+Previous work has shown the problem to be equivalent to a rewiring problem on proof nets, which are not canonical for full MLL due to the presence of the two units.
+%
+Drawing from recent work on reconfiguration problems, in this paper it is shown that MLL proof equivalence is PSPACE-complete, using a reduction from Nondeterministic Constraint Logic.
+\end{abstract}
+
+
+
+%\include{s_intro}
+\include{s_background}
+% etc...
+
+
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}
+
+
+
+
+
+
+
