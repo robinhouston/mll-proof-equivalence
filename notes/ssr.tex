@@ -25,13 +25,6 @@
 \begin{prop}
     Subset sum reconfiguration is weakly NP-hard. \textup(Demaine--Ito\textup)
 \end{prop}
-\begin{proof}
-    The ordinary subset sum problem may be reduced to subset sum reconfiguration. Given elements
-    $a_1, \dots, a_m$ with target sum $t$, build an SSR instance with elements $a_1, \dots, a_m$ having the corresponding weights,
-    $t_1$ and $t_2$ having weight $t$, threshold values $k=t$ and $c=2t$, starting configuration $t_1$ and ending configuration
-    $t_2$. At some point element $t_1$ must move from inside to outside: the first time it does, the
-    inside set during the move must consist of some collection of $a$ elements that sum to $t$.
-\end{proof}
 
 \begin{prop}\label{prop:diameter}
     For all $n>1$, there is an $n$-element SSR instance whose configuration graph has diameter $2n-2$.
