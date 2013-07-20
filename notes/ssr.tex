@@ -10,6 +10,7 @@
 
 \newtheorem{prop}{Proposition}
 \newtheorem{lemma}[prop]{Lemma}
+\newtheorem{conjecture}[prop]{Conjecture}
 \newtheorem{eg}[prop]{Example}
 \newtheorem{rem}[prop]{Remark}
 
@@ -26,33 +27,12 @@
     Subset sum reconfiguration is weakly NP-hard. \textup(Demaine--Ito\textup)
 \end{prop}
 
-\begin{prop}\label{prop:diameter}
+\begin{conjecture}\label{conjecture:diameter}
     For all $n>1$, there is an $n$-element SSR instance whose configuration graph has diameter $2n-2$.
-\end{prop}
-\begin{proof}
-    We exhibit in terms of a parameter $m$:
-    \begin{itemize}
-        \item an instance with $2m+2$ elements and a shortest solution with $4m+2$ steps;
-        \item if $m>0$, an instance with $2m+1$ elements and a shortest solution with $4m+1$ steps.
-    \end{itemize}
-    The instance with $2m+2$ elements has elements $a_1, \dots, a_m$, $b_1, \dots, b_m$, $x$ and $y$.
-    For the weights, let $w(a_i)=m+1$ and $w(b_i)=m+2$ for all $i$. Let $w(x)=w(y)=m(m+2)$. The
-    starting configuration is $a_1, \dots, a_m, x$ and the target configuration is $a_1, \dots, a_m, y$.
-    For threshold values let $k=m(m+2)$ and $c=2m(m+2)$.
-    
-    The first time $x$ moves, the weights of the remaining elements inside must sum to $m(m+2)$.
-    In particular, these weights must sum to $m$ modulo $m+1$, hence the inside elements at this
-    point must include all the $b$'s. Since the weight of $x$ plus the $b$'s equals the capacity $c$,
-    the elements inside at this point must therefore be precisely all the $b$'s.
-    %
-    So all the $a$'s and $b$'s have to move twice, and $x$ and $y$ once each, for a total of
-    $4m+2$ moves.
-    
-    To obtain the instance with $2m+1$ elements, remove the element $a_1$.
-\end{proof}
+\end{conjecture}
 
 \begin{rem}
-    The lower bound exhibited in Proposition~\ref{prop:diameter} is optimal for $n<8$. I have verified this by exhaustive enumeration using the program \texttt{ssr\_graphs.py}.
+    The lower bound conjectured in Conjecture~\ref{prop:diameter} is optimal for $n<8$. I have verified this by exhaustive enumeration using the program \texttt{ssr\_graphs.py}. An earlier version of these notes had a construction that purported to exhibit this bound, but there is an error and it does not work.
 \end{rem}
 
 \begin{prop}\label{prop:element-moves-a-lot}
