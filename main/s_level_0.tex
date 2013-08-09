@@ -1,3 +1,141 @@
 
-\section{Equivalence in the absence of $\parr$}
+
+\newcommand\1{1}
+\newcommand\prm[1][\links]{\mathit p_{#1}}
+
+
+%NOTE: need 'octopus' terminology here
+
+%NOTE: will we need to count arms often enough to make it worthwile to write $|\Gamma|_\bot$ for the number of $\bot$-occurrences in a sequent $\Gamma$?
+
+
+\section{Equivalence in the absence of $~\protect\parr$}
+
+
+
+
+
+Let a \emph{1-alternation} sequent be one over formulae of the form $1$ or $\bot\tn\ldots\tn\bot$, where the number of $\bot$-subformulae is at least 2.
+%
+Such a sequent is inhabited exactly when the number of formulae in the sequent is one greater than the total number of $\bot$-subformulae it contains.
+%
+An inhabited 1-alternation sequent with only one tensor-formula, i.e.\ a sequent of the form $\1,\ldots,\1,\bot\tn\ldots\tn\bot$ with $n$ $\bot$-subformulae and $n$ $1$-subformulae, will admit $n!$ different proof nets, each with $n$ links.
+%
+Since no link can re-attach, its equivalence classes are singletons.
+
+
+
+
+
+\begin{proposition}
+\label{lem:level0 max binary}
+%
+For a 1-alternation sequent with at least two tensor-formulae there are at most two equivalence classes of proof nets.
+%
+\end{proposition}
+
+
+
+\begin{proof}
+%
+It will be shown by induction on the number of $\bot$-formulae in $\Gamma$ that every proof net for $\Gamma$ belongs to one of two equivalence classes.
+%
+For the base case, the smallest inhabited sequent with two tensor-formulae is the following.
+\[
+	\1,\1,\1,\bot\tn\bot,\bot\tn,\bot
+\]
+It has two equivalence classes of 12 proof nets each.
+
+
+
+For the inductive step, let $\Gamma$ be the following sequent.
+\[
+	\Delta,A\tn\named a\bot,\named x\1
+\]
+There are two cases: 1) where $A$ is a tensor-formula, and 2) where $A$ is $\bot$ and where, for the induction hypothesis to apply, $\Delta$ contains at least two tensor-formulae.
+%
+For both cases, it will be shown that any net $\links$ for $\Gamma$ is equivalent to a net $\links'$ where $\named a\bot$ connects to $\named x1$, and is the only link to do so.
+%
+This reduces equivalence on $\Gamma$ to equivalence on $\Delta,A$ in case 1, and on $\Delta$ in case 2, so that the induction hypothesis applies.
+
+
+Let $\named a\bot$ connect to $\named y\1$ in $\Delta$, and let $\named c\bot$ be a subformula of $A$, which means that for case 2, $A=\named c\bot$.
+%
+Then $\links'$ is obtained by adjusting $\links$ as follows.
+\begin{itemize}
+
+	\item
+Let $c-z$, i.e.\ $\named z\1$ is the target of the jump from $\named c\bot$.	
+%
+Ensure that $\named z\1$ is the only target shared between jumps in $A$ and in $\Delta$, by moving any other such jump from $\Delta$ to $\named z\1$.
+
+	\item
+If there are multiple links connecting to $\named x\1$, select one $b-x$ for some $\named b\bot$ in a tensor-formula $B$.
+%
+Re-attach the others to the target of another jump out of $B$, of which there must be at least one.
+
+	\item
+Since $A$ is only connected via $\named z\1$, there is a jump $d-z$ connecting $B$ to $A$ (though $\named d\bot$ is not necessarily a subformula of $B$).
+%
+Re-attach $\named d\bot$ to $\named y\1$, then $\named a\bot$ to $\named x\1$, and $\named b\bot$ to $\named z\1$.
+
+\end{itemize}
+
+\end{proof}
+
+
+
+Consider the following naming scheme for the units in a 1-alternation sequent $\Gamma$ with tensor-formulae $A_1,\dotsc,A_n$.
+%
+\begin{itemize}
+
+	\item
+The first $\bot$ in each $A_i$ is named $b(i)$, while the remaining $\bot$-subformulae in $\Gamma$ are named $b(n+1),\dotsc,b(m)$.
+
+	\item
+The first $\1$ in $\Gamma$ is named by the set $A=\{1,\dotsc,n\}$, the remaining ones are named $n+1,\dotsc,m$.
+
+\end{itemize}
+%
+The naming scheme suggests a linking for $\Gamma$, where the first $\bot$-subformula of each tensor-formula connects to $\named A\1$, while other $\bot$-subformulae connect uniquely to the remaining $\1$-subformulae; i.e.\ $b(i)-A$ when $i\leq n$ and $b(i)-i$ otherwise.
+%
+A net for $\Gamma$ can be interpreted as a permutation (an automorphism on $\{1,\dotsc,m\}$) as follows.
+%
+\begin{definition}
+To a proof net $\links$ for a 1-alternation sequent $\Gamma$ named as above, associate the \emph{permutation} $\prm:\{1,\dotsc,m\}\to\{1,\dotsc,m\}$ given by:
+\[
+	\prm(i) = 
+	\begin{cases}
+		j 				& \text{ if $b(i)$ may connect to $A$ and $\named{b(i)}\bot$ is a subformula of $t(j)$}
+	\\	\links(b(i))	& \text{ otherwise.}
+	\end{cases}
+\]
+The \emph{parity} of $\links$ is the parity of its permutation.
+\end{definition}
+
+
+
+\begin{proposition}
+\label{lem:level0 min binary}
+Re-attaching a jump in a net $\links$ preserves its parity. 
+\end{proposition}
+
+
+\begin{proof}
+TO DO
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
