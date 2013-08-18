@@ -1,8 +1,5 @@
 
 
-\newcommand\1{1}
-\newcommand\prm[1][\links]{\mathit p_{#1}}
-
 
 %NOTE: need 'octopus' terminology here
 
@@ -25,10 +22,8 @@ Since no link can re-attach, its equivalence classes are singletons.
 
 
 
-
-
 \begin{proposition}
-\label{lem:level0 max binary}
+\label{prop:level0 max binary}
 %
 For a 1-alternation sequent with at least two tensor-formulae there are at most two equivalence classes of proof nets.
 %
@@ -65,7 +60,7 @@ Then $\links'$ is obtained by adjusting $\links$ as follows.
 \begin{itemize}
 
 	\item
-Let $c-z$, i.e.\ $\named z\1$ is the target of the jump from $\named c\bot$.	
+Let $\edge cz$, i.e.\ $\named z\1$ is the target of the jump from $\named c\bot$.	
 %
 Ensure that $\named z\1$ is the only target shared between jumps in $A$ and in $\Delta$, by moving any other such jump from $\Delta$ to $\named z\1$.
 
@@ -75,7 +70,7 @@ If there are multiple links connecting to $\named x\1$, select one $b-x$ for som
 Re-attach the others to the target of another jump out of $B$, of which there must be at least one.
 
 	\item
-Since $A$ is only connected via $\named z\1$, there is a jump $d-z$ connecting $B$ to $A$ (though $\named d\bot$ is not necessarily a subformula of $B$).
+Since $A$ is only connected via $\named z\1$, there is a link $\edge dz$ connecting $B$ to $A$ (though $\named d\bot$ is not necessarily a subformula of $B$).
 %
 Re-attach $\named d\bot$ to $\named y\1$, then $\named a\bot$ to $\named x\1$, and $\named b\bot$ to $\named z\1$.
 
@@ -85,33 +80,58 @@ Re-attach $\named d\bot$ to $\named y\1$, then $\named a\bot$ to $\named x\1$, a
 
 
 
+
+\begin{proposition}
+\label{prop:level0 may-connect path}
+%
+In a proof net for a 1-alternation sequent a link $\edge{\named a\bot}{\named b\1}$ can be permuted to $\edge{\named a\bot}{\named c\1}$ if and only if there is a path in the net from $b$ to $c$ not passing through $a$.
+%
+\end{proposition}
+
+
+If a link $\edge ab$ may be reconnected as $\edge ac$ it is said that $a$ \emph{may connect to} $c$. 
+%
+By the above proposition, it is immediate that if $a$ and $b$ may both connect to $c$, then after actually reconnecting $\edge ac$, still $b$ may connect to $c$.
+
+
+
 Consider the following naming scheme for the units in a 1-alternation sequent $\Gamma$ with tensor-formulae $A_1,\dotsc,A_n$.
 %
 \begin{itemize}
 
 	\item
-The first $\bot$ in each $A_i$ is named $b(i)$, while the remaining $\bot$-subformulae in $\Gamma$ are named $b(n+1),\dotsc,b(m)$.
+The first $\1$ in $\Gamma$ is named $N$, the remaining ones are named with the numbers $n+1,\dotsc,m$.
 
 	\item
-The first $\1$ in $\Gamma$ is named by the set $A=\{1,\dotsc,n\}$, the remaining ones are named $n+1,\dotsc,m$.
+A $\bot$-formula in $A_i$ is named by a pair $(i,k)$, where $k=N$ for the first $\bot$-formula in each $A_i$, and for the remaining $\bot$-formulae in all $A_i$, each $k$ is a distinct number in $n+1,\dotsc,m$.
 
 \end{itemize}
 %
-The naming scheme suggests a linking for $\Gamma$, where the first $\bot$-subformula of each tensor-formula connects to $\named A\1$, while other $\bot$-subformulae connect uniquely to the remaining $\1$-subformulae; i.e.\ $b(i)-A$ when $i\leq n$ and $b(i)-i$ otherwise.
-%
-A net for $\Gamma$ can be interpreted as a permutation (an automorphism on $\{1,\dotsc,m\}$) as follows.
+The naming scheme suggests a linking for $\Gamma$, where $\edge{(i,k)}{k}$ for each $\bot$-formula; i.e\ the first $\bot$-subformula of each tensor-formula connects to $\named N\1$, while other $\bot$-subformulae connect uniquely to the remaining $\1$-subformulae.
+
+
+
+A net for $\Gamma$ is interpreted as a combinatorial permutation (an automorphism on $\{1,\dotsc,m\}$) as follows.
 %
 \begin{definition}
 To a proof net $\links$ for a 1-alternation sequent $\Gamma$ named as above, associate the \emph{permutation} $\prm:\{1,\dotsc,m\}\to\{1,\dotsc,m\}$ given by:
 \[
-	\prm(i) = 
+	\prm(k) = 
 	\begin{cases}
-		j 				& \text{ if $b(i)$ may connect to $A$ and $\named{b(i)}\bot$ is a subformula of $t(j)$}
-	\\	\links(b(i))	& \text{ otherwise.}
+		i				& \text{ if $(i,k)$ may connect to $N$; otherwise,}
+	\\	j				& \text{ where $\edge{(i,k)}j$.}
 	\end{cases}
 \]
 The \emph{parity} of $\links$ is the parity of its permutation.
 \end{definition}
+
+
+To see that $\prm$ is injective, consider the following.
+\begin{itemize}
+	\item The domains of $i$ and $j$ are $1,\dotsc,n$ and $n+1,\dotsc,m$ respectively, and hence disjoint.
+	\item Exactly one $\bot$-formula in each $A_i$ may connect to $N$ because of connectedness and acyclicity, since if a $\bot$-formula may connect to $N$ it has a path to $N$ (Proposition~\ref{prop:level0 may-connect path}).
+	\item If two $\bot$-formulae have the same target, which means they are in different tensor-formulae, at least one may connect to $N$ via the other tensor-formula, which must have a path to $N$ by the above.
+\end{itemize}
 
 
 
@@ -122,7 +142,44 @@ Re-attaching a jump in a net $\links$ preserves its parity.
 
 
 \begin{proof}
-TO DO
+Let $\links$ be a net for $\Gamma$, with $\Gamma$ named as above, and let the link $\edge{(i,k)}x$ in $\links$ re-attach as $\edge{(i,k)}y$, forming $\links'$.
+%
+There are two cases, depending on whether $(i,k)$ may connect to $N$.
+%
+If so, using Proposition~\ref{prop:level0 may-connect path}, the re-wiring preserves which $\bot$-formulae may connect to $N$, since for any path to $N$ via $\edge{(i,k)}x$ in $\links$ there is a path to $N$ via $\edge{(i,k)}y$.
+%
+Then the permutation of $\links'$ is that of $\links$.
+
+
+If $(i,k)$ may not connect to $N$, let the path from $x$ to $y$ run via the following $\bot$- and $\1$-vertices.
+\[
+	x=x_1, (i_1,j_1), (i_1,k_1), x_2, (i_2,j_2), \dotsc, (i_n,k_n), x_{n+1}=y 	
+\]
+Note that the $\bot$-formulae $(i_a,j_a)$ may connect to $N$.
+%
+On the relevant domain, this gives the following permutation for $\links$.
+\[
+\left(\begin{array}{ccccccc}
+	j_1 & \dotso & j_n &  k  & k_1 & \dotso & k_n \\
+	i_1 & \dotso & i_n & x_1 & x_2 & \dotso & x_{n+1}
+\end{array}\right)
+\]
+In $\links$, where $(i,k)$ connects to $y$, the $\bot$-formulae $(i_a,k_a)$ may connect to $N$, giving the following permutation.
+\[
+\left(\begin{array}{ccccccc}
+	j_1 & \dotso & j_n &    k    & k_1 & \dotso & k_n \\
+	x_1 & \dotso & x_n & x_{n+1} & i_1 & \dotso & i_n
+\end{array}\right)
+\]
+The parity of both permutations is the same if and only if the relative permutation, below, is even.
+\[
+\left(\begin{array}{ccccccc}
+	i_1 & \dotso & i_n & x_1     & x_2 & \dotso & x_{n+1} \\
+	x_1 & \dotso & x_n & x_{n+1} & i_1 & \dotso & i_n
+\end{array}\right)
+\]
+This is the case, as it is obtained by the exchange of $x_a$ and $i_a$ for each $a\leq n$, and subsequently the exchange of $x_{n+1}$ and each $i_a$ in turn.
+
 \end{proof}
 
 
