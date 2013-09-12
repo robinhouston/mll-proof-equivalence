@@ -31,6 +31,32 @@ For a 1-alternation sequent with at least two tensor-formulae there are at most 
 
 
 
+\begin{figure}[p]
+\[
+\begin{array}{ccc}
+	\basenet 1213 & \perm & \basenet 3213 \\ \\[-6pt] \vperm && \vperm \\ \\[-6pt]
+	\basenet 1223 &		  & \basenet 3212 \\ \\[-6pt] \vperm && \vperm \\ \\[-6pt]
+	\basenet 1323 &		  & \basenet 3112 \\ \\[-6pt] \vperm && \vperm \\ \\[-6pt]
+	\basenet 1321 &		  & \basenet 3132 \\ \\[-6pt] \vperm && \vperm \\ \\[-6pt]
+	\basenet 2321 &		  & \basenet 2132 \\ \\[-6pt] \vperm && \vperm \\ \\[-6pt]
+	\basenet 2331 & \perm & \basenet 2131
+\end{array}
+\qquad
+\begin{array}{ccc}
+	\basenet 1312 & \perm & \basenet 1332 \\ \\[-6pt] \vperm && \vperm \\ \\[-6pt]
+	\basenet 2312 &		  & \basenet 1232 \\ \\[-6pt] \vperm && \vperm \\ \\[-6pt]
+	\basenet 2313 &		  & \basenet 1231 \\ \\[-6pt] \vperm && \vperm \\ \\[-6pt]
+	\basenet 2113 &		  & \basenet 3231 \\ \\[-6pt] \vperm && \vperm \\ \\[-6pt]
+	\basenet 2123 &		  & \basenet 3221 \\ \\[-6pt] \vperm && \vperm \\ \\[-6pt]
+	\basenet 3123 & \perm & \basenet 3121
+\end{array}
+\]
+\caption{The two equivalence classes of nets for $\1,\1,\1,\bot\tn\bot,\bot\tn,\bot$}
+\label{fig:2x12 nets}
+\end{figure}
+
+
+
 \begin{proof}
 %
 It will be shown by induction on the number of $\bot$-formulae in $\Gamma$ that every proof net for $\Gamma$ belongs to one of two equivalence classes.
@@ -39,7 +65,7 @@ For the base case, the smallest inhabited sequent with two tensor-formulae is th
 \[
 	\1,\1,\1,\bot\tn\bot,\bot\tn,\bot
 \]
-It has two equivalence classes of 12 proof nets each.
+It has two equivalence classes of 12 proof nets each, displayed in Figure~\ref{fig:2x12 nets}.
 
 
 
@@ -54,7 +80,9 @@ For both cases, it will be shown that any net $\links$ for $\Gamma$ is equivalen
 This reduces equivalence on $\Gamma$ to equivalence on $\Delta,A$ in case 1, and on $\Delta$ in case 2, so that the induction hypothesis applies.
 
 
-Let $\named a\bot$ connect to $\named y\1$ in $\Delta$, and let $\named c\bot$ be a subformula of $A$, which means that for case 2, $A=\named c\bot$.
+Let $\named a\bot$ connect to $\named y\1$ in $\Delta$.
+%
+For case 1, let $A$ be $A'\tn\named c\bot$; for case 2, let $A=\named c\bot$.
 %
 Then $\links'$ is obtained by adjusting $\links$ as follows.
 \begin{itemize}

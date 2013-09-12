@@ -2,6 +2,8 @@
 
 \RequirePackage{proof,rotating,stmaryrd,willemtools}
 
+\RequirePackage{tikz}
+\usetikzlibrary{arrows}
 
 %---------- Formatting
 
@@ -16,9 +18,14 @@
 
 \newcommand\MLL{\textsc{mll}}
 
-\def\mkspin#1#2{\smash{%
-  \rotatebox[origin=c]{180}{\mathsurround=0pt$#1#2$}}}
-\def\spin{\mathpalette\mkspin}
+
+\newcommand\mkspin[3]{\smash{\rotatebox[origin=c]{#1}{$#2#3$}}}
+\newcommand\spin[1][180]{\mathpalette{\mkspin{#1}}}
+
+%\def\mkspin#1#2{\smash{%
+%  \rotatebox[origin=c]{180}{\mathsurround=0pt$#1#2$}}}
+%\def\spin{\mathpalette\mkspin}
+
 \def\parr{\mathbin{\spin{\&}}}
 \let\tn\otimes
 
@@ -35,6 +42,7 @@
 \newcommand\toNet{\Mapsto}
 
 \newcommand\perm{\sim}
+\newcommand\vperm{\mathbin{\spin[90]{\perm}}}
 
 \newcommand\edge[2]{#1-#2}
 
@@ -83,3 +91,57 @@
   {tt2} {\infer[\MLLlabel t]{\Gamma,\Delta,\Lambda,A\tn B,C\tn D}{\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B,C}{\Gamma,A && \Delta,B,C} && \Lambda,D}}
  \DEFAULT{}
 }
+
+
+%---------- Proof nets
+
+\definecolor{thepink}{rgb}{1,0,.65}
+
+\tikzstyle{circ}  =[draw,circle,minimum size=5pt,inner sep=0pt]
+\tikzstyle{bullet}=[draw,fill=black,circle,minimum size=5pt,inner sep=0pt]
+
+\newcommand\basenet[4]{\vcenter{\hbox{
+  \begin{tikzpicture}[x=2.5mm,y=7mm,line width=.8pt,>=latex]
+	\node[circ]   (1) at (0,1) {};
+	\node[circ]   (2) at (2,1) {};
+	\node[circ]   (3) at (4,1) {};
+	%
+	\coordinate (a) at (1,2);
+	\coordinate (b) at (3,2);
+	\coordinate (c) at (1,0);
+	\coordinate (d) at (3,0);
+	%
+	\draw[thick] (a)--(b) (c)--(d);
+	%
+	\SWITCH{#1}
+	  {1}{\draw[thepink,->] (a) .. controls +(-.6,-.2) and +( .1, .5) .. (1.center);}
+	  {2}{\draw[thepink,->] (a) .. controls +( .6,-.2) and +(-.1, .5) .. (2.center);}
+	  {3}{\draw[thepink,->] (a) .. controls +(  2,-.2) and +(-.4, .3) .. (3.center);}
+    \DEFAULT{}
+	\SWITCH{#2}
+	  {1}{\draw[thepink,->] (b) .. controls +(- 2,-.2) and +( .4, .3) .. (1.center);}
+	  {2}{\draw[thepink,->] (b) .. controls +(-.6,-.2) and +( .1, .5) .. (2.center);}
+	  {3}{\draw[thepink,->] (b) .. controls +( .6,-.2) and +(-.1, .5) .. (3.center);}
+	\DEFAULT{}
+	\SWITCH{#3}
+	  {1}{\draw[thepink,->] (c) .. controls +(-.6, .2) and +( .1,-.5) .. (1.center);}
+	  {2}{\draw[thepink,->] (c) .. controls +( .6, .2) and +(-.1,-.5) .. (2.center);}
+	  {3}{\draw[thepink,->] (c) .. controls +(  2, .2) and +(-.4,-.3) .. (3.center);}
+    \DEFAULT{}
+	\SWITCH{#4}
+	  {1}{\draw[thepink,->] (d) .. controls +(- 2, .2) and +( .4,-.3) .. (1.center);}
+	  {2}{\draw[thepink,->] (d) .. controls +(-.6, .2) and +( .1,-.5) .. (2.center);}
+	  {3}{\draw[thepink,->] (d) .. controls +( .6, .2) and +(-.1,-.5) .. (3.center);}
+	\DEFAULT{}
+	%
+	\node[bullet] at (a) {};
+	\node[bullet] at (b) {};
+	\node[bullet] at (c) {};
+	\node[bullet] at (d) {};
+  \end{tikzpicture}
+}}}
+
+
+
+
+

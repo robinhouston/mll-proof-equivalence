@@ -108,9 +108,13 @@ In one of several possible definitions, a \emph{$\star$-autonomous category} \ci
 %
 satisfying natural coherence conditions.
 %
-The category $\textsc{mll}(\emptyset)$ of unit-only \MLL-formulae and equivalence classes of proofs is a $\star$-autonomous category.
+%The category $\textsc{mll}(\emptyset)$ of unit-only \MLL-formulae and equivalence classes of proofs is a $\star$-autonomous category.
 %
-The formulation used induces various forms of \emph{strictness}, instances where isomorphisms of the definition are identities: DeMorgan duality means $A=\dual*A$, one-sided sequents mean the closure adjunction is an equivalence of categories, and the associativities are identities by decree.
+The category with as objects unit-only \MLL-formulae and as morphisms $A\to B$ the equivalence classes of proofs of $\dual A\parr B$, denoted $\textsc{mll}(\emptyset)$, is a $\star$-autonomous category.
+%
+The present formulation of formulae induces two forms of \emph{strictness}, instances where isomorphisms of the definition are identities: DeMorgan duality means $A=\dual*A$, while
+%, one-sided sequents mean the closure adjunction is an equivalence of categories, 
+associativity is an identity by decree.
 %
 Modulo strictness, $\textsc{mll}(\emptyset)$ is the \emph{free} $\star$-autonomous category over the empty category $\emptyset$.
 %
@@ -138,7 +142,6 @@ This means that \emph{any} $\star$-autonomous category is a model of the logic, 
 \subsection{Proof nets}
 
 A partial solution to the \MLL\ proof equivalence problem is provided by proof nets.
-
 
 
 \begin{definition}
@@ -183,11 +186,11 @@ There is no canonical interpretation of a proof as a proof net, since the introd
 \begin{definition}
 \label{def:proofs to nets}
 %
-The relation $(\toNet)$ interprets a proof by a linking $\links$ as follows:
+The relation $(\toNet)$ interprets a proof $\Pi$ for a sequent $\Gamma$ by a linking $\links$ as follows:
 % 
-for each $\named a\bot$, if $\Gamma$ is the context of the inference introducing $\named a\bot$, as illustrated below, then $\links(a)$ is the name of some $1$ in $\Gamma$.
+$\Pi\toNet\links$ if for each $\named a\bot$ in $\Gamma$, if $\Delta$ is the context of the inference introducing $\named a\bot$, as illustrated below, then $\links(a)$ is the name of some $1$ in $\Delta$.
 \[
-	\infer[\MLLlabel b]{\Gamma,\named a\bot}{\Gamma}
+	\infer[\MLLlabel b]{\Delta,\named a\bot}{\Delta}
 \]
 %
 \end{definition}
@@ -223,7 +226,31 @@ For proofs $\Pi$, $\Pi'$ and proof nets $\links$, $\links'$ such that $\Pi\toNet
 \MLL\ proof equivalence is the problem of deciding equivalence of proof nets.
 
 
+\subsection{Notation}
 
+
+We will use a concise diagrammatic notation for sequents and proof nets.
+%
+The units $1$ and $\bot$ are represented by a circle $\circ$ and a disc $\bullet$ respectively.
+%
+A tensor is represented by a line connecting both subformulae, and a par by juxtaposition: if $A$ and $B$ are represented by \raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-A.pdf}}
+and \raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-B.pdf}},
+%
+then $A\parr B$ is \raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-AparB.pdf}}
+and $A\tn B$ is \raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-AtnB.pdf}}.
+%
+A tensor of multiple elements is denoted by stringing them together in a line, so $A\tn B\tn C$ is
+\raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-AtnBtnC.pdf}}.
+%
+Boxes play the role of parentheses around par-formulae, so $(A\parr B)\tn C$ is drawn as \begin{center}{\includegraphics[scale=1]{hex-AparBtnC.pdf}}\end{center}
+
+\noindent For example, this sequent
+\[ \vdash \bot\tn\bot, \bot\tn\bot, \bot\tn\bot, \bot\tn\bot, 1, \{[(1\parr 1\parr 1)\tn(1\parr 1\parr 1)]\parr 1\parr (\bot\tn\bot\tn\bot)\parr 1\}\tn\bot \]
+could be drawn like this:
+\begin{center}\includegraphics[scale=0.75]{example-sequent.pdf}\end{center}
+
+\noindent We represent a proof net by drawing an arrow from each $\bullet$ to some $\circ$. For example, one proof net on the above sequent is
+\begin{center}\includegraphics[scale=0.75]{example-sequent-proofnet.pdf}\end{center}
 
 
 
