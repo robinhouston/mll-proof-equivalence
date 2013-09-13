@@ -97,10 +97,10 @@
 
 \definecolor{thepink}{rgb}{1,0,.65}
 
-\tikzstyle{circ}  =[draw,circle,minimum size=5pt,inner sep=0pt]
-\tikzstyle{bullet}=[draw,fill=black,circle,minimum size=5pt,inner sep=0pt]
+\tikzstyle{circ}  =[draw,circle,minimum size=6pt,inner sep=0pt]
+\tikzstyle{bullet}=[draw,fill=black,circle,minimum size=6pt,inner sep=0pt]
 
-\newcommand\basenet[4]{\vcenter{\hbox{
+\newcommand\netA[4]{\vcenter{\hbox{
   \begin{tikzpicture}[x=2.5mm,y=7mm,line width=.8pt,>=latex]
 	\node[circ]   (1) at (0,1) {};
 	\node[circ]   (2) at (2,1) {};
@@ -142,6 +142,89 @@
 }}}
 
 
+
+\newcommand\netB[4]{\vcenter{\hbox{
+  \begin{tikzpicture}[x=-1mm,y=1mm,line width=.8pt,>=latex]
+	\coordinate (a) at (0,0); \coordinate (d) at (0,20);
+	\coordinate (b) at (5,0); \coordinate (c) at (5,20);
+	\coordinate (E) at (20,10); \node at (E) {};
+	%
+	\node[circ] (z) at (0,10) {}; \node[circ] (y) at (5,10) {};
+	\node[circ] (x) at (12,5) {}; \node[circ] (w) at (12,15) {};
+	%
+	\draw (a)--(b) (c)--(d);
+	%
+	\draw[thepink,->] (16,5)--(x.center);
+	\draw[thepink,->] (16,15)--(w.center);
+	\draw[thepink,dashed,rounded corners,dash phase=1pt] (E) |- (16,5) (E) |- (16,15);
+	%
+	\SWITCH{#1}
+	  {x}{\draw[thepink,->] (a.center) .. controls +(2,5) and +(-2,0) .. (x.center);}
+	  {y}{\draw[thepink,->] (a.center) .. controls +(3,4) .. (y.center);}
+	  {z}{\draw[thepink,->] (a.center) .. controls +(-2,4) and +(-2,-4) .. (z.center);}
+	\DEFAULT{}
+	\SWITCH{#2}
+	  {x}{\draw[thepink,->] (b.center) .. controls +(1,4) and +(-3,0) .. (x.center);}
+	  {y}{\draw[thepink,->] (b.center) .. controls +(-2,4) and +(-2,-4) .. (y.center);}
+	\DEFAULT{}
+	\SWITCH{#3}
+	  {w}{\draw[thepink,->] (c.center) .. controls +(1,-4) and +(-3,0) .. (w.center);}
+	  {y}{\draw[thepink,->] (c.center) .. controls +(-2,-4) and +(-2,4) .. (y.center);}
+	\DEFAULT{}
+	\SWITCH{#4}
+	  {w}{\draw[thepink,->] (d.center) .. controls +(2,-5) and +(-2,0) .. (w.center);}
+	  {y}{\draw[thepink,->] (d.center) .. controls +(3,-4) .. (y.center);}
+	  {z}{\draw[thepink,->] (d.center) .. controls +(-2,-4) and +(-2,4) .. (z.center);}
+	\DEFAULT{}
+	%
+	\foreach \n in {a,b,c,d} {\node[bullet] at (\n) {};}
+	\foreach \n in {a,b,x} {\node[anchor=north] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\foreach \n in {c,d,w} {\node[anchor=south] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\node[anchor=east,inner sep=5pt] at (y) {$\scriptstyle\vphantom(y$};
+	\node[anchor=west,inner sep=5pt] at (z) {$\scriptstyle\vphantom(z$};
+  \end{tikzpicture}
+}}}
+
+
+\newcommand\netC[4]{\vcenter{\hbox{
+  \begin{tikzpicture}[x=-1mm,y=1mm,line width=.8pt,>=latex]
+	\coordinate (a) at (2.5,0);
+	\coordinate (b) at (7.5,0);
+	\coordinate (c) at (12.5,0);
+	\coordinate (d) at (10,20);
+	\coordinate (e) at (5,20);
+	%
+	\node[circ] (z) at (0,10) {}; \node[circ] (y) at (5,10) {};
+	\node[circ] (x) at (10,10) {}; \node[circ] (w) at (15,10) {};
+	%
+	\draw (a)--(b)--(c) (d)--(e);
+	%
+	\SWITCH{#1}
+	  {y}{\draw[thepink,->] (a.center) .. controls +(3,4) and +(0,-4) .. (y.center);}
+	  {z}{\draw[thepink,->] (a.center) .. controls +(-3,4) and +(0,-4) .. (z.center);}
+	\DEFAULT{}
+	\SWITCH{#2}
+	  {x}{\draw[thepink,->] (b.center) .. controls +(3,4) and +(0,-4) .. (x.center);}
+	  {z}{\draw[thepink,->] (b.center) .. controls +(-6,3) and +(1,-4) .. (z.center);}
+	\DEFAULT{}
+	\draw[thepink,->] (c.center) .. controls +(3,4) and +(0,-4) .. (w.center);
+	\SWITCH{#3}
+	  {w}{\draw[thepink,->] (d.center) .. controls +(3,-2) and +(-0,6) .. (w.center);}
+	  {x}{\draw[thepink,->] (d.center) .. controls +(-2,-4) and +(-2,4) .. (x.center);}
+	  {z}{\draw[thepink,->] (d.center) .. controls +(-6,-4) and +(3,5) .. (z.center);}
+	\DEFAULT{}
+	\SWITCH{#4}
+	  {x}{\draw[thepink,->] (e.center) .. controls +(3,-2) and +(-0,6) .. (x.center);}
+	  {y}{\draw[thepink,->] (e.center) .. controls +(-2,-4) and +(-2,4) .. (y.center);}
+	\DEFAULT{}
+	%
+	\foreach \n in {a,b,c,d,e} {\node[bullet] at (\n) {};}
+	\foreach \n in {a,b,c} {\node[anchor=north] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\foreach \n in {d,e} {\node[anchor=south] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\foreach \n in {w,x} {\node[anchor=south east] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\foreach \n in {y,z} {\node[anchor=north west] at (\n) {$\scriptstyle\vphantom(\n$};}
+  \end{tikzpicture}
+}}}
 
 
 
