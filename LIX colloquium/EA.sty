@@ -1,0 +1,230 @@
+
+
+\RequirePackage{proof,rotating,stmaryrd,willemtools}
+
+\RequirePackage{tikz}
+\usetikzlibrary{arrows}
+
+%---------- Formatting
+
+\newcommand\vc[1]{\vcenter{\hbox{$\m@th{#1}$}}}
+
+
+%---------- General
+
+%\newcommand\coloneq{}
+
+%---------- Formulae, proofs, nets
+
+\newcommand\MLL{\textsc{mll}}
+
+
+\newcommand\mkspin[3]{\smash{\rotatebox[origin=c]{#1}{$\m@th#2#3$}}}
+\newcommand\spin[1][180]{\mathpalette{\mkspin{#1}}}
+
+%\def\mkspin#1#2{\smash{%
+%  \rotatebox[origin=c]{180}{\mathsurround=0pt$#1#2$}}}
+%\def\spin{\mathpalette\mkspin}
+
+\def\parr{\mathbin{\spin{\&}}}
+\let\tn\otimes
+
+\newcommand\1{1}
+
+\newcommand\named[2]{#2^{#1}}
+
+\newcommand\dual{\@ifstar\doubledual\singledual}
+\newcommand\singledual[1]{#1^\star}
+\newcommand\doubledual[1]{#1^{\star\star}}
+
+\newcommand\links{\ell}%{\mathit l}
+
+\newcommand\toNet{\Mapsto}
+
+\newcommand\perm{\sim}
+\newcommand\vperm{\mathbin{\spin[90]{\perm}}}
+
+\newcommand\edge[2]{#1-#2}
+
+%---------- Other
+
+\newcommand\prm[1][\links]{\mathit p_{#1}}		% combinatorial permutations as bijective functions
+
+%---------- Inference rules
+
+\newcommand\MLLlabel[1]{
+ \kern-3pt\scriptstyle{
+ \SWITCH{#1}
+  1 {1}
+  b {\bot}
+  p {\parr}
+  t {\tn}
+ \DEFAULT{#1}
+}}
+
+\newcommand\MLLrule[1]{
+ \SWITCH{#1}
+  1 {\infer[\MLLlabel 1]{1\vphantom\Gamma}{}}
+  b {\infer[\MLLlabel b]{\Gamma,\bot}{\Gamma}}
+  p {\infer[\MLLlabel p]{\Gamma,A\parr B}{\Gamma,A,B}}
+  t {\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B}{\Gamma,A && \Delta,B}}
+ \DEFAULT{}
+}
+
+
+%---------- Permutations
+
+\newcommand\MLLperm[1]{
+ \SWITCH{#1}
+  {bb1} {\infer[\MLLlabel b]{\Gamma,\named a\bot,\named b\bot}{\infer[\MLLlabel b]{\Gamma,\named a\bot}{\Gamma}}}
+  {bb2} {\infer[\MLLlabel b]{\Gamma,\named a\bot,\named b\bot}{\infer[\MLLlabel b]{\Gamma,\named b\bot}{\Gamma}}}
+  {bp1} {\infer[\MLLlabel b]{\Gamma,A\parr B,\bot}{\MLLrule p}}
+  {bp2} {\infer[\MLLlabel p]{\Gamma,A\parr B,\bot}{\infer[\MLLlabel b]{\Gamma,A,B,\bot}{\Gamma,A,B}}}
+  {bt1} {\infer[\MLLlabel b]{\Gamma,\Delta,A\tn B,\bot}{\MLLrule t}}
+  {bt2} {\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B,\bot}{\infer[\MLLlabel b]{\Gamma,A,\bot}{\Gamma,A} && \Delta,B}}
+  {bt3} {\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B,\bot}{\Gamma,A &&\infer[\MLLlabel b]{\Delta,B,\bot}{\Delta,B}}}
+  {pp1} {\infer[\MLLlabel p]{\Gamma,A\parr B,C\parr D}{\infer[\MLLlabel p]{\Gamma,A\parr B,C,D}{\Gamma,A,B,C,D}}}
+  {pp2} {\infer[\MLLlabel p]{\Gamma,A\parr B,C\parr D}{\infer[\MLLlabel p]{\Gamma,A,B,C\parr D}{\Gamma,A,B,C,D}}}
+  {pt1} {\infer[\MLLlabel p]{\Gamma,\Delta,A\tn B,C\parr D}{\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B,C,D}{\Gamma,A && \Delta,B,C,D}}}
+  {pt2} {\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B,C\parr D}{\Gamma,A && \infer[\MLLlabel p]{\Delta,B,C\parr D}{\Delta,B,C,D}}}
+  {tt1} {\infer[\MLLlabel t]{\Gamma,\Delta,\Lambda,A\tn B,C\tn D}{\Gamma,A && \infer[\MLLlabel t]{\Delta,\Lambda,B,C\tn D}{\Delta,B,C && \Lambda,D}}}
+  {tt2} {\infer[\MLLlabel t]{\Gamma,\Delta,\Lambda,A\tn B,C\tn D}{\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B,C}{\Gamma,A && \Delta,B,C} && \Lambda,D}}
+ \DEFAULT{}
+}
+
+
+%---------- Proof nets
+
+\definecolor{thepink}{rgb}{1,0,.65}
+
+\tikzstyle{circ}  =[draw,circle,minimum size=6pt,inner sep=0pt]
+\tikzstyle{bullet}=[draw,fill=black,circle,minimum size=6pt,inner sep=0pt]
+
+\newcommand\netA[4]{\vcenter{\hbox{
+  \begin{tikzpicture}[x=2.5mm,y=7mm,line width=.8pt,>=latex]
+	\node[circ]   (1) at (0,1) {};
+	\node[circ]   (2) at (2,1) {};
+	\node[circ]   (3) at (4,1) {};
+	%
+	\coordinate (a) at (1,2);
+	\coordinate (b) at (3,2);
+	\coordinate (c) at (1,0);
+	\coordinate (d) at (3,0);
+	%
+	\draw[thick] (a)--(b) (c)--(d);
+	%
+	\SWITCH{#1}
+	  {1}{\draw[thepink,->] (a) .. controls +(-.6,-.2) and +( .1, .5) .. (1.center);}
+	  {2}{\draw[thepink,->] (a) .. controls +( .6,-.2) and +(-.1, .5) .. (2.center);}
+	  {3}{\draw[thepink,->] (a) .. controls +(  2,-.2) and +(-.4, .3) .. (3.center);}
+    \DEFAULT{}
+	\SWITCH{#2}
+	  {1}{\draw[thepink,->] (b) .. controls +(- 2,-.2) and +( .4, .3) .. (1.center);}
+	  {2}{\draw[thepink,->] (b) .. controls +(-.6,-.2) and +( .1, .5) .. (2.center);}
+	  {3}{\draw[thepink,->] (b) .. controls +( .6,-.2) and +(-.1, .5) .. (3.center);}
+	\DEFAULT{}
+	\SWITCH{#3}
+	  {1}{\draw[thepink,->] (c) .. controls +(-.6, .2) and +( .1,-.5) .. (1.center);}
+	  {2}{\draw[thepink,->] (c) .. controls +( .6, .2) and +(-.1,-.5) .. (2.center);}
+	  {3}{\draw[thepink,->] (c) .. controls +(  2, .2) and +(-.4,-.3) .. (3.center);}
+    \DEFAULT{}
+	\SWITCH{#4}
+	  {1}{\draw[thepink,->] (d) .. controls +(- 2, .2) and +( .4,-.3) .. (1.center);}
+	  {2}{\draw[thepink,->] (d) .. controls +(-.6, .2) and +( .1,-.5) .. (2.center);}
+	  {3}{\draw[thepink,->] (d) .. controls +( .6, .2) and +(-.1,-.5) .. (3.center);}
+	\DEFAULT{}
+	%
+	\node[bullet] at (a) {};
+	\node[bullet] at (b) {};
+	\node[bullet] at (c) {};
+	\node[bullet] at (d) {};
+  \end{tikzpicture}
+}}}
+
+
+
+\newcommand\netB[4]{\vcenter{\hbox{
+  \begin{tikzpicture}[x=-1mm,y=1mm,line width=.8pt,>=latex]
+	\coordinate (a) at (0,0); \coordinate (d) at (0,20);
+	\coordinate (b) at (5,0); \coordinate (c) at (5,20);
+	\coordinate (E) at (20,10); \node at (E) {};
+	%
+	\node[circ] (z) at (0,10) {}; \node[circ] (y) at (5,10) {};
+	\node[circ] (x) at (12,5) {}; \node[circ] (w) at (12,15) {};
+	%
+	\draw (a)--(b) (c)--(d);
+	%
+	\draw[thepink,->] (16,5)--(x.center);
+	\draw[thepink,->] (16,15)--(w.center);
+	\draw[thepink,dashed,rounded corners,dash phase=1pt] (E) |- (16,5) (E) |- (16,15);
+	%
+	\SWITCH{#1}
+	  {x}{\draw[thepink,->] (a.center) .. controls +(2,5) and +(-2,0) .. (x.center);}
+	  {y}{\draw[thepink,->] (a.center) .. controls +(3,4) .. (y.center);}
+	  {z}{\draw[thepink,->] (a.center) .. controls +(-2,4) and +(-2,-4) .. (z.center);}
+	\DEFAULT{}
+	\SWITCH{#2}
+	  {x}{\draw[thepink,->] (b.center) .. controls +(1,4) and +(-3,0) .. (x.center);}
+	  {y}{\draw[thepink,->] (b.center) .. controls +(-2,4) and +(-2,-4) .. (y.center);}
+	\DEFAULT{}
+	\SWITCH{#3}
+	  {w}{\draw[thepink,->] (c.center) .. controls +(1,-4) and +(-3,0) .. (w.center);}
+	  {y}{\draw[thepink,->] (c.center) .. controls +(-2,-4) and +(-2,4) .. (y.center);}
+	\DEFAULT{}
+	\SWITCH{#4}
+	  {w}{\draw[thepink,->] (d.center) .. controls +(2,-5) and +(-2,0) .. (w.center);}
+	  {y}{\draw[thepink,->] (d.center) .. controls +(3,-4) .. (y.center);}
+	  {z}{\draw[thepink,->] (d.center) .. controls +(-2,-4) and +(-2,4) .. (z.center);}
+	\DEFAULT{}
+	%
+	\foreach \n in {a,b,c,d} {\node[bullet] at (\n) {};}
+	\foreach \n in {a,b,x} {\node[anchor=north] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\foreach \n in {c,d,w} {\node[anchor=south] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\node[anchor=east,inner sep=5pt] at (y) {$\scriptstyle\vphantom(y$};
+	\node[anchor=west,inner sep=5pt] at (z) {$\scriptstyle\vphantom(z$};
+  \end{tikzpicture}
+}}}
+
+
+\newcommand\netC[4]{\vcenter{\hbox{
+  \begin{tikzpicture}[x=-1mm,y=1mm,line width=.8pt,>=latex]
+	\coordinate (a) at (2.5,0);
+	\coordinate (b) at (7.5,0);
+	\coordinate (c) at (12.5,0);
+	\coordinate (d) at (10,20);
+	\coordinate (e) at (5,20);
+	%
+	\node[circ] (z) at (0,10) {}; \node[circ] (y) at (5,10) {};
+	\node[circ] (x) at (10,10) {}; \node[circ] (w) at (15,10) {};
+	%
+	\draw (a)--(b)--(c) (d)--(e);
+	%
+	\SWITCH{#1}
+	  {y}{\draw[thepink,->] (a.center) .. controls +(3,4) and +(0,-4) .. (y.center);}
+	  {z}{\draw[thepink,->] (a.center) .. controls +(-3,4) and +(0,-4) .. (z.center);}
+	\DEFAULT{}
+	\SWITCH{#2}
+	  {x}{\draw[thepink,->] (b.center) .. controls +(3,4) and +(0,-4) .. (x.center);}
+	  {z}{\draw[thepink,->] (b.center) .. controls +(-6,3) and +(1,-4) .. (z.center);}
+	\DEFAULT{}
+	\draw[thepink,->] (c.center) .. controls +(3,4) and +(0,-4) .. (w.center);
+	\SWITCH{#3}
+	  {w}{\draw[thepink,->] (d.center) .. controls +(3,-2) and +(-0,6) .. (w.center);}
+	  {x}{\draw[thepink,->] (d.center) .. controls +(-2,-4) and +(-2,4) .. (x.center);}
+	  {z}{\draw[thepink,->] (d.center) .. controls +(-6,-4) and +(3,5) .. (z.center);}
+	\DEFAULT{}
+	\SWITCH{#4}
+	  {x}{\draw[thepink,->] (e.center) .. controls +(3,-2) and +(-0,6) .. (x.center);}
+	  {y}{\draw[thepink,->] (e.center) .. controls +(-2,-4) and +(-2,4) .. (y.center);}
+	\DEFAULT{}
+	%
+	\foreach \n in {a,b,c,d,e} {\node[bullet] at (\n) {};}
+	\foreach \n in {a,b,c} {\node[anchor=north] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\foreach \n in {d,e} {\node[anchor=south] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\foreach \n in {w,x} {\node[anchor=south east] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\foreach \n in {y,z} {\node[anchor=north west] at (\n) {$\scriptstyle\vphantom(\n$};}
+  \end{tikzpicture}
+}}}
+
+
+

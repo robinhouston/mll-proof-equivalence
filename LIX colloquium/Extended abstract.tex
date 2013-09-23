@@ -1,0 +1,38 @@
+\documentclass{robinminion}
+
+
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage[round]{natbib}
+\usepackage{EA,willemtools}
+
+\graphicspath{{../notes/}}
+
+\makeTheoremDefs
+
+
+\author{Willem Heijltjes and Robin Houston}
+\title{The proof equivalence problem for multiplicative linear logic is \textsc{pspace}-complete\\[4pt]\large Abstract}
+
+
+\begin{document}
+
+\maketitle
+
+\linespread{1.1}\selectfont
+\noindent\emph{\MLL\ proof equivalence} is the problem of deciding whether one proof in multiplicative linear logic may be turned into another by a series of commuting conversions. It is also the \emph{word problem} for $\star$-autonomous categories \citep{Barr-1991}: the problem of deciding whether two term representations denote the same morphism in any $\star$-autonomous category. In \MLL$^{-}$, without the two units, proof equivalence corresponds to syntactic equality on \emph{proof nets} \citep{Girard87, DR89}, and is linear-time decidable. For full \MLL, thanks to many years of work on proof nets \citep{TrimbleThesis, BCST, HughesFreeStar} we know that the proof equivalence problem corresponds to a reasonably simple graph-rewiring problem.
+
+On the other side of the fence, thanks to many years of work on combinatorial games and complexity theory \citep{RushHour, HearnDemaineTCS, GamesPuzzlesAndComputation, TheConnectivityOfBooleanSatisfiability, ReconfigurationProblems} we know many examples of rewiring problems on graphs that are \textsc{pspace}-complete. We will give a reduction from the configuration-to-configuration problem for \emph{Nondeterministic Constraint Logic} \citep{HearnDemaineTCS, GamesPuzzlesAndComputation}, a graphical formalism specifically designed for easy problem reduction.
+
+The \textsc{pspace}-completeness result rules out a satisfactory notion of proof net for \MLL\ with units, and in particular for this reason it may come as a surprise. However, \textsc{pspace}-completeness is not unusual for graph rewiring problems,  nor for \emph{reconfiguration} problems \citep{ReconfigurationProblems} of the kind to which \MLL\ proof equivalence belongs. A reconfiguration problem is the problem of finding a path across related solutions to given a decision problem---in this case \MLL\ proof search. Reconfiguration problems whose associated decision problem is \textsc{np}-complete, as is \MLL\ proof search, frequently are \textsc{pspace}-complete; an important example, \emph{satisfiability-reconfiguration} \citep{TheConnectivityOfBooleanSatisfiability} is the problem of finding a path across satisfying assignments to a boolean formula by changing the value of one atom at a time.
+
+\small
+\bibliographystyle{plainnat}
+\bibliography{../refs}
+
+\end{document}
+
+
+
+
+
