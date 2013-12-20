@@ -34,6 +34,7 @@
 * The permutation gadget
 * NP-hardness of proof equivalence
 * (Relationship with / encodability of Demaine-Ito subset sum reconfiguration)
+* Extend parity proof to par
 
 ## Level 2 informally
 
