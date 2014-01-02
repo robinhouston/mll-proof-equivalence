@@ -1,0 +1,117 @@
+\section{Proof nets and constraint graphs}
+
+
+\newcommand\itn[1]{\llbracket#1\rrbracket}
+\newcommand\coitn[1]{\llparenthesis#1\rrparenthesis}
+
+\begin{definition}
+A \emph{non-deterministic constraint graph} (\textsc{ncg}) $G=(V,E,c,w)$ consists of a set of vertices $V$ with \emph{minimum inflow constraint} $c\colon V\to\mathbb N$, and a set of undirected edges $E\subseteq V\times V$ with \emph{weight} $w\colon E\to N$.
+
+A \emph{configuration} of an \textsc{ncg} is a function $\gamma\colon E\to V$ such that
+\begin{itemize}
+	\item
+for every edge $e$ connecting vertices $v$ and $w$, $\gamma(e)\in\{v,w\}$, and
+	\item
+for every vertex $v$, the sum of its inflow weights $\sum\{w(e)\mid \gamma(e)=v\}$ is equal to or greater than its inflow constraint $c(v)$.
+\end{itemize}
+
+A \emph{reconfiguration step} $\gamma\sim\delta$ connects two configurations for a \textsc{ncg} $G$ that differ in the assignment $\gamma(e)$ of exactly one edge.
+
+\end{definition}
+
+[[ NOTE: decide on notation for steps and paths in permutation relations ]]
+
+For a graph $G=(V,E,c,w)$ let $|V|$ and $|E|$ denote the number of vertices and edges, respectively, and let $|c|$ and $|w|$ denote the sum of all inflow constraints, $\sum_{v\in V}c(v)$, and the sum of all edge weights, $\sum_{e\in E}w(e)$.
+
+
+Let $A^n$ denote the sequent of $n$ copies of a formula $A$, and for a sequent $\Gamma=A_1,\dotsc,A_n$ let $\bigotimes\Gamma=A_1\tn\dotso\tn A_n$ and $\bigparr\Gamma=A_1\parr\dotso\parr A_n$.
+
+
+
+\begin{definition}
+The \emph{interpretation} $\itn G$ of an \textsc{ncg} $G=(V,E,c,w)$ is a sequent constructed as follows.
+%
+Let $V=\{v_1,\dotsc,v_n\}$ and $E=\{e_1,\dotsc,e_k\}$ where $|V|=n$ and $|E|=k$.
+
+The interpretation of a vertex $v_i$ is the formula
+\[
+	\itn{v_i} = \bigparr\big(C^{k\times c(v_i)} \big)\parr 1
+\]
+where each \emph{constraint element} $C$ is the formula
+\[
+	C = \bigparr\big(1^{3i+2}\big) \tn \bigparr\big(1^{3(n-i)+3}\big)
+\]
+
+The interpretation of an edge $e$ connecting vertices $v_i$ and $v_j$ with $i<j$ is the formula
+\[
+	\itn{e} = \bigotimes\big(W^{k\times w(e)}\big)\tn\bot
+\]
+where each \emph{weight element} $W$ is the formula
+\[
+	W = \bigotimes\big(\bot^{3i+2}\big)\parr\bigotimes\big(\bot^{3(j-i)+1}\big)\parr\bigotimes\big(\bot^{3(n-j)+3}\big)
+\]
+
+
+The interpretation of the graph $G$ is the sequent
+\[
+	\itn G = \bigotimes_{1\leq i\leq n}\itn{v_i}, \itn{e_1},\dotsc,\itn{e_k}, \bot^m
+\]
+where $m=k\times(|w|-|c|)\times(3n+4)$.
+
+\end{definition}
+
+
+
+\begin{definition}
+The interpretation $\itn\gamma$ of a configuration $\gamma$ for a graph $G$ is the set of proof nets for $\itn G$ satisfying the following constraint: if $\gamma(e)=v$ then $\itn e$ belongs to the empire of $\itn v$
+\end{definition}
+
+
+\begin{lemma}
+In a proof net for $\itn G$, an edge-gadget $\itn e$ belongs to the empire of at most one vertex-gadget $\itn v$.
+\end{lemma}
+
+\begin{proof}
+Since vertex-gadgets are joined by a tensor, the lemma is immediate from \cite[Proposition 1]{Bellin-vandeWiele-1995}.
+\end{proof}
+
+
+By the above, a proof net $\links$ for $\itn G$ gives a partial function $\coitn\links\colon E\rightharpoonup V$.
+
+
+\begin{lemma}
+If $\links\sim\links'$ is the re-attachment of one jump, then $\coitn\links$ and $\coitn{\links'}$ differ on the value of at most one edge.
+\end{lemma}
+
+\begin{proof}
+TO DO
+\end{proof}
+
+
+In a proof net for the interpretation of a graph $\itn G$, call an edge-gadget $\itn e$ with $e=(u,w)$ \emph{appropriate} for a vertex-gadget $\itn v$ if $v\in\{u,w\}$, and \emph{inappropriate} otherwise.
+
+
+\begin{lemma}
+In a proof net for $\itn G$, for each vertex $v$, the weights of the appropriate edge-gadgets in the empire of $\itn v$ are equal to or greater than the 
+
+\end{lemma}
+
+
+
+\begin{proof}[Proof sketch]
+There are not enough edges to fill a unit of weight inappropriately in $\itn v$.
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

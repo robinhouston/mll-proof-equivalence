@@ -1,0 +1,82 @@
+
+\section{Par}
+
+
+
+\begin{definition}
+A \emph{sub-sequent} $\Delta\leq\Gamma$ of a sequent $\Gamma$ is a sequent consisting of disjoint subformulae of $\Gamma$, preserving names.
+\end{definition}
+
+
+\begin{definition}
+A \emph{subnet} $(\Gamma',\links') \leq (\Gamma,\links)$ of a proof net is a net such that $\Gamma'\leq\Gamma$ and $\links'$ is $(\links|_{\Gamma'})$, the restriction of $\links$ to $\Gamma'$.
+\end{definition}
+
+
+The root vertices of $\Gamma'$ are the \emph{ports} of the sub-sequent $\Gamma'$ and of the subnet $(\Gamma',\links')$.
+%
+A \emph{scope} of a par $\named v\parr$ is a subnet that has $v$ as a port.
+%
+In a proof net, the \emph{kingdom} and the \emph{empire} of a par are respectively its smallest and largest scope.
+
+
+
+The scopes of a par correspond to the possible subproofs of its introduction rule in a sequentialisation of the proof net that it occurs in.
+%
+In the graph of a proof net, the scope of a par $\named v\parr$ may be \emph{contracted} to a single vertex $v$ by removing all vertices except $v$ and re-attaching all arcs connecting to removed vertices to $v$.
+%
+
+[[ ADD ILLUSTRATED EXAMPLE ]]
+
+%
+The contraction of scopes may replace the switching condition as a correctness criterion.
+%
+The following is a variant of the local retraction algorithm by Danos \cite{Danos-1990}.
+
+
+\begin{proposition}
+\label{prop:scoping correctness}
+A linking $\links$ for a sequent $\Gamma$ is a proof net if and only if each $\named v\parr$ is a port of a sub-sequent $s(v)\leq\Gamma$ such that:
+
+\begin{enumerate}
+	\item
+sub-sequents are strictly nested: if $\named w\parr$ occurs in $s(v)$ then $s(w)<s(v)$; and
+	\item
+for each $\named v\parr$, the graph $\sigma(v)=(s(v),\links|_{s(v)})$ becomes a tree when all immediate sub-sequents $s(w)$ are contracted.
+\end{enumerate}
+
+\end{proposition}
+
+
+\begin{proof}
+For the `if' direction, it follows by induction on the nesting of sub-sequents that each graph $\sigma(v)$ satisfies the switching condition.
+%
+For the `only if' direction, given a sequentialisation of $(\Gamma,\links)$, the sub-sequent of each $s(v)$ is the conclusion $\Delta, A\named v\parr B$ of its introduction rule.
+\[
+	\infer{\Delta,A\named v\parr B}{\Delta,A,B}
+\]
+\end{proof}
+
+
+[[ IDEA: the following could help simplify octopus-arithmetic ]]
+
+
+\begin{definition}
+The \emph{balance} of a sequent is the number of $\bot$s minus the number of $\parr$s and comma's.
+%
+A sequent is \emph{balanced} if its balance is zero.
+\end{definition}
+
+An unbalanced sequent is uninhabited: a positive balance guarantees a cycle in any switching graph, for any linking, while a negative balance similarly guarantees disconnectedness.
+
+An early conjecture of Girard, which turned out to be false, was that a sequent is inhabited if and only if it is balanced. [[FIND CITATION (probably TCS87)]]
+
+
+
+
+
+
+
+
+
+
