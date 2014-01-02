@@ -5,12 +5,12 @@
 \newcommand\coitn[1]{\llparenthesis#1\rrparenthesis}
 
 \begin{definition}
-A \emph{non-deterministic constraint graph} (\textsc{ncg}) $G=(V,E,c,w)$ consists of a set of vertices $V$ with \emph{minimum inflow constraint} $c\colon V\to\mathbb N$, and a set of undirected edges $E\subseteq V\times V$ with \emph{weight} $w\colon E\to N$.
+A \emph{non-deterministic constraint graph} (\textsc{ncg}) $G=(V,E,c,v,w)$ consists of a set $V$ of vertices with \emph{minimum inflow constraint} $c\colon V\to\mathbb N$, and a set $E$ of at most one undirected edge $e$ per vertex-pair $v(e)=\{v_1,v_2\}$, with \emph{weight} $w\colon E\to N$.
 
 A \emph{configuration} of an \textsc{ncg} is a function $\gamma\colon E\to V$ such that
 \begin{itemize}
 	\item
-for every edge $e$ connecting vertices $v$ and $w$, $\gamma(e)\in\{v,w\}$, and
+$\gamma(e)\in v(e)$ for every edge $e$, and
 	\item
 for every vertex $v$, the sum of its inflow weights $\sum\{w(e)\mid \gamma(e)=v\}$ is equal to or greater than its inflow constraint $c(v)$.
 \end{itemize}
@@ -51,20 +51,15 @@ where each \emph{weight element} $W$ is the formula
 	W = \bigotimes\big(\bot^{3i+2}\big)\parr\bigotimes\big(\bot^{3(j-i)+1}\big)\parr\bigotimes\big(\bot^{3(n-j)+3}\big)
 \]
 
-
 The interpretation of the graph $G$ is the sequent
 \[
-	\itn G = \bigotimes_{1\leq i\leq n}\itn{v_i}, \itn{e_1},\dotsc,\itn{e_k}, \bot^m
+	%\itn G = \bigotimes_{1\leq i\leq n}\itn{v_i}, \itn{e_1},\dotsc,\itn{e_k}, \bot^m
+	\itn G = \itn{v_1}\tn\dotso\tn\itn{v_n}, \itn{e_1},\dotsc,\itn{e_k}, \bot^m
 \]
 where $m=k\times(|w|-|c|)\times(3n+4)$.
 
 \end{definition}
 
-
-
-\begin{definition}
-The interpretation $\itn\gamma$ of a configuration $\gamma$ for a graph $G$ is the set of proof nets for $\itn G$ satisfying the following constraint: if $\gamma(e)=v$ then $\itn e$ belongs to the empire of $\itn v$
-\end{definition}
 
 
 \begin{lemma}
@@ -76,24 +71,40 @@ Since vertex-gadgets are joined by a tensor, the lemma is immediate from \cite[P
 \end{proof}
 
 
-By the above, a proof net $\links$ for $\itn G$ gives a partial function $\coitn\links\colon E\rightharpoonup V$.
+
+%\begin{lemma}
+%If the permutation $\links\sim\links'$ consists of the re-attachment of exactly one jump, then $\coitn\links$ and $\coitn{\links'}$ differ on the value of at most one edge.
+%\end{lemma}
+
+% THIS IS FALSE : OTHER EDGES MAY BE CONNECTED *VIA* THE ONE THAT IS MOVED
+
+
+By the above, a proof net for $\itn G$ gives a partial function from edges to vertices.
+
+\begin{definition}
+	For a proof net $\links$ for the interpretation of a graph $\itn G$, let $\coitn\links\colon E\rightharpoonup V$ be the partial function where $\coitn\links(e)$ is $v$ if $\itn e$ belongs to the empire of $\itn v$, and undefined otherwise.
+\end{definition}
+
+In an \textsc{ncg} $G$, an edge $e$ will be called \emph{appropriate} for a vertex $v$ if $v\in v(e)$, and \emph{inappropriate} otherwise.
+%
+This notion is extended to edge-gadgets $\itn e$ and vertex-gadgets $\itn v$ in $\int G$.
 
 
 \begin{lemma}
-If $\links\sim\links'$ is the re-attachment of one jump, then $\coitn\links$ and $\coitn{\links'}$ differ on the value of at most one edge.
+If the permutation $\links\sim\links'$ consists of the re-attachment of exactly one jump, then from $\coitn\links$ to $\coitn{\links'}$ at most one edge is taken from one appropriate vertex to another.
 \end{lemma}
 
-\begin{proof}
-TO DO
+\begin{proof}[Proof sketch]
+At most, a link can re-connect from vertex-gadget $v$ to vertex-gadget $w$, moving a number of chained edge-gadgets from $v$ to $w$.
+%
+But at most one edge is appropriate for both $v$ and $w$.
 \end{proof}
 
 
-In a proof net for the interpretation of a graph $\itn G$, call an edge-gadget $\itn e$ with $e=(u,w)$ \emph{appropriate} for a vertex-gadget $\itn v$ if $v\in\{u,w\}$, and \emph{inappropriate} otherwise.
 
 
 \begin{lemma}
-In a proof net for $\itn G$, for each vertex $v$, the weights of the appropriate edge-gadgets in the empire of $\itn v$ are equal to or greater than the 
-
+In a proof net for $\itn G$, for each vertex $v$, the weights of the appropriate edge-gadgets in the empire of $\itn v$ are equal to or greater than the constraint of $v$.
 \end{lemma}
 
 
@@ -107,6 +118,11 @@ There are not enough edges to fill a unit of weight inappropriately in $\itn v$.
 
 
 
+
+
+\begin{definition}
+The interpretation $\itn\gamma$ of a configuration $\gamma$ for a graph $G$ is the set of proof nets for $\itn G$ satisfying the following constraint: if $\gamma(e)=v$ then $\itn e$ belongs to the empire of $\itn v$
+\end{definition}
 
 
 
