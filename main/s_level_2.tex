@@ -7,17 +7,19 @@
 \begin{definition}
 A \emph{non-deterministic constraint graph} (\textsc{ncg}) $G=(V,E,c,v,w)$ consists of a set $V$ of vertices with \emph{minimum inflow constraint} $c\colon V\to\mathbb N$, and a set $E$ of at most one undirected edge $e$ per vertex-pair $v(e)=\{v_1,v_2\}$, with \emph{weight} $w\colon E\to N$.
 
-A \emph{configuration} of an \textsc{ncg} is a function $\gamma\colon E\to V$ such that
+A \emph{configuration} of an \textsc{ncg} is a partial function $\gamma\colon E\rightharpoonup V$ such that
 \begin{itemize}
 	\item
-$\gamma(e)\in v(e)$ for every edge $e$, and
+for every edge $e$, if $\gamma(e)$ is defined then $\gamma(e)\in v(e)$, and
 	\item
-for every vertex $v$, the sum of its inflow weights $\sum\{w(e)\mid \gamma(e)=v\}$ is equal to or greater than its inflow constraint $c(v)$.
+for every vertex $v$, the sum of its inflow weights is at least its inflow constraint, $\sum\{w(e)\mid \gamma(e)=v\}\geq c(v)$.
 \end{itemize}
 
-A \emph{reconfiguration step} $\gamma\sim\delta$ connects two configurations for a \textsc{ncg} $G$ that differ in the assignment $\gamma(e)$ of exactly one edge.
+A \emph{reconfiguration step} $\gamma\sim\delta$ connects two configurations for an \textsc{ncg} $G$ that differ in the assignment $\gamma(e)$ of exactly one edge.
 
 \end{definition}
+
+
 
 [[ NOTE: decide on notation for steps and paths in permutation relations ]]
 
@@ -71,39 +73,13 @@ Since vertex-gadgets are joined by a tensor, the lemma is immediate from \cite[P
 \end{proof}
 
 
-
-%\begin{lemma}
-%If the permutation $\links\sim\links'$ consists of the re-attachment of exactly one jump, then $\coitn\links$ and $\coitn{\links'}$ differ on the value of at most one edge.
-%\end{lemma}
-
-% THIS IS FALSE : OTHER EDGES MAY BE CONNECTED *VIA* THE ONE THAT IS MOVED
-
-
-By the above, a proof net for $\itn G$ gives a partial function from edges to vertices.
-
-\begin{definition}
-	For a proof net $\links$ for the interpretation of a graph $\itn G$, let $\coitn\links\colon E\rightharpoonup V$ be the partial function where $\coitn\links(e)$ is $v$ if $\itn e$ belongs to the empire of $\itn v$, and undefined otherwise.
-\end{definition}
-
 In an \textsc{ncg} $G$, an edge $e$ will be called \emph{appropriate} for a vertex $v$ if $v\in v(e)$, and \emph{inappropriate} otherwise.
 %
 This notion is extended to edge-gadgets $\itn e$ and vertex-gadgets $\itn v$ in $\int G$.
 
 
 \begin{lemma}
-If the permutation $\links\sim\links'$ consists of the re-attachment of exactly one jump, then from $\coitn\links$ to $\coitn{\links'}$ at most one edge is taken from one appropriate vertex to another.
-\end{lemma}
-
-\begin{proof}[Proof sketch]
-At most, a link can re-connect from vertex-gadget $v$ to vertex-gadget $w$, moving a number of chained edge-gadgets from $v$ to $w$.
-%
-But at most one edge is appropriate for both $v$ and $w$.
-\end{proof}
-
-
-
-
-\begin{lemma}
+\label{lem:appropriate edge weights}
 In a proof net for $\itn G$, for each vertex $v$, the weights of the appropriate edge-gadgets in the empire of $\itn v$ are equal to or greater than the constraint of $v$.
 \end{lemma}
 
@@ -114,15 +90,39 @@ There are not enough edges to fill a unit of weight inappropriately in $\itn v$.
 \end{proof}
 
 
-
-
-
+Then using the above, a proof net for $\itn G$ may be interpreted as a configuration for $G$.
 
 
 
 \begin{definition}
-The interpretation $\itn\gamma$ of a configuration $\gamma$ for a graph $G$ is the set of proof nets for $\itn G$ satisfying the following constraint: if $\gamma(e)=v$ then $\itn e$ belongs to the empire of $\itn v$
+	For a proof net $\links$ for the interpretation of a graph $\itn G$, let $\coitn\links$ be the configuration for $G$ where $\coitn\links(e)$ is $v$ if 1) $e$ is appropriate for $v$ and 2) $\itn e$ belongs to the empire of $\itn v$, and undefined otherwise.
 \end{definition}
+
+
+
+
+
+\begin{lemma}
+If $\links\sim\links'$ are proof nets for $\itn G$ then $\coitn\links\sim\coitn{\links'}$.
+\end{lemma}
+
+\begin{proof}
+A single permutation $\links\sim\links'$ on proof nets may move a number of edge-gadgets $\itn{e_1},\dotso,\itn{e_n}$ in three ways: 1) out of the empire of a vertex-gadget $\int v$, 2) into the empire of a vertex-gadget $\int w$, or 3) both.
+%
+Then in both $\coitn\links$ and $\coitn{\links'}$ the edges $e_1$ through $e_n$ are mobile, since by Lemma~\ref{lem:appropriate edge weights} the empires of the vertex-gadgets $\itn v$ (in cases 1 and 3) and $\itn w$ (in cases 2 and 3) contain appropriate edge-gadgets other than $\itn{e_1}$ through $\itn{e_n}$ of sufficient combined weight.
+%
+It follows that in the graph $G$ the edges $e_1$ through $e_n$ can be moved away from $v$ and/or onto $w$ one at a time.
+
+\end{proof}
+
+
+
+%
+%
+%
+%\begin{definition}
+%The interpretation $\itn\gamma$ of a configuration $\gamma$ for a graph $G$ is the set of proof nets for $\itn G$ satisfying the following constraint: if $\gamma(e)=v$ then $\itn e$ belongs to the empire of $\itn v$
+%\end{definition}
 
 
 
