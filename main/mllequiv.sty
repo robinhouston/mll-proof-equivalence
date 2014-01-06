@@ -5,6 +5,23 @@
 \RequirePackage{tikz}
 \usetikzlibrary{arrows}
 
+% UNSORTED
+
+\newcommand\itn[1]{\llbracket#1\rrbracket}
+\newcommand\coitn[1]{\llparenthesis#1\rrparenthesis}
+\newcommand\downdagger{\spin\dagger}
+
+
+%---------- Hacking
+
+\newcommand\mkspin[3]{\smash{\rotatebox[origin=c]{#1}{$#2#3$}}}
+\renewcommand\spin[1][180]{\mathpalette{\mkspin{#1}}}
+
+%\def\mkspin#1#2{\smash{%
+%  \rotatebox[origin=c]{180}{\mathsurround=0pt$#1#2$}}}
+%\def\spin{\mathpalette\mkspin}
+
+
 %---------- Formatting
 
 \newcommand\vc[1]{\vcenter{\hbox{$\m@th{#1}$}}}
@@ -18,20 +35,10 @@
 
 \newcommand\MLL{\textsc{mll}}
 
-
-\newcommand\mkspin[3]{\smash{\rotatebox[origin=c]{#1}{$#2#3$}}}
-\renewcommand\spin[1][180]{\mathpalette{\mkspin{#1}}}
-
-%\def\mkspin#1#2{\smash{%
-%  \rotatebox[origin=c]{180}{\mathsurround=0pt$#1#2$}}}
-%\def\spin{\mathpalette\mkspin}
-
 \def\parr{\mathbin{\spin{\&}}}
 \let\tn\otimes
 
 \def\bigparr{\mathop{\raisebox{-3pt}{\rotatebox[origin=c]{180}{\scalebox{1.4}{$\&$}}}}}
-
-
 
 \newcommand\1{1}
 
