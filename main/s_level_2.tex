@@ -177,7 +177,7 @@ In a proof net for $\itn G$, for each vertex $v$, the weights of the appropriate
 
 
 \begin{proof}
-Let $|V|=n$ and $|E|=k$, and consider the vertex $v_i$ and an edge $e$ connecting vertices $v_a$ and $v_b$ where $i\neq a,b$.
+Let $|V|=n$ and $|E|=m$, and consider the vertex $v_i$ and an edge $e$ connecting vertices $v_a$ and $v_b$ where $i\neq a,b$.
 %
 Each constraint element in $\itn{v_i}$ is an instance of the formula
 \[
@@ -198,12 +198,12 @@ Since $i\neq a,b$, and since no $\tn$-subformula of $W$ can connect to more than
 
 The vertex-gadget $\itn{v_i}$ is the formula
 \[
-	\itn{v_i} = \bigparr\big(C^{k\times c(v_i)} \big)\parr 1~.
+	\itn{v_i} = \bigparr\big(C^{m\times c(v_i)} \big)\parr 1~.
 \]
-It will be shown that $k$ inappropriate edge-gadgets may balance at most $k-1$ constraint elements $C$.
+It will be shown that $m$ inappropriate edge-gadgets may balance at most $m-1$ constraint elements $C$.
 
 
-Let the root nodes of the two $\parr$-subformulae of each instance of $C$ be labelled $x_j$ and $y_j$, for $1\leq j\leq k\times c(v_i)$. 
+Let the root nodes of the two $\parr$-subformulae of each instance of $C$ be labelled $x_j$ and $y_j$, for $1\leq j\leq m\times c(v_i)$. 
 %
 If the scopes $s(x_j)$ and $s(y_m)$ of any $x_j$ and $y_m$ are balanced by weight elements $W$ and $W'$ of the same edge-gadget $\itn e$, then since $W$ and $W'$ are connected by a tensor, there are switchings of $W$, $W'$, $s(x_j)$, and $s(y_m)$ such that $x_j$ and $y_m$ are connected in the proof net for $\itn G$.
 %
