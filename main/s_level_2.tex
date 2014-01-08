@@ -1,28 +1,48 @@
 \section{Proof nets and constraint graphs}
 
 
-% TO DO: I think we can move away from partial configurations - this requires to show that edge-gadgets always belong to the kingdom of at least one vertex-gadget
+
+\newcommand\alt{\underline}
+
+[[ NOTE: we should decide on notation for steps versus paths in permutation relations ]]
 
 
 
-\begin{definition}
+\begin{definition} 
 A \emph{non-deterministic constraint graph} (\textsc{ncg}) $G=(V,E,c,v,w)$ consists of a set $V$ of vertices with \emph{minimum inflow constraint} $c\colon V\to\mathbb N$, and a set $E$ of at most one undirected edge $e$ per vertex-pair $v(e)=\{v_1,v_2\}$, with \emph{weight} $w\colon E\to N$.
 
-A \emph{configuration} of an \textsc{ncg} is a partial function $\gamma\colon E\rightharpoonup V$ such that
+A (partial) \emph{configuration} of an \textsc{ncg} is a (partial) function $\gamma\colon E\to V$ such that
 \begin{itemize}
 	\item
-for every edge $e$, if $\gamma(e)$ is defined then $\gamma(e)\in v(e)$, and
+for every edge $e$, $\gamma(e)\in v(e)$ or (in the partial case) $\gamma(e)$ is undefined, and
 	\item
 for every vertex $v$, the sum of its inflow weights is at least its inflow constraint, $\sum\{w(e)\mid \gamma(e)=v\}\geq c(v)$.
-\end{itemize}
+\end{itemize} 
 
-A \emph{reconfiguration step} $\gamma\sim\delta$ connects two configurations for an \textsc{ncg} $G$ that differ in the assignment of exactly one edge.
+A \emph{reconfiguration step} $\gamma\sim\delta$ connects two (partial) configurations for an \textsc{ncg} $G$ that differ in the assignment of exactly one edge.
 
 \end{definition}
 
 
+The \emph{(partial) \textsc{ncg}-reconfiguration problem} is the problem of deciding when two (partial) configurations are connected by a path in the graph of (partial) configurations and reconfiguration steps.
 
-[[ NOTE: decide on notation for steps and paths in permutation relations ]]
+\begin{theorem}[\cite{demaine}]
+\textsc{ncg}-reconfiguration is \textsc{pspace}-complete.
+\end{theorem}
+
+\begin{proposition}
+Partial \textsc{ncg}-reconfiguration is \textsc{pspace}-complete.
+\end{proposition}
+
+\begin{proof}
+There is a path between total configurations $\gamma$ and $\delta$ in partial \textsc{ncg}-reconfiguration if and only if there is one in \textsc{ncg}-reconfiguration, for the following two reasons.
+%
+Firstly, if $\gamma\sim\delta$ are partial configurations, they may be completed to total configurations $\gamma'\sim\delta'$ or $\gamma'=\delta'$.
+%
+Secondly, if $\gamma'$ and $\gamma''$ are total configurations that both agree with a partial configuration $\gamma$ where it is defined, then $\gamma'$ and $\gamma''$ are connected in \textsc{ncg}-reconfiguration by re-assigning the values where they disagree.
+%
+\end{proof}
+
 
 For a graph $G=(V,E,c,v,w)$ let $|V|$ and $|E|$ denote the number of vertices and edges, respectively, and let $|c|$ and $|w|$ denote the sum of all inflow constraints, $\sum_{v\in V}c(v)$, and the sum of all edge weights, $\sum_{e\in E}w(e)$.
 
@@ -68,7 +88,7 @@ where $p=m\times(|w|-|c|)\times(3n+4)$; the $p$ instances of $1$ are called \emp
 
 In an \textsc{ncg} $G$, a vertex $v$ and an edge $e$ will be called \emph{appropriate} (for each other) if $v\in v(e)$, and \emph{inappropriate} otherwise.
 %
-This notion is extended to vertex-gadgets $\itn v$ and edge-gadgets $\itn e$ in $\int G$.
+This notion is extended to vertex-gadgets $\itn v$ and edge-gadgets $\itn e$ in $\itn G$.
 
 
 
@@ -80,26 +100,26 @@ For a weight element $W$ of an edge connecting $v_i$ and $v_j$, let the $\bot$-o
 \]
 and the $1$-occurrences of a constraint element $C$ in $\itn{v_k}$,
 \[
-	C = \big(\named{    \dagger'}1\parr\named{   1'}1\parr\dotso\parr\named{3k+1'}1\big)
-	\tn \big(\named{\downdagger'}1\parr\named{3k+2'}1\parr\dotso\parr\named{3n+3'}1\big)~.
+	C = \big(\named{\alt    \dagger}1\parr\named{\alt{   1}}1\parr\dotso\parr\named{\alt{3k+1}}1\big)
+	\tn \big(\named{\alt\downdagger}1\parr\named{\alt{3k+2}}1\parr\dotso\parr\named{\alt{3n+3}}1\big)~.
 \]
 There is a \emph{natural linking} for the sequent $W,C$ if $e$ is appropriate for $v_k$, i.e.\ if $k=i$ or $k=j$, as follows:
 \[
-	\links(x) = x' \qquad \text{for }x\in\{\dagger,\downdagger\}\cup\mathbb N
+	\links(x) = \alt x \qquad \text{for }x\in\{\dagger,\downdagger\}\cup\mathbb N
 \]
 \[
 	\links(\ddagger)=
 	\begin{cases}
-			\dagger' & \text{if }k=i \\
-		\downdagger' & \text{if }k=j~.
+		\alt	\dagger & \text{if }k=i \\
+		\alt\downdagger & \text{if }k=j~.
 	\end{cases}
 \]
-There is also a natural linking for the sequent $W,\named\star 1,\named{1'}1,\dotsc,\named{3n+3'}1$ consisting of the weight element $W$ and $3n+4$ edge-absorbers:
+There is also a natural linking for the sequent $W,\named\star 1,\named{\alt 1}1,\dotsc,\named{\alt {3n+3}}1$ consisting of the weight element $W$ and $3n+4$ edge-absorbers:
 \[
 	\links(x)=
 	\begin{cases}
-		\star & \text{if }x\in\{\dagger,\ddagger,\downdagger\} \\
-		   x' & \text{otherwise }.
+		\star  & \text{if }x\in\{\dagger,\ddagger,\downdagger\} \\
+		\alt x & \text{otherwise }.
 	\end{cases}
 \]
 
@@ -118,15 +138,13 @@ Given a weight element $W$ for a graph with $|V|=n$, the natural linking for the
 
 The interpretation $\itn\gamma$ of a total configuration $\gamma$ for a graph $G$ is a linking $\links$ constructed incrementally, for each successive edge $e$, and for each successive weight element $W$ within $e$, as follows.
 %
-Let the rightmost $1$-occurrence of each vertex-gadget $\itn v$ be named $v$, and the rightmost $\bot$-occurrence of each edge-gadget $\itn e$ named $e$:
+Let the rightmost $1$-occurrence of each vertex-gadget $\itn v$ be named $\alt v$, and the rightmost $\bot$-occurrence of each edge-gadget $\itn e$ named $\alt e$:
 \[	
-	\itn v = C\parr\dotso\parr C\parr \named v1 \qquad \itn e= W\tn\dotso\tn W\tn\named e\bot~.
+	\itn v = C\parr\dotso\parr C\parr \named{\alt v}1 \qquad \itn e= W\tn\dotso\tn W\tn\named{\alt e}\bot~.
 \]
-To define $\itn\gamma=\links$, firstly let
-\[
-	\links(e)=\gamma(e)~.
-\]
-Then successively for each edge $e$ and each weight element $W$ in $e$, if $\gamma(e)$ has a first free constraint element $C$, extend $\links$ to include the natural linking on $W,C$; otherwise, extend $\links$ by the natural linking on $W$ plus the first $3n+4$ free edge absorbers.
+To define $\itn\gamma$, firstly let $\itn\gamma(e)=\alt v$ where $\gamma(e)=v$.
+%
+Then successively for each edge $e$ and each weight element $W$ in $e$, if $\gamma(e)$ has a first free constraint element $C$, extend $\itn\gamma$ to include the natural linking on $W,C$; otherwise, extend $\itn\gamma$ by the natural linking on the sequent consisting of $W$ plus the first $3n+4$ free edge absorbers.
 
 
 \begin{proposition}
@@ -217,7 +235,7 @@ Using the above, a proof net for $\itn G$ may be interpreted as a configuration 
 
 
 \begin{definition}
-For a proof net $\links$ for the interpretation of a graph $\itn G$, let $\coitn\links$ be the configuration for $G$ where $\coitn\links(e)$ is $v$ if 1) $e$ is appropriate for $v$ and 2) $\itn e$ belongs to the empire of $\itn v$, and undefined otherwise.
+For a proof net $\links$ for the interpretation of a graph $\itn G$, let $\coitn\links$ be the partial configuration for $G$ where $\coitn\links(e)$ is $v$ if 1) $e$ is appropriate for $v$ and 2) $\itn e$ belongs to the empire of $\itn v$, and undefined otherwise.
 \end{definition}
 
 
@@ -239,10 +257,6 @@ It follows that in the graph $G$ the edges $e_1$ through $e_n$ can be moved away
 
 
 
-
-%\begin{definition}
-%The interpretation $\itn\gamma$ of a configuration $\gamma$ for a graph $G$ is the set of proof nets for $\itn G$ satisfying the following constraint: if $\gamma(e)=v$ then $\itn e$ belongs to the empire of $\itn v$
-%\end{definition}
 
 
 
