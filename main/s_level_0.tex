@@ -184,11 +184,11 @@ Consider the following naming scheme for the units in a 1-alternation sequent $\
 One $\1$ in $\Gamma$ is named $*$, and the remaining ones with the numbers $n+1,\dotsc,m$.
 
 	\item
-A $\bot$-formula in $A_i$ is named by a pair $(i,k)$, where $k=*$ for the first $\bot$-formula in each $A_i$, and for the remaining $\bot$-formulae in all $A_i$, each $k$ is a distinct number in $n+1,\dotsc,m$.
+A $\bot$-formula in $A_i$ is named by a pair $(i,k)$, where $k=i$ for the first $\bot$-formula in each $A_i$, and for the remaining $\bot$-formulae in all $A_i$, each $k$ is a distinct number in $n+1,\dotsc,m$.
 
 \end{itemize}
 %
-The naming scheme suggests a linking for $\Gamma$, defined by $\links(i,k)=k$; i.e\ the first $\bot$ in each tensor-formula connects to $\named *\1$, while other $\bot$-subformulae connect uniquely to the remaining $\1$-subformulae.
+The naming scheme suggests a linking for $\Gamma$, defined by $\links(i,i)=\star$ and $\links(i,k)=k$ otherwise; i.e\ the first $\bot$ in each tensor-formula connects to $\named *\1$, while other $\bot$-subformulae connect uniquely to the remaining $\1$-subformulae.
 
 
 

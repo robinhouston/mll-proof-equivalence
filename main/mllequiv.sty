@@ -108,11 +108,12 @@
 
 \definecolor{thepink}{rgb}{1,0,.65}
 
+\tikzstyle{octo}  =[line width=.8pt,>=latex]
 \tikzstyle{circ}  =[draw,circle,minimum size=6pt,inner sep=0pt]
 \tikzstyle{bullet}=[draw,fill=black,circle,minimum size=6pt,inner sep=0pt]
 
 \newcommand\netA[4]{\vcenter{\hbox{
-  \begin{tikzpicture}[x=2.5mm,y=7mm,line width=.8pt,>=latex]
+  \begin{tikzpicture}[x=2.5mm,y=7mm,octo]
 	\node[circ]   (1) at (0,1) {};
 	\node[circ]   (2) at (2,1) {};
 	\node[circ]   (3) at (4,1) {};
@@ -155,7 +156,7 @@
 
 
 \newcommand\netB[4]{\vcenter{\hbox{
-  \begin{tikzpicture}[x=-1mm,y=1mm,line width=.8pt,>=latex]
+  \begin{tikzpicture}[x=-1mm,y=1mm,octo]
 	\coordinate (a) at (0,0); \coordinate (d) at (0,20);
 	\coordinate (b) at (5,0); \coordinate (c) at (5,20);
 	\coordinate (E) at (20,10); \node at (E) {};
@@ -198,7 +199,7 @@
 
 
 \newcommand\netC[4]{\vcenter{\hbox{
-  \begin{tikzpicture}[x=-1mm,y=1mm,line width=.8pt,>=latex]
+  \begin{tikzpicture}[x=-1mm,y=1mm,octo]
 	\coordinate (a) at (2.5,0);
 	\coordinate (b) at (7.5,0);
 	\coordinate (c) at (12.5,0);
