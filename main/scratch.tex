@@ -1,5 +1,5 @@
 
-\documentclass{robinminion}
+\documentclass{beamer}
 
 
 \usepackage{amsthm}
@@ -20,7 +20,7 @@
 \tikzstyle{big_} = [big1,text=white,fill=black]
 \tikzstyle{big>} = [line width=3pt]
 
-\newcommand\octorollA{
+\newcommand\octorollA[1]{
   \begin{tikzpicture}[x=5mm,y=-5mm,octo]
 	\node[big1] (a) at (0,0) {};
 	\node[big_] (d1) at (-8.5,4) {};
@@ -41,9 +41,13 @@
 	\node[circ] (v) at (0,6) {};
 	%
 	\begin{scope}[thepink,->]
-		\draw (e)--(v);\draw (d)--(v);
-		\draw[big>,bend right] (d1) to (v1); \draw[big>,bend right=20] (d2) to (v1); \draw[big>, bend right=20] (d3) to (v2);
-		\draw[big>,bend right=10] (e1) to (a);  \draw[big>,bend right=20] (e2) to (a);  \draw[big>, bend right=30] (e3) to (a);
+		\draw[bend left=15] (e) to (v);\draw[bend right=15] (d) to (v);
+	\SWITCH{#1}
+	{1}{\draw[big>,bend right] (d1) to (v1); \draw[big>,bend right=20] (d2) to (v1); \draw[big>, bend right=20] (d3) to (v2);
+		\draw[big>,bend right=10] (e1) to (a);  \draw[big>,bend right=20] (e2) to (a);  \draw[big>, bend right=30] (e3) to (a);}
+	{2}{\draw[big>,bend left] (d1) to (a); \draw[big>,bend left=20] (d2) to (a); \draw[big>, bend left=20] (d3) to (a);
+		\draw[big>,bend left=15] (e1) to (v1);  \draw[big>,bend left=15] (e2) to (v2);  \draw[big>, bend left=15] (e3) to (v2);}
+	\DEFAULT{}
 	\end{scope}
   \end{tikzpicture}
 }
@@ -68,8 +72,8 @@
 	\node[circ] (v) at (0,6) {};
 	%
 	\begin{scope}[thepink,->]
-		\draw (e)--(v);
-	\SWITCH{#1}{1}{\draw (d)--(v);}\DEFAULT{\draw (d)--(a1a);}
+		\draw[bend left=15] (e) to (v);
+	\SWITCH{#1}{1}{\draw[bend right=15] (d) to (v);}\DEFAULT{\draw[bend left=15] (d) to (a1a);}
 		\draw[big>,bend right] (d1) to (v1); \draw[big>,bend right=20] (d2) to (v1); \draw[big>, bend right=20] (d3) to (v2);
 	\SWITCH{#1}
 	{3}{
@@ -103,11 +107,11 @@
 	\node[circ] (v) at (0,6) {};
 	%
 	\begin{scope}[thepink,->]
-		\draw (e)--(v); \draw (d)--(a1a);
+		\draw[bend left=15] (e) to (v); \draw[bend left=15] (d) to (a1a);
 		\draw[bend right=15] (d2a) to (v1); \draw[bend right=15] (d3b) to (v2);
 		\draw[big>,bend left] (d1) to (a1); \draw[big>,bend left=20] (d2) to (a1);
 		\draw[big>,bend left=20] (d3) to (a2); \draw[big>,bend left=20] (d3a) to (a3);
-		\draw[big>,bend left=15] (e1) to (v1);  \draw[big>,bend left=15] (e2) to (v1);  \draw[big>, bend left=15] (e3) to (v2);
+		\draw[big>,bend left=15] (e1) to (v1);  \draw[big>,bend left=15] (e2) to (v2);  \draw[big>, bend left=15] (e3) to (v2);
 	\end{scope}
   \end{tikzpicture}
 }
@@ -115,8 +119,8 @@
   \begin{tikzpicture}[x=5mm,y=-5mm,octo]
 	\node[big1] (a1) at (0,0) {}; \node[circ] (a1a) at (0,2) {};
 	\node[big_] (d1) at (-8.5,4) {};
-	\node[big_] (d2) at (-6.25,4) {};
-	\draw (-4,4) node[big_] (d3a) {} -- (-3,4) node[bullet] (d3b) {};
+	\draw (-6,4) node[big_] (d2a) {} -- (-5,4) node[bullet] (d2b) {};
+	\node[big_] (d3) at (-3.5,4) {};
 	\draw[rounded corners] (-10,3) rectangle (-2,5);
 	\draw (-2,4)--(-1,4) node[bullet] (d) {};
 	\node[big_] (e1) at ( 3.5,4) {};
@@ -132,41 +136,127 @@
 	\node[circ] (v) at (0,6) {};
 	%
 	\begin{scope}[thepink,->]
-		\draw (e)--(v); \draw (d)--(a1a);
-		\draw[bend right=15] (d3b) to (v2);
-		\draw[big>,bend left] (d1) to (a1); \draw[big>,bend left=20] (d2) to (a1);
-		\draw[big>,bend left=20] (d3a) to (a1);
-		\draw[big>,bend left=15] (e1) to (v1);  \draw[big>,bend left=15] (e2) to (v1);  \draw[big>, bend left=15] (e3) to (v2);
+		\draw[bend left=15] (e) to (v); \draw[bend left=15] (d) to (a1a);
+		\draw[bend right=15] (d2b) to (v1);
+		\draw[big>,bend left] (d1) to (a1); \draw[big>,bend left=20] (d2a) to (a1); \draw[big>,bend left=20] (d3) to (a1);
+		\draw[big>,bend left=15] (e1) to (v1);  \draw[big>,bend left=15] (e2) to (v2);  \draw[big>, bend left=15] (e3) to (v2);
 	\end{scope}
   \end{tikzpicture}
 }
-%
-%\octorollA
-%
-%\vskip80pt
-%
-%\octorollB1
-%
-%\vskip80pt
-%
-%\octorollB2
-%
-%\vskip80pt
-%
-%\octorollB3
-%
-%\vskip80pt
 
-\octorollC
+\newcommand\octorollE[1]{
+  \begin{tikzpicture}[x=5mm,y=-5mm,octo]
+	\node[big1] (a1) at (0,0) {}; \node[circ] (a1a) at (0,2) {};
+	\node[big_] (d1) at (-8.5,4) {};
+	\draw (-6,4) node[big_] (d2a) {} -- (-5,4) node[bullet] (d2b) {};
+	\node[big_] (d3) at (-3.5,4) {};
+	\draw[rounded corners] (-10,3) rectangle (-2,5);
+	\draw (-2,4)--(-1,4) node[bullet] (d) {};
+	\draw (2.75,4) node[bullet] (e1a) {} -- (3.5,4) node[bullet] (e1b) {} -- (4.5,4) node[big_] (e1c) {};
+	\node[big_] (e2) at ( 6.5,4) {};
+	\node[big_] (e3) at ( 8.5,4) {};
+	\draw[rounded corners] (10,3) rectangle (2,5);
+	\draw (2,4)--(1,4) node[bullet] (e) {};
+	\node[circ] (v1a) at (-3.25,8) {}; \node[circ] (v1b) at (-2.5,8) {}; \node[big1] (v1c) at (-1.5,8) {};
+	\node[big1] (v2) at ( 2,8) {};
+	\draw[rounded corners] (-4,7) rectangle (-0.5,9);
+	\draw[rounded corners] ( 3.5,7) rectangle ( 0.5,9);
+	\draw (-0.5,8)--(0.5,8);
+	\node[circ] (v) at (0,6) {};
+	%
+	\begin{scope}[thepink,->]
+		\draw[bend left=15] (e) to (v);
+	\SWITCH{#1}
+	{1}{
+		\draw[bend left=15] (d) to (a1a);
+		\draw[bend right=15] (d2b) to (v1a); \draw[bend right=15] (e1a) to (v1a); \draw[bend left=10] (e1b) to (v1b);
+		}
+	{2}{
+		\draw[bend left=15] (d) to (a1a);
+		\draw[bend right=15] (d2b) to (v1a); \draw[bend right=15] (e1a) to (a1a); \draw[bend left=10] (e1b) to (v1b);
+		}
+	{3}{
+		\draw[bend right=15] (d) to (v1b);
+		\draw[bend right=15] (d2b) to (v1a); \draw[bend right=15] (e1a) to (a1a); \draw[bend left=10] (e1b) to (v1b);
+		}
+	{4}{
+		\draw[bend right=15] (d) to (v1b);
+		\draw[bend right=15] (d2b) to (v1a); \draw[bend right=15] (e1a) to (a1a); \draw[bend right=15] (e1b) to (v1a);
+		}
+	{5}{
+		\draw[bend right=15] (d) to (v1b);
+		\draw[bend left=25] (d2b) to (a1a); \draw[bend right=15] (e1a) to (a1a); \draw[bend right=15] (e1b) to (v1a);
+		}
+	{6}{
+		\draw[bend right=15] (d) to (v1b);
+		\draw[bend left=25] (d2b) to (a1a); \draw[bend left=15] (e1a) to (v1b); \draw[bend right=15] (e1b) to (v1a);
+		}
+	{7}{
+		\draw[bend right=15] (d) to (v);
+		\draw[bend left=25] (d2b) to (a1a); \draw[bend left=15] (e1a) to (v1b); \draw[bend right=15] (e1b) to (v1a);
+		}
+	\DEFAULT{}
+		\draw[big>,bend left] (d1) to (a1); \draw[big>,bend left=20] (d2a) to (a1); \draw[big>,bend left=20] (d3) to (a1);
+		\draw[big>,bend left=15] (e1c) to (v1c);  \draw[big>,bend left=15] (e2) to (v2);  \draw[big>, bend left=15] (e3) to (v2);
+	\end{scope}
+  \end{tikzpicture}
+}
 
-\vskip80pt
+\begin{frame}
+	\octorollA1
+\end{frame}
 
-\octorollD
+\begin{frame}
+	\octorollB1
+\end{frame}
 
-\vskip80pt
+\begin{frame}
+	\octorollB2
+\end{frame}
 
-%\octorollE
+\begin{frame}
+	\octorollB3
+\end{frame}
 
+\begin{frame}
+	\octorollC
+\end{frame}
+
+\begin{frame}
+	\octorollD
+\end{frame}
+
+\begin{frame}
+	\octorollE1
+\end{frame}
+
+\begin{frame}
+	\octorollE2
+\end{frame}
+
+\begin{frame}
+	\octorollE3
+\end{frame}
+
+\begin{frame}
+	\octorollE4
+\end{frame}
+
+\begin{frame}
+	\octorollE5
+\end{frame}
+
+\begin{frame}
+	\octorollE6
+\end{frame}
+
+\begin{frame}
+	\octorollE7
+\end{frame}
+
+\begin{frame}
+	\octorollA2
+\end{frame}
 
 \end{document}
 
@@ -194,7 +284,7 @@
 %	\node[circ] (v) at (0,6) {};
 %	%
 %	\begin{scope}[thepink,->]
-%		\draw (e)--(v);\draw (d)--(v);
+%		\draw[bend left=15] (e) to (v);\draw[bend right=15] (d) to (v);
 %		\draw[big>,bend right] (d1) to (v1); \draw[big>,bend right=20] (d2) to (v1); \draw[big>, bend right=20] (d3) to (v2);
 %		\draw[bend right=15] (e1a) to (a1a); \draw[bend right=15] (e2a) to (a1a); \draw[bend right=15] (e3a) to (a1a); 
 %		\draw[big>,bend right=20] (e1) to (a1);  \draw[big>,bend right=20] (e2) to (a2);  \draw[big>, bend right=20] (e3) to (a3);
