@@ -135,16 +135,20 @@ Given a weight element $W$ for a graph with $|V|=n$, the natural linking for the
 \end{proposition}
 
 
-
-The interpretation $\itn\gamma$ of a total configuration $\gamma$ for a graph $G$ is a linking $\links$ constructed incrementally, for each successive edge $e$, and for each successive weight element $W$ within $e$, as follows.
-%
-Let the rightmost $1$-occurrence of each vertex-gadget $\itn v$ be named $\alt v$, and the rightmost $\bot$-occurrence of each edge-gadget $\itn e$ named $\alt e$:
+The rightmost $1$-occurrence of each vertex-gadget $\itn v$, named $\alt v$ below, and the rightmost $\bot$-occurrence of each edge-gadget $\itn e$, named $\alt e$, will be called the \emph{indicator vertices} of $\itn v$ and $\itn e$.
 \[	
 	\itn v = C\parr\dotso\parr C\parr \named{\alt v}1 \qquad \itn e= W\tn\dotso\tn W\tn\named{\alt e}\bot~.
 \]
-To define $\itn\gamma$, firstly let $\itn\gamma(e)=\alt v$ where $\gamma(e)=v$.
+
+
+\begin{definition}
+\label{def:configuration interpretation}
+The \emph{interpretation} $\itn\gamma$ of a total configuration $\gamma$ for a graph $G$ is a linking $\links$ constructed incrementally, for each successive edge $e$, and for each successive weight element $W$ within $e$, as follows.
 %
-Then successively for each edge $e$ and each weight element $W$ in $e$, if $\gamma(e)$ has a first free constraint element $C$, extend $\itn\gamma$ to include the natural linking on $W,C$; otherwise, extend $\itn\gamma$ by the natural linking on the sequent consisting of $W$ plus the first $3n+4$ free edge absorbers.
+Let $\gamma(e)=v$; firstly, the the indicator vertex of $\itn e$ links to the indicator of $\itn v$.
+%
+Then successively for each weight element $W$ in $e$, if $\itn v$ has a first free constraint element $C$, extend $\itn\gamma$ to include the natural linking on $W,C$; otherwise, extend $\itn\gamma$ by the natural linking on the sequent consisting of $W$ plus the first $3n+4$ free edge absorbers.
+\end{definition}
 
 
 \begin{proposition}
@@ -167,6 +171,68 @@ After contracting the scope of each $W$, each edge-gadget in the scope of $\itn 
 %------------------------------------------------------------------------------------------------
 
 \subsection{Completeness}
+
+
+In a proof net for $\itn G$, an edge-gadget $\itn e$ that is in the empire of an appropriate vertex-gadget $\itn v$ is \emph{naturally linked} if the indicator of $\itn e$ connects to the indicator of $\itn v$, and each weight element $W$ of $\itn e$ is either naturally linked to a constraint element $C$ in $\itn v$ or linked only to edge-absorbers.
+
+\begin{lemma}
+\label{lem:octopus roll}
+In a proof net $\links$ for a sequent $\Gamma=\itn v,\itn{e_1},\dotsc,\itn{e_m},\bot^p$ where each edge-gadget is naturally linked, if a weight element $W_i$ in $\itn{e_i}$ is linked to $C$ in $\itn v$ and $W_j$ in $\itn{e_j}$ is linked to edge-absorbers $\bot^n$, then there is a net $\links'\sim\links$ in which $W_j$ is naturally linked to $C$, $W_i$ is linked to $\bot^n$, and $\links'$ agrees with $\links$ otherwise.
+\end{lemma}
+
+\begin{proof}
+Let $W_i=A\parr B\parr C$, $W_j=D\parr E\parr F$, and $C=X\tn Y$.
+%
+We will illustrate the path of permutations for the case where $A,B,X$ and $D,X$, and thus also $C,Y$ and $E,F,Y$, are balanced sequents; other cases are similar.
+%
+\begin{enumerate}
+	\item
+The initial configuration is illustrated below; other weight and constraint elements are omitted, and $v$, $i$, and $j$ are the indicator vertices of $\itn v$, $\itn{e_i}$, and $\itn{e_j}$ respectively.
+\[
+	\octorollA1
+\]
+	\item
+The link $i-v$ is re-attached to connect to an edge-absorber together with only the links from the first $\bot$ of each of $D$, $E$, and $F$. 
+\[
+	\octorollB2
+\]
+	\item
+Secondly, the link from the first $\bot$ of $D$ is moved to $X$, and those of $E$ and $F$ are moved to $Y$.
+\[
+	\octorollB3
+\]
+	\item\label{item:exchange added}
+There are subnets over the sub-sequents $A,B,X,D,\bot^m$ and $C,Y,E,F,\bot^k$.
+%
+These subnets may be rewired so that $D\parr E\parr F$ is naturally linked to $X\tn Y$: by Proposition~\ref{prop:parity determines equivalence}, the resulting subnets are equivalent as long as their parity is preserved.
+%
+Two links from $C$ to $X$ should remain exchanged, compared to the natural linking, for step \ref{item:exchange needed} below.
+%
+The links of $A,B,C$ connect to the edge-absorbers $\bot^m$ and $\bot^k$, with one remaining link from $B$ to $X$ and one from $C$ to $Y$.
+\[
+	\octorollC
+\]
+	\item
+The link from $C$ to $Y$ is moved towards an edge-absorber connected to $A,B$.
+\[
+	\octorollD1
+\]
+	\item\label{item:exchange needed}
+The link from $B$ to $X$ is the one remaining connection between the edge-gadgets $\itn{e_i}$ and $\itn{e_j}$.
+%
+Lemma~\ref{lem:double exchange} allows to swap the targets of the link from $B$ to $X$ and the link from $i$, and simultaneously undo the exchange in the links from $C$ to $X$ added in step \ref{item:exchange added} above.
+\[
+	\octorollD2
+\]
+	\item
+The link from $i$ may be re-attached to $v$ to yield the final configuration.
+\[
+	\octorollA2
+\]
+\end{enumerate}
+\end{proof}
+
+
 
 \begin{lemma}
 If $\gamma\sim\delta$ for total configurations $\gamma$ and $\delta$, then $\itn\gamma\sim\itn\delta$.

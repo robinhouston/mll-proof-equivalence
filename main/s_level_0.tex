@@ -268,6 +268,11 @@ This is the case, as it is obtained by the exchange of $x_a$ and $i_a$ for each 
 
 
 
+\begin{proposition}
+\label{prop:parity determines equivalence}
+Two proof nets for a 1-alternation sequent with at least two tensor-formulae are equivalent if and only if they have the same parity.
+\end{proposition}
+
 
 \begin{theorem}
 \MLL\ proof equivalence in the absence of ~$\parr$ is linear-time decidable.
@@ -276,12 +281,40 @@ This is the case, as it is obtained by the exchange of $x_a$ and $i_a$ for each 
 \begin{proof}
 For a sequent with 1 tensor-formula, the problem is reduced to syntactic equality.
 %
-For a sequent with 2 or more tensor-formulae, by Propositions~\ref{prop:level0 max binary} and~\ref{prop:level0 min binary} the equivalence of two nets is determined by their relative parity.
+For a sequent with 2 or more tensor-formulae, by Propositions~\ref{prop:parity determines equivalence} the equivalence of two nets is determined by their parity.
 %
 Following Definition~\ref{def:combinatorial permutation} the parity of a net can be read off in a single traversal of the net.
 %
 This yields a linear-time algorithm.
 %
+\end{proof}
+
+
+
+
+\begin{lemma}
+\label{lem:double exchange}
+Let $\links$ be a proof net where $\links(a)=(u)$, $\links(b)=v$, $\links(c)=x$, and $\links(d)=y$, and for any switching the path from $u$ to $y$ passes through the links $b-v$ and $x-c$.
+%
+Then $\links\sim\links'$ where $\links'(a)=v$, $\links'(b)=u$, $\links'(c)=y$, and $\links'(d)=x$, and $\links'(z)=\links(z)$ otherwise.
+\end{lemma}
+
+\begin{proof}
+\[
+	\vc{\doubleExchange uvxy}
+	\sim
+	\vc{\doubleExchange uyxy}
+	\sim
+	\vc{\doubleExchange uyxu}
+	\sim
+	\vc{\doubleExchange vyxu}
+	\sim
+	\vc{\doubleExchange vyyu}
+	\sim
+	\vc{\doubleExchange vuyu}
+	\sim
+	\vc{\doubleExchange vuyx}
+\]
 \end{proof}
 
 
