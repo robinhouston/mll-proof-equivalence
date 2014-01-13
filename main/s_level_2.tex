@@ -233,6 +233,44 @@ The link from $i$ may be re-attached to $v$ to yield the final configuration.
 \end{proof}
 
 
+An edge-gadget $\itn e$ is \emph{free} if each of its weight elements is linked only to edge-absorbers.
+
+
+\begin{lemma}
+If $\links$ is a naturally linked proof net for $\itn G$ with a free edge-gadget $\itn e$, and $\links'$ agrees with $\links$ up to an even permutation of edge-absorbers, then $\links\sim\links'$.
+\end{lemma}
+
+\begin{proof}
+Let $e_0$ be the indicator vertex of $\itn e$; since $\itn e$ is free, $e_0$ may re-attach anywhere within the proof net.
+%
+Let $e_1$ and $e_2$ be arbitrary other $\bot$-occurrences in $\itn e$.
+
+\begin{enumerate}
+
+	\item
+To permute two edge-absorbers $v$ and $w$ linked to by other edge-gadgets than $\itn e$, attach $e_0$ to $v$, and apply Lemma~\ref{lem:double exchange} to exchange $v$ and $w$, also exchanging the targets of $e_0$ and $e_1$.
+
+	\item
+To reinstate $e_0$ as the connection between $\itn e$ and the remainder of the proof net, either perform another permutation as above, or permute $v$ and $w$ twice again, once exchanging the targets of $e_1$ and $e_2$, and once exchanging the targets of $e_2$ and $e_0$.
+
+	\item
+To exchange an edge-absorber $w$ linked from a $\named d\bot$ outside $\itn e$ for the target $v$ of $e_1$, and attach $e_0$ to $w$, attach $d$ to $v$.
+%
+At this point, $e_1$ forms the only connect between $\itn e$ and the remainder of the proof net; to reinstate $e_0$ in this role, do as above, producing a net effect of cycling the targets of $e_1$, $e_2$, and $d$.
+
+	\item
+Finally, to permutate edge-absorbers $v$ and $w$ linked by $\itn e$, attach $e_0$ to the indicator of a vertex-gadget where also another edge-gadget $\itn d$ is connected, with indicator vertex $d_0$ and an arbitrary other vertex $d_1$.
+%
+Connect $d_0$ to $v$, and apply Lemma~\ref{lem:double exchange} to permute $v$ and $w$, as well as exchanging the targets of $d_0$ and $d_1$.
+%
+Perform a second permutation to return $d_0$ and $d_1$ their proper edge-absorbers.
+
+\end{enumerate}
+
+In each case, if one of the edge-absorbers exchanged is linked to by multiple $\bot$-occurrences within the same weight element, these may be termporarily attached elsewhere.
+
+\end{proof}
+
 
 \begin{lemma}
 If $\gamma\sim\delta$ for total configurations $\gamma$ and $\delta$, then $\itn\gamma\sim\itn\delta$.
