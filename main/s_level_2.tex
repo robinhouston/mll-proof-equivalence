@@ -2,8 +2,6 @@
 
 
 
-\newcommand\alt{\underline}
-
 [[ NOTE: we should decide on notation for steps versus paths in permutation relations ]]
 
 
@@ -237,6 +235,7 @@ An edge-gadget $\itn e$ is \emph{free} if each of its weight elements is linked 
 
 
 \begin{lemma}
+\label{lem:permute edge-absorbers}
 If $\links$ is a naturally linked proof net for $\itn G$ with a free edge-gadget $\itn e$, and $\links'$ agrees with $\links$ up to an even permutation of edge-absorbers, then $\links\sim\links'$.
 \end{lemma}
 
@@ -259,11 +258,11 @@ To exchange an edge-absorber $w$ linked from a $\named d\bot$ outside $\itn e$ f
 At this point, $e_1$ forms the only connect between $\itn e$ and the remainder of the proof net; to reinstate $e_0$ in this role, do as above, producing a net effect of cycling the targets of $e_1$, $e_2$, and $d$.
 
 	\item
-Finally, to permutate edge-absorbers $v$ and $w$ linked by $\itn e$, attach $e_0$ to the indicator of a vertex-gadget where also another edge-gadget $\itn d$ is connected, with indicator vertex $d_0$ and an arbitrary other vertex $d_1$.
+Finally, to permute edge-absorbers $v$ and $w$ linked by $\itn e$, attach $e_0$ to the indicator of a vertex-gadget where also another edge-gadget $\itn d$ is connected, with indicator vertex $d_0$ and an arbitrary other vertex $d_1$.
 %
 Connect $d_0$ to $v$, and apply Lemma~\ref{lem:double exchange} to permute $v$ and $w$, as well as exchanging the targets of $d_0$ and $d_1$.
 %
-Perform a second permutation to return $d_0$ and $d_1$ their proper edge-absorbers.
+A second such exchange is needed to re-attach $d_0$ and $d_1$ to their original targets.
 
 \end{enumerate}
 
@@ -271,10 +270,28 @@ In each case, if one of the edge-absorbers exchanged is linked to by multiple $\
 
 \end{proof}
 
+Let $\itn\gamma'$ be $\itn\gamma$ where the first two edge-absorbers are exchanged.
 
 \begin{lemma}
-If $\gamma\sim\delta$ for total configurations $\gamma$ and $\delta$, then $\itn\gamma\sim\itn\delta$.
+If $\gamma\sim\delta$ for total configurations $\gamma$ and $\delta$, then either $\itn\gamma\sim\itn\delta$ or $\itn\gamma\sim\itn\delta'$.
 \end{lemma}
+
+\begin{proof}
+We will prove the case where $\gamma\sim\delta$ is a single reconfiguration step; the general case follows because the proof goes through also when $\itn\gamma'$ replaces $\itn\gamma$ in the statement of the lemma.
+%
+Let $\gamma$ and $\delta$ agree on every edge except $e$, where $\gamma(e)=v$ and $\delta(e)=w$.
+%
+Firstly, using Lemma~\ref{lem:octopus roll}, for the edges $d$ other than $e$ such that $\gamma(d)=v$, the weight elements of the edge-gadgets $\itn d$ may be linked to the constraint elements of $\itn v$, in accordance with the target configuration $\itn\delta$.
+%
+Since $e$ is mobile in $\gamma$, the weights of the edges $d$ suffice to fill the inflow constraint of $v$, and correspondingly the weight elements of edge-gadgets $\itn d$ suffice to fill the constraint elements of $\itn v$, so that $\itn e$ is free.
+%
+Next, the indicator vertex of $\itn e$, which links to the indicator of $\itn v$, is re-attached to the indicator of $\itn w$.
+%
+Again using Lemma~\ref{lem:octopus roll}, the weight elements of edge-gadgets connected to $\itn w$, including $\itn e$, may be linked in accordance with $\itn\delta$.
+%
+The resulting proof net is $\itn\delta$ modulo a permutation of edge-absorbers; then it is equivalent to either $\itn\delta$ or $\itn\delta'$ by Lemma~\ref{lem:permute edge-absorbers}.
+\end{proof}
+
 
 %------------------------------------------------------------------------------------------------
 
@@ -341,8 +358,6 @@ Using the above, a proof net for $\itn G$ may be interpreted as a configuration 
 \begin{definition}
 For a proof net $\links$ for the interpretation of a graph $\itn G$, let $\coitn\links$ be the partial configuration for $G$ where $\coitn\links(e)$ is $v$ if 1) $e$ is appropriate for $v$ and 2) $\itn e$ belongs to the empire of $\itn v$, and undefined otherwise.
 \end{definition}
-
-
 
 
 
