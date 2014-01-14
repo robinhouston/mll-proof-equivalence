@@ -6,31 +6,44 @@
 \usepackage[T1]{fontenc}
 \usepackage{textcomp}
 \usepackage{mathtools}
-\usepackage[round]{natbib}
+
+% Sorts citations; e.g. [1], [2], [5]--[7]
+%\usepackage{cite}
+
+% More reference handling options
+%\usepackage{natbib}\renewcommand\bibfont{\footnotesize}
+
 \usepackage{mllequiv,willemtools}
 
 \graphicspath{{../notes/}}
 
-
+\shortJournalNames
 \makeTheoremDefs
 
 
 \author{
   \IEEEauthorblockN{Willem Heijltjes}
   \IEEEauthorblockA{
-  		University of Bath \\
-		Claverton Down \\
-		Bath BA2~7AY\\
-		w.b.heijltjes@bath.ac.uk
+  		University of Bath
+	\\	Claverton Down
+	\\	Bath BA2~7AY
+	\\	w.b.heijltjes@bath.ac.uk
 	}
 \and
   \IEEEauthorblockN{Robin Houston}
-  \IEEEauthorblockA{Kiln Enterprises}
+  \IEEEauthorblockA{
+		Kiln Enterprises
+	\\	robin.houston@gmail.com	
+	}
 }
 
+%\title{The proof equivalence problem for multiplicative linear logic is \textsc{pspace}-complete}
 
+%\title{Proof equivalence in MLL is \textsc{pspace}-complete}
 
-\title{The proof equivalence problem for multiplicative linear logic is \textsc{pspace}-complete}
+\title{No proof nets for MLL with units\\[5pt]\Large Proof equivalence in MLL is \textsc{pspace}-complete}
+
+%============================================================
 
 \begin{document}
 
@@ -45,57 +58,98 @@ Previous work has shown the problem to be equivalent to a rewiring problem on pr
 %
 Drawing from recent work on reconfiguration problems, in this paper it is shown that MLL proof equivalence is PSPACE-complete, using a reduction from Nondeterministic Constraint Logic.
 %
-The result rules out the existence of a satisfactory notion of proof nets for MLL with units (under current complexity assumptions).
+An important consequence of the result is that the existence of a satisfactory notion of proof nets for MLL with units is ruled out (under current complexity assumptions).
 \end{abstract}
 
 
+%------------------------------------------------------------
 
+\section{Introduction}
+
+
+An important element of the theory of linear logic \cite{Girard-1987} is the idea that proofs should be considered modulo the permutation of inferences.
+%; that the chosen order of permutable inferences is inessential, or `bureaucracy'.
+%contributes no essential proof content, and should be considered `bureaucracy'.
+%
+%The idea is supported by the categorical semantics of linear logic, in which proofs up to permutations denote the same morphism. 
+%
+\emph{Proof equivalence} is the problem of deciding whether two proofs are equal modulo permutations.
+
+
+The proof equivalence problem is closely related to the notion of \emph{proof nets}.
+%
+These are canonical, geometric representations of proof that factor out permutations, so that proofs are equivalent if and only if they have the same underlying proof net.
+%
+Canonical proof nets have been found for several fragments of linear logic: the multipicative fragment without units \cite{Girard-1987,Danos-Regnier-1989}, the combined multiplicative-additive fragment without units \cite{Hughes-vanGlabbeek-2005}, and the additive fragment, including the additive units \cite{Heijltjes-2011}.
+%
+For the full multiplicative fragment, with units, several notions of proof net have been proposed \cite{BCST,Strassburger-lamarche-2004,HughesFreeStar}.
+%
+However, none is canonical, and whether a satisfactory notion of proof net can be found has remained an open question.
+
+
+
+In this paper we establish that the proof equivalence problem for multiplicative linear logic with units is \textsc{pspace}-complete.
+%
+As a main corrolary, this effectively rules out the possibility of finding a satisfactory notion of proof net for this fragment.
+
+
+
+
+
+
+
+%------------------------------------------------------------
 
 \section{MLL}
 
 
 
-\begin{figure}
-%%\noindent
-%\fbox{\MLLrule b}
-%\hfill\fbox{\MLLrule 1}
-%\hfill\fbox{\MLLrule p}
-%\hfill\fbox{\MLLrule t}
-%\hfil
-\[
-\begin{array}{llll}
-	\MLLrule b
- &	\MLLrule 1
- &	\MLLrule p
- &	\MLLrule t
-\end{array}
-\]
+\begin{figure}[!b]
+\quad\MLLrule b
+\hfill\MLLrule 1
+\hfill\MLLrule p
+\hfill\MLLrule t
+\quad
 \caption{Inference rules for unit-only \MLL}
 \label{fig:MLL}
 \end{figure}
 
 
-\begin{figure}
+\begin{figure}[!tb]
+\renewcommand\scalefactor{0.88}
 \[
-	\vc{\MLLperm{bb1}} \perm \vc{\MLLperm{bb2}}
-\qquad
-	\vc{\MLLperm{bp1}} \perm \vc{\MLLperm{bp2}}
-\]
-\[
-	\vc{\MLLperm{bt1}} \perm \vc{\MLLperm{bt2}} \perm \vc{\MLLperm{bt3}}
-\]
-\[
-	\vc{\MLLperm{pp1}} \perm \vc{\MLLperm{pp2}}
-\]
-\[
-	\vc{\MLLperm{pt1}} \perm \vc{\MLLperm{pt2}}
-\]
-\[
-	\vc{\MLLperm{tt1}} \perm \vc{\MLLperm{tt2}}
+\begin{array}{@{}rcl@{}}
+	\multicolumn{3}{@{}c@{}}{
+		\vc{\scale{\MLLperm{bb1}}} ~\perm~ \vc{\scale{\MLLperm{bb2}}}
+		\hfill
+		\vc{\scale{\MLLperm{bp1}}} ~\perm~ \vc{\scale{\MLLperm{bp2}}}
+	}
+\\ \\[6pt]
+	\multicolumn{3}{@{}c@{}}{
+		\vc{\scale{\MLLperm{bt2}}} ~\perm~ \vc{\scale{\MLLperm{bt1}}} ~\perm~ \vc{\scale{\MLLperm{bt3}}}
+	}
+\\ \\[6pt]
+	\vc{\scale{\MLLperm{pp1}}} &\perm& \vc{\scale{\MLLperm{pp2}}}
+\\ \\[6pt]
+	\vc{\scale{\MLLperm{pt1}}} &\perm& \vc{\scale{\MLLperm{pt2}}}
+\\ \\[6pt]
+	\vc{\scale{\MLLperm{tt1}}} &\perm& \vc{\scale{\MLLperm{tt2}}}
+\end{array}
 \]
 \caption{Permutations}
 \label{fig:permutations}
 \end{figure}
+
+
+
+%===========================
+\bibliographystyle{plain}
+\bibliography{../refs}
+\end{document}
+%===========================
+
+
+
 
 
 
@@ -316,6 +370,9 @@ could be drawn like this:
 
 %NOTE: will we need to count arms often enough to make it worthwile to write $|\Gamma|_\bot$ for the number of $\bot$-occurrences in a sequent $\Gamma$?
 
+
+
+%------------------------------------------------------------
 
 \section{Equivalence in the absence of $~\protect\parr$}
 
@@ -630,6 +687,9 @@ Then $\links\sim\links'$ where $\links'(a)=v$, $\links'(b)=u$, $\links'(c)=y$, a
 
 
 
+%------------------------------------------------------------
+
+
 \section{Par}
 
 
@@ -712,6 +772,7 @@ An early conjecture of Girard, which turned out to be false, was that a sequent 
 
 
 
+%------------------------------------------------------------
 
 
 \section{Proof nets and constraint graphs}
@@ -882,7 +943,8 @@ After contracting the scope of each $W$, each edge-gadget in the scope of $\itn 
 \end{IEEEproof}
 
 
-%------------------------------------------------------------------------------------------------
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 \subsection{Completeness}
 
@@ -1009,7 +1071,7 @@ The resulting proof net is $\itn\delta$ modulo a permutation of edge-absorbers; 
 \end{IEEEproof}
 
 
-%------------------------------------------------------------------------------------------------
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 \subsection{Soundness}
 
@@ -1092,6 +1154,10 @@ It follows that in the graph $G$ the edges $e_1$ through $e_n$ can be moved away
 
 
 
+%------------------------------------------------------------
+
+
+\section{Conclusions}
 
 
 
@@ -1105,19 +1171,17 @@ It follows that in the graph $G$ the edges $e_1$ through $e_n$ can be moved away
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-\bibliographystyle{plainnat}
-\bibliography{refs}
 
 \end{document}
+
+
+
+
+
+
+
+
+
+
+
 
