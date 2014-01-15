@@ -93,6 +93,8 @@ In this paper we establish that the proof equivalence problem for multiplicative
 As a main corrolary, this effectively rules out the possibility of finding a satisfactory notion of proof net for this fragment.
 
 
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 \subsection*{Constraint logic and reconfiguration problems}
 
 The proof of the \textsc{pspace}-completeness result relies on a polynomial reduction from %the configuration--to--configuration problem in
@@ -110,7 +112,7 @@ It is not uncommon for an \textsc{np}-complete problem to have an associated rec
 
 
 
-MLL proof equivalence may be usefully classified as the reconfiguration problem associated with MLL proof search, which is \textsc{np}-complete \cite{Lincoln-1994}.
+MLL proof equivalence may be usefully classified as the reconfiguration problem associated with MLL proof search, which is \textsc{np}-complete \cite{Kanovich-1992}.
 
 
 
@@ -143,7 +145,8 @@ MLL proof equivalence may be usefully classified as the reconfiguration problem 
 	}
 \\ \\[6pt]
 	\multicolumn{3}{@{}c@{}}{
-		\vc{\scale{\MLLperm{bt2}}} ~\perm~ \vc{\scale{\MLLperm{bt1}}} ~\perm~ \vc{\scale{\MLLperm{bt3}}}
+		\vc{\scale{\MLLperm{bt2}}} ~\perm~ \vc{\scale{\MLLperm{bt1}}}
+								   ~\perm~ \vc{\scale{\MLLperm{bt3}}}
 	}
 \\ \\[6pt]
 	\vc{\scale{\MLLperm{pp1}}} &\perm& \vc{\scale{\MLLperm{pp2}}}
@@ -163,26 +166,25 @@ MLL proof equivalence may be usefully classified as the reconfiguration problem 
 
 The formulae of unit-only multiplicative linear logic are given by the following grammar.
 %
+\setMidspace{5pt}
 \[
-	A,B,C \coloneq \bot \mid 1 \mid A\parr B \mid A\tn B
+	A,B,C \Coloneq \bot \Mid 1 \Mid A\parr B \Mid A\tn B
 \]
 %
 The connectives $\tn$ and $\parr$ will be considered up to associativity, and \emph{duality} $\dual A$ is via DeMorgan.
 %
 A \emph{sequent} $\Gamma,\Delta$ will be a multiset of formulae.
 %
-Within a sequent, connectives and units will be \emph{named} with distinct elements from an arbitrary set of names $N$, e.g.\
+Within a sequent, connectives and units will be \emph{named} with distinct elements from an arbitrary set of names, e.g.\
 $\named a1\named b\parr\named c1,\named d\bot\named e\tn\named f\bot$.
 %
-This allows to 1) avoid using the notion of \emph{occurrence}, and instead refer to subformulae by the name of their root connective, as e.g.\ $\named bA$, 2) distinguish the two proofs of the above sequent while using standard multiset sequents, and 3) easily extract proof nets, as graphs using the names of connectives as vertices.
+This allows to 1) identify \emph{occurrences} of subformulae uniquely by the name of their root connective, e.g.\ as $\named bA$, 2) distinguish the two proofs of the above sequent while using standard multiset sequents, and 3) easily extract proof nets, as graphs using the names of connectives as vertices.
 %
 Names will mostly be left implicit.
 
 
 
-Proofs are constructed from the inference rules in Figure~\ref{fig:MLL}.
-%
-The names of connectives are preserved through inferences.
+Proofs are constructed from the inference rules in Figure~\ref{fig:MLL}, where the names of units and connectives are preserved through inferences.
 %
 Only cut-free proofs are considered, and no cut-rule is added.
 %
@@ -200,65 +202,13 @@ Only cut-free proofs are considered, and no cut-rule is added.
 \end{definition}
 
 
-
-The motivation to consider proofs up to equivalence is three-fold.
-%
-Firstly, there is the strong intuition that the order of permutable inferences does not contribute to the essential content of the proof.
-%
-Secondly, a technical motivation is that cut-elimination in \MLL\ incorporates permutation steps, and composition via cut-elimination is only associative up to permutations.
-%
-Thirdly, equivalent proofs are identified in natural models of multiplicative linear logic such as coherence spaces, and in the categorical semantics of \MLL, $\star$-autonomous categories.
-
-
-
-In one of several possible definitions, a \emph{$\star$-autonomous category} \cite{Barr-1979} is a symmetric monoidal category $(\mathcal C,\tn,1)$ with:
-%
-\begin{itemize}
-	
-	\item
-	a \emph{duality}, a contravariant functor $\dual-$ such that $A\cong\dual*A$, and
-
-	\item
-	\emph{closure}, an adjunction $-\tn B \dashv \dual{(B\tn\dual-)}$ for any object $B$,
-
-\end{itemize}
-%
-satisfying natural coherence conditions.
-%
-%The category $\textsc{mll}(\emptyset)$ of unit-only \MLL-formulae and equivalence classes of proofs is a $\star$-autonomous category.
-%
-The category with as objects unit-only \MLL-formulae and as morphisms $A\to B$ the equivalence classes of proofs of $\dual A\parr B$, denoted $\textsc{mll}(\emptyset)$, is a $\star$-autonomous category.
-%
-The present formulation of formulae induces two forms of \emph{strictness}, instances where isomorphisms of the definition are identities: DeMorgan duality means $A=\dual*A$, while
-%, one-sided sequents mean the closure adjunction is an equivalence of categories, 
-associativity is an identity by decree.
-%
-Modulo strictness, $\textsc{mll}(\emptyset)$ is the \emph{free} $\star$-autonomous category over the empty category $\emptyset$.
-%
-This means that \emph{any} $\star$-autonomous category is a model of the logic, and that \MLL\ proof equivalence is the \emph{word problem} for $\star$-autonomous categories, the problem of deciding when two term representations denote the same morphism.
-
-
-
-
-%The \emph{free $\star$-autonomous completion} $\star$-\textsc a$(\mathcal C)$ of a category $\mathcal C$ is characterised by a functor $i\colon\mathcal C\to\star$-\textsc a$(\mathcal C)$ such that any functor $\mathcal C\to \mathcal D$ into a $\star$-autonomous cateogry $\D$ factors uniquely (up to canonical isomorphism) as the composition of $i$ with a functor $\star$-\textsc a$(\mathcal C)\to\D$ preserving $\star$-autonomous structure.
-%%
-%\[
-%\begin{tikzpicture}[auto]
-%	\node (C) at (0,0) {$\mathcal C$};
-%	\node (*AC) at (2,0) {$\star$-\textsc a$(\mathcal C)$};
-%	\node (D) at (1,1) {$\mathcal D$};
-%	\draw [->] (C) -- node {$i$} (*AC);
-%	\draw [->] (C) -- (D);
-%	\draw [->,dashed] (*AC) -- node {$!$} (D);
-%\end{tikzpicture}
-%\]
-%%
-
-
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 \subsection*{Proof nets}
 
-A partial solution to the \MLL\ proof equivalence problem is provided by proof nets.
+Proof nets provide a solution to proof equivalence for MLL$^-$ (MLL without units).
+%
+For full MLL, they reduce the proof equivalence problem to a simple rewiring relation \cite{HughesMLLProofNets}.
 
 
 \begin{definition}
@@ -271,7 +221,7 @@ For a sequent $\Gamma$,
 	a \emph{linking} $\links$ is a function from the names of $\bot$-subformulae to the names of $1$-subformulae,
 
 	\item
-	a \emph{switching graph} for $\links$ is an undirected graph over the names of $\Gamma$, with for every subformula $\named aA\named c\tn\named bB$ the edges $a-c$ and $b-c$, for every subformula $\named aA\named c\parr\named bB$ either the edge $a-c$ or the edge $b-c$, and for every subformula $\named a\bot$ the edge $a-\links(a)$,
+	a \emph{switching graph} for $\links$ is an undirected graph over the names of $\Gamma$, with for every subformula $\named aA\named c\tn\named bB$ the edges $\edge ac$ and $\edge bc$, for every subformula $\named aA\named c\parr\named bB$ either the edge $\edge ac$ or the edge $\edge bc$, and for every subformula $\named a\bot$ the edge $\edge a{\links(a)}$,
 
  	\item
 	a \emph{proof net} $\links$ or $(\Gamma,\links)$ is a linking $\links$ such that every switching graph is acyclic and connected.
@@ -281,33 +231,34 @@ For a sequent $\Gamma$,
 
 
 \noindent
-An edge $a-\links(a)$ in a proof net or switching graph is a \emph{link} or \emph{jump}.
+An edge $\edge a{\links(a)}$ in a proof net or switching graph is called a \emph{link} or a \emph{jump}.
 
 
 
 \begin{definition}
 \label{def:proof net equivalence}
 %
-A \emph{permutation} between proof nets is the redirection of exactly one link.
+A \emph{permutation} $(\perm*)$ between proof nets is the redirection of exactly one link.
 %
-\emph{Equivalence} $(\perm)$ of proof nets over a sequent $\Gamma$ is the congruence generated by permutations.
+\emph{Equivalence} $(\perm)$ of proof nets over a sequent $\Gamma$ is the equivalence generated by permutations.
 %
 \end{definition}
 
 
 \noindent
-There is no canonical interpretation of a proof as a proof net, since the introduction rule for $\bot$ in proofs joins a $\bot$-formula to a sequent, rather than a formula.
-
+In the sequent calculus, the introduction rule for $\bot$ joins a $\bot$-formula to a sequent $\Gamma$, rather than an occurrence of $\1$.
+%
+The interpretation of a proof as a proof net may attach the corresponding link to an arbitrary $\1$ in $\Gamma$.
 
 
 \begin{definition}
 \label{def:proofs to nets}
 %
-The relation $(\toNet)$ interprets a proof $\Pi$ for a sequent $\Gamma$ by a linking $\links$ as follows:
+The relation $(\toNet)$ interprets a proof $\Pi$ for a sequent $\Delta$ by a linking $\links$ as follows:
 % 
-$\Pi\toNet\links$ if for each $\named a\bot$ in $\Gamma$, if $\Delta$ is the context of the inference introducing $\named a\bot$, as illustrated below, then $\links(a)$ is the name of some $1$ in $\Delta$.
+$\Pi\toNet\links$ if for each $\named a\bot$ in $\Delta$, if $\Gamma$ is the context of the inference introducing $\named a\bot$, as illustrated below, then $\links(a)$ is the name of some $1$ in $\Gamma$.
 \[
-	\infer[\MLLlabel b]{\Delta,\named a\bot}{\Delta}
+	\infer[\MLLlabel b]{\Gamma,\named a\bot}{\Gamma}
 \]
 %
 \end{definition}
@@ -327,7 +278,7 @@ For a net $\links$ for $\Gamma$, there is a proof $\Pi$ of $\Gamma$ such that $\
 \noindent
 Proof nets are canonical representations of proofs in the absence of units: they factor out the permutations among tensor- and par-inferences, which are the last three permutations in Figure~\ref{fig:permutations}.
 %
-Equivalence of proof nets is generated by the remaining equations, the permutations on $\bot$-introduction.
+Equivalence of proof nets is generated by the four remaining permutations, on $\bot$-introduction.
 
 
 
@@ -340,8 +291,11 @@ For proofs $\Pi$, $\Pi'$ and proof nets $\links$, $\links'$ such that $\Pi\toNet
 
 
 \noindent
-\MLL\ proof equivalence is the problem of deciding equivalence of proof nets.
+The above proposition means that \MLL\ proof equivalence is the problem of deciding equivalence of proof nets.
 
+
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 \subsection*{Notation}
 
