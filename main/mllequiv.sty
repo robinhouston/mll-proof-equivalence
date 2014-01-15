@@ -15,7 +15,7 @@
 %---------- Hacking
 
 \newcommand\mkspin[3]{\smash{\rotatebox[origin=c]{#1}{$#2#3$}}}
-\renewcommand\spin[1][180]{\mathpalette{\mkspin{#1}}}
+\newcommand\spin[1][180]{\mathpalette{\mkspin{#1}}}
 
 %\def\mkspin#1#2{\smash{%
 %  \rotatebox[origin=c]{180}{\mathsurround=0pt$#1#2$}}}
