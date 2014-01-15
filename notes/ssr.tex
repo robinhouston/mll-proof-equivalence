@@ -6,13 +6,14 @@
 \usepackage{amsthm}
 
 \author{Robin Houston}
-\title{Everything I know about Subset Sum Reconfiguration}
+\title{Notes on Subset Sum Reconfiguration}
 
 \newtheorem{prop}{Proposition}
 \newtheorem{lemma}[prop]{Lemma}
 \newtheorem{conjecture}[prop]{Conjecture}
 \newtheorem{eg}[prop]{Example}
 \newtheorem{rem}[prop]{Remark}
+\newtheorem*{definition}{Definition}
 
 \let\union\cup
 \let\intersection\cap
@@ -21,78 +22,97 @@
 \maketitle
 \linespread{1.1}\selectfont
 
-\noindent This is a brief summary of some of the things I know or conjecture about the subset sum reconfiguration problem. These are rough notes, which are likely to contain errors large and small, intended to record ideas rather than to be a polished account.
+\noindent Some elementary observations about the subset sum reconfiguration problem
 
-\begin{prop}
-    Subset sum reconfiguration is weakly NP-hard. \textup(Demaine--Ito\textup)
-\end{prop}
+\section*{Examples}
 
-\begin{conjecture}\label{conjecture:diameter}
-    For all $n>1$, there is an $n$-element SSR instance whose configuration graph has diameter $2n-2$.
-\end{conjecture}
-
-\begin{rem}
-    The lower bound conjectured by Conjecture~\ref{conjecture:diameter} exists and is optimal for $n<8$. I have verified this by exhaustive enumeration using the program \texttt{ssr\_graphs.py}. An earlier version of these notes had a construction that purported to exhibit this bound, but there is an error in that construction.
-\end{rem}
-
-\begin{prop}\label{prop:element-moves-a-lot}
-    For all $m$, there is a $(5m+3)$-element SSR instance that has an element that must move at least $2m+1$ times in any solution sequence.
-\end{prop}
-\begin{proof}
-    The elements are $x_1, \dots, x_{2m+1}$ of weight $3$, $a_1, \dots, a_{3m+1}$ of weight $2$, and $b$ of weight $1$.
-    Let $k=6m$ and $c=6m+3$. The starting configuration is $x_1, \dots, x_{2m+1}$, and the target is $a_1, \dots, a_{3m+1}, b$. For $i=0, 1, \dots, 2m$, consider the first move after which there are precisely $2m-i$ of the $x$ elements inside. That means the $a$'s and possibly $b$ inside at this point must sum to $3i$. If $i$ is odd then, since the $a$'s all have even weight, $b$ must be inside at this point; similarly if $i$ is even then $b$ must be outside. So element $b$ moves at least $2m+1$ times.
-\end{proof}
-
-\noindent The construction of Proposition~\ref{prop:element-moves-a-lot} can be modified to give a quadratic lower bound for the diameter of the reconfiguration graph.
-\begin{prop}\label{prop:quadratic-bound}
-    For all $m$, there is a $(6m+2)$-element SSR instance that requires $2m^2+6m+2$ moves.
-\end{prop}
+\noindent The first example shows that some elements must sometimes move many times
+\begin{eg}\label{eg:element-moves-a-lot}
+    For all natural numbers $m$, there is a $(5m+3)$-element instance that has an element that must move at least $2m+1$ times in any solution sequence.
+\end{eg}
 \begin{proof}
     The elements are
+    $x_1, \dots, x_{2m+1}$ of weight $3$,
+    $a_1, \dots, a_{3m+1}$ of weight $2$,
+    and $b$ of weight $1$.
+    %
+    Let $k=6m$ and $c=6m+3$.
+    %
+    The initial packing is $x_1, \dots, x_{2m+1}$,
+    and the target is $a_1, \dots, a_{3m+1}, b$.
+    %
+    %
+    At each packing in the sequence, count the number of $x$ elements it contains. The initial packing has $2m+1$ of them, and the target packing has none: therefore there must be packings in the sequence, in order, that contain $2m, 2m-1, \dots, 0$ of the $x$ elements. For $i=0, 1, \dots, 2m$, consider the first packing that contains precisely $2m-i$ of the $x$ elements. This packing must differ from its predecessor by the removal of some $x$ element, and so its total weight is forced to be $6m$. Hence the weights of the other elements in this packing -- $a$'s and possibly $b$ -- must sum to $3i$. If $i$ is odd then, since the $a$'s all have even weight, $b$ must be inside at this point; similarly if $i$ is even then $b$ must be outside. So element $b$ moves at least $2m+1$ times.
+\end{proof}
+
+\noindent The second example is similar, and establishes a quadratic lower bound for the diameter of the configuration graph.
+\begin{eg}\label{eg:quadratic-bound}
+    For all $m$, there is a $(6m+2)$-element instance that requires $2m^2+6m+2$ moves.
+\end{eg}
+\begin{proof}
+    This example is similar to the previous one, except that all the weights are multiplied by $m$ and
+    then the element $b$ is decomposed into $m$ elements of weight $1$. So the elements are
     $x_1, \dots, x_{2m+1}$ of weight $3m$,
     $a_1, \dots, a_{3m+1}$ of weight $2m$,
     and $b_1, \dots, b_m$ of weight $1$.
     %
     Let $k=6m^2$ and $c=6m^2+3m$.
     %
-    The starting configuration is $x_1, \dots, x_{2m+1}$,
+    The initial packing is $x_1, \dots, x_{2m+1}$,
     and the target is $a_1, \dots, a_{3m+1}, b_1, \dots, b_m$.
     %
-    For $i=0, 1, \dots, 2m$, consider the first move after which there are precisely $2m-i$ of the $x$ elements inside. That means the $a$'s and $b$'s inside at this point must sum to $3im$. If $i$ is odd then, since the $a$'s all weigh $2m$, all the $b$'s must be inside at this point; similarly if $i$ is even then the $b$'s must all be outside. So the $b$ elements each move at least $2m+1$ times.
+    The argument is as before: for $i=0, 1, \dots, 2m$, consider the first packing that contains precisely $2m-i$ of the $x$ elements. The total weight of the non-$x$ elements in this packing must equal $3im$. If $i$ is odd then, since the $a$'s all weigh $2m$, all the $b$'s must be inside this packing; similarly if $i$ is even then the $b$'s must all be outside it. So the $b$ elements each move at least $2m+1$ times.
     %
     Therefore the total number of moves must be at least $(2m+1) + (3m+1) + (2m+1)m$, which is equal to $2m^2+6m+2$ as required.
 \end{proof}
 
-\noindent On the other hand, the instances constructed in Propositions~\ref{prop:element-moves-a-lot} and~\ref{prop:quadratic-bound} have a property that makes them easy to recognise as solvable without the need to construct an actual solution. (The details need some work here, but I think the basic idea is okay.)
-\begin{lemma}\label{lemma:reduction}
-    Suppose we have an SSR instance with element set $E$, threshold $k$ and capacity $c$. By abuse of notation we shall also refer to the whole instance as $E$. Let $a$ and $z$ be elements of minimal and maximal weight respectively. If $w(z) > c-k$ or $w(a) < c-k-w(z) + 2$ then either $E$ is trivially unsolvable or else there is an element $e\in E$ and a (smaller) instance with element set $E' = E-\{e\}$ that is equivalent to the original in the sense that $E'$ is solvable iff $E$ is.
-\end{lemma}
-\begin{proof}
-    Let $e$ be any element that has weight $z$.
-    
-    If $w(z) > c - k$ then our element $z$ cannot move. If $z$ moves between the start and target packings, then $E$ is trivially unsolvable. Otherwise we let $E' = E-\{z\}$. If $z$ is inside in both the start and target packing, let the threshold and capacity of our new instance be $k' = k-w(z)$ [TODO: what if $k-w(z) < 0$?] and $c' = c-w(z)$, and remove $z$ from the start and target configurations. If $z$ is outside in both the start and target, let $k'=k$ and $c'=c$. Every solution of $E'$ is a solution of $E$, and vice versa -- by adding $z$ to all packings in the solution sequence in the former case, or by literally using the same solution sequence in the latter.
-    
-    If $w(a) < c-k-w(z) + 2$ then let $E' = E-\{a\}$. Look at whether or not $a$ belongs to the start configuration: if it does, let $k'=k-w(a)$ and $c'=c$; if not, let $k'=k$ and $c'=c+w(a)$. [TODO: What if $k-w(a) < 0$? This case needs to be considered.] In both cases we have $c'-k' = c-k+w(a)$. Any solution of $E$ can be converted to a solution of $E'$ just by removing element $a$ from all packings in the sequence and eliminating adjacent duplicates. The interesting part is the converse, converting a solution of $E'$ into a solution of $E$. Let $A_0', \dots, A_m'$ be a sequence of packings that solves $E'$. We shall show how to insert element $a$, with some additional moves of $a$, to obtain a solution of $E$.
-    
-    Let us say that a packing $A'$ of $E'$ \textit{requires $a$} if $w(A') < k' + w(a)$, and that it \textit{rejects $a$} if $w(A') > c' - w(a)$. Now we want to argue that in a solution sequence of $E'$ there are never two adjacent packings such that one requires $a$ and the other rejects it. The gap between the bound for rejecting $a$ and the bound for accepting it is $c' - w(a) - (k' + w(a)) = c'-k'-2w(a) = c-k-w(a)$, so it is not possible to cross this gap without the weight changing by at least $c-k-w(a)+2$. Two adjacent packings differ in weight by at most $w(z)$, and since we are supposing that $w(a) < c-k-w(z) + 2$ it follows that they differ by less than $c-k-w(a)+2$, as required.
-    
-    Finally we can construct a solution sequence for $E$ by inserting $a$ where it is required and removing it where it is rejected. We describe an algorithm that reads $A_0', \dots A_m'$ in order and outputs a solution of $E$. The algorithm keeps track of whether $a$ is currently inside or outside the packing as it goes along. If $a$ belongs to the start packing then initially $a$ is inside, otherwise initially $a$ is outside. Then for each $i$ from $0$ to $m$:
-    \begin{itemize}
-        \item if $a$ is currently inside and $A_i'$ rejects $a$, output $A_{i-1}'$ followed by $A_i'$. (Note this case cannot occur when $i=0$.) Let $a$ be outside.
-        \item if $a$ is currently outside and $A_i'$ requires $a$, output $A_{i-1}'\union\{a\}$ followed by $A_i'\union\{a\}$. (This case cannot occur when $i=0$ either.) Let $a$ be inside.
-        \item otherwise, output $A_i'$ if $a$ is outside, and output $A_i'\union\{a\}$ if $a$ is inside.
-    \end{itemize}
-\end{proof}
+\section*{Eliminating redundant elements}
 
-\noindent In some cases we can iterate Lemma~\ref{lemma:reduction} to reduce the instance to the trivial one-element case.
-\begin{prop}\label{prop:iterated-reduction}
-    Suppose we have an SSR instance with element set $E$, threshold $k$ and capacity $c$. Suppose further that no element weighs more than $c-k$. Let $E = {e_0, \dots, e_n}$ in nondecreasing order by weight. If
-    \[
-        w(e_i) < c - k + \sum_{j<i}w(e_j) - w(e_n) + 2
-    \]
-    for all $i$ then the instance is solvable. Note that this condition does not mention the start or target packings, so in fact such instances have the property that any valid packing is reachable from any other.
-\end{prop}
+\noindent Elements that are `large enough' or `small enough' in weight may be eliminated, in the sense that we
+can construct an equi-solvable instance by removing them and adjusting the threshold and capacity appropriately.
+For example, the $b$ elements of Example~\ref{eg:quadratic-bound} are small enough to be eliminated -- and, once
+they are eliminated, these instances admit linear-length solutions.
+
+\subsection*{Eliminating large elements}
+
+\noindent This part is really trivial. An element whose weight exceeds $c-k$ is too large to be moved in or out
+of the packing, so it can take no part in any solution. Let us call such an element \emph{large}. If the instance
+requires a large element to move, because it is contained in the initial packing but not the target or vice versa,
+then it is clearly unsolvable. Otherwise there are two cases:
+\begin{enumerate}
+    \item The large element $x$ belongs to the initial and target packings. Remove $x$ from the set of elements and
+    from the initial and target packings. If $w(x) <= k$ then reduce both $k$ and $c$ by $w(x)$. If $w(x) > k$ then
+    let $k=0$ and reduce $c$ by $w(x)$.
+    \item The large element $x$ belongs to neither the initial nor the target packing. Simple remove $x$ from the set of elements.
+\end{enumerate}
+
+\subsection*{Eliminating small elements}
+
+\noindent The situation with small elements is rather the opposite. Of course small elements are able to move:
+they have so much freedom of movement that they may be moved whenever necessary, so it is not necessary to
+record them. In this section we assume that large elements have already been eliminated.
+
+\begin{definition}\label{def:small}
+    An element $x$ is \emph{small} if $w(x) < c-k-w_{\mathrm{max}} + 2$, where $w_{\mathrm{max}}$ is the
+    maximum weight over all elements in the instance. In particular an element of weight $1$ is always small.
+\end{definition}
+
+\noindent To eliminate a small element, remove it from the set of elements and from the initial and target packings,
+and adjust the threshold and capacity as follows:
+\begin{enumerate}
+    \item If $a$ belongs to the initial packing, leave $k$ unchanged and increase $c$ by $w(a)$.
+    \item If $a$ does not belong to the initial packing and $k \geq w(a)$, leave $c$ unchanged and
+            reduce $k$ by $w(a)$.
+    \item If $a$ does not belong to the initial packing and $k < w(a)$, leave $c$ unchanged and set $k$ to zero.
+\end{enumerate}
+
+
+
 \begin{rem}
-    Let us say that an instance satisfying the property of Proposition~\ref{prop:iterated-reduction} is \textit{completely reducible}. The instances exhibited in Proposition~\ref{prop:element-moves-a-lot} are completely reducible. The instances exhibited in Proposition~\ref{prop:quadratic-bound} are not completely reducible, but can be reduced to a form that has a linear bound on the length of the solution sequence by eliminating the elements that have weight $1$.
+    This process increases $c-k$, which means that elements may be small in the reduced
+    instance that were not small in the original. Therefore in some cases the construction may be iterated.
+    For example we may eliminate an element of weight $1$, which then makes it possible to eliminate an
+    element of weight $2$, etc.
 \end{rem}
+
 \end{document}
