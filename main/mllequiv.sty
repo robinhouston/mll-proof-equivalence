@@ -5,18 +5,12 @@
 \RequirePackage{tikz}
 \usetikzlibrary{arrows,calc}
 
+
+
 % UNSORTED
 
-
 \newcommand\scalefactor{1}
-
 \newcommand\scale[1]{\scalebox{\scalefactor}{$\m@th#1$}}
-
-\newcommand*{\coloneq}{
- \mathrel{%
-  \rlap{\raisebox{0.3ex}{$\m@th\cdot$}}%
-        \raisebox{-0.3ex}{$\m@th\cdot$}%
- }=}
 
 \newcommand\alt{\underline}
 \newcommand\itn[1]{\llbracket#1\rrbracket}
@@ -27,7 +21,7 @@
 %---------- Hacking
 
 \newcommand\mkspin[3]{\smash{\rotatebox[origin=c]{#1}{$#2#3$}}}
-\newcommand\spin[1][180]{\mathpalette{\mkspin{#1}}}
+\renewcommand\spin[1][180]{\mathpalette{\mkspin{#1}}}
 
 %\def\mkspin#1#2{\smash{%
 %  \rotatebox[origin=c]{180}{\mathsurround=0pt$#1#2$}}}
@@ -39,9 +33,22 @@
 \newcommand\vc[1]{\vcenter{\hbox{$\m@th{#1}$}}}
 
 
+
 %---------- General
 
-%\newcommand\coloneq{}
+\newcommand*{\coloneq}{
+ \mathrel{%
+  \rlap{\raisebox{0.3ex}{$\m@th\cdot$}}%
+        \raisebox{-0.3ex}{$\m@th\cdot$}%
+ }=}
+ 
+\newcommand\Mid{\mid}
+\newcommand\Coloneq{\coloneq}
+
+\newcommand\setMidspace[2][-]{%
+	\renewcommand\Mid{\kern#2\mid\kern#2}%
+	\ifx#1-\renewcommand\Coloneq{\kern#2\coloneq\kern#2}\else\renewcommand\Coloneq{\kern#1\coloneq\kern#1}\fi%
+}
 
 %---------- Formulae, proofs, nets
 
@@ -64,8 +71,10 @@
 
 \newcommand\toNet{\Mapsto}
 
-\newcommand\perm{\sim}
-\newcommand\vperm{\mathbin{\spin[90]{\perm}}}
+\newcommand\perm{\@ifstar\@perm\sim}
+\newcommand\@perm{\stackrel{\scriptscriptstyle 1}\sim}
+\newcommand\vperm{\mathbin{\spin[90]{\sim}}}
+
 
 \newcommand\edge[2]{#1-#2}
 

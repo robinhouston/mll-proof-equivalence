@@ -1,7 +1,22 @@
-% WillemTools v. 1.0
+% WillemTools v 1.3 
+
 
 \usepackage{ifthen}
 \usepackage{xargs}
+
+
+
+% WRITING TO CONSOLE:
+%
+% \newlinechar=`\^^J
+%
+% \message{^^JWarning: \noexpand\plop: no plops allowed^^J^^J}%
+%
+% \PackageError{}{}
+% \PackageWarning{}{}
+% \GenericWarning{}{}
+% \errmessage{}
+% \message{}
 
 
 % CASE SWITCH
@@ -40,6 +55,19 @@
 
 % DEFAULT marker (how to make this a primitive?)
 \newcommand\DEFAULT{DEFAULT}
+
+
+
+
+% FORCE PAPER SIZE FOR DVIPS
+
+\newcommand\setDvipsPaperSize[1]{
+  \SWITCH{#1}
+    {a4}    {\special{papersize = 210mm,297mm}}
+    {A4}    {\special{papersize = 8.3in,11.7in}}
+	{letter}{\special{papersize = 8.5in,11in}}
+  \DEFAULT{\PackageWarning{willemtools}{setDvipsPaperSize: unknown paper size}}
+}
 
 
 
@@ -109,7 +137,7 @@
 	{LICS}{Proc.\ #1 Annual IEEE Symposium on Logic in Computer Science (LiCS'#2)}%
 	{LMCS}{Logical Methods in Computer Science}%
 	{LNCS}{Lecture Notes in Computer Science}%
-	{LPAR}{Logic Programming and Automated Reasoning}%
+	{LPAR}{Proc.\ #1 International Conference on Logic for Programming, Artificial Intelligence, and Reasoning}%
 	{MSCS}{Mathematical Structures in Computer Science}%
 	{POPL}{Proc.\ #1 ACM Symposium on Principles of Programming Languages}%
 	{TAC}{Theory and Applications of Categories}%
@@ -122,10 +150,10 @@
 \newcommandx\SHORTBIBS[3][1={},2={}]{%
 	\SWITCH{#3}%
 	{CLC}{Classical Logic and Computation}%
-	{CSL}{CSL}%
+	{CSL}{CSL'#2}%
 	{CTCS}{Category Theory and Computer Science}%
-	{LICS}{LiCS}%
-	{TLCA}{TLCA}%
+	{LICS}{LiCS'#2}%
+	{TLCA}{TLCA'#2}%
 	{TOCL}{ACM Trans.\ Comp. Log.}%
 	\DEFAULT{#3}%
 }
@@ -176,18 +204,35 @@
 
 % ROTATION IN 8 FIXED DIRECTIONS
 
-\newcommand\indirection[2]{
+
+\newcommand\spin[1][180]{\mathpalette{\@spin{#1}}}
+\newcommand\@spin[3]{{\rotatebox[origin=c]{#1}{$#2#3$}}}
+%
+\newcommand\indirection[1]{
  \SWITCH{#1}
- {r}{#2}
- {ur}{\rotatebox[origin=c]{45}{\ensuremath{#2}}}
- {u}{\rotatebox[origin=c]{90}{\ensuremath{#2}}}
- {ul}{\rotatebox[origin=c]{135}{\ensuremath{#2}}}
- {l}{\rotatebox[origin=c]{180}{\ensuremath{#2}}}
- {dl}{\rotatebox[origin=c]{225}{\ensuremath{#2}}}
- {d}{\rotatebox[origin=c]{270}{\ensuremath{#2}}}
- {dr}{\rotatebox[origin=c]{315}{\ensuremath{#2}}}
- \DEFAULT{}
+  {r}  {\spin[0]}
+  {ur} {\spin[45]}
+  {u}  {\spin[90]}
+  {ul} {\spin[135]}
+  {l}  {\spin[180]}
+  {dl} {\spin[225]}
+  {d}  {\spin[270]}
+  {dr} {\spin[315]}
+ \DEFAULT{\PackageWarning{willemtools}{\noexpand\indirection: unknown direction}}
 }
+
+%\newcommand\indirection[2]{
+% \SWITCH{#1}
+% {r}{#2}
+% {ur} {\rotatebox[origin=c] {45}{\ensuremath{#2}}}
+% {u}  {\rotatebox[origin=c] {90}{\ensuremath{#2}}}
+% {ul} {\rotatebox[origin=c]{135}{\ensuremath{#2}}}
+% {l}  {\rotatebox[origin=c]{180}{\ensuremath{#2}}}
+% {dl} {\rotatebox[origin=c]{225}{\ensuremath{#2}}}
+% {d}  {\rotatebox[origin=c]{270}{\ensuremath{#2}}}
+% {dr} {\rotatebox[origin=c]{315}{\ensuremath{#2}}}
+% \DEFAULT{\PackageWarning{willemtools}{\noexpand\indirection: unknown direction}}
+%}
 
 
 % MORE QUAD SPACING
@@ -207,59 +252,80 @@
 \newcommand\qqqquad{\qquad\qquad}
 
 
+% small triangles (taken from mathabx.sty)
+
+\DeclareFontFamily{U}{mathb}{\hyphenchar\font45}
+\DeclareFontShape{U}{mathb}{m}{n}{
+      <5> <6> <7> <8> <9> <10> gen * mathb
+      <10.95> mathb10 <12> <14.4> <17.28> <20.74> <24.88> mathb12
+      }{}
+\DeclareSymbolFont{mathb}{U}{mathb}{m}{n}
+\DeclareFontSubstitution{U}{mathb}{m}{n}
+
+%
+\DeclareMathSymbol{\smalltriangleup}   {2}{mathb}{"98}
+\DeclareMathSymbol{\smalltriangledown} {2}{mathb}{"99}
+\DeclareMathSymbol{\smalltriangleleft} {2}{mathb}{"9A}
+\DeclareMathSymbol{\smalltriangleright}{2}{mathb}{"9B}
+\DeclareMathSymbol{\blacktriangleup}   {2}{mathb}{"9C}
+\DeclareMathSymbol{\blacktriangledown} {2}{mathb}{"9D}
+\DeclareMathSymbol{\blacktriangleleft} {2}{mathb}{"9E}
+\DeclareMathSymbol{\blacktriangleright}{2}{mathb}{"9F}
+
+
 % XY COLORSET
 
-\newcommand\setColors{
+\newcommand\setXYColors{
 %%
 \newxyColor{bgcolor} {1 1 1}{rgb}{}
 %%
-\newxyColor{pink1}{0  0.3  0     0  }{cmyk}{}
-\newxyColor{pink2}{0  0.4  0     0.1}{cmyk}{}
-\newxyColor{pink3}{0  0.5  0     0.2}{cmyk}{}
+\newxyColor{pink1}     {0    0.3  0    0   }{cmyk}{}
+\newxyColor{pink2}     {0    0.4  0    0.1 }{cmyk}{}
+\newxyColor{pink3}     {0    0.5  0    0.2 }{cmyk}{}
 %
-\newxyColor{red1}{0   0.7   0.7   0   }{cmyk}{}
-\newxyColor{red2}{0   0.85  0.85  0.07}{cmyk}{}
-\newxyColor{red3}{0   1     1     0.15}{cmyk}{}
+\newxyColor{red1}      {0    0.7  0.7  0   }{cmyk}{}
+\newxyColor{red2}      {0    0.85 0.85 0.07}{cmyk}{}
+\newxyColor{red3}      {0    1    1    0.15}{cmyk}{}
 %
-\newxyColor{orange1}{0     0.4   1     0   }{cmyk}{}
-\newxyColor{orange2}{0     0.5   1     0.07}{cmyk}{}
-\newxyColor{orange3}{0     0.6   1     0.15}{cmyk}{}
+\newxyColor{orange1}   {0    0.4  1    0   }{cmyk}{}
+\newxyColor{orange2}   {0    0.5  1    0.07}{cmyk}{}
+\newxyColor{orange3}   {0    0.6  1    0.15}{cmyk}{}
 %
-\newxyColor{yellow1}{0     0     0.8   0   }{cmyk}{}
-\newxyColor{yellow2}{0     0.1   0.9   0.05}{cmyk}{}
-\newxyColor{yellow3}{0     0.2   1     0.10}{cmyk}{}
+\newxyColor{yellow1}   {0    0    0.8  0   }{cmyk}{}
+\newxyColor{yellow2}   {0    0.1  0.9  0.05}{cmyk}{}
+\newxyColor{yellow3}   {0    0.2  1    0.10}{cmyk}{}
 %
-\newxyColor{green1}{0.2   0     0.4   0  }{cmyk}{}
-\newxyColor{green2}{0.3   0     0.5  0.05}{cmyk}{}
-\newxyColor{green3}{0.4   0     0.6   0.1}{cmyk}{}
+\newxyColor{green1}    {0.2  0    0.4  0   }{cmyk}{}
+\newxyColor{green2}    {0.3  0    0.5  0.05}{cmyk}{}
+\newxyColor{green3}    {0.4  0    0.6  0.1 }{cmyk}{}
 %
-\newxyColor{bluegreen1}{0.4   0     0.2   0   }{cmyk}{}
-\newxyColor{bluegreen2}{0.5   0     0.3   0.05}{cmyk}{}
-\newxyColor{bluegreen3}{0.6   0     0.4   0.10}{cmyk}{}
+\newxyColor{bluegreen1}{0.4  0    0.2  0   }{cmyk}{}
+\newxyColor{bluegreen2}{0.5  0    0.3  0.05}{cmyk}{}
+\newxyColor{bluegreen3}{0.6  0    0.4  0.10}{cmyk}{}
 %
-\newxyColor{lightblue1}{0.2  0  0     0   }{cmyk}{}
-\newxyColor{lightblue2}{0.3  0  0     0.05}{cmyk}{}
-\newxyColor{lightblue3}{0.4  0  0     0.10}{cmyk}{}
+\newxyColor{lightblue1}{0.2  0    0    0   }{cmyk}{}
+\newxyColor{lightblue2}{0.3  0    0    0.05}{cmyk}{}
+\newxyColor{lightblue3}{0.4  0    0    0.10}{cmyk}{}
 %
-\newxyColor{blue1}{0.5  0.1  0     0  }{cmyk}{}
-\newxyColor{blue2}{0.6  0.2  0     0.1}{cmyk}{}
-\newxyColor{blue3}{0.7  0.3  0     0.2}{cmyk}{}
+\newxyColor{blue1}     {0.5  0.1  0    0   }{cmyk}{}
+\newxyColor{blue2}     {0.6  0.2  0    0.1 }{cmyk}{}
+\newxyColor{blue3}     {0.7  0.3  0    0.2 }{cmyk}{}
 %
-\newxyColor{metalblue1}{0.4  0.2  0     0  }{cmyk}{}
-\newxyColor{metalblue2}{0.5  0.3  0     0.1}{cmyk}{}
-\newxyColor{metalblue3}{0.6  0.4  0     0.2}{cmyk}{}
+\newxyColor{metalblue1}{0.4  0.2  0    0   }{cmyk}{}
+\newxyColor{metalblue2}{0.5  0.3  0    0.1 }{cmyk}{}
+\newxyColor{metalblue3}{0.6  0.4  0    0.2 }{cmyk}{}
 %
-\newxyColor{grayblue1}{0.2   0.2   0     0   }{cmyk}{}
-\newxyColor{grayblue2}{0.3   0.3   0     0.1}{cmyk}{}
-\newxyColor{grayblue3}{0.4   0.4   0     0.2}{cmyk}{}
+\newxyColor{grayblue1} {0.2  0.2  0    0   }{cmyk}{}
+\newxyColor{grayblue2} {0.3  0.3  0    0.1 }{cmyk}{}
+\newxyColor{grayblue3} {0.4  0.4  0    0.2 }{cmyk}{}
 %
-\newxyColor{indigo1}{0.5  0.5  0     0  }{cmyk}{}
-\newxyColor{indigo2}{0.6  0.6  0     0.1}{cmyk}{}
-\newxyColor{indigo3}{0.7  0.7  0     0.2}{cmyk}{}
+\newxyColor{indigo1}   {0.5  0.5  0    0   }{cmyk}{}
+\newxyColor{indigo2}   {0.6  0.6  0    0.1 }{cmyk}{}
+\newxyColor{indigo3}   {0.7  0.7  0    0.2 }{cmyk}{}
 %
-\newxyColor{violet1}{0.2  0.4  0     0  }{cmyk}{}
-\newxyColor{violet2}{0.3  0.5  0     0.1}{cmyk}{}
-\newxyColor{violet3}{0.4  0.6  0     0.2}{cmyk}{}
+\newxyColor{violet1}   {0.2  0.4  0    0   }{cmyk}{}
+\newxyColor{violet2}   {0.3  0.5  0    0.1 }{cmyk}{}
+\newxyColor{violet3}   {0.4  0.6  0    0.2 }{cmyk}{}
 %
 \newxyColor{gray1}{0 0 0 0.1}{cmyk}{}
 \newxyColor{gray2}{0 0 0 0.2}{cmyk}{}
@@ -273,12 +339,15 @@
 }
 
 
+
+
 % XY DASHED CONNECTIONS
 
 \def\Dash#1#2{%
 	\POS #1;#2 **{}, ?(0.35); ?(0.65), **\crv{}}
 
-
+\def\dashI#1#2{%
+	\ar@{-}{"#1";"#2" **{} ?<>(0.3)}; {"#1";"#2" **{} ?<>(0.7)},}
 \def\dashII#1#2{%
 	\ar@{-}{"#1";"#2" **{} ?<>(0.1)}; {"#1";"#2" **{} ?<>(0.4)},%
 	\ar@{-} {"#1";"#2" **{} ?<>(0.6)}; {"#1";"#2" **{} ?<>(0.9)},}
@@ -299,11 +368,10 @@
 	\ar@{-} {"#1";"#2" **{} ?<>(0.84)}; {"#1";"#2" **{} ?<>(0.96)},}
 
 
-\def\dash #1{\ifx#12\expandafter\dashII\else\expandafter\dashA\expandafter#1\fi}
-\def\dashA#1{\ifx#13\expandafter\dashIII\else\expandafter\dashB\expandafter#1\fi}
-\def\dashB#1{\ifx#14\expandafter\dashIV\else\expandafter\dashC\expandafter#1\fi}
-\def\dashC#1{\ifx#15\expandafter\dashV\else\expandafter\dashD\expandafter#1\fi}
-\def\dashD{I got nothing}
-
-
+\def\dash #1{\ifx#11\expandafter\dashI\else\expandafter\dashA\expandafter#1\fi}
+\def\dashA#1{\ifx#12\expandafter\dashII\else\expandafter\dashB\expandafter#1\fi}
+\def\dashB#1{\ifx#13\expandafter\dashIII\else\expandafter\dashC\expandafter#1\fi}
+\def\dashC#1{\ifx#14\expandafter\dashIV\else\expandafter\dashD\expandafter#1\fi}
+\def\dashD#1{\ifx#15\expandafter\dashV\else\expandafter\dashE\expandafter#1\fi}
+\def\dashE#1{\PackageWarning{willemtools}{\noexpand\dash: substituting 5 dashes for #1}\dashV}
 
