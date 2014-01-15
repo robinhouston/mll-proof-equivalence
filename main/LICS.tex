@@ -1,4 +1,4 @@
-\documentclass[conference]{IEEEtran}
+\documentclass[conference,onecolumn]{IEEEtran}
 
 \usepackage{amssymb,amsthm,amsmath}
 \usepackage{microtype}
@@ -16,6 +16,8 @@
 \usepackage{mllequiv,willemtools}
 
 \graphicspath{{../notes/}}
+
+\let\alt=\underline
 
 \shortJournalNames
 \makeTheoremDefs
@@ -324,14 +326,6 @@ could be drawn like this:
 \begin{center}\includegraphics[scale=0.75]{example-sequent-proofnet.pdf}\end{center}
 
 
-
-
-
-%===========================
-\bibliographystyle{plain}
-\bibliography{../refs}
-\end{document}
-%===========================
 
 
 
@@ -1132,6 +1126,14 @@ It follows that in the graph $G$ the edges $e_1$ through $e_n$ can be moved away
 
 
 
+
+
+
+%===========================
+\bibliographystyle{plain}
+\bibliography{../refs}
+\end{document}
+%===========================
 
 
 

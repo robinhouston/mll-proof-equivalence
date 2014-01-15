@@ -1,21 +1,13 @@
 
 \documentclass{beamer}
 
-
-\begin{document}
-
-\usepackage{amsthm}
-\usepackage[round]{natbib}
-\usepackage{mllequiv,willemtools}
-
+\usepackage{willemtools,mllequiv}
+\usepackage{tikz}
 \usepackage{pgffor}
 
-\graphicspath{{../notes/}}
 
 %\makeTheoremDefs
 
-
-\begin{document}
 
 \newcommand\octoroll[1]{
 	\begin{tikzpicture}[x=5mm,y=-3mm,line width=.8pt,>=latex]
@@ -245,6 +237,8 @@
 \end{tikzpicture}
 }
 
+
+\begin{document}
 
 \foreach \n in {1,...,30} {%
   \begin{frame}
