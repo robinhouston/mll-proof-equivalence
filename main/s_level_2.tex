@@ -2,8 +2,6 @@
 
 
 
-\newcommand\alt{\underline}
-
 [[ NOTE: we should decide on notation for steps versus paths in permutation relations ]]
 
 
@@ -135,16 +133,20 @@ Given a weight element $W$ for a graph with $|V|=n$, the natural linking for the
 \end{proposition}
 
 
-
-The interpretation $\itn\gamma$ of a total configuration $\gamma$ for a graph $G$ is a linking $\links$ constructed incrementally, for each successive edge $e$, and for each successive weight element $W$ within $e$, as follows.
-%
-Let the rightmost $1$-occurrence of each vertex-gadget $\itn v$ be named $\alt v$, and the rightmost $\bot$-occurrence of each edge-gadget $\itn e$ named $\alt e$:
+The rightmost $1$-occurrence of each vertex-gadget $\itn v$, named $\alt v$ below, and the rightmost $\bot$-occurrence of each edge-gadget $\itn e$, named $\alt e$, will be called the \emph{indicator vertices} of $\itn v$ and $\itn e$.
 \[	
 	\itn v = C\parr\dotso\parr C\parr \named{\alt v}1 \qquad \itn e= W\tn\dotso\tn W\tn\named{\alt e}\bot~.
 \]
-To define $\itn\gamma$, firstly let $\itn\gamma(e)=\alt v$ where $\gamma(e)=v$.
+
+
+\begin{definition}
+\label{def:configuration interpretation}
+The \emph{interpretation} $\itn\gamma$ of a total configuration $\gamma$ for a graph $G$ is a linking $\links$ constructed incrementally, for each successive edge $e$, and for each successive weight element $W$ within $e$, as follows.
 %
-Then successively for each edge $e$ and each weight element $W$ in $e$, if $\gamma(e)$ has a first free constraint element $C$, extend $\itn\gamma$ to include the natural linking on $W,C$; otherwise, extend $\itn\gamma$ by the natural linking on the sequent consisting of $W$ plus the first $3n+4$ free edge absorbers.
+Let $\gamma(e)=v$; firstly, the the indicator vertex of $\itn e$ links to the indicator of $\itn v$.
+%
+Then successively for each weight element $W$ in $e$, if $\itn v$ has a first free constraint element $C$, extend $\itn\gamma$ to include the natural linking on $W,C$; otherwise, extend $\itn\gamma$ by the natural linking on the sequent consisting of $W$ plus the first $3n+4$ free edge absorbers.
+\end{definition}
 
 
 \begin{proposition}
@@ -168,9 +170,128 @@ After contracting the scope of each $W$, each edge-gadget in the scope of $\itn 
 
 \subsection{Completeness}
 
+
+In a proof net for $\itn G$, an edge-gadget $\itn e$ that is in the empire of an appropriate vertex-gadget $\itn v$ is \emph{naturally linked} if the indicator of $\itn e$ connects to the indicator of $\itn v$, and each weight element $W$ of $\itn e$ is either naturally linked to a constraint element $C$ in $\itn v$ or linked only to edge-absorbers.
+
 \begin{lemma}
-If $\gamma\sim\delta$ for total configurations $\gamma$ and $\delta$, then $\itn\gamma\sim\itn\delta$.
+\label{lem:octopus roll}
+In a proof net $\links$ for a sequent $\Gamma=\itn v,\itn{e_1},\dotsc,\itn{e_m},\bot^p$ where each edge-gadget is naturally linked, if a weight element $W_i$ in $\itn{e_i}$ is linked to $C$ in $\itn v$ and $W_j$ in $\itn{e_j}$ is linked to edge-absorbers $\bot^n$, then there is a net $\links'\sim\links$ in which $W_j$ is naturally linked to $C$, $W_i$ is linked to $\bot^n$, and $\links'$ agrees with $\links$ otherwise.
 \end{lemma}
+
+\begin{proof}
+Let $W_i=A\parr B\parr C$, $W_j=D\parr E\parr F$, and $C=X\tn Y$.
+%
+We will illustrate the path of permutations for the case where $A,B,X$ and $D,X$, and thus also $C,Y$ and $E,F,Y$, are balanced sequents; other cases are similar.
+%
+\begin{enumerate}
+	\item
+The initial configuration is illustrated below; other weight and constraint elements are omitted, and $v$, $i$, and $j$ are the indicator vertices of $\itn v$, $\itn{e_i}$, and $\itn{e_j}$ respectively.
+\[
+	\octorollA1
+\]
+	\item
+The link $i-v$ is re-attached to connect to an edge-absorber together with only the links from the first $\bot$ of each of $D$, $E$, and $F$. 
+\[
+	\octorollB2
+\]
+	\item
+Secondly, the link from the first $\bot$ of $D$ is moved to $X$, and those of $E$ and $F$ are moved to $Y$.
+\[
+	\octorollB3
+\]
+	\item\label{item:exchange added}
+There are subnets over the sub-sequents $A,B,X,D,\bot^m$ and $C,Y,E,F,\bot^k$.
+%
+These subnets may be rewired so that $D\parr E\parr F$ is naturally linked to $X\tn Y$: by Proposition~\ref{prop:parity determines equivalence}, the resulting subnets are equivalent as long as their parity is preserved.
+%
+Two links from $C$ to $X$ should remain exchanged, compared to the natural linking, for step \ref{item:exchange needed} below.
+%
+The links of $A,B,C$ connect to the edge-absorbers $\bot^m$ and $\bot^k$, with one remaining link from $B$ to $X$ and one from $C$ to $Y$.
+\[
+	\octorollC
+\]
+	\item
+The link from $C$ to $Y$ is moved towards an edge-absorber connected to $A,B$.
+\[
+	\octorollD1
+\]
+	\item\label{item:exchange needed}
+The link from $B$ to $X$ is the one remaining connection between the edge-gadgets $\itn{e_i}$ and $\itn{e_j}$.
+%
+Lemma~\ref{lem:double exchange} allows to swap the targets of the link from $B$ to $X$ and the link from $i$, and simultaneously undo the exchange in the links from $C$ to $X$ added in step \ref{item:exchange added} above.
+\[
+	\octorollD2
+\]
+	\item
+The link from $i$ may be re-attached to $v$ to yield the final configuration.
+\[
+	\octorollA2
+\]
+\end{enumerate}
+\end{proof}
+
+
+An edge-gadget $\itn e$ is \emph{free} if each of its weight elements is linked only to edge-absorbers.
+
+
+\begin{lemma}
+\label{lem:permute edge-absorbers}
+If $\links$ is a naturally linked proof net for $\itn G$ with a free edge-gadget $\itn e$, and $\links'$ agrees with $\links$ up to an even permutation of edge-absorbers, then $\links\sim\links'$.
+\end{lemma}
+
+\begin{proof}
+Let $e_0$ be the indicator vertex of $\itn e$; since $\itn e$ is free, $e_0$ may re-attach anywhere within the proof net.
+%
+Let $e_1$ and $e_2$ be arbitrary other $\bot$-occurrences in $\itn e$.
+
+\begin{enumerate}
+
+	\item
+To permute two edge-absorbers $v$ and $w$ linked to by other edge-gadgets than $\itn e$, attach $e_0$ to $v$, and apply Lemma~\ref{lem:double exchange} to exchange $v$ and $w$, also exchanging the targets of $e_0$ and $e_1$.
+
+	\item
+To reinstate $e_0$ as the connection between $\itn e$ and the remainder of the proof net, either perform another permutation as above, or permute $v$ and $w$ twice again, once exchanging the targets of $e_1$ and $e_2$, and once exchanging the targets of $e_2$ and $e_0$.
+
+	\item
+To exchange an edge-absorber $w$ linked from a $\named d\bot$ outside $\itn e$ for the target $v$ of $e_1$, and attach $e_0$ to $w$, attach $d$ to $v$.
+%
+At this point, $e_1$ forms the only connect between $\itn e$ and the remainder of the proof net; to reinstate $e_0$ in this role, do as above, producing a net effect of cycling the targets of $e_1$, $e_2$, and $d$.
+
+	\item
+Finally, to permute edge-absorbers $v$ and $w$ linked by $\itn e$, attach $e_0$ to the indicator of a vertex-gadget where also another edge-gadget $\itn d$ is connected, with indicator vertex $d_0$ and an arbitrary other vertex $d_1$.
+%
+Connect $d_0$ to $v$, and apply Lemma~\ref{lem:double exchange} to permute $v$ and $w$, as well as exchanging the targets of $d_0$ and $d_1$.
+%
+A second such exchange is needed to re-attach $d_0$ and $d_1$ to their original targets.
+
+\end{enumerate}
+
+In each case, if one of the edge-absorbers exchanged is linked to by multiple $\bot$-occurrences within the same weight element, these may be termporarily attached elsewhere.
+
+\end{proof}
+
+Let $\itn\gamma'$ be $\itn\gamma$ where the first two edge-absorbers are exchanged.
+
+\begin{lemma}
+If $\gamma\sim\delta$ for total configurations $\gamma$ and $\delta$, then either $\itn\gamma\sim\itn\delta$ or $\itn\gamma\sim\itn\delta'$.
+\end{lemma}
+
+\begin{proof}
+We will prove the case where $\gamma\sim\delta$ is a single reconfiguration step; the general case follows because the proof goes through also when $\itn\gamma'$ replaces $\itn\gamma$ in the statement of the lemma.
+%
+Let $\gamma$ and $\delta$ agree on every edge except $e$, where $\gamma(e)=v$ and $\delta(e)=w$.
+%
+Firstly, using Lemma~\ref{lem:octopus roll}, for the edges $d$ other than $e$ such that $\gamma(d)=v$, the weight elements of the edge-gadgets $\itn d$ may be linked to the constraint elements of $\itn v$, in accordance with the target configuration $\itn\delta$.
+%
+Since $e$ is mobile in $\gamma$, the weights of the edges $d$ suffice to fill the inflow constraint of $v$, and correspondingly the weight elements of edge-gadgets $\itn d$ suffice to fill the constraint elements of $\itn v$, so that $\itn e$ is free.
+%
+Next, the indicator vertex of $\itn e$, which links to the indicator of $\itn v$, is re-attached to the indicator of $\itn w$.
+%
+Again using Lemma~\ref{lem:octopus roll}, the weight elements of edge-gadgets connected to $\itn w$, including $\itn e$, may be linked in accordance with $\itn\delta$.
+%
+The resulting proof net is $\itn\delta$ modulo a permutation of edge-absorbers; then it is equivalent to either $\itn\delta$ or $\itn\delta'$ by Lemma~\ref{lem:permute edge-absorbers}.
+\end{proof}
+
 
 %------------------------------------------------------------------------------------------------
 
@@ -237,8 +358,6 @@ Using the above, a proof net for $\itn G$ may be interpreted as a configuration 
 \begin{definition}
 For a proof net $\links$ for the interpretation of a graph $\itn G$, let $\coitn\links$ be the partial configuration for $G$ where $\coitn\links(e)$ is $v$ if 1) $e$ is appropriate for $v$ and 2) $\itn e$ belongs to the empire of $\itn v$, and undefined otherwise.
 \end{definition}
-
-
 
 
 
