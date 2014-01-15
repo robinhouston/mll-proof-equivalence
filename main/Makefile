@@ -1,7 +1,7 @@
-all: mllequiv.pdf
+all: mllequiv.pdf scratch-2.pdf scratch.pdf LICS.pdf
 
 mllequiv.pdf: mllequiv.tex s_background.tex s_level_0.tex
 	latexmk -pdf mllequiv.tex
 
-%.tex:
-	# Nothing to do here
+%.pdf: %.tex
+	latexmk -pdf $<
