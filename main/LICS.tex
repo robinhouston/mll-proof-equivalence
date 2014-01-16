@@ -1,4 +1,4 @@
-\documentclass[conference,onecolumn]{IEEEtran}
+\documentclass[conference]{IEEEtran}
 
 \usepackage{amssymb,amsthm,amsmath}
 \usepackage{microtype}
@@ -272,7 +272,7 @@ $\Pi\toNet\links$ if for each $\named a\bot$ in $\Delta$, if $\Gamma$ is the con
 
 
 
-\begin{proposition}[\cite{DR89}]
+\begin{proposition}[\cite{Danos-Regnier-1989}]
 \label{prop:correctness and sequentialisation}
 %
 For a proof $\Pi$ with conclusion $\Gamma$, if $\Pi\toNet\links$ then $\links$ is a proof net for $\Gamma$.
@@ -353,7 +353,9 @@ The following example is a proof net for the above sequent.
 \]
 
 
-We will denote by $A^n$ the sequent consisting of $n$ copies of a formula $A$, and given a sequent $\Gamma=A_1,\dotsc,A_n$ we will write $\bigotimes\Gamma$ for $A_1\tn\cdots\tn A_n$, and $\bigparr\Gamma$ for $A_1\parr\cdots\parr A_n$.
+We will denote by $A^n$ the sequent consisting of $n$ occurrences of a formula $A$.
+%
+Given a sequent $\Gamma=A_1,\dotsc,A_n$ we will write $\bigotimes\Gamma$ for $A_1\tn\cdots\tn A_n$, and $\bigparr\Gamma$ for $A_1\parr\cdots\parr A_n$.
 %
 In diagrammatic notation, a big disc will represent an $n$-ary tensor over only $\bot$-formulae, $\bigotimes(\bot^n)$, and a big circle will represent an $n$-ary par over only $1$-formulae, $\bigparr(\1^n)$.
 %
@@ -376,47 +378,18 @@ A linking between $\bigotimes(\bot^n)$ and $\bigparr(\1^n)$ will be represented 
 \] 
 
 
-
-
-
-%===========================
-\bibliographystyle{plain}
-\bibliography{../refs}
-\end{document}
-%===========================
-
-
-
-
-%% OLD
-
-%
-A tensor is represented by a line connecting both subformulae, and a par by juxtaposition: if $A$ and $B$ are represented by \raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-A.pdf}}
-and \raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-B.pdf}},
-%
-then $A\parr B$ is \raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-AparB.pdf}}
-and $A\tn B$ is \raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-AtnB.pdf}}.
-%
-A tensor of multiple elements is denoted by stringing them together in a line, so $A\tn B\tn C$ is
-\raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-AtnBtnC.pdf}}.
-%
-Boxes play the role of parentheses around par-formulae, so $(A\parr B)\tn C$ is drawn as \begin{center}{\includegraphics[scale=1]{hex-AparBtnC.pdf}}\end{center}
-
-\noindent For example, this sequent
-\[ \vdash \bot\tn\bot, \bot\tn\bot, \bot\tn\bot, \bot\tn\bot, 1, \{[(1\parr 1\parr 1)\tn(1\parr 1\parr 1)]\parr 1\parr (\bot\tn\bot\tn\bot)\parr 1\}\tn\bot \]
-could be drawn like this:
-\begin{center}\includegraphics[scale=0.75]{example-sequent.pdf}\end{center}
-
-\noindent We represent a proof net by drawing an arrow from each $\bullet$ to some $\circ$. For example, one proof net on the above sequent is
-\begin{center}\includegraphics[scale=0.75]{example-sequent-proofnet.pdf}\end{center}
-
-
-
-
-
-%NOTE: need 'octopus' terminology here
-
-%NOTE: will we need to count arms often enough to make it worthwile to write $|\Gamma|_\bot$ for the number of $\bot$-occurrences in a sequent $\Gamma$?
+That two vertices in a proof net or a switching graph are connected will be indicated via a dashed edge or a dashed arrow, as illustrated below.
+\[
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[bullet] (a) at (0,0) {}; \node[bullet] (b) at (2,0) {}; \draw[dashed] (a)--(b);
+\end{tikzpicture}
+\qquad
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[circ] (a) at (0,0) {}; \node[circ] (b) at (3,0) {};
+	\coordinate (a') at ($(a) + (.6,0)$); \coordinate (b') at ($(b) + (-.6,0)$);
+	\draw[thepink,dashed] (a')--(b'); \draw[thepink,->] (a')--(a.center); \draw[thepink,->] (b')--(b.center);
+\end{tikzpicture}
+\]
 
 
 
@@ -732,6 +705,9 @@ Then $\links\sim\links'$ where $\links'(a)=v$, $\links'(b)=u$, $\links'(c)=y$, a
 	\vc{\doubleExchange vuyx}
 \]
 \end{IEEEproof}
+
+
+
 
 
 
@@ -1207,6 +1183,12 @@ It follows that in the graph $G$ the edges $e_1$ through $e_n$ can be moved away
 \section{Conclusions}
 
 
+
+%===========================
+\bibliographystyle{plain}
+\bibliography{../refs}
+\end{document}
+%===========================
 
 
 \end{document}
