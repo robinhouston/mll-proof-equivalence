@@ -315,7 +315,9 @@ The units $1$ and $\bot$ are represented by a circle $\circ$ and a disc $\bullet
 %
 %% NEW
 %
-Formulae related by a tensor will be connected by edges, while formulae related by a par will be collected in a box, omitting an outer box for the complete sequent.
+Formulae related by a tensor will be connected by edges.
+%
+Formulae related by a par will be juxtaposed, and collected in a box when a par-formula is an immediate subformula of a tensor-formula.
 %
 For example, the following denote the same sequent:
 \[
@@ -341,16 +343,37 @@ The following example is a proof net for the above sequent.
 	\draw[rounded corners] (0,2) rectangle (4,4);
 	\draw (4,3) -- (5,3) node[bullet] (e) {};
 	\begin{scope}[thepink,->]
-			\draw[bend right=10] (a) to (2);
-			\draw[bend right=10] (b) to (3);
-			\draw[bend left=10] (c) to (3);
-			\draw[bend left=10] (d) to (4);
-			\draw[bend right=10] (e) to (1);
+			\draw[bend right=10] (a) to (2.center);
+			\draw[bend right=10] (b) to (3.center);
+			\draw[bend left=10]  (c) to (3.center);
+			\draw[bend left=10]  (d) to (4.center);
+			\draw[bend right=10] (e) to (1.center);
 	\end{scope}
 \end{tikzpicture}
 \]
 
 
+We will denote by $A^n$ the sequent consisting of $n$ copies of a formula $A$, and given a sequent $\Gamma=A_1,\dotsc,A_n$ we will write $\bigotimes\Gamma$ for $A_1\tn\cdots\tn A_n$, and $\bigparr\Gamma$ for $A_1\parr\cdots\parr A_n$.
+%
+In diagrammatic notation, a big disc will represent an $n$-ary tensor over only $\bot$-formulae, $\bigotimes(\bot^n)$, and a big circle will represent an $n$-ary par over only $1$-formulae, $\bigparr(\1^n)$.
+%
+A linking between $\bigotimes(\bot^n)$ and $\bigparr(\1^n)$ will be represented by a wide arrow, as illustrated below.
+\[
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[big_] (A) at (-1,2) {};
+	\node[big1] (!) at (-1,0) {};
+	\node at (.5,1) {$\coloneq$};
+	\draw (2,2) node[bullet] (a) {} -- (3,2) node[bullet] (b) {} -- (4,2) (5,2) -- (6,2) node[bullet] (c) {}; 
+	\node[circ] (1) at (2,0) {}; \node[circ] (2) at (3,0) {}; \node[circ] (3) at (6,0) {};
+	\draw[dotted] (4,2)--(5,2) (4,0)--(5.1,0);
+	\begin{scope}[thepink,->]
+			\draw[big>] (A) to (!.center);
+			\draw[bend right=10] (a) to (1.center);
+			\draw[bend right=10] (b) to (2.center);
+			\draw[bend right=10] (c) to (3.center);
+	\end{scope}
+\end{tikzpicture}
+\] 
 
 
 
@@ -847,7 +870,6 @@ Secondly, if $\gamma'$ and $\gamma''$ are total configurations that both agree w
 For a graph $G=(V,E,c,v,w)$ let $|V|$ and $|E|$ denote the number of vertices and edges, respectively, and let $|c|$ and $|w|$ denote the sum of all inflow constraints, $\sum_{v\in V}c(v)$, and the sum of all edge weights, $\sum_{e\in E}w(e)$.
 
 
-Let $A^n$ denote the sequent of $n$ copies of a formula $A$, and for a sequent $\Gamma=A_1,\dotsc,A_n$ let $\bigotimes\Gamma=A_1\tn\dotso\tn A_n$ and $\bigparr\Gamma=A_1\parr\dotso\parr A_n$.
 
 
 
