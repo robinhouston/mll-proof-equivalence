@@ -317,7 +317,7 @@ The units $1$ and $\bot$ are represented by a circle $\circ$ and a disc $\bullet
 %
 Formulae related by a tensor will be connected by edges, while formulae related by a par will be collected in a box, omitting an outer box for the complete sequent.
 %
-For example:
+For example, the following denote the same sequent:
 \[
 	\bot\tn\bot,\bot\tn\bot,\1,(\1\parr\1\parr\1)\tn\bot
 \]
@@ -325,12 +325,14 @@ For example:
 \begin{tikzpicture}[x=5mm,y=-5mm,octo]
 	\draw (0,0) node[bullet] (a) {} -- (1,0) node[bullet] (b) {} (2,0) node[bullet] (c) {} -- (3,0) node[bullet] (d) {};
 	\node[circ] (1) at (4,0) {};
-	\node[circ] (2) at (5.5,0) {}; \node[circ] (3) at (6.5,0) {}; \node[circ] (4) at (7.5,0) {};
-	\draw[rounded corners] (5,-1) rectangle (8,1);
-	\draw (8,0) -- (9,0) node[bullet] (e) {};
+	\node[circ] (2) at (5.25,0) {}; \node[circ] (3) at (6.25,0) {}; \node[circ] (4) at (7.25,0) {};
+	\draw[rounded corners] (4.75,-1) rectangle (7.75,1);
+	\draw (7.75,0) -- (8.75,0) node[bullet] (e) {};
 \end{tikzpicture}
 \]
-
+The links of a proof net are added to the sequent as colored arrows.
+%
+The following example is a proof net for the above sequent.
 \[
 \begin{tikzpicture}[x=5mm,y=-5mm,octo]
 	\node[circ] (1) at (6,0) {};
@@ -347,6 +349,19 @@ For example:
 	\end{scope}
 \end{tikzpicture}
 \]
+
+
+
+
+
+
+
+%===========================
+\bibliographystyle{plain}
+\bibliography{../refs}
+\end{document}
+%===========================
+
 
 
 
@@ -1168,24 +1183,6 @@ It follows that in the graph $G$ the edges $e_1$ through $e_n$ can be moved away
 
 
 \section{Conclusions}
-
-
-
-
-
-
-
-
-%===========================
-\bibliographystyle{plain}
-\bibliography{../refs}
-\end{document}
-%===========================
-
-
-
-
-
 
 
 
