@@ -69,6 +69,11 @@ An important consequence of the result is that the existence of a satisfactory n
 \section{Introduction}
 
 
+%% STILL TO ADD:
+%% - MLL proof equivalence is the word problem for *-autonomous categories
+%% - IMLL proof equivalence is polynomial-time
+
+
 An important element of the theory of linear logic \cite{Girard-1987} is the idea that proofs should be considered modulo the permutation of inferences.
 %; that the chosen order of permutable inferences is inessential, or `bureaucracy'.
 %contributes no essential proof content, and should be considered `bureaucracy'.
@@ -294,7 +299,8 @@ For proofs $\Pi$, $\Pi'$ and proof nets $\links$, $\links'$ such that $\Pi\toNet
 
 \noindent
 The above proposition means that \MLL\ proof equivalence is the problem of deciding equivalence of proof nets.
-
+%
+% We will use proof net equivalence to encode constraint logic.
 
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -305,6 +311,47 @@ The above proposition means that \MLL\ proof equivalence is the problem of decid
 We will use a concise diagrammatic notation for sequents and proof nets.
 %
 The units $1$ and $\bot$ are represented by a circle $\circ$ and a disc $\bullet$ respectively.
+%
+%
+%% NEW
+%
+Formulae related by a tensor will be connected by edges, while formulae related by a par will be collected in a box, omitting an outer box for the complete sequent.
+%
+For example:
+\[
+	\bot\tn\bot,\bot\tn\bot,\1,(\1\parr\1\parr\1)\tn\bot
+\]
+\[
+\begin{tikzpicture}[x=5mm,y=-5mm,octo]
+	\draw (0,0) node[bullet] (a) {} -- (1,0) node[bullet] (b) {} (2,0) node[bullet] (c) {} -- (3,0) node[bullet] (d) {};
+	\node[circ] (1) at (4,0) {};
+	\node[circ] (2) at (5.5,0) {}; \node[circ] (3) at (6.5,0) {}; \node[circ] (4) at (7.5,0) {};
+	\draw[rounded corners] (5,-1) rectangle (8,1);
+	\draw (8,0) -- (9,0) node[bullet] (e) {};
+\end{tikzpicture}
+\]
+
+\[
+\begin{tikzpicture}[x=5mm,y=-5mm,octo]
+	\node[circ] (1) at (6,0) {};
+	\draw (0,0) node[bullet] (a) {} -- (1,0) node[bullet] (b) {} (3,0) node[bullet] (c) {} -- (4,0) node[bullet] (d) {};
+	\node[circ] (2) at (1,3) {}; \node[circ] (3) at (2,3) {}; \node[circ] (4) at (3,3) {};
+	\draw[rounded corners] (0,2) rectangle (4,4);
+	\draw (4,3) -- (5,3) node[bullet] (e) {};
+	\begin{scope}[thepink,->]
+			\draw[bend right=10] (a) to (2);
+			\draw[bend right=10] (b) to (3);
+			\draw[bend left=10] (c) to (3);
+			\draw[bend left=10] (d) to (4);
+			\draw[bend right=10] (e) to (1);
+	\end{scope}
+\end{tikzpicture}
+\]
+
+
+
+%% OLD
+
 %
 A tensor is represented by a line connecting both subformulae, and a par by juxtaposition: if $A$ and $B$ are represented by \raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-A.pdf}}
 and \raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-B.pdf}},
