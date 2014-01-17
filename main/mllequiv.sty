@@ -182,7 +182,7 @@
 
 
 \newcommand\netB[4]{\vcenter{\hbox{%
-  \begin{tikzpicture}[x=-1mm,y=1mm,octo]
+  \begin{tikzpicture}[x=-.9mm,y=1mm,octo]
 	\coordinate (a) at (0,0); \coordinate (d) at (0,20);
 	\coordinate (b) at (5,0); \coordinate (c) at (5,20);
 	%\coordinate (E) at (20,10); \node at (E) {};
@@ -192,7 +192,7 @@
 	%
 	\draw (a)--(b) (c)--(d);
 	%
-	\draw[thepink,dashed,<->] (x.center)--(w.center);
+	\draw[dashed] (x)--(w);
 	%\draw[thepink,->] (16,5)--(x.center);
 	%\draw[thepink,->] (16,15)--(w.center);
 	%\draw[thepink,dashed,rounded corners,dash phase=1pt] (E) |- (16,5) (E) |- (16,15);

@@ -540,7 +540,7 @@ This is illustrated below.
 \end{enumerate}
 %
 \[
-	\kern-1pt \netB yxwz \perm \netB yxyz \perm \netB zxyz \perm \netB zxyw \kern-1pt 
+	\netB yxwz \perm \netB yxyz \perm \netB zxyz \perm \netB zxyw
 \]
 %
 \end{IEEEproof}
@@ -810,12 +810,23 @@ An early conjecture of Girard, which turned out to be false, was that a sequent 
 %------------------------------------------------------------
 
 
-\section{Proof nets and constraint graphs}
+\section{Encoding constraint graphs}
 
 
+\emph{Non-deterministic constraint logic} \cite{Hearn-Demaine-2005,Hearn-Demaine-2008} is a simple graph-rewriting formalism, introduced as a convenient tool for \textsc{PSPACE}-hardness reductions.
+%
+A rewriting step is the reversal of a single edge in a \emph{constraint graph}, a graph with weighted, directed edges and an \emph{inflow constraint} on each vertex, preserving the condition that the total weight of the incoming edges of each vertex is at least its inflow constraint.
+%
+The specific problem we will use is the \emph{configuration--to--configuration} problem, which asks whether a path of rewrite steps exists between two constraint graphs.
 
-[[ NOTE: we should decide on notation for steps versus paths in permutation relations ]]
 
+We will introduce minor adaptations to this formalism to suit our reduction to MLL proof equivalence.
+%
+Mainly, a constraint graph here will have \emph{undirected} edges, and a separate notion of \emph{configuration} imposes a direction on edges.
+%
+A constraint graph will then be encoded as a sequent, while a configuration corresponds to a linking.
+%
+In addition, a configuration will be allowed to be \emph{partial}, leaving some edges undirected, as long as the directed edges suffice to satisfy the inflow constraints.
 
 
 \begin{definition} 
