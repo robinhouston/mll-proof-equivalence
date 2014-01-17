@@ -18,6 +18,7 @@
 \graphicspath{{../notes/}}
 
 \let\alt=\underline
+\let\bigtn=\bigotimes
 
 \newcommand\NoIndent[1]{%
   \par\vbox{\parbox[t]{\linewidth}{#1}}%
@@ -359,11 +360,11 @@ The following example is a proof net for the above sequent.
 
 We will denote by $A^n$ the sequent consisting of $n$ occurrences of a formula $A$.
 %
-Given a sequent $\Gamma=A_1,\dotsc,A_n$ we will write $\bigotimes\Gamma$ for $A_1\tn\cdots\tn A_n$, and $\bigparr\Gamma$ for $A_1\parr\cdots\parr A_n$.
+Given a sequent $\Gamma=A_1,\dotsc,A_n$ we will write $\bigtn\Gamma$ for $A_1\tn\cdots\tn A_n$, and $\bigparr\Gamma$ for $A_1\parr\cdots\parr A_n$.
 %
-In diagrammatic notation, a big disc will represent an $n$-ary tensor over only $\bot$-formulae, $\bigotimes(\bot^n)$, and a big circle will represent an $n$-ary par over only $1$-formulae, $\bigparr(\1^n)$.
+In diagrammatic notation, a big disc will represent an $n$-ary tensor over only $\bot$-formulae, $\bigtn(\bot^n)$, and a big circle will represent an $n$-ary par over only $1$-formulae, $\bigparr(\1^n)$.
 %
-A linking between $\bigotimes(\bot^n)$ and $\bigparr(\1^n)$ will be represented by a wide arrow, as illustrated below.
+A linking between $\bigtn(\bot^n)$ and $\bigparr(\1^n)$ will be represented by a wide arrow, as illustrated below.
 \[
 \begin{tikzpicture}[x=5mm,y=5mm,octo]
 	\node[big_] (A) at (-1,2) {};
@@ -824,9 +825,9 @@ The specific problem we will use is the \emph{configuration--to--configuration} 
 
 We will introduce minor adaptations to this formalism to suit our reduction to MLL proof equivalence.
 %
-Mainly, a constraint graph here will have \emph{undirected} edges, and a separate notion of \emph{configuration} imposes a direction on edges.
+Mainly, a constraint graph itself will have \emph{undirected} edges, while a separate notion of \emph{configuration} imposes a direction on them.
 %
-A constraint graph will then be encoded as a sequent, while a configuration corresponds to a linking.
+A constraint graph may then be encoded as a sequent, and a configuration as a proof net.
 %
 In addition, we will allow \emph{partial} configurations, where edges may be left undirected---as long as the inflow constraints are satisfied by the directed edges.
 
@@ -878,7 +879,51 @@ if $\gamma'$ and $\gamma''$ are total configurations that both agree with a part
 \end{IEEEproof}
 
 
-\subsection*{Encoding constraint graphs}
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+\subsection*{The encoding}
+
+
+The basis of the encoding of constraint graphs in MLL is formed by \emph{weight elements}, which encode one unit of weight on an edge, and \emph{constraint elements}, that encode one unit towards the inflow constraint of a vertex.
+%
+The arithmetic of linking formulae of the form $\bigtn(\bot^n)$ to formulae $\bigparr(1^m)$ will be used to ensure that a weight element may be linked to only two vertices.
+%
+Below left is a constraint element, below right a weight element.
+\[
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[big1] (1) at (0,0) {$m'$}; 
+	\node[big1] (2) at (3,0) {$n'$};
+	\draw[rounded corners] (-1,-1) rectangle (1,1) (2,-1) rectangle (4,1);
+	\draw (1,0)--(2,0);
+\end{tikzpicture}
+\qquad\qquad
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[big_] (A) at (0,0) {$i'$}; 
+	\node[big_] (B) at (2,0) {$j'$};
+	\node[big_] (C) at (4,0) {$k'$};
+	\draw[rounded corners] (-1,-1) rectangle (5,1);
+\end{tikzpicture}
+\]
+Throughout an encoding, the sum $i+j+k=m+n$ will be constant---this way, a priori any weight element may connect to any constraint element.
+%
+The value of $m$ (and thus $n$) will differ for each vertex.
+%
+The weight element above will be able to connect naturally to those constraint elements where $m=i$ and where $m=i+j$, as illustrated below.
+\[
+	\connectingElements 1 \qquad \connectingElements 2
+\]
+To ensure that no other connections can be made, values are chosen such that $m\mod3=1$ and $n\mod3=2$, and correspondingly $i\mod3=1$, $j\mod3=0$, and $k\mod3=2$.
+
+
+In a constraint graph, the sum of weights is usually greater than the sum of all inflow constraints---otherwise, no edge can move, or no configuration exists.
+%
+An encoding will therefore have weight elements not connected to constraint elements.
+%
+These will instead connect to additional $\1$-formulae, referred to as edge-absorbers, as follows.
+
+
+
+
 
 
 
@@ -906,16 +951,16 @@ where each \emph{constraint element} $C$ is the formula
 
 The encoding of an edge $e$ connecting vertices $v_i$ and $v_j$ with $i<j$ is the formula
 \[
-	\itn{e} = \bigotimes\big(W^{m\times w(e)}\big)\tn\bot
+	\itn{e} = \bigtn\big(W^{m\times w(e)}\big)\tn\bot
 \]
 where each \emph{weight element} $W$ is the formula
 \[
-	W = \bigotimes\big(\bot^{3i+2}\big)\parr\bigotimes\big(\bot^{3(j-i)+1}\big)\parr\bigotimes\big(\bot^{3(n-j)+3}\big)
+	W = \bigtn\big(\bot^{3i+2}\big)\parr\bigtn\big(\bot^{3(j-i)+1}\big)\parr\bigtn\big(\bot^{3(n-j)+3}\big)
 \]
 
 The encoding of the graph $G$ is the sequent
 \[
-	%\itn G = \bigotimes_{1\leq i\leq n}\itn{v_i}, \itn{e_1},\dotsc,\itn{e_k}, \bot^m
+	%\itn G = \bigtn_{1\leq i\leq n}\itn{v_i}, \itn{e_1},\dotsc,\itn{e_k}, \bot^m
 	\itn G = \itn{v_1}\tn\dotso\tn\itn{v_n}, \itn{e_1},\dotsc,\itn{e_m}, 1^p
 \]
 where $p=m\times(|w|-|c|)\times(3n+4)$; the $p$ instances of $1$ are called \emph{edge-absorbers}.
@@ -1183,7 +1228,7 @@ The two $\parr$-subformulae have a balance of $-3i-1$ and $-3(n-i)-2$ respective
 %
 Each weight element in $\itn{e}$ is an instance of 
 \[
-	W = \bigotimes\big(\bot^{3a+2}\big)\parr\bigotimes\big(\bot^{3(b-a)+1}\big)\parr\bigotimes\big(\bot^{3(n-b)+3}\big)~.
+	W = \bigtn\big(\bot^{3a+2}\big)\parr\bigtn\big(\bot^{3(b-a)+1}\big)\parr\bigtn\big(\bot^{3(n-b)+3}\big)~.
 \]
 The three $\tn$-subformulae have a net balance of $3a+1$, $3(b-a)$, and $3(n-b)+2$ respectively.
 %
