@@ -810,12 +810,14 @@ An early conjecture of Girard, which turned out to be false, was that a sequent 
 %------------------------------------------------------------
 
 
-\section{Encoding constraint graphs}
+\section{Encoding constraint logic}
 
 
-\emph{Non-deterministic constraint logic} \cite{Hearn-Demaine-2005,Hearn-Demaine-2008} is a simple graph-rewriting formalism, introduced as a convenient tool for \textsc{PSPACE}-hardness reductions.
+\emph{Non-deterministic constraint logic} \cite{Hearn-Demaine-2005,Demaine-Hearn-2008} is a simple graph-rewriting formalism, introduced as a convenient tool for \textsc{PSPACE}-hardness reductions.
 %
-A rewriting step is the reversal of a single edge in a \emph{constraint graph}, a graph with weighted, directed edges and an \emph{inflow constraint} on each vertex, preserving the condition that the total weight of the incoming edges of each vertex is at least its inflow constraint.
+A rewrite step consists of the reversal of a single edge in a \emph{constraint graph}, a graph with weighted, directed edges and an \emph{inflow constraint} on each vertex.
+%
+Rewrite steps must preserve the condition that the total weight of the incoming edges of each vertex is at least its inflow constraint.
 %
 The specific problem we will use is the \emph{configuration--to--configuration} problem, which asks whether a path of rewrite steps exists between two constraint graphs.
 
@@ -826,26 +828,30 @@ Mainly, a constraint graph here will have \emph{undirected} edges, and a separat
 %
 A constraint graph will then be encoded as a sequent, while a configuration corresponds to a linking.
 %
-In addition, a configuration will be allowed to be \emph{partial}, leaving some edges undirected, as long as the directed edges suffice to satisfy the inflow constraints.
+In addition, we will allow \emph{partial} configurations, where edges may be left undirected---as long as the inflow constraints are satisfied by the directed edges.
 
 
 \begin{definition} 
-A \emph{non-deterministic constraint graph} (\textsc{ncg}) $G=(V,E,c,v,w)$ consists of a set $V$ of vertices with \emph{minimum inflow constraint} $c\colon V\to\mathbb N$, and a set $E$ of at most one undirected edge $e$ per vertex-pair $v(e)=\{v_1,v_2\}$, with \emph{weight} $w\colon E\to N$.
+A \emph{non-deterministic constraint graph} (\textsc{ncg}) $G=(V,E,c,v,w)$ consists of: a set $V$ of vertices with \emph{minimum inflow constraint} $c\colon V\to\mathbb N$; and a set $E$ of undirected edges, between vertices $v(e)=\{v_1,v_2\}\subseteq V$ and with \emph{weight} $w\colon E\to\mathbb N$.
+%of at most one undirected edge $e$ per vertex-pair $v(e)=\{v_1,v_2\}$, with \emph{weight} $w\colon E\to N$.
 
-A (partial) \emph{configuration} of an \textsc{ncg} is a (partial) function $\gamma\colon E\to V$ such that
+\smallskip
+
+A \emph{(partial) configuration} for an \textsc{ncg} is a (partial) function $\gamma\colon E\to V$ such that
 \begin{itemize}
 	\item
-for every edge $e$, $\gamma(e)\in v(e)$ or (in the partial case) $\gamma(e)$ is undefined, and
+for every edge $e$, if $\gamma(e)$ is defined then $\gamma(e)\in v(e)$,
 	\item
 for every vertex $v$, the sum of its inflow weights is at least its inflow constraint, $\sum\{w(e)\mid \gamma(e)=v\}\geq c(v)$.
 \end{itemize} 
 
-A \emph{reconfiguration step} $\gamma\sim\delta$ connects two (partial) configurations for an \textsc{ncg} $G$ that differ in the assignment of exactly one edge.
-
+\smallskip
+A \emph{reconfiguration step} $\gamma\perm*\delta$ relates two (partial) configurations for an \textsc{ncg} $G$ that differ in value (or definedness) on exactly one edge.
+%
 \end{definition}
 
 
-The \emph{(partial) \textsc{ncg}-reconfiguration problem} is the problem of deciding when two (partial) configurations are connected by a path in the graph of (partial) configurations and reconfiguration steps.
+\emph{(Partial) \textsc{ncg}-reconfiguration} is the problem of deciding when two (partial) configurations are connected by a path in the graph of (partial) configurations and reconfiguration steps.
 
 \begin{theorem}[\cite{Hearn-Demaine-2005}]
 \textsc{ncg}-reconfiguration is \textsc{pspace}-complete.
@@ -856,16 +862,22 @@ Partial \textsc{ncg}-reconfiguration is \textsc{pspace}-complete.
 \end{proposition}
 
 \begin{IEEEproof}
-There is a path between total configurations $\gamma$ and $\delta$ in partial \textsc{ncg}-reconfiguration if and only if there is one in \textsc{ncg}-reconfiguration, for the following two reasons.
+Partial \textsc{ncg}-reconfiguration simulates \textsc{ncg}-reconfiguration:
 %
-Firstly, if $\gamma\sim\delta$ are partial configurations, they may be completed to total configurations $\gamma'\sim\delta'$ or $\gamma'=\delta'$.
+%There is a path between total configurations $\gamma$ and $\delta$ in partial \textsc{ncg}-reconfiguration if and only if there is one in \textsc{ncg}-reconfiguration, for the following two reasons.
 %
-Secondly, if $\gamma'$ and $\gamma''$ are total configurations that both agree with a partial configuration $\gamma$ where it is defined, then $\gamma'$ and $\gamma''$ are connected in \textsc{ncg}-reconfiguration by re-assigning the values where they disagree.
+firstly, if $\gamma\perm*\delta$ for partial configurations, then these may be completed to total configurations $\gamma'\sim\delta'$ or $\gamma'=\delta'$; secondly,
+%
+if $\gamma'$ and $\gamma''$ are total configurations that both agree with a partial configuration $\gamma$ where it is defined, then $\gamma'$ and $\gamma''$ are connected in \textsc{ncg}-reconfiguration by reversing the edges on which they disagree.
 %
 \end{IEEEproof}
 
 
-For a graph $G=(V,E,c,v,w)$ let $|V|$ and $|E|$ denote the number of vertices and edges, respectively, and let $|c|$ and $|w|$ denote the sum of all inflow constraints and the sum of all weights respectively:
+\subsection*{Encoding constraint graphs}
+
+
+
+For a constraint graph $G=(V,E,c,v,w)$ let $|V|$ and $|E|$ denote the number of vertices and edges, respectively, and let $|c|$ and $|w|$ denote the sum of all inflow constraints and the sum of all weights respectively:
 \[
 	|c| = \sum_{v\in V}c(v) \qquad |w| = \sum_{e\in E}w(e)~.
 \]
