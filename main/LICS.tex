@@ -832,12 +832,12 @@ In addition, we will allow \emph{partial} configurations, where edges may be lef
 
 
 \begin{definition} 
-A \emph{non-deterministic constraint graph} (\textsc{ncg}) $G=(V,E,c,v,w)$ consists of: a set $V$ of vertices with \emph{minimum inflow constraint} $c\colon V\to\mathbb N$; and a set $E$ of undirected edges, between vertices $v(e)=\{v_1,v_2\}\subseteq V$ and with \emph{weight} $w\colon E\to\mathbb N$.
+A \emph{constraint graph} $G=(V,E,c,v,w)$ consists of: a set $V$ of vertices with \emph{inflow constraint} $c\colon V\to\mathbb N$; and a set $E$ of undirected edges with \emph{weight} $w\colon E\to\mathbb N$, connecting vertices $v(e)=\{v_1,v_2\}\subseteq V$.
 %of at most one undirected edge $e$ per vertex-pair $v(e)=\{v_1,v_2\}$, with \emph{weight} $w\colon E\to N$.
 
 \smallskip
 
-A \emph{(partial) configuration} for an \textsc{ncg} is a (partial) function $\gamma\colon E\to V$ such that
+A \emph{(partial) configuration} for a constraint graph is a (partial) function $\gamma\colon E\to V$ such that
 \begin{itemize}
 	\item
 for every edge $e$, if $\gamma(e)$ is defined then $\gamma(e)\in v(e)$,
@@ -851,7 +851,12 @@ A \emph{reconfiguration step} $\gamma\perm*\delta$ relates two (partial) configu
 \end{definition}
 
 
-\emph{(Partial) \textsc{ncg}-reconfiguration} is the problem of deciding when two (partial) configurations are connected by a path in the graph of (partial) configurations and reconfiguration steps.
+\emph{Non-deterministic constraint graph reconfiguration} or \emph{\textsc{ncg}-reconfiguration} is the problem of deciding when two configurations for a constraint graph are connected in the graph of total configurations and reconfiguration steps.
+%
+\emph{Partial \textsc{ncg}-reconfiguration} is the same problem for partial configurations.
+
+
+%\emph{(Partial) \textsc{ncg}-reconfiguration} is the problem of deciding when two (partial) configurations are connected by a path in the graph of (partial) configurations and reconfiguration steps.
 
 \begin{theorem}[\cite{Hearn-Demaine-2005}]
 \textsc{ncg}-reconfiguration is \textsc{pspace}-complete.
@@ -866,7 +871,7 @@ Partial \textsc{ncg}-reconfiguration simulates \textsc{ncg}-reconfiguration:
 %
 %There is a path between total configurations $\gamma$ and $\delta$ in partial \textsc{ncg}-reconfiguration if and only if there is one in \textsc{ncg}-reconfiguration, for the following two reasons.
 %
-firstly, if $\gamma\perm*\delta$ for partial configurations, then these may be completed to total configurations $\gamma'\sim\delta'$ or $\gamma'=\delta'$; secondly,
+firstly, if $\gamma\perm*\delta$ for partial configurations, then these may be completed to total configurations $\gamma'\perm*\delta'$ or $\gamma'=\delta'$; secondly,
 %
 if $\gamma'$ and $\gamma''$ are total configurations that both agree with a partial configuration $\gamma$ where it is defined, then $\gamma'$ and $\gamma''$ are connected in \textsc{ncg}-reconfiguration by reversing the edges on which they disagree.
 %
@@ -885,12 +890,12 @@ For a constraint graph $G=(V,E,c,v,w)$ let $|V|$ and $|E|$ denote the number of 
 
 
 \begin{definition}
-\label{def:graph interpretation}
-The \emph{interpretation} $\itn G$ of an \textsc{ncg} $G=(V,E,c,v,w)$ is a sequent constructed as follows.
+\label{def:graph encoding}
+The \emph{encoding} $\itn G$ of an \textsc{ncg} $G=(V,E,c,v,w)$ is a sequent constructed as follows.
 %
 Let $V=\{v_1,\dotsc,v_n\}$ and $E=\{e_1,\dotsc,e_m\}$ where $|V|=n$ and $|E|=m$.
 
-The interpretation of a vertex $v_k$ is the formula
+The encoding of a vertex $v_k$ is the formula
 \[
 	\itn{v_k} = \bigparr\big(C^{m\times c(v_k)} \big)\parr 1
 \]
@@ -899,7 +904,7 @@ where each \emph{constraint element} $C$ is the formula
 	C = \bigparr\big(1^{3k+2}\big) \tn \bigparr\big(1^{3(n-k)+3}\big)
 \]
 
-The interpretation of an edge $e$ connecting vertices $v_i$ and $v_j$ with $i<j$ is the formula
+The encoding of an edge $e$ connecting vertices $v_i$ and $v_j$ with $i<j$ is the formula
 \[
 	\itn{e} = \bigotimes\big(W^{m\times w(e)}\big)\tn\bot
 \]
@@ -908,7 +913,7 @@ where each \emph{weight element} $W$ is the formula
 	W = \bigotimes\big(\bot^{3i+2}\big)\parr\bigotimes\big(\bot^{3(j-i)+1}\big)\parr\bigotimes\big(\bot^{3(n-j)+3}\big)
 \]
 
-The interpretation of the graph $G$ is the sequent
+The encoding of the graph $G$ is the sequent
 \[
 	%\itn G = \bigotimes_{1\leq i\leq n}\itn{v_i}, \itn{e_1},\dotsc,\itn{e_k}, \bot^m
 	\itn G = \itn{v_1}\tn\dotso\tn\itn{v_n}, \itn{e_1},\dotsc,\itn{e_m}, 1^p
@@ -977,8 +982,8 @@ The rightmost $1$-occurrence of each vertex-gadget $\itn v$, named $\alt v$ belo
 
 
 \begin{definition}
-\label{def:configuration interpretation}
-The \emph{interpretation} $\itn\gamma$ of a total configuration $\gamma$ for a graph $G$ is a linking $\links$ constructed incrementally, for each successive edge $e$, and for each successive weight element $W$ within $e$, as follows.
+\label{def:configuration encoding}
+The \emph{encoding} $\itn\gamma$ of a total configuration $\gamma$ for a graph $G$ is a linking $\links$ constructed incrementally, for each successive edge $e$, and for each successive weight element $W$ within $e$, as follows.
 %
 Let $\gamma(e)=v$; firstly, the the indicator vertex of $\itn e$ links to the indicator of $\itn v$.
 %
@@ -1208,7 +1213,7 @@ Using the above, a proof net for $\itn G$ may be interpreted as a configuration 
 
 
 \begin{definition}
-For a proof net $\links$ for the interpretation of a graph $\itn G$, let $\coitn\links$ be the partial configuration for $G$ where $\coitn\links(e)$ is $v$ if 1) $e$ is appropriate for $v$ and 2) $\itn e$ belongs to the empire of $\itn v$, and undefined otherwise.
+For a proof net $\links$ for $\itn G$, let $\coitn\links$ be the partial configuration for $G$ where $\coitn\links(e)$ is $v$ if 1) $e$ is appropriate for $v$ and 2) $\itn e$ belongs to the empire of $\itn v$, and undefined otherwise.
 \end{definition}
 
 
