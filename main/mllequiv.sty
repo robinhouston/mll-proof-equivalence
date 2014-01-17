@@ -181,50 +181,53 @@
 
 
 
-\newcommand\netB[4]{\vcenter{\hbox{
+\newcommand\netB[4]{\vcenter{\hbox{%
   \begin{tikzpicture}[x=-1mm,y=1mm,octo]
 	\coordinate (a) at (0,0); \coordinate (d) at (0,20);
 	\coordinate (b) at (5,0); \coordinate (c) at (5,20);
-	\coordinate (E) at (20,10); \node at (E) {};
+	%\coordinate (E) at (20,10); \node at (E) {};
 	%
 	\node[circ] (z) at (0,10) {}; \node[circ] (y) at (5,10) {};
 	\node[circ] (x) at (12,5) {}; \node[circ] (w) at (12,15) {};
 	%
 	\draw (a)--(b) (c)--(d);
 	%
-	\draw[thepink,->] (16,5)--(x.center);
-	\draw[thepink,->] (16,15)--(w.center);
-	\draw[thepink,dashed,rounded corners,dash phase=1pt] (E) |- (16,5) (E) |- (16,15);
+	\draw[thepink,dashed,<->] (x.center)--(w.center);
+	%\draw[thepink,->] (16,5)--(x.center);
+	%\draw[thepink,->] (16,15)--(w.center);
+	%\draw[thepink,dashed,rounded corners,dash phase=1pt] (E) |- (16,5) (E) |- (16,15);
 	%
+	\begin{scope}[thepink,->]
 	\SWITCH{#1}
-	  {x}{\draw[thepink,->] (a.center) .. controls +(2,5) and +(-2,0) .. (x.center);}
-	  {y}{\draw[thepink,->] (a.center) .. controls +(3,4) .. (y.center);}
-	  {z}{\draw[thepink,->] (a.center) .. controls +(-2,4) and +(-2,-4) .. (z.center);}
+	  {x}{\draw (a.center) .. controls +(2,5) and +(-2,0) .. (x.center);}
+	  {y}{\draw (a.center) .. controls +(3,4) .. (y.center);}
+	  {z}{\draw (a.center) .. controls +(-2,4) and +(-2,-4) .. (z.center);}
 	\DEFAULT{}
 	\SWITCH{#2}
-	  {x}{\draw[thepink,->] (b.center) .. controls +(1,4) and +(-3,0) .. (x.center);}
-	  {y}{\draw[thepink,->] (b.center) .. controls +(-2,4) and +(-2,-4) .. (y.center);}
+	  {x}{\draw (b.center) .. controls +(1,4) and +(-3,0) .. (x.center);}
+	  {y}{\draw (b.center) .. controls +(-2,4) and +(-2,-4) .. (y.center);}
 	\DEFAULT{}
 	\SWITCH{#3}
-	  {w}{\draw[thepink,->] (c.center) .. controls +(1,-4) and +(-3,0) .. (w.center);}
-	  {y}{\draw[thepink,->] (c.center) .. controls +(-2,-4) and +(-2,4) .. (y.center);}
+	  {w}{\draw (c.center) .. controls +(1,-4) and +(-3,0) .. (w.center);}
+	  {y}{\draw (c.center) .. controls +(-2,-4) and +(-2,4) .. (y.center);}
 	\DEFAULT{}
 	\SWITCH{#4}
-	  {w}{\draw[thepink,->] (d.center) .. controls +(2,-5) and +(-2,0) .. (w.center);}
-	  {y}{\draw[thepink,->] (d.center) .. controls +(3,-4) .. (y.center);}
-	  {z}{\draw[thepink,->] (d.center) .. controls +(-2,-4) and +(-2,4) .. (z.center);}
+	  {w}{\draw (d.center) .. controls +(2,-5) and +(-2,0) .. (w.center);}
+	  {y}{\draw (d.center) .. controls +(3,-4) .. (y.center);}
+	  {z}{\draw (d.center) .. controls +(-2,-4) and +(-2,4) .. (z.center);}
 	\DEFAULT{}
+	\end{scope}
 	%
 	\foreach \n in {a,b,c,d} {\node[bullet] at (\n) {};}
 	\foreach \n in {a,b,x} {\node[anchor=north] at (\n) {$\scriptstyle\vphantom(\n$};}
 	\foreach \n in {c,d,w} {\node[anchor=south] at (\n) {$\scriptstyle\vphantom(\n$};}
 	\node[anchor=east,inner sep=5pt] at (y) {$\scriptstyle\vphantom(y$};
 	\node[anchor=west,inner sep=5pt] at (z) {$\scriptstyle\vphantom(z$};
-  \end{tikzpicture}
+  \end{tikzpicture}%
 }}}
 
 
-\newcommand\netC[4]{\vcenter{\hbox{
+\newcommand\netC[4]{\vcenter{\hbox{%
   \begin{tikzpicture}[x=-1mm,y=1mm,octo]
 	\coordinate (a) at (2.5,0);
 	\coordinate (b) at (7.5,0);
@@ -261,7 +264,7 @@
 	\foreach \n in {d,e} {\node[anchor=south] at (\n) {$\scriptstyle\vphantom(\n$};}
 	\foreach \n in {w,x} {\node[anchor=south east] at (\n) {$\scriptstyle\vphantom(\n$};}
 	\foreach \n in {y,z} {\node[anchor=north west] at (\n) {$\scriptstyle\vphantom(\n$};}
-  \end{tikzpicture}
+  \end{tikzpicture}%
 }}}
 
 
@@ -305,9 +308,10 @@
   \end{tikzpicture}
 }
 
+\tikzstyle{octoroll}=[x=4.5mm,y=-4.5mm,octo]
 
 \newcommand\octorollA[1]{
-  \begin{tikzpicture}[x=5mm,y=-5mm,octo]
+  \begin{tikzpicture}[octoroll]
 	\node[big1] (a) at (0,0) {\normalsize $\bot^n$};
 	\node[big_] (d1) at (-8.5,4) {\normalsize $A$};
 	\node[big_] (d2) at (-6  ,4) {\normalsize $B$};
@@ -338,7 +342,7 @@
   \end{tikzpicture}
 }
 \newcommand\octorollB[1]{
-  \begin{tikzpicture}[x=5mm,y=-5mm,octo]
+  \begin{tikzpicture}[octoroll]
 	\node[circ] (a1a) at (0,2) {}; \node[big1] (a1) at (-2.5,0) {}; \node[big1] (a2) at (0,0) {}; \node[big1] (a3) at (2.5,0) {};
 	\node[big_] (d1) at (-8.5,4) {};
 	\node[big_] (d2) at (-6  ,4) {};
@@ -373,7 +377,7 @@
   \end{tikzpicture}
 }
 \newcommand\octorollC{
-  \begin{tikzpicture}[x=5mm,y=-5mm,octo]
+  \begin{tikzpicture}[octoroll]
 	\node[circ] (a1a) at (0,2) {}; \node[big1] (a1) at (-2.5,0) {}; \node[big1] (a2) at (0,0) {}; \node[big1] (a3) at (2.5,0) {};
 	\node[big_] (d1) at (-9,4) {};
 	\draw (-7.25,4) node[big_] (d2) {} -- (-6.25,4) node[bullet] (d2a) {};
@@ -402,7 +406,7 @@
   \end{tikzpicture}
 }
 \newcommand\octorollD[1]{
-  \begin{tikzpicture}[x=5mm,y=-5mm,octo]
+  \begin{tikzpicture}[octoroll]
 	\node[big1] (a1) at (0,0) {}; \node[circ] (a1a) at (0,2) {};
 	\node[big_] (d1) at (-8.5,4) {};
 	\draw (-6,4) node[big_] (d2a) {} -- (-5,4) node[bullet] (d2b) {};
@@ -433,7 +437,7 @@
   \end{tikzpicture}
 }
 \newcommand\octorollE[1]{
-  \begin{tikzpicture}[x=5mm,y=-5mm,octo]
+  \begin{tikzpicture}[octoroll]
 	\node[big1] (a1) at (0,0) {}; \node[circ] (a1a) at (0,2) {};
 	\node[big_] (d1) at (-8.5,4) {};
 	\draw (-6,4) node[big_] (d2a) {} -- (-5,4) node[bullet] (d2b) {};

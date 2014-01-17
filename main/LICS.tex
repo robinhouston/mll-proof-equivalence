@@ -1,4 +1,4 @@
-\documentclass[conference,onecolumn]{IEEEtran}
+\documentclass[conference]{IEEEtran}
 
 \usepackage{amssymb,amsthm,amsmath}
 \usepackage{microtype}
@@ -18,6 +18,10 @@
 \graphicspath{{../notes/}}
 
 \let\alt=\underline
+
+\newcommand\NoIndent[1]{%
+  \par\vbox{\parbox[t]{\linewidth}{#1}}%
+}
 
 \shortJournalNames
 \makeTheoremDefs
@@ -268,7 +272,7 @@ $\Pi\toNet\links$ if for each $\named a\bot$ in $\Delta$, if $\Gamma$ is the con
 
 
 
-\begin{proposition}[\cite{DR89}]
+\begin{proposition}[\cite{Danos-Regnier-1989}]
 \label{prop:correctness and sequentialisation}
 %
 For a proof $\Pi$ with conclusion $\Gamma$, if $\Pi\toNet\links$ then $\links$ is a proof net for $\Gamma$.
@@ -349,7 +353,9 @@ The following example is a proof net for the above sequent.
 \]
 
 
-We will denote by $A^n$ the sequent consisting of $n$ copies of a formula $A$, and given a sequent $\Gamma=A_1,\dotsc,A_n$ we will write $\bigotimes\Gamma$ for $A_1\tn\cdots\tn A_n$, and $\bigparr\Gamma$ for $A_1\parr\cdots\parr A_n$.
+We will denote by $A^n$ the sequent consisting of $n$ occurrences of a formula $A$.
+%
+Given a sequent $\Gamma=A_1,\dotsc,A_n$ we will write $\bigotimes\Gamma$ for $A_1\tn\cdots\tn A_n$, and $\bigparr\Gamma$ for $A_1\parr\cdots\parr A_n$.
 %
 In diagrammatic notation, a big disc will represent an $n$-ary tensor over only $\bot$-formulae, $\bigotimes(\bot^n)$, and a big circle will represent an $n$-ary par over only $1$-formulae, $\bigparr(\1^n)$.
 %
@@ -372,47 +378,18 @@ A linking between $\bigotimes(\bot^n)$ and $\bigparr(\1^n)$ will be represented 
 \] 
 
 
-
-
-
-%===========================
-\bibliographystyle{plain}
-\bibliography{../refs}
-\end{document}
-%===========================
-
-
-
-
-%% OLD
-
-%
-A tensor is represented by a line connecting both subformulae, and a par by juxtaposition: if $A$ and $B$ are represented by \raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-A.pdf}}
-and \raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-B.pdf}},
-%
-then $A\parr B$ is \raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-AparB.pdf}}
-and $A\tn B$ is \raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-AtnB.pdf}}.
-%
-A tensor of multiple elements is denoted by stringing them together in a line, so $A\tn B\tn C$ is
-\raisebox{-0.3\height}{\includegraphics[scale=0.75]{hex-AtnBtnC.pdf}}.
-%
-Boxes play the role of parentheses around par-formulae, so $(A\parr B)\tn C$ is drawn as \begin{center}{\includegraphics[scale=1]{hex-AparBtnC.pdf}}\end{center}
-
-\noindent For example, this sequent
-\[ \vdash \bot\tn\bot, \bot\tn\bot, \bot\tn\bot, \bot\tn\bot, 1, \{[(1\parr 1\parr 1)\tn(1\parr 1\parr 1)]\parr 1\parr (\bot\tn\bot\tn\bot)\parr 1\}\tn\bot \]
-could be drawn like this:
-\begin{center}\includegraphics[scale=0.75]{example-sequent.pdf}\end{center}
-
-\noindent We represent a proof net by drawing an arrow from each $\bullet$ to some $\circ$. For example, one proof net on the above sequent is
-\begin{center}\includegraphics[scale=0.75]{example-sequent-proofnet.pdf}\end{center}
-
-
-
-
-
-%NOTE: need 'octopus' terminology here
-
-%NOTE: will we need to count arms often enough to make it worthwile to write $|\Gamma|_\bot$ for the number of $\bot$-occurrences in a sequent $\Gamma$?
+That two vertices in a proof net or a switching graph are connected will be indicated via a dashed edge, as illustrated below.
+\[
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[bullet] (a) at (0,0) {}; \node[bullet] (b) at (2,0) {}; \draw[dashed] (a)--(b);
+\end{tikzpicture}
+\qquad
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[circ] (a) at (0,0) {}; \node[circ] (b) at (2,0) {}; \draw[dashed] (a)--(b);
+	%\coordinate (a') at ($(a) + (.6,0)$); \coordinate (b') at ($(b) + (-.6,0)$);
+	%\draw[thepink,dashed] (a')--(b'); \draw[thepink,->] (a')--(a.center); \draw[thepink,->] (b')--(b.center);
+\end{tikzpicture}
+\]
 
 
 
@@ -538,7 +515,8 @@ Then $\links'$ is obtained from $\links$ by changing: $\links'(a)=z$, $\links'(d
 These changes are exhibited as a series of permutations below, from top left to bottom left (note that the jump from $d$ moves twice).
 %
 \[
-\begin{array}{ccccc}
+\kern-3pt
+\begin{array}{@{}c@{~}c@{~}c@{~}c@{~}c@{}}
 	\netC yzwx & \perm & \netC yzzx & \perm & \netC yxzx
 	\\ &&&& \vperm \\
 	\netC zxxy & \perm & \netC zxzy & \perm & \netC yxzy
@@ -713,21 +691,30 @@ Then $\links\sim\links'$ where $\links'(a)=v$, $\links'(b)=u$, $\links'(c)=y$, a
 
 \begin{IEEEproof}
 \[
+\begin{array}{@{}ccccc@{}}
 	\vc{\doubleExchange uvxy}
-	\sim
+	&\perm&
 	\vc{\doubleExchange uyxy}
-	\sim
+	&\perm&
 	\vc{\doubleExchange uyxu}
-	\sim
-	\vc{\doubleExchange vyxu}
-	\sim
-	\vc{\doubleExchange vyyu}
-	\sim
-	\vc{\doubleExchange vuyu}
-	\sim
+	\\
+	\\
 	\vc{\doubleExchange vuyx}
+	&\perm&
+	\vc{\doubleExchange vuyu}
+	&\perm&
+	\vc{\doubleExchange vyyu}
+\end{array}
+\begin{array}{@{~}c@{~}c@{}}
+	\indirection{ul}{\perm} \\ \\[20pt]
+	\indirection{dl}{\perm}
+\end{array}
+\vc{\doubleExchange vyxu}
 \]
 \end{IEEEproof}
+
+
+
 
 
 
@@ -845,7 +832,7 @@ A \emph{reconfiguration step} $\gamma\sim\delta$ connects two (partial) configur
 
 The \emph{(partial) \textsc{ncg}-reconfiguration problem} is the problem of deciding when two (partial) configurations are connected by a path in the graph of (partial) configurations and reconfiguration steps.
 
-\begin{theorem}[\cite{demaine}]
+\begin{theorem}[\cite{Hearn-Demaine-2005}]
 \textsc{ncg}-reconfiguration is \textsc{pspace}-complete.
 \end{theorem}
 
@@ -863,9 +850,10 @@ Secondly, if $\gamma'$ and $\gamma''$ are total configurations that both agree w
 \end{IEEEproof}
 
 
-For a graph $G=(V,E,c,v,w)$ let $|V|$ and $|E|$ denote the number of vertices and edges, respectively, and let $|c|$ and $|w|$ denote the sum of all inflow constraints, $\sum_{v\in V}c(v)$, and the sum of all edge weights, $\sum_{e\in E}w(e)$.
-
-
+For a graph $G=(V,E,c,v,w)$ let $|V|$ and $|E|$ denote the number of vertices and edges, respectively, and let $|c|$ and $|w|$ denote the sum of all inflow constraints and the sum of all weights respectively:
+\[
+	|c| = \sum_{v\in V}c(v) \qquad |w| = \sum_{e\in E}w(e)~.
+\]
 
 
 
@@ -912,9 +900,11 @@ This notion is extended to vertex-gadgets $\itn v$ and edge-gadgets $\itn e$ in 
 
 For a weight element $W$ of an edge connecting $v_i$ and $v_j$, let the $\bot$-occurrences be named as follows,
 \[
-	W =  \big(\named{    \dagger}\bot\tn\named{   1}\bot\tn\dotsc\tn\named{3i+1}\bot\big)
-	\parr\big(\named{   \ddagger}\bot\tn\named{3i+2}\bot\tn\dotsc\tn\named{3j+1}\bot\big)
-	\parr\big(\named{\downdagger}\bot\tn\named{3j+2}\bot\tn\dotsc\tn\named{3n+3}\bot\big)
+	W = \begin{array}[t]{l}
+				 \big(\named{    \dagger}\bot\tn\named{   1}\bot\tn\dotsc\tn\named{3i+1}\bot\big) 
+	~\parr\\[5pt] \big(\named{   \ddagger}\bot\tn\named{3i+2}\bot\tn\dotsc\tn\named{3j+1}\bot\big)
+	~\parr\\[5pt] \big(\named{\downdagger}\bot\tn\named{3j+2}\bot\tn\dotsc\tn\named{3n+3}\bot\big)
+	\end{array}
 \]
 and the $1$-occurrences of a constraint element $C$ in $\itn{v_k}$,
 \[
@@ -1007,19 +997,25 @@ We will illustrate the path of permutations for the case where $A,B,X$ and $D,X$
 \begin{enumerate}
 	\item
 The initial configuration is illustrated below; other weight and constraint elements are omitted, and $v$, $i$, and $j$ are the indicator vertices of $\itn v$, $\itn{e_i}$, and $\itn{e_j}$ respectively.
+\NoIndent{
 \[
 	\octorollA1
 \]
+}
 	\item
 The link $i-v$ is re-attached to connect to an edge-absorber together with only the links from the first $\bot$ of each of $D$, $E$, and $F$. 
+\NoIndent{
 \[
 	\octorollB2
 \]
+}
 	\item
 Secondly, the link from the first $\bot$ of $D$ is moved to $X$, and those of $E$ and $F$ are moved to $Y$.
+\NoIndent{
 \[
 	\octorollB3
 \]
+}
 	\item\label{item:exchange added}
 There are subnets over the sub-sequents $A,B,X,D,\bot^m$ and $C,Y,E,F,\bot^k$.
 %
@@ -1028,26 +1024,34 @@ These subnets may be rewired so that $D\parr E\parr F$ is naturally linked to $X
 Two links from $C$ to $X$ should remain exchanged, compared to the natural linking, for step \ref{item:exchange needed} below.
 %
 The links of $A,B,C$ connect to the edge-absorbers $\bot^m$ and $\bot^k$, with one remaining link from $B$ to $X$ and one from $C$ to $Y$.
+\NoIndent{
 \[
 	\octorollC
 \]
+}
 	\item
 The link from $C$ to $Y$ is moved towards an edge-absorber connected to $A,B$.
+\NoIndent{
 \[
 	\octorollD1
 \]
+}
 	\item\label{item:exchange needed}
 The link from $B$ to $X$ is the one remaining connection between the edge-gadgets $\itn{e_i}$ and $\itn{e_j}$.
 %
 Lemma~\ref{lem:double exchange} allows to swap the targets of the link from $B$ to $X$ and the link from $i$, and simultaneously undo the exchange in the links from $C$ to $X$ added in step \ref{item:exchange added} above.
+\NoIndent{
 \[
 	\octorollD2
 \]
+}
 	\item
 The link from $i$ may be re-attached to $v$ to yield the final configuration.
+\NoIndent{
 \[
 	\octorollA2
 \]
+}
 \end{enumerate}
 \end{IEEEproof}
 
@@ -1203,6 +1207,12 @@ It follows that in the graph $G$ the edges $e_1$ through $e_n$ can be moved away
 \section{Conclusions}
 
 
+
+%===========================
+\bibliographystyle{plain}
+\bibliography{../refs}
+\end{document}
+%===========================
 
 
 \end{document}
