@@ -851,34 +851,46 @@ $\sum\{w(e)\mid\gamma(e)=v\}\geq c(v)$.
 \smallskip
 A \emph{reconfiguration step} $\gamma\perm*\delta$ relates two (partial) configurations for an \textsc{ncg} $G$ that differ in value (or definedness) on exactly one edge.
 %
+The reflexive--transitive closure of $(\perm*)$ will be denoted $(\perm)$.
+%
 \end{definition}
 
 
+\begin{proposition}
+\label{prop:partial simulates total reconfiguration}
+For total configurations $\gamma$ and $\delta$, if $\gamma\perm\delta$ then $\gamma$ and $\delta$ are also connected by a sequence of reconfiguration steps over total configurations only.
+\end{proposition}
+
+
+\begin{IEEEproof}
+By the following two observations: firstly, 
+%
+if $\gamma\perm*\delta$ for partial configurations, then these may be completed to total configurations $\gamma'\perm*\delta'$ or $\gamma'=\delta'$; and secondly,
+%
+if $\gamma'$ and $\gamma''$ are total configurations that both agree with a partial configuration $\gamma$ where the latter is defined, then $\gamma'$ and $\gamma''$ are connected by reversing the edges on which they disagree one after another.
+%
+\end{IEEEproof}
+
+
+%
 \emph{Non-deterministic constraint graph reconfiguration} or \emph{\textsc{ncg}-reconfiguration} is the problem of deciding when two configurations for a constraint graph are connected in the graph of total configurations and reconfiguration steps.
 %
 \emph{Partial \textsc{ncg}-reconfiguration} is the same problem for partial configurations.
 
 
-%\emph{(Partial) \textsc{ncg}-reconfiguration} is the problem of deciding when two (partial) configurations are connected by a path in the graph of (partial) configurations and reconfiguration steps.
-
 \begin{theorem}[\cite{Hearn-Demaine-2005}]
 \textsc{ncg}-reconfiguration is \textsc{pspace}-complete.
 \end{theorem}
 
+By Proposition~\ref{prop:partial simulates total reconfiguration} the following is then immediate.
+
 \begin{proposition}
 Partial \textsc{ncg}-reconfiguration is \textsc{pspace}-complete.
+%\textsc{pncg}-reconfiguration is \textsc{pspace}-complete.
 \end{proposition}
 
-\begin{IEEEproof}
-Partial \textsc{ncg}-reconfiguration simulates \textsc{ncg}-reconfiguration:
-%
-%There is a path between total configurations $\gamma$ and $\delta$ in partial \textsc{ncg}-reconfiguration if and only if there is one in \textsc{ncg}-reconfiguration, for the following two reasons.
-%
-firstly, if $\gamma\perm*\delta$ for partial configurations, then these may be completed to total configurations $\gamma'\perm*\delta'$ or $\gamma'=\delta'$; secondly,
-%
-if $\gamma'$ and $\gamma''$ are total configurations that both agree with a partial configuration $\gamma$ where it is defined, then $\gamma'$ and $\gamma''$ are connected in \textsc{ncg}-reconfiguration by reversing the edges on which they disagree.
-%
-\end{IEEEproof}
+
+We will demonstrate the \textsc{pspace}-hardness of MLL proof equivalence by an encoding of partial \textsc{ncg}-reconfiguration in MLL.
 
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -906,7 +918,7 @@ Below left is a weight element, below right a constraint element.
 	\draw (1,0)--(2,0);
 \end{tikzpicture}
 \]
-Throughout an encoding, the sum $i+j+k=m+n$ will be constant---this way, a priori any weight element may connect to any constraint element.
+For all edges and vertices in the encoding of a constraint graph, the sum $i+j+k=m+n$ will be the same---this way, a priori any weight element may connect to any constraint element.
 %
 The value of $m$ (and thus $n$) will differ for each vertex.
 %
@@ -1028,107 +1040,133 @@ For the formal definition, let $|V|$ and $|E|$ denote the number of vertices and
 
 \begin{definition}
 \label{def:graph encoding}
-The \emph{encoding} $\itn G$ of an \textsc{ncg} $G=(V,E,c,v,w)$ is a sequent constructed as follows.
+The \emph{encoding} $\itn G$ of a constraint graph $G=(V,E,c,v,w)$ is a sequent constructed as follows.
 %
 Let $V=\{v_1,\dotsc,v_n\}$ and $E=\{e_1,\dotsc,e_m\}$ where $|V|=n$ and $|E|=m$.
 
+\noindent
 The encoding of a vertex $v_k$ is the formula
 \[
-	\itn{v_k} = \bigparr\big(C^{m\times c(v_k)} \big)\parr 1
+	\itn{v_k} = \bigparr\big(C_n(k)^{m\times c(v_k)} \big)\parr\1
 \]
-where each \emph{constraint element} $C$ is the formula
+where each \emph{constraint element} $C_n(k)$ is the formula
 \[
-	C = \bigparr\big(1^{3k+2}\big) \tn \bigparr\big(1^{3(n-k)+3}\big)
+	C_n(k) = \bigparr\big(1^{3k+2}\big) \tn \bigparr\big(1^{3(n-k)+3}\big)
 \]
 
+\noindent
 The encoding of an edge $e$ connecting vertices $v_i$ and $v_j$ with $i<j$ is the formula
 \[
-	\itn{e} = \bigtn\big(W^{m\times w(e)}\big)\tn\bot
+	\itn{e} = \bigtn\big(W_n(i,j)^{m\times w(e)}\big)\tn\bot
 \]
-where each \emph{weight element} $W$ is the formula
+where each \emph{weight element} $W_n(i,j)$ is the formula
 \[
-	W = \bigtn\big(\bot^{3i+2}\big)\parr\bigtn\big(\bot^{3(j-i)+1}\big)\parr\bigtn\big(\bot^{3(n-j)+3}\big)
+	W_n(i,j) = \bigtn\big(\bot^{3i+2}\big)\parr\bigtn\big(\bot^{3(j-i)+1}\big)\parr\bigtn\big(\bot^{3(n-j)+3}\big)
 \]
 
+\noindent
 The encoding of the graph $G$ is the sequent
 \[
-	%\itn G = \bigtn_{1\leq i\leq n}\itn{v_i}, \itn{e_1},\dotsc,\itn{e_k}, \bot^m
 	\itn G = \itn{v_1}\tn\dotso\tn\itn{v_n}, \itn{e_1},\dotsc,\itn{e_m}, 1^p
 \]
-where $p=m\times(|w|-|c|)\times(3n+4)$; the $p$ instances of $1$ are called \emph{edge-absorbers}.
+where $p=m\times(|w|-|c|)\times(3n+4)$.
 
 \end{definition}
 
 
 
-In an \textsc{ncg} $G$, a vertex $v$ and an edge $e$ will be called \emph{appropriate} (for each other) if $v\in v(e)$, and \emph{inappropriate} otherwise.
+In the above definition, the final $\1$-subformula of a vertex-gadget $\itn{v_k}$ is its \emph{indicator target}; the final $\bot$-subformula of an edge-gadget $\itn{e}$ is its \emph{indicator}; and in the completed encoding $\itn G$ the $p$ instances of $\1$ are the \emph{edge-absorbers}.
 %
-This notion is extended to vertex-gadgets $\itn v$ and edge-gadgets $\itn e$ in $\itn G$.
+In a constraint graph $G$, a vertex $v$ and an edge $e$ will be called \emph{appropriate} (for each other) if $v\in v(e)$, and \emph{inappropriate} otherwise.
+%
+This notion is extended to vertex-gadgets $\itn v$ and edge-gadgets $\itn e$ in $\itn G$, and their respective constraint elements and weight elements.
 
 
 
-For a weight element $W$ of an edge connecting $v_i$ and $v_j$, let the $\bot$-occurrences be named as follows,
-\[
-	W = \begin{array}[t]{l}
-				 \big(\named{    \dagger}\bot\tn\named{   1}\bot\tn\dotsc\tn\named{3i+1}\bot\big) 
-	~\parr\\[5pt] \big(\named{   \ddagger}\bot\tn\named{3i+2}\bot\tn\dotsc\tn\named{3j+1}\bot\big)
-	~\parr\\[5pt] \big(\named{\downdagger}\bot\tn\named{3j+2}\bot\tn\dotsc\tn\named{3n+3}\bot\big)
-	\end{array}
-\]
-and the $1$-occurrences of a constraint element $C$ in $\itn{v_k}$,
-\[
-	C = \big(\named{\alt    \dagger}1\parr\named{\alt{   1}}1\parr\dotso\parr\named{\alt{3k+1}}1\big)
-	\tn \big(\named{\alt\downdagger}1\parr\named{\alt{3k+2}}1\parr\dotso\parr\named{\alt{3n+3}}1\big)~.
-\]
-There is a \emph{natural linking} for the sequent $W,C$ if $e$ is appropriate for $v_k$, i.e.\ if $k=i$ or $k=j$, as follows:
-\[
-	\links(x) = \alt x \qquad \text{for }x\in\{\dagger,\downdagger\}\cup\mathbb N
-\]
-\[
-	\links(\ddagger)=
-	\begin{cases}
-		\alt	\dagger & \text{if }k=i \\
-		\alt\downdagger & \text{if }k=j~.
-	\end{cases}
-\]
-There is also a natural linking for the sequent $W,\named\star 1,\named{\alt 1}1,\dotsc,\named{\alt {3n+3}}1$ consisting of the weight element $W$ and $3n+4$ edge-absorbers:
-\[
-	\links(x)=
-	\begin{cases}
-		\star  & \text{if }x\in\{\dagger,\ddagger,\downdagger\} \\
-		\alt x & \text{otherwise }.
-	\end{cases}
-\]
+A configuration $\gamma$ for a constraint graph $G$ will be encoded as a proof net for the sequent $\itn G$.
+%
+Firstly we will define a standard way of linking a weight element to a constraint element.
+
+
+\begin{definition}
+\label{def:standard linkings}
+For a weight element $W=W_n(i,j)=A\parr B\parr C$,
+\begin{enumerate}
+	\item
+for a constraint element $C=C_n(i)=X\tn Y$, the \emph{standard linking} for the sequent $W,C$ links the first $\bot$ in $A$ to the first $\1$ in $X$, the first $\bot$ in $B$ and $C$ each to the first $\1$ in $Y$, and the remaining $\bot$-occurrences in $A,B,C$ to the remaining $\1$-occurrences in $X,Y$;
+	\item
+for $C=C_n(j)=X\tn Y$, the \emph{standard linking} for $W,C$ is defined as above, except the first $\bot$ in $B$ links to the first $\1$ in $X$;
+	\item
+the \emph{standard linking} for the sequent $W,\1^{3n+4}$ links the first $\bot$ in $A$, $B$, and $C$ each to the first $\1$, and the remaining $\bot$-occurrences to the remaining $\1$-occurrences.
+\end{enumerate}
+\end{definition}
+
+The standard linkings defined in the first and third case of the above definition are illustrated below.
+
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[circ] (1) at (-.25,0) {};
+	\node[big1] (2) at (1,0) {};
+	\node[big1] (3) at (2.5,0) {};
+	\node[big1] (4) at (5.5,0) {};
+	\draw[rounded corners] (-1,-1) rectangle (3.5,1) (4.5,-1) rectangle (6.5,1);
+	\draw (3.5,0)--(4.5,0);
+	%
+	\draw (-.25,4) node[bullet] (a) {} -- (.75,4) node[big_] (A) {};
+	\draw (2.25,4) node[bullet] (b) {} -- (3.25,4) node[big_] (B) {};
+	\node[big_] (C) at (5.5,4) {};
+	\draw[rounded corners] (-1,3) rectangle (6.5,5);
+	%
+	\begin{scope}[thepink,->]
+		\draw[bend right=5] (a) to (1);
+		\draw[bend right=10] (b) to (1);
+		\draw[big>,bend left=25] (A) to (2);
+		\draw[big>,bend left=20] (B) to (3);
+		\draw[big>,bend left=15] (C) to (4);
+	\end{scope}
+\end{tikzpicture}
+\qquad
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[circ] (1) at (.75,0) {};
+	\node[big1] (2) at (2,0) {};
+	\node[big1] (3) at (3.5,0) {};
+	\node[big1] (4) at (5,0) {};
+	%
+	\draw ( 0  ,4) node[bullet] (a) {} -- ( 1  ,4) node[big_] (A) {};
+	\draw ( 2.5,4) node[bullet] (b) {} -- ( 3.5,4) node[big_] (B) {};
+	\draw ( 5  ,4) node[bullet] (c) {} -- ( 6  ,4) node[big_] (C) {};
+	\draw[rounded corners] (-.5,3) rectangle (7,5);
+	\path (0,-1) -- (1,-1);
+	%
+	\begin{scope}[thepink,->]
+		\draw[bend right=5] (a) to (1);
+		\draw[bend right=10] (b) to (1);
+		\draw[bend right=15] (c) to (1);
+		\draw[big>,bend left=25] (A) to (2);
+		\draw[big>,bend left=20] (B) to (3);
+		\draw[big>,bend left=15] (C) to (4);
+	\end{scope}
+\end{tikzpicture}
 
 
 \begin{proposition}
 \label{prop:element linkings}
-\begin{enumerate}
-	\item
-Given a vertex $v$ and an appropriate edge $e$, for a constraint element $C$ in $\itn v$ and a weight element $W$ in $\itn e$ the natural linking for the sequent $W,C$ is a proof net.
-	\item
-Given a weight element $W$ for a graph with $|V|=n$, the natural linking for the sequent $W,1^{3n+4}$ is a proof net.
-\end{enumerate}
+The standard linkings of Definition~\ref{def:standard linkings} are proof nets.
 \end{proposition}
 
 
-The rightmost $1$-occurrence of each vertex-gadget $\itn v$, named $\alt v$ below, and the rightmost $\bot$-occurrence of each edge-gadget $\itn e$, named $\alt e$, will be called the \emph{indicator vertices} of $\itn v$ and $\itn e$.
-%
-% NOW: /indicator/ for edges and /indicator target/ for vertices
-%
-\[	
-	\itn v = C\parr\dotso\parr C\parr \named{\alt v}1 \qquad \itn e= W\tn\dotso\tn W\tn\named{\alt e}\bot~.
-\]
+The encoding of a configuration is then as follows.
+
 
 
 \begin{definition}
 \label{def:configuration encoding}
-The \emph{encoding} $\itn\gamma$ of a total configuration $\gamma$ for a graph $G$ is a linking $\links$ constructed incrementally, for each successive edge $e$, and for each successive weight element $W$ within $e$, as follows.
+The \emph{encoding} $\itn\gamma$ of a total configuration $\gamma$ for a constraint graph $G$ is a linking $\links$ for $\itn G$, constructed incrementally for each successive edge $e$ and for each successive weight element $W$ within $e$, as follows.
 %
-Let $\gamma(e)=v$; firstly, the the indicator vertex of $\itn e$ links to the indicator of $\itn v$.
+Let $\gamma(e)=v$; firstly, the indicator of $\itn e$ is linked to the indicator target of $\itn v$.
 %
-Then successively for each weight element $W$ in $e$, if $\itn v$ has a first free constraint element $C$, extend $\itn\gamma$ to include the natural linking on $W,C$; otherwise, extend $\itn\gamma$ by the natural linking on the sequent consisting of $W$ plus the first $3n+4$ free edge absorbers.
+Then successively for each weight element $W$ in $e$, if $\itn v$ has a first free constraint element $C$, extend $\itn\gamma$ to include the standard linking on $W,C$; otherwise, extend $\itn\gamma$ by the standard linking on the sequent consisting of $W$ plus the first $3n+4$ free edge absorbers.
 \end{definition}
+
 
 
 \begin{proposition}
@@ -1138,7 +1176,7 @@ If $\gamma$ is a total configuration for $G$ then $\itn\gamma$ is a proof net fo
 \begin{IEEEproof}
 Using Proposition~\ref{prop:scoping correctness}, it is sufficient to give a suitable scope for each $\parr$. 
 %
-The scope of each weight element $W$ is the sequent $W,C$ or $W,1^{3n+4}$ of its natural linking, which forms a proof net by Proposition~\ref{prop:element linkings}.
+The scope of each weight element $W$ is the sequent $W,C$ or $W,1^{3n+4}$ of its standard linking, which forms a proof net by Proposition~\ref{prop:element linkings}.
 %
 The scope of each vertex-gadget $\itn v$ contains the edge-gadgets $\itn e$ such that $\gamma(e)=v$, plus all the edge-absorbers within scopes of weight elements inside $\itn e$.
 %
@@ -1193,7 +1231,7 @@ There are subnets over the sub-sequents $A,B,X,D,\bot^m$ and $C,Y,E,F,\bot^k$.
 %
 These subnets may be rewired so that $D\parr E\parr F$ is naturally linked to $X\tn Y$: by Proposition~\ref{prop:parity determines equivalence}, the resulting subnets are equivalent as long as their parity is preserved.
 %
-Two links from $C$ to $X$ should remain exchanged, compared to the natural linking, for step \ref{item:exchange needed} below.
+Two links from $C$ to $X$ should remain exchanged, compared to the standard linking, for step \ref{item:exchange needed} below.
 %
 The links of $A,B,C$ connect to the edge-absorbers $\bot^m$ and $\bot^k$, with one remaining link from $B$ to $X$ and one from $C$ to $Y$.
 \NoIndent{
