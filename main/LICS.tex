@@ -843,7 +843,9 @@ A \emph{(partial) configuration} for a constraint graph is a (partial) function 
 	\item
 for every edge $e$, if $\gamma(e)$ is defined then $\gamma(e)\in v(e)$,
 	\item
-for every vertex $v$, the sum of its inflow weights is at least its inflow constraint, $\sum\{w(e)\mid \gamma(e)=v\}\geq c(v)$.
+for every vertex $v$, the total weight of its incoming edges is at least its inflow constraint, 
+%$\sum\{\kern1pt w(e)\kern1pt|\kern1pt\gamma(e)=v\kern1pt\}\geq c(v)$.
+$\sum\{w(e)\mid\gamma(e)=v\}\geq c(v)$.
 \end{itemize} 
 
 \smallskip
@@ -888,20 +890,20 @@ The basis of the encoding of constraint graphs in MLL is formed by \emph{weight 
 %
 The arithmetic of linking formulae of the form $\bigtn(\bot^n)$ to formulae $\bigparr(1^m)$ will be used to ensure that a weight element may be linked to only two vertices.
 %
-Below left is a constraint element, below right a weight element.
+Below left is a weight element, below right a constraint element.
 \[
-\begin{tikzpicture}[x=5mm,y=5mm,octo]
-	\node[big1] (1) at (0,0) {$m'$}; 
-	\node[big1] (2) at (3,0) {$n'$};
-	\draw[rounded corners] (-1,-1) rectangle (1,1) (2,-1) rectangle (4,1);
-	\draw (1,0)--(2,0);
-\end{tikzpicture}
-\qquad\qquad
 \begin{tikzpicture}[x=5mm,y=5mm,octo]
 	\node[big_] (A) at (0,0) {$i'$}; 
 	\node[big_] (B) at (2,0) {$j'$};
 	\node[big_] (C) at (4,0) {$k'$};
 	\draw[rounded corners] (-1,-1) rectangle (5,1);
+\end{tikzpicture}
+\qquad\qquad
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[big1] (1) at (0,0) {$m'$}; 
+	\node[big1] (2) at (3,0) {$n'$};
+	\draw[rounded corners] (-1,-1) rectangle (1,1) (2,-1) rectangle (4,1);
+	\draw (1,0)--(2,0);
 \end{tikzpicture}
 \]
 Throughout an encoding, the sum $i+j+k=m+n$ will be constant---this way, a priori any weight element may connect to any constraint element.
@@ -912,22 +914,112 @@ The weight element above will be able to connect naturally to those constraint e
 \[
 	\connectingElements 1 \qquad \connectingElements 2
 \]
-To ensure that no other connections can be made, values are chosen such that $m\mod3=1$ and $n\mod3=2$, and correspondingly $i\mod3=1$, $j\mod3=0$, and $k\mod3=2$.
+To ensure that no other connections can be made, values are chosen such that $m\bmod3=1$ and $n\bmod3=2$, and accordingly $i\bmod3=1$, $j\bmod3=0$, and $k\bmod3=2$.
 
 
 In a constraint graph, the sum of weights is usually greater than the sum of all inflow constraints---otherwise, no edge can move, or no configuration exists.
 %
 An encoding will therefore have weight elements not connected to constraint elements.
 %
-These will instead connect to additional $\1$-formulae, referred to as edge-absorbers, as follows.
+These will instead connect to additional, separate $\1$-formulae, referred to as \emph{edge-absorbers}, as follows.
+%
+\[
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[big_] (A) at (0,0) {}; 
+	\node[big_] (B) at (2,0) {};
+	\node[big_] (C) at (4,0) {};
+	\draw[rounded corners] (-1,-1) rectangle (5,1);
+	\node[big1] (1) at (7.5,0) {};
+	\begin{scope}[thepink,->,big>]
+		\draw[bend left=30] (A) to (1);
+		\draw[bend right=30] (B) to (1);
+		\draw (C) to (1);
+	\end{scope}
+\end{tikzpicture}
+\]
+%
+An edge will be encoded by an \emph{edge-gadget}, illustrated below left, constructed by stringing together a number of similar weight elements plus a single \emph{indicator} vertex.
+%
+Illustrated below right is a \emph{vertex-gadget} encoding a vertex, formed by a number of constraint elements plus a single \emph{indicator target}.
+%
+\[
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[big_] (A) at (0,0) {$i'$}; 
+	\node[big_] (B) at (2,0) {$j'$};
+	\node[big_] (C) at (4,0) {$k'$};
+	\draw[rounded corners] (-1,-1) rectangle (5,1);
+	\node[big_] (D) at (0,4) {$i'$}; 
+	\node[big_] (E) at (2,4) {$j'$};
+	\node[big_] (F) at (4,4) {$k'$};
+	\draw[rounded corners] (-1,3) rectangle (5,5);
+	\draw (2,1)--(2,1.5) (2,2.5)--(2,3);
+	\draw[dotted] (2,1.5)--(2,2.5);
+	\draw (2,-1)--(2,-2) node[bullet] {};
+	\path (0,-2.5)--(1,-2.5);
+\end{tikzpicture}
+\qquad\qquad
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[big1] (1) at (0,0) {$m'$}; 
+	\node[big1] (2) at (3,0) {$n'$};
+	\draw[rounded corners] (-1,-1) rectangle (1,1) (2,-1) rectangle (4,1);
+	\draw (1,0)--(2,0);
+	\node[big1] (3) at (0,4) {$m'$};
+	\node[big1] (4) at (3,4) {$n'$};
+	\draw[rounded corners] (-1,3) rectangle (1,5) (2,3) rectangle (4,5);
+	\draw (1,4)--(2,4);
+	\draw[dotted] (1.5,1.5)--(1.5,2.6);
+	\node[circ] at (1.5,-2) {};
+	\draw[rounded corners] (-1.5,-2.5) rectangle (4.5,5.5);
+\end{tikzpicture}
+\]
+%
+It would be natural to encode an edge of weight $n$ by an edge-gadget with $n$ weight elements.
+%
+However, there is a minor issue that prevents this straightforward approach.
+%
+Where one weight element cannot `fill' an inappropriate constraint element, two weight elements can, in the way illustrated below.
+%
+\[
+\begin{tikzpicture}[x=5mm,y=-5mm,octo]
+	\node[big_] (A) at (-1,0) {}; 
+	\draw (.75,0) node[big_] (B1) {} -- (2.25,0) node[big_] (B2) {};
+	\node[big_] (C) at (4,0) {};
+	\draw[rounded corners] (-2,-1) rectangle (5,1);
+	\draw (7,0) node[big_] (D1) {} -- (8.5,0) node[big_] (D2) {}; 
+	\node[big_] (E) at (10.25,0) {};
+	\node[big_] (F) at (12,0) {};
+	\draw[rounded corners] (6,-1) rectangle (13,1);
+	\node[big1] (1) at (1,4) {};
+	\node[big1] (2) at (4,4) {}; 
+	\node[big1] (3) at (7,4) {};
+	\node[big1] (4) at (10,4) {};
+	\draw[rounded corners] (3,3) rectangle (5,5) (6,3) rectangle (8,5);
+	\draw (5,4)--(6,4);
+	\begin{scope}[thepink,->,big>]
+		\draw[bend right=25] (A)  to (1);
+		\draw[bend right=15] (B1) to (1);
+		\draw[bend right=25] (B2) to (2);
+		\draw[bend right=15] (C)  to (2);
+		\draw[bend left=15] (D1) to (3);
+		\draw[bend right=15] (D2) to (4);
+		\draw[bend left=20] (E)  to (4);
+		\draw[bend left=20] (F)  to (4);
+	\end{scope}
+\end{tikzpicture}
+\]
+%
+In such an inappropriate linking, since both halves of the constraint element are connected, both weight elements may not be---otherwise, the linking would violate the switching condition.
+%
+That means the weight elements must belong to different edges; and moreover, for the same reason these two edges cannot fill another constraint element together.
+%
+To fill $n$ constraint elements inappropriately therefore requires $n+1$ edges.
+%
+It thus suffices to multiply the number of constraint elements by the number of edges, and encode a vertex with inflow constraint $c$ by a vertex-gadget with $c\times|E|$ constraint elements (where $|E|$ denotes the number of edges in the constraint graph).
 
 
-
-
-
-
-
-For a constraint graph $G=(V,E,c,v,w)$ let $|V|$ and $|E|$ denote the number of vertices and edges, respectively, and let $|c|$ and $|w|$ denote the sum of all inflow constraints and the sum of all weights respectively:
+The complete encoding of a constraint graph will be a sequent consisting of: 1) all vertex-gadgets combined in a single formula via tensors, 2) all edge-gadgets as individual formulae, 3) a sufficient number of edge-absorbers ($\1$-formulae).
+%
+For the formal definition, let $|V|$ and $|E|$ denote the number of vertices and edges, respectively, in a constraint graph $G=(V,E,c,v,w)$, and let $|c|$ and $|w|$ denote the sum of all inflow constraints and the sum of all weights respectively:
 \[
 	|c| = \sum_{v\in V}c(v) \qquad |w| = \sum_{e\in E}w(e)~.
 \]
@@ -1021,6 +1113,9 @@ Given a weight element $W$ for a graph with $|V|=n$, the natural linking for the
 
 
 The rightmost $1$-occurrence of each vertex-gadget $\itn v$, named $\alt v$ below, and the rightmost $\bot$-occurrence of each edge-gadget $\itn e$, named $\alt e$, will be called the \emph{indicator vertices} of $\itn v$ and $\itn e$.
+%
+% NOW: /indicator/ for edges and /indicator target/ for vertices
+%
 \[	
 	\itn v = C\parr\dotso\parr C\parr \named{\alt v}1 \qquad \itn e= W\tn\dotso\tn W\tn\named{\alt e}\bot~.
 \]
