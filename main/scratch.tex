@@ -1,7 +1,7 @@
 \documentclass[conference]{IEEEtran}
 
 
-\usepackage{amsmath,amsthm}
+\usepackage{amsmath,amssymb,amsthm}
 \usepackage{mllequiv,willemtools}
 
 \usepackage{pgffor}
@@ -12,6 +12,50 @@
 
 
 \begin{document}
+
+
+\[
+	\lesssim \gtrsim
+\[
+
+\end{document}
+
+
+
+\begin{lemma}
+For a proof net $(\Gamma,\links)$, if the linking $\links'$ agrees with $\links$ on all values except $\links'(a)=v$, then $\links'$ is a proof net if and only if $v$ is in the empire of $a$ in $(\Gamma,\links)$.
+%
+%If $\links\perm*\links'$ by rewiring the link $\links(a)=v$ to $\links'(a)=w$, then $w$ is in the empire of $a$ in the proof net $\links$.
+\end{lemma}
+
+\begin{proof}
+The empire of $a$ corresponds to the largest subproof $\Sigma$ in any $\Pi\toNet\links$ with as conclusion the introduction rule of $\named a\bot$.
+%
+In one direction, by Definition~\ref{def:proofs to nets} $a$ may link anywhere in a translation of $\Sigma$ to a net; if $\named v\1$ is in $\Sigma$, then $\links'$ is a net.
+%
+In the other direction, if $\links\perm*\links'$, then for any switching of $(\Gamma,\links')$ there is a path from $\links(a)=w$ to 
+
+%%Let $\sigma$ be the empire of $a$ in $(\Gamma,\links)$.
+%%
+%In one direction, if $v$ is in $\sigma$, then since $\sigma$ is a subnet, for any switching of $\sigma$ there is a path from $\links(a)$ to $v$ not passing through $a$.
+%%
+%Then if $\sigma'\perm*\sigma$ by 
+%
+% $\sigma$ minus the link $\edge a{\links(a)}$ is a subnet, 
+%
+%By definition, $\sigma$ is the largest subnet with $a$ as a port.
+%%
+%Then there is a proof $\Sigma\tonet\sigma$ with as conclusion the introduction rule for $\named a\bot$, which 1) is a subproof of some sequent proof $\Pi\tonet\links$, and 2) is the largest subproof of $\named a\bot$ among all $\Pi\tonet\links$.
+%
+%
+%In one direction, if $\links'$ is a proof net, then $\links\perm*\links'$, and there is a $\Pi'\tonet\links'$ such that $\Pi\perm\Pi'$ by permuting the introduction rule for $\named a\bot$.
+%%
+%But since permuting this rule in $\Pi$ cannot give it a larger subnet than $\Sigma$ (by 2 above), $\named v\1$ must be in $\Sigma$, and $v$ in $\sigma$.
+%
+%By Definition~\ref{def:proofs to nets} 
+
+\end{proof}
+
 
 
 \end{document}

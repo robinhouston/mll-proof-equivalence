@@ -1556,22 +1556,101 @@ For a proof net $\links$ for $\itn G$, let $\coitn\links$ be the partial configu
 \end{definition}
 
 
-%% WORKING HERE
+To show that rewiring corresponds to reconfiguration under $\coitn-$, we will use the following lemmata.
 
 
 \begin{lemma}
+\label{lem:rewiring within empire}
+For a proof net $(\Gamma,\links)$ where $\links(a)=v$ and $w$ names a $\1$-occurrence in $\Gamma$, the following are equivalent:
+%
+\begin{enumerate}
+	\item
+$\links\perm*\links'$ where $\links'(a)=w$;
+	\item
+$w$ is in the empire of $a$; and
+	\item
+in any switching graph for $(\Gamma,\links)$, the path from $v$ to $w$ does not pass through $a$.
+\end{enumerate}
+\end{lemma}
+
+
+\begin{IEEEproof}
+By \cite[Proposition 2.a]{Bellin-vandeWiele-1995} 2 and 3 are equivalent.
+
+Next, the empire of $a$ corresponds to the largest subproof $\Sigma$ in any $\Pi\toNet\links$ with as conclusion the introduction rule of $\named a\bot$.
+%
+By Definition~\ref{def:proofs to nets}, in the translation of $\Sigma$ to a net $\sigma$, $a$ may link anywhere in $\sigma$.
+%
+Then 2 implies 1. 
+
+Finally, if $\links'$ is a net, and for some switching of $\links$ the path from $v$ to $w$ passes through $a$, then in $\links'$ there is no path between $a$ and $v$ (and two paths between $a$ and $w$) for that switching; then 1 implies 3.
+%
+\end{IEEEproof}
+
+
+\begin{lemma}
+\label{lem:rewiring preserves empire}
+Let $\links\perm*\links'$ by $\links(a)\neq\links'(a)$, and denote the empire of $a$ in $\links$ and $\links'$ by $\sigma$ and $\sigma'$ respectively; then $\sigma\perm*\sigma'$.
+\end{lemma}
+
+\begin{IEEEproof}
+By Lemma~\ref{lem:rewiring empire} the empires $\sigma$ and $\sigma'$ contain the same $\1$-subformulae.
+%
+That they must share also any other subformula $A$ follows by the observation that $A\tn\1$ may replace $A$.
+%
+\end{IEEEproof}
+
+
+
+
+\begin{lemma}
+\label{lem:rewiring affects empires}
+For proof nets $\links\perm*\links'$, let the empire of a given vertex $v$ in $\links$ be a net for the sequent $\Delta$, and in $\links'$, for $\Delta'$; then $\Delta\leq\Delta'$ or $\Delta\geq\Delta'$.
+\end{lemma}
+
+
+\begin{IEEEproof}
+By \cite[Proposition 2.b]{Bellin-vandeWiele-1995} the empire of $v$ is determined by propagation from $v$: 1) through links; 2) up towards subformulae; 3) down from one subformula into a tensor; 4) down from all subformulae into a par; 5) but never down from $v$.
+%
+Let the link from $a$ be rewired, $\links(a)=w$ but $\links'(a)=w'$.
+%
+There are four cases.
+%
+\begin{enumerate}
+	\item
+If the empire of $v$ is propagated from $a$ to $w$ in $\links$, it includes the empire of $a$.
+%
+Then by Lemma~\ref{lem:rewiring preserves empire} $\Delta=\Delta'$.
+
+	\item
+If the empire of $v$ includes $w$ but not $w'$, then it is propagated through $a$ in $\links$ but not in $\links'$, so that $\Delta\geq\Delta'$.
+
+	\item
+If the empire of $v$ includes $w'$ but not $w$, then $\Delta\leq\Delta'$.
+
+	\item
+Otherwise, $\Delta=\Delta'$.
+\end{enumerate}
+\end{IEEEproof}
+
+
+
+\begin{lemma}
+\label{lem:soundness}
 If $\links\perm\links'$ are proof nets for $\itn G$ then $\coitn\links\perm\coitn{\links'}$.
 \end{lemma}
 
 \begin{IEEEproof}
 The proof will consider the case where $\links\perm*\links'$; the general case follows by transitivity.
 %
-A single permutation $\links\sim\links'$ on proof nets may move a number of edge-gadgets $\itn{e_1},\dotso,\itn{e_n}$ in three ways: 1) out of the empire of a vertex-gadget $\int v$, 2) into the empire of a vertex-gadget $\int w$, or 3) both.
+By Lemma~\ref{lem:rewiring affects empires}, the empire of each vertex-gadget $\itn v$ contains either a subset of, a superset of, or exactly the same edge-gadgets in $\links'$ as it does in $\links$.
 %
-Then in both $\coitn\links$ and $\coitn{\links'}$ the edges $e_1$ through $e_n$ are mobile, since by Lemma~\ref{lem:appropriate edge weights} the empires of the vertex-gadgets $\itn v$ (in cases 1 and 3) and $\itn w$ (in cases 2 and 3) contain appropriate edge-gadgets other than $\itn{e_1}$ through $\itn{e_n}$ of sufficient combined weight.
+Let $\itn e_1$ through $\itn e_n$ be the edge-gadgets moving in or out of the empire of $\itn v$.
 %
-It follows that in the graph $G$ the edges $e_1$ through $e_n$ can be moved away from $v$ and/or onto $w$ one at a time.
-
+By Lemma~\ref{lem:appropriate edge weights} other edge-gadgets must fill the constraint elements of $\itn v$.
+%
+Then the corresponding edges $e_1$ through $e_n$ are mobile in $\coitn\links$ and it follows that $\coitn\links\perm\coitn{\links'}$ by moving each $e_i$ in turn, and repeating the same for other vertices.
+%
 \end{IEEEproof}
 
 
@@ -1579,7 +1658,7 @@ It follows that in the graph $G$ the edges $e_1$ through $e_n$ can be moved away
 %------------------------------------------------------------
 
 
-\section{Conclusions}
+\section{MLL proof equivalence is \textsc{pspace}-complete}
 
 
 
