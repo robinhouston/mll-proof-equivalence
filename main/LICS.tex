@@ -17,13 +17,6 @@
 
 \graphicspath{{../notes/}}
 
-\let\alt=\underline
-\let\bigtn=\bigotimes
-
-\newcommand\NoIndent[1]{%
-  \par\vbox{\parbox[t]{\linewidth}{#1}}%
-}
-
 \shortJournalNames
 \makeTheoremDefs
 
@@ -440,6 +433,9 @@ Finally, that two vertices in a proof net or a switching graph are connected wil
 
 
 To conclude this section we will discuss (and adapt) some convenient standard notions for MLL proofs and proof nets.
+%
+Firstly we will look at subnets---see also \cite{Bellin-vandeWiele-1995}.
+
 
 \begin{definition}
 A \emph{sub-sequent} $\Delta\leq\Gamma$ of a sequent $\Gamma$ is a sequent consisting of disjoint subformulae of $\Gamma$, preserving names.
@@ -513,7 +509,7 @@ A linking $\links$ for a sequent $\Gamma$ is a proof net if and only if each $\n
 	\item
 sub-sequents are strictly nested: if $\named w\parr$ occurs in $s(v)$ then $s(w)<s(v)$; and
 	\item
-for each $\named v\parr$, the graph $\sigma(v)=(s(v),\links|_{s(v)})$ becomes a tree when all immediate sub-sequents $s(w)$ are contracted.
+for each $\named v\parr$ the graph $\sigma(v)=(s(v),\links|_{s(v)})$ becomes a tree when all immediate sub-sequents are contracted.
 \end{enumerate}
 
 \end{proposition}
@@ -677,7 +673,7 @@ In a constraint graph, the sum of weights is usually greater than the sum of all
 %
 An encoding will therefore have weight elements not connected to constraint elements.
 %
-These will instead connect to additional, separate $\1$-formulae, referred to as \emph{edge-absorbers}, as follows.
+These will instead connect to additional, separate $\1$-formulae, referred to as \emph{weight absorbers}, as follows.
 %
 \[
 \begin{tikzpicture}[x=5mm,y=5mm,octo]
@@ -764,16 +760,18 @@ Where one weight element cannot `fill' an inappropriate constraint element, two 
 \end{tikzpicture}
 \]
 %
-In such an inappropriate linking, since both halves of the constraint element are connected, both weight elements may not be---otherwise, the linking would violate the switching condition.
+In such an inappropriate linking, since both halves of the constraint element are connected, both weight elements must be disconnected---otherwise, the linking would violate the switching condition.
 %
-That means the weight elements must belong to different edges; and moreover, for the same reason these two edges cannot fill another constraint element together.
+That means the weight elements must belong to different edges.
+%
+For the same reason, to fill the next weight element, one half may be filled by a weight element from a previous edge, but to fill the other half requires an additional edge to be involved.
 %
 To fill $n$ constraint elements inappropriately therefore requires $n+1$ edges.
 %
 It thus suffices to multiply the number of constraint elements by the number of edges, and encode a vertex with inflow constraint $c$ by a vertex-gadget with $c\times|E|$ constraint elements (where $|E|$ denotes the number of edges in the constraint graph).
 
 
-The complete encoding of a constraint graph will be a sequent consisting of: 1) all vertex-gadgets combined in a single formula via tensors, 2) all edge-gadgets as individual formulae, 3) a sufficient number of edge-absorbers ($\1$-formulae).
+The complete encoding of a constraint graph will be a sequent consisting of: 1) all vertex-gadgets combined in a single formula via tensors, 2) all edge-gadgets as individual formulae, 3) a sufficient number of weight absorbers ($\1$-formulae).
 %
 For the formal definition, let $|V|$ and $|E|$ denote the number of vertices and edges, respectively, in a constraint graph $G=(V,E,c,v,w)$, and let $|c|$ and $|w|$ denote the sum of all inflow constraints and the sum of all weights respectively:
 \[
@@ -819,7 +817,7 @@ where $p=m\times(|w|-|c|)\times(3n+4)$.
 
 
 
-In the above definition, the final $\1$-subformula of a vertex-gadget $\itn{v_k}$ is its \emph{indicator target}; the final $\bot$-subformula of an edge-gadget $\itn{e}$ is its \emph{indicator}; and in the completed encoding $\itn G$ the $p$ instances of $\1$ are the \emph{edge-absorbers}.
+In the above definition, the final $\1$-subformula of a vertex-gadget $\itn{v_k}$ is its \emph{indicator target}; the final $\bot$-subformula of an edge-gadget $\itn{e}$ is its \emph{indicator}; and in the completed encoding $\itn G$ the $p$ instances of $\1$ are the \emph{weight absorbers}.
 %
 In a constraint graph $G$, a vertex $v$ and an edge $e$ will be called \emph{appropriate} (for each other) if $v\in v(e)$, and \emph{inappropriate} otherwise.
 %
@@ -909,7 +907,7 @@ The \emph{encoding} $\itn\gamma$ of a total configuration $\gamma$ for a constra
 %
 Let $\gamma(e)=v$; firstly, the indicator of $\itn e$ is linked to the indicator target of $\itn v$.
 %
-Then successively for each weight element $W$ in $e$, if $\itn v$ has a first free constraint element $C$, extend $\itn\gamma$ to include the standard linking on $W,C$; otherwise, extend $\itn\gamma$ by the standard linking on the sequent consisting of $W$ plus the first $3n+4$ free edge absorbers.
+Then successively for each weight element $W$ in $e$, if $\itn v$ has a first free constraint element $C$, extend $\itn\gamma$ to include the standard linking on $W,C$; otherwise, extend $\itn\gamma$ by the standard linking on the sequent consisting of $W$ plus the first $3n+4$ free weight absorbers.
 \end{definition}
 
 
@@ -923,7 +921,7 @@ Using Proposition~\ref{prop:scoping correctness}, it is sufficient to give a sui
 %
 The scope of each weight element $W$ is the sequent $W,C$ or $W,1^{3n+4}$ of its standard linking, which forms a proof net by Proposition~\ref{prop:element linkings}.
 %
-The scope of each vertex-gadget $\itn v$ contains the edge-gadgets $\itn e$ such that $\gamma(e)=v$, plus all the edge-absorbers within scopes of weight elements inside $\itn e$.
+The scope of each vertex-gadget $\itn v$ contains the edge-gadgets $\itn e$ such that $\gamma(e)=v$, plus all the weight absorbers within scopes of weight elements inside $\itn e$.
 %
 Since the weights of the connected edges $e$ sum to more than the inflow constraint of $v$, there are no unused constraint elements remaining in $\itn v$.
 %
@@ -934,9 +932,57 @@ After contracting the scope of each $W$, each edge-gadget in the scope of $\itn 
 
 
 
+
+\begin{figure*}
+\[
+	\vc{\doubleExchange uvxy}
+	\quad\perm*\quad
+	\vc{\doubleExchange uyxy}
+	\quad\perm*\quad
+	\vc{\doubleExchange uyxu}
+	\quad\perm*\quad
+	\vc{\doubleExchange vyxu}
+	\quad\perm*\quad
+	\vc{\doubleExchange vyyu}
+	\quad\perm*\quad
+	\vc{\doubleExchange vuyu}
+	\quad\perm*\quad
+	\vc{\doubleExchange vuyx}
+\]
+\caption{Double exchange of links}
+\label{fig:double exchange}
+\end{figure*}
+
+
 %------------------------------------------------------------
 
-\section{Equivalence in the absence of $~\protect\parr$}
+\section{Rewiring proof nets}
+
+
+
+In this section we will explore the global rewiring behaviour of proof nets.
+%
+In particular, we will give a simple account of equivalence for the fragment of MLL that omits the par, i.e.\ that of sequents of formulae constructed over $\1$, $\bot$, and $\tn$.
+%
+Equivalence in this fragment is determined by two main characteristics: 1) proof nets that differ by the exchange of exactly two links are not equivalent; and 2) as long as there are at least two tensor-formulae in the sequent, proof nets are equivalent whenever this is possible while respecting the previous.
+
+
+
+Before turning to this fragment there is the following lemma for full MLL, which states that (under the given connectedness conditions) equivalence is preserved by a double exchange of links.
+
+
+
+\begin{lemma}
+\label{lem:double exchange}
+Let $\links$ be a proof net where $\links(a)=u$, $\links(b)=v$, $\links(c)=x$, and $\links(d)=y$, and for any switching the path from $u$ to $y$ passes through the links $\edge bv$ and $\edge xc$.
+%
+Then $\links\perm\links'$ where $\links'(a)=v$, $\links'(b)=u$, $\links'(c)=y$, and $\links'(d)=x$, and $\links'(z)=\links(z)$ otherwise.
+\end{lemma}
+
+\begin{IEEEproof}
+By the rewiring path shown in Figure~\ref{fig:double exchange}.
+\end{IEEEproof}
+
 
 
 
@@ -1223,39 +1269,16 @@ This yields a linear-time algorithm.
 
 
 
-\begin{lemma}
-\label{lem:double exchange}
-Let $\links$ be a proof net where $\links(a)=(u)$, $\links(b)=v$, $\links(c)=x$, and $\links(d)=y$, and for any switching the path from $u$ to $y$ passes through the links $b-v$ and $x-c$.
+
+
+%------------------------------------------------------------
+
+\section{Correctness of the encoding}
+
+In this section we will establish that in our encoding of constraint graphs %partial \textsc{ncg}-reconfiguration 
+in MLL, reconfiguration on graphs is captured by proof equivalence in MLL.
 %
-Then $\links\sim\links'$ where $\links'(a)=v$, $\links'(b)=u$, $\links'(c)=y$, and $\links'(d)=x$, and $\links'(z)=\links(z)$ otherwise.
-\end{lemma}
-
-\begin{IEEEproof}
-\[
-\begin{array}{@{}ccccc@{}}
-	\vc{\doubleExchange uvxy}
-	&\perm&
-	\vc{\doubleExchange uyxy}
-	&\perm&
-	\vc{\doubleExchange uyxu}
-	\\
-	\\
-	\vc{\doubleExchange vuyx}
-	&\perm&
-	\vc{\doubleExchange vuyu}
-	&\perm&
-	\vc{\doubleExchange vyyu}
-\end{array}
-\begin{array}{@{~}c@{~}c@{}}
-	\indirection{ul}{\perm} \\ \\[20pt]
-	\indirection{dl}{\perm}
-\end{array}
-\vc{\doubleExchange vyxu}
-\]
-\end{IEEEproof}
-
-
-
+Up to minor technical details, it will be shown that $\itn\gamma\perm\itn\delta$ if and only if $\gamma\perm\delta$, in two parts: completeness ($\Leftarrow$) and soundness ($\Rightarrow$).
 
 
 
@@ -1263,109 +1286,143 @@ Then $\links\sim\links'$ where $\links'(a)=v$, $\links'(b)=u$, $\links'(c)=y$, a
 
 \subsection*{Completeness}
 
+Given a reconfiguration path $\gamma\perm\delta$ over total configurations, we will demonstrate a rewiring sequence between $\itn\gamma$ and $\itn\delta$ up to, possibly, a single exchange of two links in $\itn\delta$.
+%
+The central part of the argument will be to show how the weight element linking to a constraint element may be exchanged for another.
+%
+Once the weight elements of an edge-gadget are no longer connected to any constraint elements, the edge-gadget may straightforwardly be moved from one vertex-gadget to another by re-attaching its indicator link.
+%
+Throughout the rewiring process, weight elements and constraint elements will be kept in a standard linking, and according to the connectivity specified by the target configuration $\itn\delta$.
+%
+Linkings between weight elements and weight absorbers will remain arbitrary, and will be re-adjusted to match $\itn\delta$ at the end of the process.
 
-In a proof net for $\itn G$, an edge-gadget $\itn e$ that is in the empire of an appropriate vertex-gadget $\itn v$ is \emph{naturally linked} if the indicator of $\itn e$ connects to the indicator of $\itn v$, and each weight element $W$ of $\itn e$ is either naturally linked to a constraint element $C$ in $\itn v$ or linked only to edge-absorbers.
+
+
+In a proof net for $\itn G$, an edge-gadget $\itn e$ is \emph{well linked} if: 1) its indicator connects to the indicator target of an appropriate vertex-gadget $\itn v$, and 2) each weight element is either in a standard linking with a constraint element of $\itn v$, or linked only to weight absorbers.
+%
+A well-linked edge-gadget is \emph{free} if all its weight elements connect to weight absorbers.
+%
+In the following main lemma we will exchange the weight element linking to a constraint element.
+%
+The lemma considers a sequent consisting of just a vertex-gadget, some appropriate edge-gadgets, and sufficiently many weight absorbers.
+
 
 \begin{lemma}
 \label{lem:octopus roll}
-In a proof net $\links$ for a sequent $\Gamma=\itn v,\itn{e_1},\dotsc,\itn{e_m},\bot^p$ where each edge-gadget is naturally linked, if a weight element $W_i$ in $\itn{e_i}$ is linked to $C$ in $\itn v$ and $W_j$ in $\itn{e_j}$ is linked to edge-absorbers $\bot^n$, then there is a net $\links'\sim\links$ in which $W_j$ is naturally linked to $C$, $W_i$ is linked to $\bot^n$, and $\links'$ agrees with $\links$ otherwise.
+In a proof net $\links$ for a sequent $\Gamma=\itn v,\itn{e_1},\dotsc,\itn{e_m},\bot^p$ where each edge-gadget is well linked, if a weight element $W_i$ in $\itn{e_i}$ is linked to $C$ in $\itn v$ and $W_j$ in $\itn{e_j}$ is linked to weight absorbers $\bot^n$, then there is a net $\links'\perm\links$ in which $W_j$ is naturally linked to $C$, $W_i$ is linked to $\bot^n$, and $\links'$ agrees with $\links$ otherwise.
 \end{lemma}
+
+
+\renewcommand\scalefactor{0.88}
+
+\newcommand\displayOcto[1]{%
+ \NoIndent{%
+   \smallskip%
+   \centerline{%
+	 \scale{#1}%
+  }}%
+  \bigskip%
+}
+
 
 \begin{IEEEproof}
 Let $W_i=A\parr B\parr C$, $W_j=D\parr E\parr F$, and $C=X\tn Y$.
 %
-We will illustrate the path of permutations for the case where $A,B,X$ and $D,X$, and thus also $C,Y$ and $E,F,Y$, are balanced sequents; other cases are similar.
+The path of permutations will be illustrated for the case where $A,B,X$ and $D,X$, and thus also $C,Y$ and $E,F,Y$, are balanced sequents; other cases are similar.
 %
 \begin{enumerate}
 	\item
-The initial configuration is illustrated below; other weight and constraint elements are omitted, and $v$, $i$, and $j$ are the indicator vertices of $\itn v$, $\itn{e_i}$, and $\itn{e_j}$ respectively.
-\NoIndent{
-\[
-	\octorollA1
-\]
-}
+The initial configuration is illustrated below. 
+%
+Other edges, other weight and constraint elements, and the outer box of the vertex-gadget, are omitted.
+%
+The vertices $i$, $j$, and  $v$ are the indicators of $\itn{e_i}$ and $\itn{e_j}$ and the indicator target of $\itn v$, respectively.
+%
+\displayOcto{\octorollA1}
+
+
 	\item
-The link $i-v$ is re-attached to connect to an edge-absorber together with only the links from the first $\bot$ of each of $D$, $E$, and $F$. 
-\NoIndent{
-\[
-	\octorollB2
-\]
-}
+The link $i-v$ is re-attached to connect to a weight absorber together with only the links from the first $\bot$ of each of $D$, $E$, and $F$. 
+%
+\displayOcto{\octorollB2}
+
+
 	\item
-Secondly, the link from the first $\bot$ of $D$ is moved to $X$, and those of $E$ and $F$ are moved to $Y$.
-\NoIndent{
-\[
-	\octorollB3
-\]
-}
+Secondly, the link from the first $\bot$ of $D$ is moved to $X$, and those from the first $\bot$ of $E$ and $F$ are moved to $Y$.
+%
+\displayOcto{\octorollB3}
+
+
 	\item\label{item:exchange added}
-There are subnets over the sub-sequents $A,B,X,D,\bot^m$ and $C,Y,E,F,\bot^k$.
+In the present configuration, the links from the weight elements form two subnets: one over the sub-sequents $A,B,X,D,\bot^m$, and one over the sub-sequent $C,Y,E,F,\bot^k$, for some $m$ and $k$.
 %
-These subnets may be rewired so that $D\parr E\parr F$ is naturally linked to $X\tn Y$: by Proposition~\ref{prop:parity determines equivalence}, the resulting subnets are equivalent as long as their parity is preserved.
+By Proposition~\ref{prop:parity determines equivalence}, these subnets are equivalent to any other over the same sequent, as long as their parity is preserved.
 %
-Two links from $C$ to $X$ should remain exchanged, compared to the standard linking, for step \ref{item:exchange needed} below.
+It is then sufficient to choose linkings so that $D\parr E\parr F$ is in a a standard linking with $X\tn Y$, with a minor adjustment: two links from $C$ to $X$ should remain exchanged, compared to the standard linking, for step \ref{item:exchange needed} below.
 %
-The links of $A,B,C$ connect to the edge-absorbers $\bot^m$ and $\bot^k$, with one remaining link from $B$ to $X$ and one from $C$ to $Y$.
-\NoIndent{
-\[
-	\octorollC
-\]
-}
+The links of $A,B,C$ link to the weight absorbers $\bot^m$ and $\bot^k$, with one remaining link from $B$ to $X$ and one from $C$ to $Y$.
+%
+\displayOcto{\octorollC}
+
+
 	\item
-The link from $C$ to $Y$ is moved towards an edge-absorber connected to $A,B$.
-\NoIndent{
-\[
-	\octorollD1
-\]
-}
+The link from $C$ to $Y$ is moved towards a weight absorber connected to $A,B$.
+%
+\displayOcto{\octorollD1}
+
+
 	\item\label{item:exchange needed}
 The link from $B$ to $X$ is the one remaining connection between the edge-gadgets $\itn{e_i}$ and $\itn{e_j}$.
 %
 Lemma~\ref{lem:double exchange} allows to swap the targets of the link from $B$ to $X$ and the link from $i$, and simultaneously undo the exchange in the links from $C$ to $X$ added in step \ref{item:exchange added} above.
-\NoIndent{
-\[
-	\octorollD2
-\]
-}
+%
+\displayOcto{\octorollD2}
+
+
 	\item
-The link from $i$ may be re-attached to $v$ to yield the final configuration.
-\NoIndent{
-\[
-	\octorollA2
-\]
-}
+The link from $i$ is re-attached to $v$ to yield the final configuration.
+%
+\displayOcto{\octorollA2}
+
+
 \end{enumerate}
 \end{IEEEproof}
 
 
-An edge-gadget $\itn e$ is \emph{free} if each of its weight elements is linked only to edge-absorbers.
+
+In the exchange of weight elements in the above lemma, weight elements link to weight absorbers in arbitrary fashion.
+%
+The next lemma will demonstrate how weight absorbers can be exchanged freely, but only with two exchanges at once. 
+
+
+%% WORKING HERE
 
 
 \begin{lemma}
-\label{lem:permute edge-absorbers}
-If $\links$ is a naturally linked proof net for $\itn G$ with a free edge-gadget $\itn e$, and $\links'$ agrees with $\links$ up to an even permutation of edge-absorbers, then $\links\sim\links'$.
+\label{lem:permute weight absorbers}
+If $\links$ is a well linked proof net for $\itn G$ with a free edge-gadget $\itn e$, and $\links'$ agrees with $\links$ up to an even permutation of weight absorbers, then $\links\perm\links'$.
 \end{lemma}
 
 \begin{IEEEproof}
-Let $e_0$ be the indicator vertex of $\itn e$; since $\itn e$ is free, $e_0$ may re-attach anywhere within the proof net.
+Let $e_0$ be the indicator of $\itn e$; since $\itn e$ is free, $e_0$ may re-attach anywhere within the proof net.
 %
 Let $e_1$ and $e_2$ be arbitrary other $\bot$-occurrences in $\itn e$.
 
 \begin{enumerate}
 
 	\item
-To permute two edge-absorbers $v$ and $w$ linked to by other edge-gadgets than $\itn e$, attach $e_0$ to $v$, and apply Lemma~\ref{lem:double exchange} to exchange $v$ and $w$, also exchanging the targets of $e_0$ and $e_1$.
+To permute two weight absorbers $v$ and $w$ linked to by other edge-gadgets than $\itn e$, attach $e_0$ to $v$, and apply Lemma~\ref{lem:double exchange} to exchange $v$ and $w$, also exchanging the targets of $e_0$ and $e_1$.
 
 	\item
 To reinstate $e_0$ as the connection between $\itn e$ and the remainder of the proof net, either perform another permutation as above, or permute $v$ and $w$ twice again, once exchanging the targets of $e_1$ and $e_2$, and once exchanging the targets of $e_2$ and $e_0$.
 
 	\item
-To exchange an edge-absorber $w$ linked from a $\named d\bot$ outside $\itn e$ for the target $v$ of $e_1$, and attach $e_0$ to $w$, attach $d$ to $v$.
+To exchange a weight absorber $w$ linked from a $\named d\bot$ outside $\itn e$ for the target $v$ of $e_1$, and attach $e_0$ to $w$, attach $d$ to $v$.
 %
 At this point, $e_1$ forms the only connect between $\itn e$ and the remainder of the proof net; to reinstate $e_0$ in this role, do as above, producing a net effect of cycling the targets of $e_1$, $e_2$, and $d$.
 
 	\item
-Finally, to permute edge-absorbers $v$ and $w$ linked by $\itn e$, attach $e_0$ to the indicator of a vertex-gadget where also another edge-gadget $\itn d$ is connected, with indicator vertex $d_0$ and an arbitrary other vertex $d_1$.
+Finally, to permute weight absorbers $v$ and $w$ linked by $\itn e$, attach $e_0$ to the indicator of a vertex-gadget where also another edge-gadget $\itn d$ is connected, with indicator vertex $d_0$ and an arbitrary other vertex $d_1$.
 %
 Connect $d_0$ to $v$, and apply Lemma~\ref{lem:double exchange} to permute $v$ and $w$, as well as exchanging the targets of $d_0$ and $d_1$.
 %
@@ -1373,11 +1430,11 @@ A second such exchange is needed to re-attach $d_0$ and $d_1$ to their original 
 
 \end{enumerate}
 
-In each case, if one of the edge-absorbers exchanged is linked to by multiple $\bot$-occurrences within the same weight element, these may be termporarily attached elsewhere.
+In each case, if one of the weight absorbers exchanged is linked to by multiple $\bot$-occurrences within the same weight element, these may be termporarily attached elsewhere.
 
 \end{IEEEproof}
 
-Let $\itn\gamma'$ be $\itn\gamma$ where the first two edge-absorbers are exchanged.
+Let $\itn\gamma'$ be $\itn\gamma$ where the first two weight absorbers are exchanged.
 
 \begin{lemma}
 If $\gamma\sim\delta$ for total configurations $\gamma$ and $\delta$, then either $\itn\gamma\sim\itn\delta$ or $\itn\gamma\sim\itn\delta'$.
@@ -1396,7 +1453,7 @@ Next, the indicator vertex of $\itn e$, which links to the indicator of $\itn v$
 %
 Again using Lemma~\ref{lem:octopus roll}, the weight elements of edge-gadgets connected to $\itn w$, including $\itn e$, may be linked in accordance with $\itn\delta$.
 %
-The resulting proof net is $\itn\delta$ modulo a permutation of edge-absorbers; then it is equivalent to either $\itn\delta$ or $\itn\delta'$ by Lemma~\ref{lem:permute edge-absorbers}.
+The resulting proof net is $\itn\delta$ modulo a permutation of weight absorbers; then it is equivalent to either $\itn\delta$ or $\itn\delta'$ by Lemma~\ref{lem:permute weight absorbers}.
 \end{IEEEproof}
 
 
