@@ -507,7 +507,7 @@ A linking $\links$ for a sequent $\Gamma$ is a proof net if and only if each $\n
 
 \begin{enumerate}
 	\item
-sub-sequents are strictly nested: if $\named w\parr$ occurs in $s(v)$ then $s(w)<s(v)$; and
+sub-sequents either disjoint or strictly nested: if $s(v)\cap s(w)\neq\varnothing$ then $s(w)<s(v)$ or $s(v)<s(w)$; and
 	\item
 for each $\named v\parr$ the graph $\sigma(v)=(s(v),\links|_{s(v)})$ becomes a tree when all immediate sub-sequents are contracted.
 \end{enumerate}
@@ -525,7 +525,7 @@ For the `only if' direction, given a sequentialisation of $(\Gamma,\links)$, a s
 \end{IEEEproof}
 
 
-Finally, the standard notion of \emph{balance} is useful in constructing proof nets without $\parr$-connectives
+Finally, the standard notion of \emph{balance} provides an easy way of identifying some unprovable sequents.
 
 
 \begin{definition}
@@ -534,7 +534,14 @@ The \emph{balance} of a sequent is the number of $\bot$s minus the number of $\p
 A sequent is \emph{balanced} if its balance is zero.
 \end{definition}
 
-An unbalanced sequent is uninhabited: a positive balance guarantees a cycle in any switching graph, for any linking, while a negative balance similarly guarantees disconnectedness.
+
+\begin{proposition}
+\label{prop:unbalanced then uninhabited}
+An unbalanced sequent is uninhabited.
+\end{proposition}
+
+
+%A positive balance guarantees a cycle in any switching graph, for any linking, while a negative balance similarly guarantees disconnectedness.
 %
 %An early conjecture of Girard, which turned out to be false, was that a sequent is inhabited if and only if it is balanced. [[FIND CITATION (probably TCS87)]]
 %
@@ -612,25 +619,25 @@ if $\gamma'$ and $\gamma''$ are total configurations that both agree with a part
 \end{IEEEproof}
 
 
+\emph{Non-deterministic constraint graph reconfiguration} or \emph{\textsc{ncg}-reconfiguration} is the problem of deciding whether two total configurations for a constraint graph are connected by a sequence of reconfiguration steps.
 %
-\emph{Non-deterministic constraint graph reconfiguration} or \emph{\textsc{ncg}-reconfiguration} is the problem of deciding when two configurations for a constraint graph are connected in the graph of total configurations and reconfiguration steps.
-%
-\emph{Partial \textsc{ncg}-reconfiguration} is the same problem for partial configurations.
+%By the above proposition, \textsc{ncg}-reconfiguration is unaffected by inclusion or exclusion of partial configurations.
+
 
 
 \begin{theorem}[\cite{Hearn-Demaine-2005}]
 \textsc{ncg}-reconfiguration is \textsc{pspace}-complete.
 \end{theorem}
 
-By Proposition~\ref{prop:partial simulates total reconfiguration} the following is then immediate.
+%By Proposition~\ref{prop:partial simulates total reconfiguration} the following is then immediate.
+%
+%\begin{proposition}
+%Partial \textsc{ncg}-reconfiguration is \textsc{pspace}-complete.
+%%\textsc{pncg}-reconfiguration is \textsc{pspace}-complete.
+%\end{proposition}
 
-\begin{proposition}
-Partial \textsc{ncg}-reconfiguration is \textsc{pspace}-complete.
-%\textsc{pncg}-reconfiguration is \textsc{pspace}-complete.
-\end{proposition}
 
-
-We will demonstrate the \textsc{pspace}-hardness of MLL proof equivalence by an encoding of partial \textsc{ncg}-reconfiguration in MLL proof nets.
+We will demonstrate the \textsc{pspace}-hardness of MLL proof equivalence by an encoding of \textsc{ncg}-reconfiguration in MLL proof nets.
 
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -782,9 +789,9 @@ For the formal definition, let $|V|$ and $|E|$ denote the number of vertices and
 
 \begin{definition}
 \label{def:graph encoding}
-The \emph{encoding} $\itn G$ of a constraint graph $G=(V,E,c,v,w)$ is a sequent constructed as follows.
+The \emph{encoding} $\itn G$ of a constraint graph $G$ is a sequent constructed as follows.
 %
-Let $V=\{v_1,\dotsc,v_n\}$ and $E=\{e_1,\dotsc,e_m\}$ where $|V|=n$ and $|E|=m$.
+Let $G=(V,E,c,v,w)$, and let $V=\{v_1,\dotsc,v_n\}$ and $E=\{e_1,\dotsc,e_m\}$ where $|V|=n$ and $|E|=m$.
 
 \noindent
 The encoding of a vertex $v_k$ is the formula
@@ -1395,8 +1402,6 @@ In the exchange of weight elements in the above lemma, weight elements link to w
 The next lemma will demonstrate how weight absorbers can be exchanged freely, but only with two exchanges at once. 
 
 
-%% WORKING HERE
-
 
 \begin{lemma}
 \label{lem:permute weight absorbers}
@@ -1417,12 +1422,12 @@ To permute two weight absorbers $v$ and $w$ linked to by other edge-gadgets than
 To reinstate $e_0$ as the connection between $\itn e$ and the remainder of the proof net, either perform another permutation as above, or permute $v$ and $w$ twice again, once exchanging the targets of $e_1$ and $e_2$, and once exchanging the targets of $e_2$ and $e_0$.
 
 	\item
-To exchange a weight absorber $w$ linked from a $\named d\bot$ outside $\itn e$ for the target $v$ of $e_1$, and attach $e_0$ to $w$, attach $d$ to $v$.
+To exchange a weight absorber $w$ linked from a $\named d\bot$ outside $\itn e$ for the target $v$ of $e_1$, first attach $e_0$ to $w$, then re-attach $d$ to $v$.
 %
 At this point, $e_1$ forms the only connect between $\itn e$ and the remainder of the proof net; to reinstate $e_0$ in this role, do as above, producing a net effect of cycling the targets of $e_1$, $e_2$, and $d$.
 
 	\item
-Finally, to permute weight absorbers $v$ and $w$ linked by $\itn e$, attach $e_0$ to the indicator of a vertex-gadget where also another edge-gadget $\itn d$ is connected, with indicator vertex $d_0$ and an arbitrary other vertex $d_1$.
+Finally, to permute weight absorbers $v$ and $w$ linked by $\itn e$, attach $e_0$ to the indicator target of a vertex-gadget where also another edge-gadget $\itn d$ is connected, with indicator $d_0$ and an arbitrary other $\bot$-occurrence $d_1$.
 %
 Connect $d_0$ to $v$, and apply Lemma~\ref{lem:double exchange} to permute $v$ and $w$, as well as exchanging the targets of $d_0$ and $d_1$.
 %
@@ -1434,22 +1439,31 @@ In each case, if one of the weight absorbers exchanged is linked to by multiple 
 
 \end{IEEEproof}
 
-Let $\itn\gamma'$ be $\itn\gamma$ where the first two weight absorbers are exchanged.
+
+For any configuration $\gamma$ let $\itn\gamma'$ denote $\itn\gamma$ where the first two weight absorbers are exchanged.
+
 
 \begin{lemma}
-If $\gamma\sim\delta$ for total configurations $\gamma$ and $\delta$, then either $\itn\gamma\sim\itn\delta$ or $\itn\gamma\sim\itn\delta'$.
+\label{lem:completeness}
+If $\gamma\perm\delta$ for total configurations $\gamma$ and $\delta$, then either $\itn\gamma\perm\itn\delta$ or $\itn\gamma\perm\itn\delta'$.
 \end{lemma}
 
 \begin{IEEEproof}
-We will prove the case where $\gamma\sim\delta$ is a single reconfiguration step; the general case follows because the proof goes through also when $\itn\gamma'$ replaces $\itn\gamma$ in the statement of the lemma.
+By Proposition~\ref{prop:partial simulates total reconfiguration} we may assume that $\gamma\perm\delta$ by a sequence of reconfiguration steps over total configurations.
 %
+We will prove that if $\gamma\perm*\delta$ then $\itn\gamma\perm\itn\delta$ or $\itn\gamma\perm\itn\delta'$.
+%
+The same proof will show the corresponding case for $\itn\gamma'$ instead of $\itn\gamma$, so that the general case for $\gamma\perm\delta$ follows by transitivity.
+
+
+
 Let $\gamma$ and $\delta$ agree on every edge except $e$, where $\gamma(e)=v$ and $\delta(e)=w$.
 %
 Firstly, using Lemma~\ref{lem:octopus roll}, for the edges $d$ other than $e$ such that $\gamma(d)=v$, the weight elements of the edge-gadgets $\itn d$ may be linked to the constraint elements of $\itn v$, in accordance with the target configuration $\itn\delta$.
 %
 Since $e$ is mobile in $\gamma$, the weights of the edges $d$ suffice to fill the inflow constraint of $v$, and correspondingly the weight elements of edge-gadgets $\itn d$ suffice to fill the constraint elements of $\itn v$, so that $\itn e$ is free.
 %
-Next, the indicator vertex of $\itn e$, which links to the indicator of $\itn v$, is re-attached to the indicator of $\itn w$.
+Next, the indicator vertex of $\itn e$, which links to the indicator target of $\itn v$, is re-attached to the indicator target of $\itn w$.
 %
 Again using Lemma~\ref{lem:octopus roll}, the weight elements of edge-gadgets connected to $\itn w$, including $\itn e$, may be linked in accordance with $\itn\delta$.
 %
@@ -1462,20 +1476,38 @@ The resulting proof net is $\itn\delta$ modulo a permutation of weight absorbers
 \subsection*{Soundness}
 
 
+It will be shown that proof net rewiring $\itn\gamma\perm\itn\delta$ is sound for \textsc{ncg}-reconfiguration, $\gamma\perm\delta$.
+%
+To each proof net $\links$ for an encoded constraint graph $\itn G$ we will associate a partial configuration $\gamma=\coitn\links$, such that 1) a rewiring step $\links\perm*\links$ corresponds to a reconfiguration path $\coitn\links\perm\coitn{\links'}$, and 2) it is a retraction of the encoding of configurations, $\coitn{\itn\gamma}=\gamma$.
+
+
+
+The configuration $\coitn\links$ will assign an edge $e$ to a vertex $v$ when, in the proof net $(\links,\itn G)$, the edge-gadget $\itn e$ is in the empire of the vertex-gadget $\itn v$.
+%
+Firstly, it will be shown that $\coitn\links$ is a partial function.
+
+
+\begin{proposition}[{\cite[Proposition 1.i]{Bellin-vandeWiele-1995}}]
+\label{prop:tensor has disjoint subnets}
+In a proof net, if vertices $v$ and $w$ are joined by a tensor, then any two subnets of which they are respective ports are disjoint.
+\end{proposition}
+
+
 \begin{lemma}
 In a proof net for $\itn G$, an edge-gadget $\itn e$ belongs to the empire of at most one vertex-gadget $\itn v$.
 \end{lemma}
 
 \begin{IEEEproof}
-Since vertex-gadgets are joined by a tensor, the lemma is immediate from \cite[Proposition 1]{Bellin-vandeWiele-1995}.
+Since vertex-gadgets are joined by a tensor, the lemma is immediate from Proposition~\ref{prop:tensor has disjoint subnets}.
 \end{IEEEproof}
 
 
+Next, it will be shown that the appropriate edge-gadgets in the empire of a vertex-gadget $\itn v$ contain sufficient weight elements to fill the constraint elements of $\itn v$.
 
 
 \begin{lemma}
 \label{lem:appropriate edge weights}
-In a proof net for $\itn G$, for each vertex $v$, the weights of the appropriate edge-gadgets in the empire of $\itn v$ are equal to or greater than the constraint of $v$.
+In a proof net for $\itn G$, for each node $v$ in $G$, the weights of the appropriate edge-gadgets in the empire of $\itn v$ are equal to or greater than the constraint of $v$.
 \end{lemma}
 
 
@@ -1486,17 +1518,17 @@ Each constraint element in $\itn{v_i}$ is an instance of the formula
 \[
 	C = \bigparr\big(1^{3i+2}\big) \tn \bigparr\big(1^{3(n-i)+3}\big)~.
 \]
-The two $\parr$-subformulae have a balance of $-3i-1$ and $-3(n-i)-2$ respectively.
+The two $\parr$-subformulae have a balance of $-3i-1$ and respectively $-3(n-i)-2$.
 %
 Each weight element in $\itn{e}$ is an instance of 
 \[
 	W = \bigtn\big(\bot^{3a+2}\big)\parr\bigtn\big(\bot^{3(b-a)+1}\big)\parr\bigtn\big(\bot^{3(n-b)+3}\big)~.
 \]
-The three $\tn$-subformulae have a net balance of $3a+1$, $3(b-a)$, and $3(n-b)+2$ respectively.
+For each of the three $\tn$-subformulae, adding it to the scope of a $\parr$ will change its balance by $3a+1$, $3(b-a)$, and $3(n-b)+2$ respectively.
 %
-In pairs, they have a net balance of $3b+1$ (1st and 2nd subformula), $3(a+n-b)+3$ (1st and 3rd), and $3(n-a)+2$ (2nd and 3rd).
+In pairs, they add to the balance of a scope by $3b+1$ (1st and 2nd subformula), $3(a+n-b)+3$ (1st and 3rd), and $3(n-a)+2$ (2nd and 3rd).
 %
-Since $i\neq a,b$, and since no $\tn$-subformula of $W$ can connect to more than one $\parr$-subformula of $C$, it follows that $W$ can balance the scope of at most one of both subformulae of $C$.
+Since $i\neq a,b$, and since no $\tn$-subformula of $W$ can connect to more than one $\parr$-subformula of $C$ (by Proposition~\ref{prop:tensor has disjoint subnets}), it follows that $W$ can balance the scope of at most one of both $\parr$-subformulae of $C$.
 
 
 The vertex-gadget $\itn{v_i}$ is the formula
@@ -1524,12 +1556,16 @@ For a proof net $\links$ for $\itn G$, let $\coitn\links$ be the partial configu
 \end{definition}
 
 
+%% WORKING HERE
+
 
 \begin{lemma}
-If $\links\sim\links'$ are proof nets for $\itn G$ then $\coitn\links\sim\coitn{\links'}$.
+If $\links\perm\links'$ are proof nets for $\itn G$ then $\coitn\links\perm\coitn{\links'}$.
 \end{lemma}
 
 \begin{IEEEproof}
+The proof will consider the case where $\links\perm*\links'$; the general case follows by transitivity.
+%
 A single permutation $\links\sim\links'$ on proof nets may move a number of edge-gadgets $\itn{e_1},\dotso,\itn{e_n}$ in three ways: 1) out of the empire of a vertex-gadget $\int v$, 2) into the empire of a vertex-gadget $\int w$, or 3) both.
 %
 Then in both $\coitn\links$ and $\coitn{\links'}$ the edges $e_1$ through $e_n$ are mobile, since by Lemma~\ref{lem:appropriate edge weights} the empires of the vertex-gadgets $\itn v$ (in cases 1 and 3) and $\itn w$ (in cases 2 and 3) contain appropriate edge-gadgets other than $\itn{e_1}$ through $\itn{e_n}$ of sufficient combined weight.
