@@ -707,25 +707,55 @@ Then using Lemma~\ref{lem:rewiring within empire} re-attach $b$ to $z$, and repe
 \end{IEEEproof}
 
 
+\subsection*{Parity}
 
-Equivalence in this fragment is determined by two main characteristics: 1) proof nets that differ by the exchange of exactly two links are generally not equivalent; and 2) as long as there are at least two tensor-formulae in the sequent, proof nets are equivalent whenever this is possible while respecting the previous.
 
+We shall associate a \emph{parity} with any two linkings $\links$ and $\links'$ of the same sequent $\Gamma$. We shall find that the parity of equivalent linkings is always even; and that the converse holds when $\Gamma$ is a 1-alternation sequent.
 
-These characteristics carry over to the full fragment, including the par.
+For this argument we shall assume that the connectives $\tn$ and $\parr$ are n-ary, and that every argument of a $\tn$ is a $\parr$ and vice versa. Assume also that $\Gamma$ consists of a single formula, if necessary by introducing a $\parr$ at the root. Now fix an arbitrary switching of $\Gamma$; this switching together with a linking $\links$ defines a tree whose vertices are the subformulae of $\Gamma$ and whose edges are the edges of the chosen switching together with the links of $\links$. Take the root of the formula $\Gamma$ to be the root of this tree. Now consider the edges of the tree to be directed away from the root; so the root has in-degree $0$ and the other vertices have in-degree $1$. This therefore establishes a bijection between the edges of the tree and the non-root vertices.
 %
-They hold the following lessons on rewiring for the design of our encoding in Section~\ref{sec:encoding}. 
+A second linking $\links'$ similarly establishes such a bijection. Given both linkings $\links$ and $\links'$, we compose these bijections to obtain a permutation of the proper subformulae of $\Gamma$. Finally the parity of the pair of linkings is taken to be the parity of this permutation.
+
+\begin{lemma}
+	The parity is well-defined, in the sense that it does not depend on the choice of switching.
+\end{lemma}
+\begin{IEEEproof}
+	It suffices to show that changing the switching of a single $\parr$ node does not change the parity.
+	Observe that the tree is bipartite: every edge connects a $\tn$ with a $\parr$ node. Therefore two
+	arguments of a $\parr$ are connected, in the tree, by a path of even length. Changing the switching will
+	therefore induce a cyclic permutation of an odd number of edges (the even number of edges on the path
+	connecting the two $\parr$ arguments, and the edge connecting the $\parr$ to its argument); and a cyclic
+	permutation of an odd number of elements is an even permutation.
+\end{IEEEproof}
+
+Essentially the same argument also establishes that:
+\begin{lemma}
+	If two linkings are equivalent, their parity is even.
+\end{lemma}
+
+
+\begin{proposition}
+\label{prop:parity determines equivalence}
+Two proof nets for a basic sequent with at least two tensor-formulae are equivalent if and only if they have the same parity.
+\end{proposition}
+
+\begin{IEEEproof}
+By Proposition~\ref{prop:level0 max binary} the sequent has at most 2 equivalence classes.
+%
+Given two proof nets of even parity, both must be in the other equivalence class than a proof net with odd relative parity to both, which exists by exchanging two jumps from one tensor-formula.
+\end{IEEEproof}
+
+
+The previous illustrates that equivalence in the fragment without $\parr$ is determined by two main characteristics: 1) proof nets that differ by the exchange of exactly two links are generally not equivalent; and 2) as long as there are at least two tensor-formulae in the sequent, proof nets are equivalent whenever this is possible while respecting the previous.
+
+
+These characteristics hold the following lessons on rewiring for the design of our encoding in Section~\ref{sec:encoding}. 
 %
 Firstly, making proof nets equivalent is generally easier than preventing them from being equivalent, and in particular changing a formula $A$ to $A\tn\bot$ dramatically increases its rewiring potential.
 %
 The focus of our encoding will therefore be on preventing undesired linkings from being proof nets at all, rather than being unreachable by rewiring.
 %
-Secondly, the problem that proof nets up to a single exchange of links are generally not equivalent is too subtle to be useful as a feature of an encoding, and should be no more than a technical distraction.
-
-
-
-
-
-
+Secondly, the problem that proof nets up to a single exchange of links are generally not equivalent is too subtle to be useful as a feature of an encoding, and shall mean no more than a technical distraction.
 
 
 
@@ -1285,6 +1315,11 @@ A second such exchange is needed to re-attach $d_0$ and $d_1$ to their original 
 In each case, if one of the weight absorbers exchanged is linked to by multiple $\bot$-occurrences within the same weight element, these may be termporarily attached elsewhere.
 %
 \end{IEEEproof}
+
+
+%% WORKING HERE
+
+%We shall translate a pair of 
 
 
 For any configuration $\gamma$ let $\itn\gamma'$ denote $\itn\gamma$ where the first two weight absorbers are exchanged.

@@ -11,48 +11,5 @@ If a link $\edge ab$ may be reconnected as $\edge ac$ it is said that $a$ \emph{
 %
 By the above proposition, it is immediate that if $a$ and $b$ may both connect to $c$, then after actually reconnecting $\edge ac$, still $b$ may connect to $c$.
 
-We shall associate a \emph{parity} with any two linkings $\links$ and $\links'$ of the same sequent $\Gamma$. We shall find that the parity of equivalent linkings is always even; and that the converse holds when $\Gamma$ is a 1-alternation sequent.
-
-In this section we shall assume that the connectives $\tn$ and $\parr$ are n-ary, and that every argument of a $\tn$ is a $\parr$ and vice versa. Assume also that $\Gamma$ consists of a single formula, if necessary by introducing a $\parr$ at the root. Now fix an arbitrary switching of $\Gamma$; this switching together with a linking $\links$ defines a tree whose vertices are the subformulae of $\Gamma$ and whose edges are the edges of the chosen switching together with the links of $\links$. Take the root of the formula $\Gamma$ to be the root of this tree. Now consider the edges of the tree to be directed away from the root; so the root has in-degree $0$ and the other vertices have in-degree $1$. This therefore establishes a bijection between the edges of the tree and the non-root vertices.
-%
-A second linking $\links'$ similarly establishes such a bijection. Given both linkings $\links$ and $\links'$, we compose these bijections to obtain a permutation of the proper subformulae of $\Gamma$. Finally the parity of the pair of linkings is taken to be the parity of this permutation.
-
-\begin{lemma}
-	The parity is well-defined, in the sense that it does not depend on the choice of switching.
-\end{lemma}
-\begin{IEEEproof}
-	It suffices to show that changing the switching of a single $\parr$ node does not change the parity.
-	Observe that the tree is bipartite: every edge connects a $\tn$ with a $\parr$ node. Therefore two
-	arguments of a $\parr$ are connected, in the tree, by a path of even length. Changing the switching will
-	therefore induce a cyclic permutation of an odd number of edges (the even number of edges on the path
-	connecting the two $\parr$ arguments, and the edge connecting the $\parr$ to its argument); and a cyclic
-	permutation of an odd number of elements is an even permutation.
-\end{IEEEproof}
-
-Essentially the same argument also establishes that:
-\begin{lemma}
-	If two linkings are equivalent, their parity is even.
-\end{lemma}
-
-
-\begin{proposition}
-\label{prop:parity determines equivalence}
-Two proof nets for a 1-alternation sequent with at least two tensor-formulae are equivalent if and only if they have the same parity.
-\end{proposition}
-
-
-\begin{theorem}
-\MLL\ proof equivalence in the absence of ~$\parr$ is linear-time decidable.
-\end{theorem}
-
-\begin{IEEEproof}
-For a sequent with 1 tensor-formula, the problem is reduced to syntactic equality.
-%
-For a sequent with 2 or more tensor-formulae, by Propositions~\ref{prop:parity determines equivalence} the equivalence of two nets is determined by their parity.
-%
-The parity of a net can be read off in a single traversal of the net.
-%
-This yields a linear-time algorithm.
-\end{IEEEproof}
 
 \end{document}
