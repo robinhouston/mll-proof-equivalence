@@ -233,7 +233,7 @@ The relation $(\toNet)$ interprets a proof $\Pi$ for a sequent $\Delta$ by a lin
 % 
 $\Pi\toNet\links$ if for each $\named a\bot$ in $\Delta$, if $\Gamma$ is the context of the inference introducing $\named a\bot$, as illustrated below, then $\links(a)$ is the name of some $1$ in $\Gamma$.
 \[
-	\infer[\capsabbrev{mll}label b]{\Gamma,\named a\bot}{\Gamma}
+	\infer[MLLlabel b]{\Gamma,\named a\bot}{\Gamma}
 \]
 %
 \end{definition}
@@ -520,7 +520,7 @@ For the `if' direction, it follows by induction on the nesting of sub-sequents t
 %
 For the `only if' direction, given a sequentialisation of $(\Gamma,\links)$, a sub-sequent $s(v)\leq\Gamma$ for each $\named v\parr$ is found by taking the conclusion $\Delta, A\named v\parr B$ of its introduction rule, below.
 \[
-	\infer[\capsabbrev{mll}label p]{\Delta,A\named v\parr B}{\Delta,A,B}
+	\infer[MLLlabel p]{\Delta,A\named v\parr B}{\Delta,A,B}
 \]
 \vskip-12pt
 \end{IEEEproof}
