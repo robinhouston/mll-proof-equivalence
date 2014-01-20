@@ -52,7 +52,7 @@ It is also known as the word problem for $*$-autonomous categories.
 %
 Previous work has shown the problem to be equivalent to a rewiring problem on proof nets, which are not canonical for full MLL due to the presence of the two units.
 %
-Drawing from recent work on reconfiguration problems, in this paper it is shown that MLL proof equivalence is PSPACE-complete, using a reduction from Nondeterministic Constraint Logic.
+Drawing from recent work on reconfiguration problems, in this paper it is shown that \textsc{mll} proof equivalence is \textsc{pspace}-complete, using a reduction from Nondeterministic Constraint Logic.
 %
 An important consequence of the result is that the existence of a satisfactory notion of proof nets for MLL with units is ruled out (under current complexity assumptions).
 \end{abstract}
@@ -64,7 +64,7 @@ An important consequence of the result is that the existence of a satisfactory n
 
 \noindent The question of equivalence of proofs goes back to Lambek \cite{Lambek-1968}, who realised that the then-new tool of category-theoretic logic gave a notion of proof equivalence that was coarser and better-behaved than syntactic equality.
 
-A striking technical innovation of linear logic was the introduction of proof nets \cite{Girard-1987,Danos-Regnier-1989}, which define a canonical form for proofs in the unitless fragment of multiplicative linear logic (\textsc{mll}) -- two proofs are equivalent if and only if they have the same proof net -- so proof nets offer a simple decision procedure for proofs in this fragment. This naturally raises the question whether proof nets can be extended to work in the presence of units. There is a line of work in this direction, beginning with \cite{TrimbleThesis,BCST} via \cite{Strassburger-Lamarche-2004} and perhaps culminating with \cite{HughesFreeStar,HughesMLLProofNets}; but these proof nets are not canonical and must be identified up to a rewiring equivalence.
+A striking technical innovation of linear logic was the introduction of proof nets \cite{Girard-1987,Danos-Regnier-1989}, which define a canonical form for proofs in the unitless fragment of multiplicative linear logic -- two proofs are equivalent if and only if they have the same proof net -- so proof nets offer a simple decision procedure for proofs in this fragment. This naturally raises the question whether proof nets can be extended to work in the presence of units. There is a line of work in this direction, beginning with \cite{TrimbleThesis,BCST} via \cite{Strassburger-Lamarche-2004} and perhaps culminating with \cite{HughesFreeStar,HughesMLLProofNets}; but these proof nets are not canonical and must be identified up to a rewiring equivalence.
 
 So the question remains whether there exist fully canonical proof nets for full \textsc{mll}. Canonical proof nets have been found for several other fragments of linear logic: the combined multiplicative-additive fragment without units \cite{Hughes-vanGlabbeek-2005}, and the additive fragment, including the additive units \cite{Heijltjes-2011}.
 
