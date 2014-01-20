@@ -74,18 +74,18 @@ In this paper we establish that the proof equivalence problem for multiplicative
 
 \subsection*{Constraint logic and reconfiguration problems}
 
-The proof of \textsc{pspace}-completeness relies on a polynomial reduction from the configuration-to-configuration problem in
+The proof of \textsc{pspace}-completeness relies on a polynomial reduction from the configuration-to-configuration problem in nondeterministic
 \emph{constraint logic}, a graphical formalism recently introduced as a uniform tool for use in complexity reductions \cite{Demaine-Hearn-2008}.
 %
 Constraint logic is a simple graph rewriting mechanism, where weighted edges may be reversed as long as the given in-flow constraint for each vertex is satisfied; the configuration-to-configuration question is whether two graphs are related by a sequence of valid rewriting steps.
 
-Constraint logic belongs to a class of problems called \emph{reconfiguration problems} \cite{ReconfigurationProblems}: can one solution to a given problem be transformed into another by a series of elementary changes, while remaining valid throughout?
+This is one of a class of problems called \emph{reconfiguration problems} \cite{ReconfigurationProblems}: can one solution to a given problem be transformed into another by a series of elementary changes, while remaining valid throughout?
 %
-For example, for boolean satisfiability (SAT) the reconfiguration problem asks whether one satisfying assignment can be transformed into another by changing the value of one atomic formula at a time, without passing via a non-satisfying assignment.
+For example, the reconfiguration problem for boolean satisfiability (SAT) asks whether one satisfying assignment can be transformed into another by changing the value of one atomic formula at a time, without passing via a non-satisfying assignment.
 %
 It is not uncommon for an \textsc{np}-complete problem to have an associated reconfiguration problem that is \textsc{pspace}-complete \cite{ReconfigurationProblems}; one example is SAT-reconfiguration, which is \textsc{pspace}-complete.
 
-MLL proof equivalence may be usefully classified as the reconfiguration problem associated with MLL proof search, which is \textsc{np}-complete \cite{Kanovich-1992}.
+MLL proof equivalence may be regarded as the reconfiguration problem associated with MLL proof search, which is \textsc{np}-complete \cite{Kanovich-1992,Lincoln-Winkler-1994}.
 
 %------------------------------------------------------------
 
