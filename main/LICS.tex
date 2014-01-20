@@ -62,37 +62,13 @@ An important consequence of the result is that the existence of a satisfactory n
 
 \section{Introduction}
 
+\noindent The question of equivalence of proofs goes back to Lambek \cite{Lambek-1968}, who realised that the then-new tool of category-theoretic logic gave a notion of proof equivalence that was coarser and better-behaved than syntactic equality.
 
-%% STILL TO ADD:
-%% - MLL proof equivalence is the word problem for *-autonomous categories
-%% - IMLL proof equivalence is polynomial-time
+A striking technical innovation of linear logic was the introduction of proof nets \cite{Girard-1987,Danos-Regnier-1989}, which define a canonical form for proofs in the unitless fragment of \textsc{mll} -- two proofs are equivalent if and only if they have the same proof net -- so proof nets offer a simple decision procedure for proofs in this fragment. This naturally raises the question whether proof nets can be extended to work in the presence of units. There is a line of work in this direction, beginning with \cite{TrimbleThesis,BCST} and perhaps culminating with \cite{HughesFreeStar,HughesMLLProofNets}; but these proof nets are not canonical and must be identified up to a rewiring equivalence.
 
+So the question remains whether there exist fully canonical proof nets for full \textsc{mll}. Canonical proof nets have been found for several other fragments of linear logic: the combined multiplicative-additive fragment without units \cite{Hughes-vanGlabbeek-2005}, and the additive fragment, including the additive units \cite{Heijltjes-2011}.
 
-An important element of the theory of linear logic \cite{Girard-1987} is the idea that proofs should be considered modulo the permutation of inferences.
-%; that the chosen order of permutable inferences is inessential, or `bureaucracy'.
-%contributes no essential proof content, and should be considered `bureaucracy'.
-%
-%The idea is supported by the categorical semantics of linear logic, in which proofs up to permutations denote the same morphism. 
-%
-\emph{Proof equivalence} is the problem of deciding whether two proofs are equal modulo permutations.
-
-
-The proof equivalence problem is closely related to the notion of \emph{proof nets}.
-%
-These are canonical, geometric representations of proof that factor out permutations, so that proofs are equivalent if and only if they have the same underlying proof net.
-%
-Canonical proof nets have been found for several fragments of linear logic: the multipicative fragment without units \cite{Girard-1987,Danos-Regnier-1989}, the combined multiplicative-additive fragment without units \cite{Hughes-vanGlabbeek-2005}, and the additive fragment, including the additive units \cite{Heijltjes-2011}.
-%
-For the full multiplicative fragment, with units, several notions of proof net have been proposed \cite{BCST,Strassburger-lamarche-2004,HughesFreeStar}.
-%
-However, none is canonical, and whether a satisfactory notion of proof net can be found has remained an open question.
-
-
-
-In this paper we establish that the proof equivalence problem for multiplicative linear logic with units is \textsc{pspace}-complete.
-%
-As a main corollary, this effectively rules out the possibility of finding a satisfactory notion of proof net for this fragment.
-
+In this paper we establish that the proof equivalence problem for multiplicative linear logic with units is \textsc{pspace}-complete. It follows that there can be no satisfactory canonical notion of proof net.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
