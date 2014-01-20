@@ -78,6 +78,7 @@ So the question remains whether there exist fully canonical proof nets for full 
 
 In this paper we establish that the proof equivalence problem for multiplicative linear logic with units is \capsabbrev{pspace}-complete. It follows that there can be no satisfactory canonical notion of proof net.
 
+
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 \subsection*{Constraint logic and reconfiguration problems}
@@ -243,7 +244,9 @@ $\Pi\toNet\links$ if for each $\named a\bot$ in $\Delta$, if $\Gamma$ is the con
 \begin{proposition}[\cite{Danos-Regnier-1989}]
 \label{prop:correctness and sequentialisation}
 %
-For a proof $\Pi$ with conclusion $\Gamma$, if $\Pi\toNet\links$ then $\links$ is a proof net for $\Gamma$.
+%
+If $\Pi\toNet\links$ and $\Pi$ has conclusion $\Gamma$, then $\links$ is a proof net for $\Gamma$.
+%For a proof $\Pi$ with conclusion $\Gamma$, if $\Pi\toNet\links$ then $\links$ is a proof net for $\Gamma$.
 %
 For a net $\links$ for $\Gamma$, there is a proof $\Pi$ of $\Gamma$ such that $\Pi\toNet\links$ (\emph{sequentialisation}).
 %
