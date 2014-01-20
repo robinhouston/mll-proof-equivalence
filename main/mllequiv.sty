@@ -9,8 +9,15 @@
 
 % UNSORTED
 
+
+\let\alt=\underline
+\let\bigtn=\bigotimes
+
+
+\newcommand\NoIndent[1]{\par\vbox{\parbox[t]{\columnwidth}{#1}}}
+
 \newcommand\scalefactor{1}
-\newcommand\scale[1]{\scalebox{\scalefactor}{$\m@th#1$}}
+\newcommand\scale[1]{\scalebox{\scalefactor}{$\m@th{#1}$}}
 
 %\newcommand\alt{\underline}
 \newcommand\itn[1]{\llbracket#1\rrbracket}
@@ -182,7 +189,7 @@
 
 
 \newcommand\netB[4]{\vcenter{\hbox{%
-  \begin{tikzpicture}[x=-1mm,y=1mm,octo]
+  \begin{tikzpicture}[x=-.9mm,y=1mm,octo]
 	\coordinate (a) at (0,0); \coordinate (d) at (0,20);
 	\coordinate (b) at (5,0); \coordinate (c) at (5,20);
 	%\coordinate (E) at (20,10); \node at (E) {};
@@ -192,7 +199,7 @@
 	%
 	\draw (a)--(b) (c)--(d);
 	%
-	\draw[thepink,dashed,<->] (x.center)--(w.center);
+	\draw[dashed] (x)--(w);
 	%\draw[thepink,->] (16,5)--(x.center);
 	%\draw[thepink,->] (16,15)--(w.center);
 	%\draw[thepink,dashed,rounded corners,dash phase=1pt] (E) |- (16,5) (E) |- (16,15);
@@ -268,8 +275,36 @@
 }}}
 
 
+\newcommand\connectingElements[1]{
+  \begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[big_] (A) at (-.5,3.5) {$i'$}; 
+	\node[big_] (B) at (1.5,3.5) {$j'$};
+	\node[big_] (C) at (3.5,3.5) {};
+	\draw[rounded corners] (-1.5,4.5) rectangle (4.5,2.5);
+	\SWITCH{#1}
+		{1}{\node[big1] (1) at (0,0) {$i'$};}
+		{2}{\node[big1] (1) at (0,0) {\makebox[0pt][c]{$i{\scriptscriptstyle +}j'$}};}
+	\DEFAULT{}
+	\node[big1] (2) at (3,0) {};
+	\draw[rounded corners] (-1,-1) rectangle (1,1) (2,-1) rectangle (4,1);
+	\draw (1,0)--(2,0);
+	\begin{scope}[thepink,->,big>]
+	\draw[bend right=20] (A) to (1);
+	\draw[bend left =20] (C) to (2);
+	  \SWITCH{#1}
+	    {1}{\draw[bend right=20] (B) to (2);}
+	    {2}{\draw[bend left =20] (B) to (1);}
+	  \DEFAULT{}
+	\end{scope}
+  \end{tikzpicture}
+}
+
+
 \newcommand\doubleExchange[4]{
   \begin{tikzpicture}[x=1mm,y=-1mm,octo]
+	%
+	\path[use as bounding box] (-2,-2) rectangle (11,26);
+	%
 	\coordinate (a) at (0,0);  		\coordinate (b) at (9,0);
 	\node[circ] (u) at (0,8) {};	\node[circ] (v) at (9,8) {};
 	\node[circ] (x) at (0,16) {};	\node[circ] (y) at (9,16) {};
@@ -289,7 +324,8 @@
 	\SWITCH{#2} %% (b)
 		{u}{\draw[bend left=10] (b) to (u.center);}
 		{v}{\draw (b)--(v.center);}
-		{y}{\draw[bend right=45] (b) to (y.center);}
+		%{y}{\draw[bend right=45] (b) to (y.center);}
+		{y}{\draw[bend left=45] (b) to (y.center);}
 	\DEFAULT{}
 	\SWITCH{#3} %% (c)
 		{x}{\draw (c)--(x.center);}
@@ -308,11 +344,11 @@
   \end{tikzpicture}
 }
 
-\tikzstyle{octoroll}=[x=4.5mm,y=-4.5mm,octo]
+\tikzstyle{octoroll}=[x=5mm,y=-5mm,octo]
 
 \newcommand\octorollA[1]{
   \begin{tikzpicture}[octoroll]
-	\node[big1] (a) at (0,0) {\normalsize $\bot^n$};
+	\node[big1] (a) at (0,0) {\normalsize $\bot\kern-2pt^n$};
 	\node[big_] (d1) at (-8.5,4) {\normalsize $A$};
 	\node[big_] (d2) at (-6  ,4) {\normalsize $B$};
 	\node[big_] (d3) at (-3.5,4) {\normalsize $C$};
@@ -328,7 +364,11 @@
 	\draw[rounded corners] (-3.5,7) rectangle (-0.5,9);
 	\draw[rounded corners] ( 3.5,7) rectangle ( 0.5,9);
 	\draw (-0.5,8)--(0.5,8);
-	\node[circ] (v) at (0,6) {}; \node[anchor=north west] at (v) {$v$};
+	\node[circ] (v) at (0,6) {}; 
+	\SWITCH{#1}
+		{1}{\node[anchor=north west] at (v) {$v$};}
+		{2}{\node[anchor=north east] at (v) {$v$};}
+	\DEFAULT{}
 	%
 	\begin{scope}[thepink,->]
 		\draw[bend left=15] (e) to (v);\draw[bend right=15] (d) to (v);
