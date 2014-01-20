@@ -22,6 +22,7 @@
 
 \let\beforesection=\medskip
 \let\aftersection=\noindent
+\let\aftersubsection=\noindent
 
 \let\capsabbrev=\uppercase
 
@@ -83,7 +84,8 @@ In this paper we establish that the proof equivalence problem for multiplicative
 
 \subsection*{Constraint logic and reconfiguration problems}
 
-\aftersection The proof of \capsabbrev{pspace}-completeness relies on a polynomial reduction from the configuration-to-configuration problem in nondeterministic
+\aftersubsection
+The proof of \capsabbrev{pspace}-completeness relies on a polynomial reduction from the configuration-to-configuration problem in nondeterministic
 \emph{constraint logic}, a graphical formalism recently introduced as a uniform tool for use in complexity reductions \cite{Demaine-Hearn-2008}.
 %
 Constraint logic is a simple graph rewriting formalism, where weighted edges may be reversed as long as the given in-flow constraint for each vertex is satisfied; the configuration-to-configuration question is whether two graphs are related by a sequence of valid rewriting steps.
@@ -186,6 +188,7 @@ Proof equivalence for \capsabbrev{mll} is therefore equivalent to the \emph{word
 
 \subsection*{Proof nets}
 
+\aftersubsection
 Proof nets provide a solution to proof equivalence for \capsabbrev{mll} without units.
 %
 For full \capsabbrev{mll}, they reduce the proof equivalence problem to a simple rewiring relation \cite{HughesMLLProofNets}.
@@ -283,7 +286,7 @@ The above proposition means that \capsabbrev{mll}\ proof equivalence is the prob
 
 \subsection*{Notation}
 
-
+\aftersubsection
 We will use a concise diagrammatic notation for sequents and proof nets.
 %
 The units $1$ and $\bot$ are represented by a circle $\circ$ and a disc $\bullet$ respectively;
@@ -442,7 +445,7 @@ In particular, we will look at notions of subnets, and we will give a simple acc
 
 \subsection*{Subnets}
 
-
+\aftersubsection
 We will discuss (and adapt) some convenient standard notions for \capsabbrev{mll} proofs and proof nets, and relate them to rewiring.
 %
 Firstly we will look at subnets---see also \cite{Bellin-vandeWiele-1995}.
@@ -629,7 +632,7 @@ Otherwise, $\Delta=\Delta'$.
 
 \subsection*{Equivalence without $\parr$}
 
-
+\aftersubsection
 A basic observation on \capsabbrev{mll} is that the identity proof for $\bot\tn\bot,\1\parr\1$ is not equivalent to the `symmetry' or `twist' proof for the same sequent.
 %
 This will hold in general: exchanging the targets of two links generally results in an inequivalent net, in particular when the $\bot$-instances are connected by a tensor.
@@ -715,9 +718,11 @@ Then using Lemma~\ref{lem:rewiring within empire} re-attach $b$ to $z$, and repe
 \end{IEEEproof}
 
 
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 \subsection*{Parity}
 
-
+\aftersubsection
 We shall associate a \emph{parity} with any two linkings $\links$ and $\links'$ of the same sequent $\Gamma$. We shall find that the parity of equivalent linkings is always even; and that the converse holds when $\Gamma$ is a basic sequent.
 
 For this argument we shall assume that the connectives $\tn$ and $\parr$ are n-ary, and that every argument of a $\tn$ is a $\parr$ and vice versa. Assume also that $\Gamma$ consists of a single formula, if necessary by introducing a $\parr$ at the root. Now fix an arbitrary switching of $\Gamma$; this switching together with a linking $\links$ defines a tree whose vertices are the subformulae of $\Gamma$ and whose edges are the edges of the chosen switching together with the links of $\links$. Take the root of the formula $\Gamma$ to be the root of this tree. Now consider the edges of the tree to be directed away from the root; so the root has in-degree $0$ and the other vertices have in-degree $1$. This therefore establishes a bijection between the edges of the tree and the non-root vertices.
@@ -859,7 +864,7 @@ We will demonstrate the \capsabbrev{pspace}-hardness of \capsabbrev{mll} proof e
 
 \subsection*{The encoding}
 
-
+\aftersubsection
 The basis of the encoding of constraint graphs in \capsabbrev{mll} is formed by \emph{weight elements}, which encode one unit of weight on an edge, and \emph{constraint elements}, that encode one unit towards the inflow constraint of a vertex.
 %
 The arithmetic of linking formulae of the form $\bigtn(\bot^n)$ to formulae $\bigparr(1^m)$ will be used to ensure that a weight element may be linked to only two vertices.
@@ -1171,6 +1176,7 @@ Up to minor technical details, it will be shown that $\itn\gamma\perm\itn\delta$
 
 \subsection*{Completeness}
 
+\aftersubsection
 Given a reconfiguration path $\gamma\perm\delta$ over total configurations, we will demonstrate a rewiring sequence between $\itn\gamma$ and $\itn\delta$ up to, possibly, a single exchange of two links in $\itn\delta$.
 %
 The central part of the argument will be to show how the weight element linking to a constraint element may be exchanged for another.
@@ -1363,7 +1369,7 @@ The resulting proof net is $\itn\delta$ modulo a permutation of weight absorbers
 
 \subsection*{Soundness}
 
-
+\aftersubsection
 It will be shown that proof net rewiring $\itn\gamma\perm\itn\delta$ is sound for \capsabbrev{ncg}-reconfiguration, $\gamma\perm\delta$.
 %
 To each proof net $\links$ for an encoded constraint graph $\itn G$ we will associate a partial configuration $\gamma=\coitn\links$, such that 1) a rewiring step $\links\perm*\links$ corresponds to a reconfiguration path $\coitn\links\perm\coitn{\links'}$, and 2) it is a retraction of the encoding of configurations, $\coitn{\itn\gamma}=\gamma$.
