@@ -11,27 +11,173 @@
 \makeTheoremDefs
 
 
+
+
 \begin{document}
+
+
+
+
+
+%
+%\begin{proposition}
+%\label{prop:level0 may-connect path}
+%%
+%For a proof net for a 1-alternation sequent containing a link $\edge{\named a\bot}{\named b\1}$ and a formula $\named c\1$, the following are equivalent.
+%%
+%\begin{itemize}
+%	\item
+%The edge $\edge ab$ can be permuted to $\edge ac$.
+%	\item
+%There is a path from $b$ to $c$ not passing through $a$.
+%	\item
+%The path from $a$ to $c$ starts with the jump $a-b$.
+%\end{itemize} 
+%\end{proposition}
+
+
+
+
+If a link $\edge ab$ may be reconnected as $\edge ac$ it is said that $a$ \emph{may connect to} $c$. 
+%
+By the above proposition, it is immediate that if $a$ and $b$ may both connect to $c$, then after actually reconnecting $\edge ac$, still $b$ may connect to $c$.
+
+
+
+Consider the following naming scheme for the units in a 1-alternation sequent $\Gamma$ with tensor-formulae $A_1,\dotsc,A_n$.
+%
+\begin{itemize}
+
+	\item
+One $\1$ in $\Gamma$ is named $*$, and the remaining ones with the numbers $n+1,\dotsc,m$.
+
+	\item
+A $\bot$-formula in $A_i$ is named by a pair $(i,k)$, where $k=i$ for the first $\bot$-formula in each $A_i$, and for the remaining $\bot$-formulae in all $A_i$, each $k$ is a distinct number in $n+1,\dotsc,m$.
+
+\end{itemize}
+%
+The naming scheme suggests a linking for $\Gamma$, defined by $\links(i,i)=\star$ and $\links(i,k)=k$ otherwise; i.e\ the first $\bot$ in each tensor-formula connects to $\named *\1$, while other $\bot$-subformulae connect uniquely to the remaining $\1$-subformulae.
+
+
+
+A net for $\Gamma$ is interpreted as a combinatorial permutation (an automorphism on $\{1,\dotsc,m\}$) as follows.
+%
+\begin{definition}
+\label{def:combinatorial permutation}
+To a proof net $\links$ for a 1-alternation sequent $\Gamma$ named as above, associate the \emph{permutation} $\prm:\{1,\dotsc,m\}\to\{1,\dotsc,m\}$ given by:
+\[
+	\prm(k) = 
+	\begin{cases}
+		i				& \text{ if $(i,k)$ may connect to $*$; and}
+	\\	\links(i,k)		& \text{ otherwise.}
+	\end{cases}
+\]
+The \emph{parity} of $\links$ is the parity of its permutation.
+\end{definition}
+
+
+To see that $\prm$ is injective, consider the following.
+\begin{itemize}
+	\item The domains of $i$ and $\links(i,k)$, respectively $1,\dotsc,n$ and $n+1,\dotsc,m$, are disjoint.
+	\item Exactly one $\bot$-formula in each $A_i$ may connect to $*$ because of connectedness and acyclicity, since if a $\bot$-formula may connect to $*$ it has a path to $*$ (Lemma~\ref{lem:rewiring within empire}).
+	\item If two $\bot$-formulae have the same target, which means they are in different tensor-formulae, at least one may connect to $*$ via the other tensor-formula, which must have a path to $*$ by the above.
+\end{itemize}
+
+
+
+\begin{proposition}
+\label{prop:level0 min binary}
+A permutation on a net $\links$ preserves its parity. 
+\end{proposition}
+
+
+\begin{IEEEproof}
+Let $\links$ be a net for $\Gamma$, with $\Gamma$ named as above, and let the link $\edge{(i,k)}x$ in $\links$ re-attach as $\edge{(i,k)}y$, forming $\links'$.
+%
+There are two cases, depending on whether $(i,k)$ may connect to $*$.
+%
+If so, using Lemma~\ref{lem:rewiring within empire}, the re-wiring preserves which $\bot$-formulae may connect to $*$, since for any path to $*$ via $\edge{(i,k)}x$ in $\links$ there is a path to $*$ via $\edge{(i,k)}y$.
+%
+Then the permutation of $\links'$ is that of $\links$.
+
+
+If $(i,k)$ may not connect to $*$, let the path from $x$ to $y$ run via the following $\bot$- and $\1$-vertices.
+\[
+	x=x_1, (i_1,j_1), (i_1,k_1), x_2, (i_2,j_2), \dotsc, (i_n,k_n), x_{n+1}=y 	
+\]
+Note that the $\bot$-formulae $(i_a,j_a)$ may connect to $*$.
+%
+On the relevant domain, this gives the following permutation for $\links$.
+\[
+\left(\begin{array}{ccccccc}
+	j_1 & \dotso & j_n &  k  & k_1 & \dotso & k_n \\
+	i_1 & \dotso & i_n & x_1 & x_2 & \dotso & x_{n+1}
+\end{array}\right)
+\]
+In $\links'$, since $\links'(i,k)=y$, the $\bot$-formulae that may connect to $*$ are the $(i_a,k_a)$.
+%
+The permutation $\prm[\links']$ is the following.
+\[
+\left(\begin{array}{ccccccc}
+	j_1 & \dotso & j_n &    k    & k_1 & \dotso & k_n \\
+	x_1 & \dotso & x_n & x_{n+1} & i_1 & \dotso & i_n
+\end{array}\right)
+\]
+The parity of both permutations is the same if and only if the relative permutation, below, is even.
+\[
+\left(\begin{array}{ccccccc}
+	i_1 & \dotso & i_n & x_1     & x_2 & \dotso & x_{n+1} \\
+	x_1 & \dotso & x_n & x_{n+1} & i_1 & \dotso & i_n
+\end{array}\right)
+\]
+This is the case, as it is obtained by the exchange of $x_a$ and $i_a$ for each $a\leq n$, and subsequently the exchange of $x_{n+1}$ and each $i_a$ in turn.
+%
+\end{IEEEproof}
+
+
+
+\begin{proposition}
+\label{prop:parity determines equivalence}
+Two proof nets for a 1-alternation sequent with at least two tensor-formulae are equivalent if and only if they have the same parity.
+\end{proposition}
+
+
+\begin{theorem}
+\MLL\ proof equivalence in the absence of ~$\parr$ is linear-time decidable.
+\end{theorem}
+
+\begin{IEEEproof}
+For a sequent with 1 tensor-formula, the problem is reduced to syntactic equality.
+%
+For a sequent with 2 or more tensor-formulae, by Propositions~\ref{prop:parity determines equivalence} the equivalence of two nets is determined by their parity.
+%
+Following Definition~\ref{def:combinatorial permutation} the parity of a net can be read off in a single traversal of the net.
+%
+This yields a linear-time algorithm.
+%
+\end{IEEEproof}
 
 
 
 \end{document}
 
 
-
-\begin{lemma}
-For a proof net $(\Gamma,\links)$, if the linking $\links'$ agrees with $\links$ on all values except $\links'(a)=v$, then $\links'$ is a proof net if and only if $v$ is in the empire of $a$ in $(\Gamma,\links)$.
 %
-%If $\links\perm*\links'$ by rewiring the link $\links(a)=v$ to $\links'(a)=w$, then $w$ is in the empire of $a$ in the proof net $\links$.
-\end{lemma}
-
-\begin{proof}
-The empire of $a$ corresponds to the largest subproof $\Sigma$ in any $\Pi\toNet\links$ with as conclusion the introduction rule of $\named a\bot$.
 %
-In one direction, by Definition~\ref{def:proofs to nets} $a$ may link anywhere in a translation of $\Sigma$ to a net; if $\named v\1$ is in $\Sigma$, then $\links'$ is a net.
 %
-In the other direction, if $\links\perm*\links'$, then for any switching of $(\Gamma,\links')$ there is a path from $\links(a)=w$ to 
-
+%\begin{lemma}
+%For a proof net $(\Gamma,\links)$, if the linking $\links'$ agrees with $\links$ on all values except $\links'(a)=v$, then $\links'$ is a proof net if and only if $v$ is in the empire of $a$ in $(\Gamma,\links)$.
+%%
+%%If $\links\perm*\links'$ by rewiring the link $\links(a)=v$ to $\links'(a)=w$, then $w$ is in the empire of $a$ in the proof net $\links$.
+%\end{lemma}
+%
+%\begin{proof}
+%The empire of $a$ corresponds to the largest subproof $\Sigma$ in any $\Pi\toNet\links$ with as conclusion the introduction rule of $\named a\bot$.
+%%
+%In one direction, by Definition~\ref{def:proofs to nets} $a$ may link anywhere in a translation of $\Sigma$ to a net; if $\named v\1$ is in $\Sigma$, then $\links'$ is a net.
+%%
+%In the other direction, if $\links\perm*\links'$, then for any switching of $(\Gamma,\links')$ there is a path from $\links(a)=w$ to 
+%
 %%Let $\sigma$ be the empire of $a$ in $(\Gamma,\links)$.
 %%
 %In one direction, if $v$ is in $\sigma$, then since $\sigma$ is a subnet, for any switching of $\sigma$ there is a path from $\links(a)$ to $v$ not passing through $a$.
