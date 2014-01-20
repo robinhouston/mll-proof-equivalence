@@ -20,6 +20,9 @@
 \shortJournalNames
 \makeTheoremDefs
 
+\let\beforesection=\medskip
+\let\aftersection=\noindent
+
 
 \author{
   \IEEEauthorblockN{Willem Heijltjes}
@@ -59,12 +62,15 @@ An important consequence of the result is that the existence of a satisfactory n
 
 
 %------------------------------------------------------------
+\beforesection
 
 \section{Introduction}
 
-\noindent The question of equivalence of proofs goes back to Lambek \cite{Lambek-1968}, who realised that the then-new tool of category-theoretic logic gave a notion of proof equivalence that was coarser and better-behaved than syntactic equality.
+\aftersection
+%
+The question of equivalence of proofs goes back to Lambek \cite{Lambek-1968}, who realised that the then-new tool of category-theoretic logic gave a notion of proof equivalence that was coarser and better-behaved than syntactic equality.
 
-A striking technical innovation of linear logic was the introduction of proof nets \cite{Girard-1987,Danos-Regnier-1989}, which define a canonical form for proofs in the unitless fragment of multiplicative linear logic -- two proofs are equivalent if and only if they have the same proof net -- so proof nets offer a simple decision procedure for proofs in this fragment. This naturally raises the question whether proof nets can be extended to work in the presence of units. There is a line of work in this direction, beginning with \cite{TrimbleThesis,BCST} via \cite{Strassburger-Lamarche-2004} and perhaps culminating with \cite{HughesFreeStar,HughesMLLProofNets}; but these proof nets are not canonical and must be identified up to a rewiring equivalence.
+A striking technical innovation of linear logic was the introduction of proof nets \cite{Girard-1987,Danos-Regnier-1989}, which define a canonical form for proofs in the unitless fragment of multiplicative linear logic -- two proofs are equivalent if and only if they have the same proof net -- so proof nets offer a simple decision procedure for proofs in this fragment. This naturally raises the question whether proof nets can be extended to work in the presence of units. There is a line of work in this direction, beginning with \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996} via \cite{Strassburger-Lamarche-2004} and perhaps culminating with \cite{HughesFreeStar,HughesMLLProofNets}; but these proof nets are not canonical and must be identified up to a rewiring equivalence.
 
 So the question remains whether there exist fully canonical proof nets for full \textsc{mll}. Canonical proof nets have been found for several other fragments of linear logic: the combined multiplicative-additive fragment without units \cite{Hughes-vanGlabbeek-2005}, and the additive fragment, including the additive units \cite{Heijltjes-2011}.
 
@@ -88,10 +94,6 @@ It is not uncommon for an \textsc{np}-complete problem to have an associated rec
 MLL proof equivalence may be regarded as the reconfiguration problem associated with MLL proof search, which is \textsc{np}-complete \cite{Kanovich-1992,Lincoln-Winkler-1994}.
 
 %------------------------------------------------------------
-
-\section{MLL}
-
-
 
 \begin{figure}[!b]
 \quad\MLLrule b
@@ -130,10 +132,12 @@ MLL proof equivalence may be regarded as the reconfiguration problem associated 
 \label{fig:permutations}
 \end{figure}
 
+\beforesection
 
+\section{MLL}
 
-
-
+\aftersection
+%
 The formulae of unit-only multiplicative linear logic are given by the following grammar.
 %
 \setMidspace{5pt}
@@ -391,21 +395,38 @@ A dashed edge will indicate that two vertices are connected, in a proof net or a
 \]
 
 
-%A positive balance guarantees a cycle in any switching graph, for any linking, while a negative balance similarly guarantees disconnectedness.
-%
-%An early conjecture of Girard, which turned out to be false, was that a sequent is inhabited if and only if it is balanced. [[FIND CITATION (probably TCS87)]]
-%
+%------------------------------------------------------------
 
-
-
+\beforesection
 
 \section{Rewiring proof nets}
 
-
-
+\aftersection
+%
 In this section we will explore the global rewiring behaviour of proof nets.
 %
 In particular, we will look at notions of subnets, and we will give a simple account of equivalence for the fragment of MLL that omits the par, i.e.\ that of sequents of formulae constructed over $\1$, $\bot$, and $\tn$.
+
+
+\begin{figure*}
+\[
+	\vc{\doubleExchange uvxy}
+	\quad\perm*\quad
+	\vc{\doubleExchange uyxy}
+	\quad\perm*\quad
+	\vc{\doubleExchange uyxu}
+	\quad\perm*\quad
+	\vc{\doubleExchange vyxu}
+	\quad\perm*\quad
+	\vc{\doubleExchange vyyu}
+	\quad\perm*\quad
+	\vc{\doubleExchange vuyu}
+	\quad\perm*\quad
+	\vc{\doubleExchange vuyx}
+\]
+\caption{Double exchange of links (Lemma~\ref{lem:double exchange})}
+\label{fig:double exchange}
+\end{figure*}
 
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -557,7 +578,7 @@ Let $\links\perm*\links'$ by $\links(v)\neq\links'(v)$, and denote the empire of
 \end{lemma}
 
 \begin{IEEEproof}
-By Lemma~\ref{lem:rewiring empire} the empires $\sigma$ and $\sigma'$ contain the same $\1$-subformulae, since $v$ may rewire to exactly the same $\1$-occurrences in $\links$ as in $\links'$.
+By Lemma~\ref{lem:rewiring within empire} the empires $\sigma$ and $\sigma'$ contain the same $\1$-subformulae, since $v$ may rewire to exactly the same $\1$-occurrences in $\links$ as in $\links'$.
 %
 That $\sigma$ and $\sigma'$ must share also any other subformula $A$ follows by the observation that $A\tn\1$ may replace $A$: by Proposition~\ref{prop:empire propagation} the new $\1$ is in a given empire if and only if $A$ is.
 %
@@ -618,27 +639,6 @@ Then $\links\perm\links'$ where $\links'(a)=v$, $\links'(b)=u$, $\links'(c)=y$, 
 \begin{IEEEproof}
 By the rewiring path shown in Figure~\ref{fig:double exchange}.
 \end{IEEEproof}
-
-
-\begin{figure*}
-\[
-	\vc{\doubleExchange uvxy}
-	\quad\perm*\quad
-	\vc{\doubleExchange uyxy}
-	\quad\perm*\quad
-	\vc{\doubleExchange uyxu}
-	\quad\perm*\quad
-	\vc{\doubleExchange vyxu}
-	\quad\perm*\quad
-	\vc{\doubleExchange vyyu}
-	\quad\perm*\quad
-	\vc{\doubleExchange vuyu}
-	\quad\perm*\quad
-	\vc{\doubleExchange vuyx}
-\]
-\caption{Double exchange of links}
-\label{fig:double exchange}
-\end{figure*}
 
 
 This dynamic completely characterises rewiring in the fragment of MLL that omits the par.
@@ -761,11 +761,13 @@ Secondly, the problem that proof nets up to a single exchange of links are gener
 
 %------------------------------------------------------------
 
+\beforesection
 
 \section{Encoding constraint logic}
 \label{sec:encoding}
 
-
+\aftersection
+%
 \emph{Non-deterministic constraint logic} \cite{Hearn-Demaine-2005,Demaine-Hearn-2008} is a simple graph-rewriting formalism, introduced as a convenient tool for \textsc{PSPACE}-hardness reductions.
 %
 A rewrite step consists of the reversal of a single edge in a \emph{constraint graph}, a graph with weighted, directed edges and an \emph{inflow constraint} on each vertex.
@@ -1142,23 +1144,14 @@ After contracting the scope of each $W$, each edge-gadget in the scope of $\itn 
 
 
 
-
-
-
-
 %------------------------------------------------------------
 
-
-
-
-
-
-
-
-%------------------------------------------------------------
+\beforesection
 
 \section{Correctness of the encoding}
 
+\aftersection
+%
 In this section we will establish that in our encoding of constraint graphs %partial \textsc{ncg}-reconfiguration 
 in MLL, reconfiguration on graphs is captured by proof equivalence in MLL.
 %
@@ -1317,17 +1310,24 @@ In each case, if one of the weight absorbers exchanged is linked to by multiple 
 \end{IEEEproof}
 
 
-%% WORKING HERE
 
-%We shall translate a pair of 
+If two connected configurations $\gamma\perm\delta$ are encoded individually as $\itn\gamma$ and $\itn\delta$, these may not be equivalent simply because their parity happens to be odd.
+%
+For that reason we shall adjust the encoding of the second to guarantee an even parity between them.
 
+\begin{definition}
+%
+Let $\itn\delta'$ be $\itn\delta$ with the first two weight absorbers exchanged.
+%
+For configurations $\gamma$ and $\delta$ for $G$, let $\itn\delta_\gamma$ be $\itn\delta$ if it has even parity with $\itn\gamma$, and $\itn\delta'$ otherwise.
+%
+\end{definition}
 
-For any configuration $\gamma$ let $\itn\gamma'$ denote $\itn\gamma$ where the first two weight absorbers are exchanged.
 
 
 \begin{lemma}
 \label{lem:completeness}
-If $\gamma\perm\delta$ for total configurations $\gamma$ and $\delta$, then either $\itn\gamma\perm\itn\delta$ or $\itn\gamma\perm\itn\delta'$.
+If $\gamma\perm\delta$ for total configurations $\gamma$ and $\delta$, then $\itn\gamma\perm\itn\delta_\gamma$.
 \end{lemma}
 
 \begin{IEEEproof}
@@ -1465,10 +1465,12 @@ It follows that $\coitn\links\perm\coitn{\links'}$ by moving each $e_i$ in turn,
 
 %------------------------------------------------------------
 
+\beforesection
 
 \section{MLL proof equivalence is \textsc{pspace}-complete}
 
-
+\aftersection
+%
 We are now ready to state our main theorem.
 
 
@@ -1484,10 +1486,10 @@ Then by Savitch's Theorem \cite{Savitch-1970} MLL proof equivalence is in \texts
 
 \textsc{pspace}-hardness follows by the encoding of \textsc{ncg}-reconfiguration, which in its completed form is stated:
 \[
-	\gamma\perm\delta \qquad\iff\qquad \itn\gamma\perm\itn\delta \text{ or } \itn\gamma\perm\itn\delta'~.
+	\gamma\perm\delta \qquad\iff\qquad \itn\gamma\perm\itn\delta_\gamma~.
 \]
 %
-The direction $(\Rightarrow)$ is by Lemma~\ref{lem:completeness}; the direction $(\Leftarrow)$ is by Lemma~\ref{lem:soundness} and the observation that $\coitn{\itn\gamma}=\coitn{\itn\gamma'}=\gamma$.
+The direction $(\Rightarrow)$ is by Lemma~\ref{lem:completeness}; the direction $(\Leftarrow)$ is by Lemma~\ref{lem:soundness} and the observation that $\coitn{\itn\gamma}=\gamma$ and $\coitn{\itn\delta_\gamma}=\delta$.
 %
 \end{IEEEproof}
 
