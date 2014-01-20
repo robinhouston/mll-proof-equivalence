@@ -1,139 +1,38 @@
 \documentclass[conference]{IEEEtran}
 
-
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mllequiv,willemtools}
 
-\usepackage{pgffor}
-
-\graphicspath{{../notes/}}
-
 \makeTheoremDefs
-
-
-
 
 \begin{document}
 
-
-
-
-
-%
-%\begin{proposition}
-%\label{prop:level0 may-connect path}
-%%
-%For a proof net for a 1-alternation sequent containing a link $\edge{\named a\bot}{\named b\1}$ and a formula $\named c\1$, the following are equivalent.
-%%
-%\begin{itemize}
-%	\item
-%The edge $\edge ab$ can be permuted to $\edge ac$.
-%	\item
-%There is a path from $b$ to $c$ not passing through $a$.
-%	\item
-%The path from $a$ to $c$ starts with the jump $a-b$.
-%\end{itemize} 
-%\end{proposition}
-
-
-
-
-If a link $\edge ab$ may be reconnected as $\edge ac$ it is said that $a$ \emph{may connect to} $c$. 
+If a link $\edge ab$ may be reconnected as $\edge ac$ it is said that $a$ \emph{may connect to} $c$.
 %
 By the above proposition, it is immediate that if $a$ and $b$ may both connect to $c$, then after actually reconnecting $\edge ac$, still $b$ may connect to $c$.
 
+We shall associate a \emph{parity} with any two linkings $\links$ and $\links'$ of the same sequent $\Gamma$. We shall find that the parity of equivalent linkings is always even; and that the converse holds when $\Gamma$ is a 1-alternation sequent.
 
-
-Consider the following naming scheme for the units in a 1-alternation sequent $\Gamma$ with tensor-formulae $A_1,\dotsc,A_n$.
+In this section we shall assume that the connectives $\tn$ and $\parr$ are n-ary, and that every argument of a $\tn$ is a $\parr$ and vice versa. Assume also that $\Gamma$ consists of a single formula, if necessary by introducing a $\parr$ at the root. Now fix an arbitrary switching of $\Gamma$; this switching together with a linking $\links$ defines a tree whose vertices are the subformulae of $\Gamma$ and whose edges are the edges of the chosen switching together with the links of $\links$. Take the root of the formula $\Gamma$ to be the root of this tree. Now consider the edges of the tree to be directed away from the root; so the root has in-degree $0$ and the other vertices have in-degree $1$. This therefore establishes a bijection between the edges of the tree and the non-root vertices.
 %
-\begin{itemize}
+A second linking $\links'$ similarly establishes such a bijection. Given both linkings $\links$ and $\links'$, we compose these bijections to obtain a permutation of the proper subformulae of $\Gamma$. Finally the parity of the pair of linkings is taken to be the parity of this permutation.
 
-	\item
-One $\1$ in $\Gamma$ is named $*$, and the remaining ones with the numbers $n+1,\dotsc,m$.
-
-	\item
-A $\bot$-formula in $A_i$ is named by a pair $(i,k)$, where $k=i$ for the first $\bot$-formula in each $A_i$, and for the remaining $\bot$-formulae in all $A_i$, each $k$ is a distinct number in $n+1,\dotsc,m$.
-
-\end{itemize}
-%
-The naming scheme suggests a linking for $\Gamma$, defined by $\links(i,i)=\star$ and $\links(i,k)=k$ otherwise; i.e\ the first $\bot$ in each tensor-formula connects to $\named *\1$, while other $\bot$-subformulae connect uniquely to the remaining $\1$-subformulae.
-
-
-
-A net for $\Gamma$ is interpreted as a combinatorial permutation (an automorphism on $\{1,\dotsc,m\}$) as follows.
-%
-\begin{definition}
-\label{def:combinatorial permutation}
-To a proof net $\links$ for a 1-alternation sequent $\Gamma$ named as above, associate the \emph{permutation} $\prm:\{1,\dotsc,m\}\to\{1,\dotsc,m\}$ given by:
-\[
-	\prm(k) = 
-	\begin{cases}
-		i				& \text{ if $(i,k)$ may connect to $*$; and}
-	\\	\links(i,k)		& \text{ otherwise.}
-	\end{cases}
-\]
-The \emph{parity} of $\links$ is the parity of its permutation.
-\end{definition}
-
-
-To see that $\prm$ is injective, consider the following.
-\begin{itemize}
-	\item The domains of $i$ and $\links(i,k)$, respectively $1,\dotsc,n$ and $n+1,\dotsc,m$, are disjoint.
-	\item Exactly one $\bot$-formula in each $A_i$ may connect to $*$ because of connectedness and acyclicity, since if a $\bot$-formula may connect to $*$ it has a path to $*$ (Lemma~\ref{lem:rewiring within empire}).
-	\item If two $\bot$-formulae have the same target, which means they are in different tensor-formulae, at least one may connect to $*$ via the other tensor-formula, which must have a path to $*$ by the above.
-\end{itemize}
-
-
-
-\begin{proposition}
-\label{prop:level0 min binary}
-A permutation on a net $\links$ preserves its parity. 
-\end{proposition}
-
-
+\begin{lemma}
+	The parity is well-defined, in the sense that it does not depend on the choice of switching.
+\end{lemma}
 \begin{IEEEproof}
-Let $\links$ be a net for $\Gamma$, with $\Gamma$ named as above, and let the link $\edge{(i,k)}x$ in $\links$ re-attach as $\edge{(i,k)}y$, forming $\links'$.
-%
-There are two cases, depending on whether $(i,k)$ may connect to $*$.
-%
-If so, using Lemma~\ref{lem:rewiring within empire}, the re-wiring preserves which $\bot$-formulae may connect to $*$, since for any path to $*$ via $\edge{(i,k)}x$ in $\links$ there is a path to $*$ via $\edge{(i,k)}y$.
-%
-Then the permutation of $\links'$ is that of $\links$.
-
-
-If $(i,k)$ may not connect to $*$, let the path from $x$ to $y$ run via the following $\bot$- and $\1$-vertices.
-\[
-	x=x_1, (i_1,j_1), (i_1,k_1), x_2, (i_2,j_2), \dotsc, (i_n,k_n), x_{n+1}=y 	
-\]
-Note that the $\bot$-formulae $(i_a,j_a)$ may connect to $*$.
-%
-On the relevant domain, this gives the following permutation for $\links$.
-\[
-\left(\begin{array}{ccccccc}
-	j_1 & \dotso & j_n &  k  & k_1 & \dotso & k_n \\
-	i_1 & \dotso & i_n & x_1 & x_2 & \dotso & x_{n+1}
-\end{array}\right)
-\]
-In $\links'$, since $\links'(i,k)=y$, the $\bot$-formulae that may connect to $*$ are the $(i_a,k_a)$.
-%
-The permutation $\prm[\links']$ is the following.
-\[
-\left(\begin{array}{ccccccc}
-	j_1 & \dotso & j_n &    k    & k_1 & \dotso & k_n \\
-	x_1 & \dotso & x_n & x_{n+1} & i_1 & \dotso & i_n
-\end{array}\right)
-\]
-The parity of both permutations is the same if and only if the relative permutation, below, is even.
-\[
-\left(\begin{array}{ccccccc}
-	i_1 & \dotso & i_n & x_1     & x_2 & \dotso & x_{n+1} \\
-	x_1 & \dotso & x_n & x_{n+1} & i_1 & \dotso & i_n
-\end{array}\right)
-\]
-This is the case, as it is obtained by the exchange of $x_a$ and $i_a$ for each $a\leq n$, and subsequently the exchange of $x_{n+1}$ and each $i_a$ in turn.
-%
+	It suffices to show that changing the switching of a single $\parr$ node does not change the parity.
+	Observe that the tree is bipartite: every edge connects a $\tn$ with a $\parr$ node. Therefore two
+	arguments of a $\parr$ are connected, in the tree, by a path of even length. Changing the switching will
+	therefore induce a cyclic permutation of an odd number of edges (the even number of edges on the path
+	connecting the two $\parr$ arguments, and the edge connecting the $\parr$ to its argument); and a cyclic
+	permutation of an odd number of elements is an even permutation.
 \end{IEEEproof}
 
+Essentially the same argument also establishes that:
+\begin{lemma}
+	If two linkings are equivalent, their parity is even.
+\end{lemma}
 
 
 \begin{proposition}
@@ -151,173 +50,9 @@ For a sequent with 1 tensor-formula, the problem is reduced to syntactic equalit
 %
 For a sequent with 2 or more tensor-formulae, by Propositions~\ref{prop:parity determines equivalence} the equivalence of two nets is determined by their parity.
 %
-Following Definition~\ref{def:combinatorial permutation} the parity of a net can be read off in a single traversal of the net.
+The parity of a net can be read off in a single traversal of the net.
 %
 This yields a linear-time algorithm.
-%
 \end{IEEEproof}
 
-
-
 \end{document}
-
-
-%
-%
-%
-%\begin{lemma}
-%For a proof net $(\Gamma,\links)$, if the linking $\links'$ agrees with $\links$ on all values except $\links'(a)=v$, then $\links'$ is a proof net if and only if $v$ is in the empire of $a$ in $(\Gamma,\links)$.
-%%
-%%If $\links\perm*\links'$ by rewiring the link $\links(a)=v$ to $\links'(a)=w$, then $w$ is in the empire of $a$ in the proof net $\links$.
-%\end{lemma}
-%
-%\begin{proof}
-%The empire of $a$ corresponds to the largest subproof $\Sigma$ in any $\Pi\toNet\links$ with as conclusion the introduction rule of $\named a\bot$.
-%%
-%In one direction, by Definition~\ref{def:proofs to nets} $a$ may link anywhere in a translation of $\Sigma$ to a net; if $\named v\1$ is in $\Sigma$, then $\links'$ is a net.
-%%
-%In the other direction, if $\links\perm*\links'$, then for any switching of $(\Gamma,\links')$ there is a path from $\links(a)=w$ to 
-%
-%%Let $\sigma$ be the empire of $a$ in $(\Gamma,\links)$.
-%%
-%In one direction, if $v$ is in $\sigma$, then since $\sigma$ is a subnet, for any switching of $\sigma$ there is a path from $\links(a)$ to $v$ not passing through $a$.
-%%
-%Then if $\sigma'\perm*\sigma$ by 
-%
-% $\sigma$ minus the link $\edge a{\links(a)}$ is a subnet, 
-%
-%By definition, $\sigma$ is the largest subnet with $a$ as a port.
-%%
-%Then there is a proof $\Sigma\tonet\sigma$ with as conclusion the introduction rule for $\named a\bot$, which 1) is a subproof of some sequent proof $\Pi\tonet\links$, and 2) is the largest subproof of $\named a\bot$ among all $\Pi\tonet\links$.
-%
-%
-%In one direction, if $\links'$ is a proof net, then $\links\perm*\links'$, and there is a $\Pi'\tonet\links'$ such that $\Pi\perm\Pi'$ by permuting the introduction rule for $\named a\bot$.
-%%
-%But since permuting this rule in $\Pi$ cannot give it a larger subnet than $\Sigma$ (by 2 above), $\named v\1$ must be in $\Sigma$, and $v$ in $\sigma$.
-%
-%By Definition~\ref{def:proofs to nets} 
-
-\end{proof}
-
-
-
-\end{document}
-%
-%
-%\begin{frame}
-%	\octorollA1
-%\end{frame}
-%
-%\begin{frame}
-%	\octorollB1
-%\end{frame}
-%
-%\begin{frame}
-%	\octorollB2
-%\end{frame}
-%
-%\begin{frame}
-%	\octorollB3
-%\end{frame}
-%
-%\begin{frame}
-%	\octorollC
-%\end{frame}
-%
-%\begin{frame}
-%	\octorollD1
-%\end{frame}
-%
-%\begin{frame}
-%	\octorollE1
-%\end{frame}
-%
-%\begin{frame}
-%	\octorollE2
-%\end{frame}
-%
-%\begin{frame}
-%	\octorollE3
-%\end{frame}
-%
-%\begin{frame}
-%	\octorollE4
-%\end{frame}
-%
-%\begin{frame}
-%	\octorollE5
-%\end{frame}
-%
-%\begin{frame}
-%	\octorollE6
-%\end{frame}
-%
-%\begin{frame}
-%	\octorollE7
-%\end{frame}
-
-\begin{frame}
-	\octorollD2
-\end{frame}
-
-\begin{frame}
-	\octorollA2
-\end{frame}
-
-\end{document}
-
-
-
-
-%\newcommand\octorollC{
-%  \begin{tikzpicture}[x=5mm,y=-5mm,octo]
-%	\node[circ] (a1a) at (0,1.5) {}; \node[big1] (a1) at (-2,0) {}; \node[big1] (a2) at (0,0) {}; \node[big1] (a3) at (2,0) {};
-%	\draw (-9  ,4) node[bullet] (d1a) {} -- (-8  ,4) node[big_] (d1) {};
-%	\draw (-6.5,4) node[bullet] (d2a) {} -- (-5.5,4) node[big_] (d2) {};
-%	\draw (-4  ,4) node[bullet] (d3a) {} -- (-3  ,4) node[big_] (d3) {};
-%	\draw[rounded corners] (-10,3) rectangle (-2,5);
-%	\draw (-2,4)--(-1,4) node[bullet] (d) {};
-%	\draw ( 3  ,4) node[bullet] (e1a) {} -- ( 4  ,4) node[big_] (e1) {};
-%	\draw ( 5.5,4) node[bullet] (e2a) {} -- ( 6.5,4) node[big_] (e2) {};
-%	\draw ( 8  ,4) node[bullet] (e3a) {} -- ( 9  ,4) node[big_] (e3) {};
-%	\draw[rounded corners] (10,3) rectangle (2,5);
-%	\draw (2,4)--(1,4) node[bullet] (e) {};
-%	\node[circ] (v1a) at (-4,8); \node[big1] (v1b) at (-3,8) {}; \node[big1] (v1c) at (-1.5,8) {};
-%	\node[big1] (v2) at  ( 2.5,8) {}; \node[big1] (v2) at ( 2.5,8) {};
-%	\draw[rounded corners] (-4.5,7) rectangle (-0.5,9);
-%	\draw[rounded corners] ( 3.5,7) rectangle ( 0.5,9);
-%	\draw (-0.5,8)--(0.5,8);
-%	\node[circ] (v) at (0,6) {};
-%	%
-%	\begin{scope}[thepink,->]
-%		\draw[bend left=15] (e) to (v);\draw[bend right=15] (d) to (v);
-%		\draw[big>,bend right] (d1) to (v1); \draw[big>,bend right=20] (d2) to (v1); \draw[big>, bend right=20] (d3) to (v2);
-%		\draw[bend right=15] (e1a) to (a1a); \draw[bend right=15] (e2a) to (a1a); \draw[bend right=15] (e3a) to (a1a); 
-%		\draw[big>,bend right=20] (e1) to (a1);  \draw[big>,bend right=20] (e2) to (a2);  \draw[big>, bend right=20] (e3) to (a3);
-%	\end{scope}
-%  \end{tikzpicture}
-%}
-
-\[
-	\big(\bigparr_{k\times c(v_i)}\big(\bigparr_{3i+2}1 \tn \bigparr_{3(n-i)+3}1\big) \big)\parr 1
-\]
-\[
-	\big(\bigotimes_{k\times w(e)}\big(\bigotimes_{3i+2}\bot\parr\bigotimes_{3(j-i)+1}\bot\parr\bigotimes_{3(n-j)+3}\bot\big)\big)\tn\bot
-\]
-
-
-\[
-	C = \bigparr(1^{3i+2}) \tn \bigparr(1^{3(n-i)+3})
-\]
-
-\[
-	\big(\bigparr C^{k\times c(v_i)} \big)\parr 1
-\]
-
-\[
-	W = \bigotimes(\bot^{3i+2})\parr\bigotimes(\bot^{3(j-i)+1})\parr\bigotimes(\bot^{3(n-j)+3}
-\]
-
-\[
-	\big(\bigotimes W^{k\times w(e)}\big)\tn\bot
-\]
