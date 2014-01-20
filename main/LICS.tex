@@ -1205,7 +1205,7 @@ In a proof net $\links$ for a sequent $\Gamma=\itn v,\itn{e_1},\dotsc,\itn{e_m},
 \begin{IEEEproof}
 Let $W_i=A\parr B\parr C$, $W_j=D\parr E\parr F$, and $C=X\tn Y$.
 %
-The path of permutations will be illustrated for the case where $A,B,X$ and $D,X$, and thus also $C,Y$ and $E,F,Y$, are balanced sequents; other cases are similar.
+The path of rewirings will be illustrated for the case where $A,B,X$ and $D,X$, and thus also $C,Y$ and $E,F,Y$, are balanced sequents; other cases are similar.
 %
 \begin{enumerate}
 	\item
@@ -1286,10 +1286,10 @@ Let $e_1$ and $e_2$ be arbitrary other $\bot$-occurrences in $\itn e$.
 \begin{enumerate}
 
 	\item
-To permute two weight absorbers $v$ and $w$ linked to by other edge-gadgets than $\itn e$, attach $e_0$ to $v$, and apply Lemma~\ref{lem:double exchange} to exchange $v$ and $w$, also exchanging the targets of $e_0$ and $e_1$.
+To exchange two weight absorbers $v$ and $w$ linked to by other edge-gadgets than $\itn e$, attach $e_0$ to $v$, and apply Lemma~\ref{lem:double exchange} to exchange $v$ and $w$ while also exchanging the targets of $e_0$ and $e_1$.
 
 	\item
-To reinstate $e_0$ as the connection between $\itn e$ and the remainder of the proof net, either perform another permutation as above, or permute $v$ and $w$ twice again, once exchanging the targets of $e_1$ and $e_2$, and once exchanging the targets of $e_2$ and $e_0$.
+To reinstate $e_0$ as the connection between $\itn e$ and the remainder of the proof net, either perform another exchange as above, or exchange $v$ and $w$ twice again, once exchanging also the targets of $e_1$ and $e_2$, and once exchanging also the targets of $e_2$ and $e_0$.
 
 	\item
 To exchange a weight absorber $w$ linked from a $\named d\bot$ outside $\itn e$ for the target $v$ of $e_1$, first attach $e_0$ to $w$, then re-attach $d$ to $v$.
@@ -1297,9 +1297,9 @@ To exchange a weight absorber $w$ linked from a $\named d\bot$ outside $\itn e$ 
 At this point, $e_1$ forms the only connect between $\itn e$ and the remainder of the proof net; to reinstate $e_0$ in this role, do as above, producing a net effect of cycling the targets of $e_1$, $e_2$, and $d$.
 
 	\item
-Finally, to permute weight absorbers $v$ and $w$ linked by $\itn e$, attach $e_0$ to the indicator target of a vertex-gadget where also another edge-gadget $\itn d$ is connected, with indicator $d_0$ and an arbitrary other $\bot$-occurrence $d_1$.
+Finally, to exchange weight absorbers $v$ and $w$ linked by $\itn e$, attach $e_0$ to the indicator target of a vertex-gadget where also another edge-gadget $\itn d$ is connected, with indicator $d_0$ and an arbitrary other $\bot$-occurrence $d_1$.
 %
-Connect $d_0$ to $v$, and apply Lemma~\ref{lem:double exchange} to permute $v$ and $w$, as well as exchanging the targets of $d_0$ and $d_1$.
+Connect $d_0$ to $v$, and apply Lemma~\ref{lem:double exchange} to exchange $v$ and $w$, as well as exchanging the targets of $d_0$ and $d_1$.
 %
 A second such exchange is needed to re-attach $d_0$ and $d_1$ to their original targets.
 
