@@ -11,27 +11,496 @@
 \makeTheoremDefs
 
 
+
+\newcommand\empire{\varepsilon}
+
+
+
 \begin{document}
 
 
 
-\end{document}
 
+
+\section{Rewiring proof nets}
+
+
+
+In this section we will explore the global rewiring behaviour of proof nets.
+%
+In particular, we will look at notions of subnets, and we will give a simple account of equivalence for the fragment of MLL that omits the par, i.e.\ that of sequents of formulae constructed over $\1$, $\bot$, and $\tn$.
+
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+\subsection*{Subnets}
+
+
+We will discuss (and adapt) some convenient standard notions for MLL proofs and proof nets, and relate them to rewiring.
+%
+Firstly we will look at subnets---see also \cite{Bellin-vandeWiele-1995}.
+
+
+\begin{definition}
+A \emph{sub-sequent} $\Delta\leq\Gamma$ of a sequent $\Gamma$ is a sequent consisting of disjoint subformulae of $\Gamma$, preserving names.
+\end{definition}
+
+\begin{definition}
+A \emph{subnet} $(\Gamma',\links') \leq (\Gamma,\links)$ of a proof net is a net such that $\Gamma'\leq\Gamma$ and $\links'$ is $(\links|_{\Gamma'})$, the restriction of $\links$ to $\Gamma'$.
+\end{definition}
+
+
+The root vertices of $\Gamma'$ are the \emph{ports} of the sub-sequent $\Gamma'$ and of the subnet $(\Gamma',\links')$.
+%
+A \emph{scope} of a par $\named v\parr$ is a subnet that has $v$ as a port.
+
+
+The scopes of a par correspond to the possible subproofs of its introduction rule in a sequentialisation of the proof net that it occurs in.
+%
+In the graph of a proof net, the scope of a par $\named v\parr$ may be \emph{contracted} to a single vertex $v$ by removing all vertices except $v$,  and re-attaching the edges of any removed vertices to $v$.
+%
+In the example below, a scope of a (ternary) par is indicated (left) and contracted (right).
+\[
+\begin{tikzpicture}[x=5mm,y=-5mm,octo]
+	\draw (-2.25,0) node[bullet] (x) {} -- (-1.25,0) node[bullet] (y) {}
+		  (.25,0) node[bullet] (a) {} -- (1.25,0) node[bullet] (b) {}
+		  ( 2.75,0) node[bullet] (c) {} -- (3.75,0) node[bullet] (d) {};
+	\node[circ] (0) at (5.75,0) {};
+	\node[circ] (1) at (-1,3) {};
+	\node[circ] (2) at (1,3) {}; \node[circ] (3) at (2,3) {}; \node[circ] (4) at (3,3) {};
+	\draw[rounded corners] (0,2) rectangle (4,4);
+	\draw (4,3) -- (5.5,3) node[bullet] (e) {};
+	\begin{scope}[thepink,->]
+			\draw[bend right=10] (x) to (1);
+			\draw[bend right=20] (y) to (2);
+			\draw[bend right=10] (a) to (2);
+			\draw[bend right=10] (b) to (3);
+			\draw[bend left=10]  (c) to (3);
+			\draw[bend left=10]  (d) to (4);
+			\draw[bend right=10] (e) to (0);
+	\end{scope}
+	\draw[dashed,rounded corners] (-.25,-.5) rectangle (4.25,4.25);
+\end{tikzpicture}
+\qquad\qquad
+\begin{tikzpicture}[x=5mm,y=-5mm,octo]
+	\draw (-2.25,0) node[bullet] (x) {} -- (-1.25,0) node[bullet] (y) {};
+	\node[circ] (0) at (3,0) {};
+	\node[circ] (1) at (-1,3) {};
+	\node[draw,rounded corners,minimum size=16pt] (box) at (1,3) {};
+	\draw (box)--(3,3) node[bullet] (e) {};
+	\begin{scope}[thepink,->]
+			\draw[bend right=10] (x) to (1);
+			\draw[bend right=20] (y) to (box);
+			\draw[bend right=10] (e) to (0);
+	\end{scope}
+	\path (0,4.25)--(1,4.25);
+\end{tikzpicture}
+\]
+%
+The contraction of scopes may replace the switching condition as a correctness criterion.
+%
+The following is a variant of the local retraction algorithm by Danos \cite{Danos-1990}.
+
+
+\begin{proposition}
+\label{prop:scoping correctness}
+A linking $\links$ for a sequent $\Gamma$ is a proof net if and only if each $\named v\parr$ is a port of a sub-sequent $s(v)\leq\Gamma$ such that:
+
+\begin{enumerate}
+	\item
+sub-sequents either disjoint or strictly nested: if $s(v)\cap s(w)\neq\varnothing$ then $s(w)<s(v)$ or $s(v)<s(w)$; and
+	\item
+for each $\named v\parr$ the graph $\sigma(v)=(s(v),\links|_{s(v)})$ becomes a tree when all immediate sub-sequents are contracted.
+\end{enumerate}
+%
+\end{proposition}
+
+
+\begin{IEEEproof}
+For the `if' direction, it follows by induction on the nesting of sub-sequents that each graph $\sigma(v)$ satisfies the switching condition.
+%
+For the `only if' direction, given a sequentialisation of $(\Gamma,\links)$, a sub-sequent $s(v)\leq\Gamma$ for each $\named v\parr$ is found by taking the conclusion $\Delta, A\named v\parr B$ of its introduction rule, below.
+\[
+	\infer[\MLLlabel p]{\Delta,A\named v\parr B}{\Delta,A,B}
+\]
+\vskip-12pt
+\end{IEEEproof}
+
+
+
+In a proof net, the \emph{kingdom} and the \emph{empire} of a vertex $v$ are respectively the smallest and largest subnet that have $v$ as a port.
+%
+In working with the rewiring relation, the notion of empire can be particularly useful.
+%
+Firstly, we repeat the following proposition.
+
+
+\begin{proposition}[{\cite[Proposition 2.b]{Bellin-vandeWiele-1995}}]
+\label{prop:empire propagation}
+The empire $\sigma$ of $v$ is determined by propagation from $v$: 1) through links; 2) up towards subformulae; 3) into a tensor if one of its subformulae is in $\sigma$; 4) into a par if all its subformulae are in $\sigma$; 5) except never into a par or tensor if $v$ is a subformula.
+\end{proposition}
+
+
+Empires are connected to rewiring in the following ways.
 
 
 \begin{lemma}
-For a proof net $(\Gamma,\links)$, if the linking $\links'$ agrees with $\links$ on all values except $\links'(a)=v$, then $\links'$ is a proof net if and only if $v$ is in the empire of $a$ in $(\Gamma,\links)$.
+\label{lem:rewiring within empire}
+For a proof net $(\Gamma,\links)$ where $\links(a)=v$ and $w$ names a $\1$-occurrence in $\Gamma$, the following are equivalent:
 %
-%If $\links\perm*\links'$ by rewiring the link $\links(a)=v$ to $\links'(a)=w$, then $w$ is in the empire of $a$ in the proof net $\links$.
+\begin{enumerate}
+	\item
+$\links\perm*\links'$ where $\links'(a)=w$;
+	\item
+$w$ is in the empire of $a$; and
+	\item
+in any switching graph for $(\Gamma,\links)$, the path from $v$ to $w$ does not pass through $a$.
+\end{enumerate}
 \end{lemma}
 
-\begin{proof}
-The empire of $a$ corresponds to the largest subproof $\Sigma$ in any $\Pi\toNet\links$ with as conclusion the introduction rule of $\named a\bot$.
-%
-In one direction, by Definition~\ref{def:proofs to nets} $a$ may link anywhere in a translation of $\Sigma$ to a net; if $\named v\1$ is in $\Sigma$, then $\links'$ is a net.
-%
-In the other direction, if $\links\perm*\links'$, then for any switching of $(\Gamma,\links')$ there is a path from $\links(a)=w$ to 
 
+\begin{IEEEproof}
+By \cite[Proposition 2.a]{Bellin-vandeWiele-1995} 2 and 3 are equivalent.
+
+Next, the empire of $a$ corresponds to the largest subproof $\Sigma$ in any $\Pi\toNet\links$ with as conclusion the introduction rule of $\named a\bot$.
+%
+By Definition~\ref{def:proofs to nets}, in the translation of $\Sigma$ to a net $\sigma$, $a$ may link anywhere in $\sigma$.
+%
+Then 2 implies 1. 
+
+Finally, if for some switching of $\links$ the path from $v$ to $w$ passes through $a$, then in $\links'$ there is no path between $a$ and $v$ (and two paths between $a$ and $w$) for that switching, so $\links'$ is not a net; then by contraposition 1 implies 3.
+%
+\end{IEEEproof}
+
+
+\begin{lemma}
+\label{lem:rewiring preserves empire}
+Let $\links\perm*\links'$ by $\links(v)\neq\links'(v)$, and denote the empire of $v$ in $\links$ and $\links'$ by $\sigma$ and $\sigma'$ respectively; then $\sigma\perm*\sigma'$.
+\end{lemma}
+
+\begin{IEEEproof}
+By Lemma~\ref{lem:rewiring empire} the empires $\sigma$ and $\sigma'$ contain the same $\1$-subformulae, since $v$ may rewire to exactly the same $\1$-occurrences in $\links$ as in $\links'$.
+%
+That $\sigma$ and $\sigma'$ must share also any other subformula $A$ follows by the observation that $A\tn\1$ may replace $A$: by Proposition~\ref{prop:empire propagation} the new $\1$ is in a given empire if and only if $A$ is.
+%
+\end{IEEEproof}
+
+
+\begin{lemma}
+\label{lem:rewiring affects empires}
+For proof nets $\links\perm*\links'$, let the empire of a given vertex $v$ in $\links$ be a net for the sequent $\Delta$, and in $\links'$, for $\Delta'$; then $\Delta\leq\Delta'$ or $\Delta\geq\Delta'$.
+\end{lemma}
+
+
+\begin{IEEEproof}
+Let the link from $a$ be rewired, $\links(a)=w$ but $\links'(a)=w'$.
+%
+Using Proposition~\ref{prop:empire propagation}, there are four cases.
+%
+\begin{enumerate}
+	\item
+If the empire of $v$ is propagated from $a$ to $w$ in $\links$, it includes the empire of $a$.
+%
+Then by Lemma~\ref{lem:rewiring preserves empire} $\Delta=\Delta'$.
+
+	\item
+If the empire of $v$ includes $w$ but not $w'$, then it is propagated through $a$ in $\links$ but not in $\links'$, so that $\Delta\geq\Delta'$.
+
+	\item
+If the empire of $v$ includes $w'$ but not $w$, then $\Delta\leq\Delta'$.
+
+	\item
+Otherwise, $\Delta=\Delta'$.
+\end{enumerate}
+\vskip-12pt
+\end{IEEEproof}
+
+
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+\subsection*{Equivalence without $\parr$}
+
+
+A basic observation on MLL is that the identity proof for $\bot\tn\bot,\1\parr\1$ is not equivalent to the `symmetry' or `twist' proof for the same sequent.
+%
+This will hold in general: exchanging the targets of two links generally results in an inequivalent net, in particular when the $\bot$-instances are connected by a tensor.
+%
+However, a double such exchange commonly does give an equivalent net.
+
+
+\begin{lemma}
+\label{lem:double exchange}
+Let $\links$ be a proof net where $\links(a)=u$, $\links(b)=v$, $\links(c)=x$, and $\links(d)=y$, and for any switching the path from $u$ to $y$ passes through the links $\edge bv$ and $\edge xc$.
+%
+Then $\links\perm\links'$ where $\links'(a)=v$, $\links'(b)=u$, $\links'(c)=y$, and $\links'(d)=x$, and $\links'(z)=\links(z)$ otherwise.
+\end{lemma}
+
+\begin{IEEEproof}
+By the rewiring path shown in Figure~\ref{fig:double exchange}.
+\end{IEEEproof}
+
+
+\begin{figure*}
+\[
+	\vc{\doubleExchange uvxy}
+	\quad\perm*\quad
+	\vc{\doubleExchange uyxy}
+	\quad\perm*\quad
+	\vc{\doubleExchange uyxu}
+	\quad\perm*\quad
+	\vc{\doubleExchange vyxu}
+	\quad\perm*\quad
+	\vc{\doubleExchange vyyu}
+	\quad\perm*\quad
+	\vc{\doubleExchange vuyu}
+	\quad\perm*\quad
+	\vc{\doubleExchange vuyx}
+\]
+\caption{Double exchange of links}
+\label{fig:double exchange}
+\end{figure*}
+
+
+This dynamic completely characterises rewiring in the fragment of MLL that omits the par.
+%
+The following standard notion of \emph{balance} characterises provability for it.
+
+
+\begin{definition}
+The \emph{balance} of a sequent is the number of $\bot$s minus the number of $\parr$s and comma's.
+%
+A sequent is \emph{balanced} if its balance is zero.
+\end{definition}
+
+
+\begin{proposition}
+\label{prop:unbalanced then uninhabited}
+An unbalanced sequent is uninhabited.
+\end{proposition}
+
+
+Let a \emph{basic} sequent be one of formulae constructed only over $\1$, $\bot$, and $\tn$.
+%
+After removing $\bot$-formulae and replacing subformulae $\1\tn A$ with $A$, basic sequents consist of formulae of the form $1$ or $\bigtn(\bot^n)$ with $n\geq2$.
+
+
+\begin{proposition}
+A basic sequent is inhabited if and only if it is balanced.
+\end{proposition}
+
+\begin{proposition}
+A basic sequent $\bigtn(\bot^n),\1^n$ is inhabited by exactly $n!$ inequivalent proof nets.
+\end{proposition}
+
+\begin{proposition}
+\label{prop:level0 max binary}
+%
+A basic sequent with at least two tensor-formulae has at most two equivalence classes of proof nets.
+%
+\end{proposition}
+
+
+\begin{IEEEproof}
+By induction on the size of a sequent $\Gamma$.
+%
+The base case is the sequent $\1,\1,\bot\tn\bot$, which has two inequivalent proof nets.
+%
+For the inductive step, let $A\tn\named a\bot$ be a largest $\tn$-formula in $\Gamma$, and pick an occurence $\named z\1$.
+%
+It will be shown that any net $\links$ is equivalent to one $\links'$ where $\links'(a)=z$; then by induction, for the sequent $\Gamma$ with $\named z\1$ removed and $A\tn\named a\bot$ replaced by $A$, the subnet for $\links'$ belongs to one of two equivalence classes.
+
+
+To find $\links'$, if $\links(a)=z$ we are done.
+%
+Next, if the path from $\links(a)$ to $z$ does not pass through $a$, then by Lemma~\ref{lem:rewiring within empire} $\links'$ may be obtained from $\links$ by rewiring only $\links'(a)=z$.
+%
+Thirdly, let $\links(b)=z$ for a $\named b\bot$ in $A$.
+%
+Let $\named c\bot$ and $\named d\bot$ be occurrences in a separate formula $B$ such that $c$ links to the same $\1$-occurrence as some $\bot$ in $A$.
+%
+Then $\links'$ is obtained by first linking $c$ to $b$, and then applying Lemma~\ref{lem:double exchange} to exchange the targets of $a$ and $b$, as well as the targets of $c$ and $d$.
+
+
+Finally, let the path from $a$ to $z$ pass $\named b\bot$ in $A$.
+%
+Then using Lemma~\ref{lem:rewiring within empire} re-attach $b$ to $z$, and repeat as above.
+\end{IEEEproof}
+
+
+
+%
+%\begin{proposition}
+%\label{prop:level0 may-connect path}
+%%
+%For a proof net for a 1-alternation sequent containing a link $\edge{\named a\bot}{\named b\1}$ and a formula $\named c\1$, the following are equivalent.
+%%
+%\begin{itemize}
+%	\item
+%The edge $\edge ab$ can be permuted to $\edge ac$.
+%	\item
+%There is a path from $b$ to $c$ not passing through $a$.
+%	\item
+%The path from $a$ to $c$ starts with the jump $a-b$.
+%\end{itemize} 
+%\end{proposition}
+
+
+If a link $\edge ab$ may be reconnected as $\edge ac$ it is said that $a$ \emph{may connect to} $c$. 
+%
+By the above proposition, it is immediate that if $a$ and $b$ may both connect to $c$, then after actually reconnecting $\edge ac$, still $b$ may connect to $c$.
+
+
+
+Consider the following naming scheme for the units in a 1-alternation sequent $\Gamma$ with tensor-formulae $A_1,\dotsc,A_n$.
+%
+\begin{itemize}
+
+	\item
+One $\1$ in $\Gamma$ is named $*$, and the remaining ones with the numbers $n+1,\dotsc,m$.
+
+	\item
+A $\bot$-formula in $A_i$ is named by a pair $(i,k)$, where $k=i$ for the first $\bot$-formula in each $A_i$, and for the remaining $\bot$-formulae in all $A_i$, each $k$ is a distinct number in $n+1,\dotsc,m$.
+
+\end{itemize}
+%
+The naming scheme suggests a linking for $\Gamma$, defined by $\links(i,i)=\star$ and $\links(i,k)=k$ otherwise; i.e\ the first $\bot$ in each tensor-formula connects to $\named *\1$, while other $\bot$-subformulae connect uniquely to the remaining $\1$-subformulae.
+
+
+
+A net for $\Gamma$ is interpreted as a combinatorial permutation (an automorphism on $\{1,\dotsc,m\}$) as follows.
+%
+\begin{definition}
+\label{def:combinatorial permutation}
+To a proof net $\links$ for a 1-alternation sequent $\Gamma$ named as above, associate the \emph{permutation} $\prm:\{1,\dotsc,m\}\to\{1,\dotsc,m\}$ given by:
+\[
+	\prm(k) = 
+	\begin{cases}
+		i				& \text{ if $(i,k)$ may connect to $*$; and}
+	\\	\links(i,k)		& \text{ otherwise.}
+	\end{cases}
+\]
+The \emph{parity} of $\links$ is the parity of its permutation.
+\end{definition}
+
+
+To see that $\prm$ is injective, consider the following.
+\begin{itemize}
+	\item The domains of $i$ and $\links(i,k)$, respectively $1,\dotsc,n$ and $n+1,\dotsc,m$, are disjoint.
+	\item Exactly one $\bot$-formula in each $A_i$ may connect to $*$ because of connectedness and acyclicity, since if a $\bot$-formula may connect to $*$ it has a path to $*$ (Lemma~\ref{lem:rewiring within empire}).
+	\item If two $\bot$-formulae have the same target, which means they are in different tensor-formulae, at least one may connect to $*$ via the other tensor-formula, which must have a path to $*$ by the above.
+\end{itemize}
+
+
+
+\begin{proposition}
+\label{prop:level0 min binary}
+A permutation on a net $\links$ preserves its parity. 
+\end{proposition}
+
+
+\begin{IEEEproof}
+Let $\links$ be a net for $\Gamma$, with $\Gamma$ named as above, and let the link $\edge{(i,k)}x$ in $\links$ re-attach as $\edge{(i,k)}y$, forming $\links'$.
+%
+There are two cases, depending on whether $(i,k)$ may connect to $*$.
+%
+If so, using Lemma~\ref{lem:rewiring within empire}, the re-wiring preserves which $\bot$-formulae may connect to $*$, since for any path to $*$ via $\edge{(i,k)}x$ in $\links$ there is a path to $*$ via $\edge{(i,k)}y$.
+%
+Then the permutation of $\links'$ is that of $\links$.
+
+
+If $(i,k)$ may not connect to $*$, let the path from $x$ to $y$ run via the following $\bot$- and $\1$-vertices.
+\[
+	x=x_1, (i_1,j_1), (i_1,k_1), x_2, (i_2,j_2), \dotsc, (i_n,k_n), x_{n+1}=y 	
+\]
+Note that the $\bot$-formulae $(i_a,j_a)$ may connect to $*$.
+%
+On the relevant domain, this gives the following permutation for $\links$.
+\[
+\left(\begin{array}{ccccccc}
+	j_1 & \dotso & j_n &  k  & k_1 & \dotso & k_n \\
+	i_1 & \dotso & i_n & x_1 & x_2 & \dotso & x_{n+1}
+\end{array}\right)
+\]
+In $\links'$, since $\links'(i,k)=y$, the $\bot$-formulae that may connect to $*$ are the $(i_a,k_a)$.
+%
+The permutation $\prm[\links']$ is the following.
+\[
+\left(\begin{array}{ccccccc}
+	j_1 & \dotso & j_n &    k    & k_1 & \dotso & k_n \\
+	x_1 & \dotso & x_n & x_{n+1} & i_1 & \dotso & i_n
+\end{array}\right)
+\]
+The parity of both permutations is the same if and only if the relative permutation, below, is even.
+\[
+\left(\begin{array}{ccccccc}
+	i_1 & \dotso & i_n & x_1     & x_2 & \dotso & x_{n+1} \\
+	x_1 & \dotso & x_n & x_{n+1} & i_1 & \dotso & i_n
+\end{array}\right)
+\]
+This is the case, as it is obtained by the exchange of $x_a$ and $i_a$ for each $a\leq n$, and subsequently the exchange of $x_{n+1}$ and each $i_a$ in turn.
+%
+\end{IEEEproof}
+
+
+
+\begin{proposition}
+\label{prop:parity determines equivalence}
+Two proof nets for a 1-alternation sequent with at least two tensor-formulae are equivalent if and only if they have the same parity.
+\end{proposition}
+
+
+\begin{theorem}
+\MLL\ proof equivalence in the absence of ~$\parr$ is linear-time decidable.
+\end{theorem}
+
+\begin{IEEEproof}
+For a sequent with 1 tensor-formula, the problem is reduced to syntactic equality.
+%
+For a sequent with 2 or more tensor-formulae, by Propositions~\ref{prop:parity determines equivalence} the equivalence of two nets is determined by their parity.
+%
+Following Definition~\ref{def:combinatorial permutation} the parity of a net can be read off in a single traversal of the net.
+%
+This yields a linear-time algorithm.
+%
+\end{IEEEproof}
+
+
+
+Equivalence in this fragment is determined by two main characteristics: 1) proof nets that differ by the exchange of exactly two links are generally not equivalent; and 2) as long as there are at least two tensor-formulae in the sequent, proof nets are equivalent whenever this is possible while respecting the previous.
+
+
+These characteristics carry over to the full fragment, including the par.
+%
+They hold the following lessons on rewiring for the design of our encoding in Section~\ref{sec:encoding}. 
+%
+Firstly, making proof nets equivalent is generally easier than preventing them from being equivalent, and in particular changing a formula $A$ to $A\tn\bot$ dramatically increases its rewiring potential.
+%
+The focus of our encoding will therefore be on preventing undesired linkings from being proof nets at all, rather than being unreachable by rewiring.
+%
+Secondly, the problem that proof nets up to a single exchange of links are generally not equivalent is too subtle to be useful as a feature of an encoding, and should be no more than a technical distraction.
+
+\end{document}
+
+
+%
+%
+%
+%\begin{lemma}
+%For a proof net $(\Gamma,\links)$, if the linking $\links'$ agrees with $\links$ on all values except $\links'(a)=v$, then $\links'$ is a proof net if and only if $v$ is in the empire of $a$ in $(\Gamma,\links)$.
+%%
+%%If $\links\perm*\links'$ by rewiring the link $\links(a)=v$ to $\links'(a)=w$, then $w$ is in the empire of $a$ in the proof net $\links$.
+%\end{lemma}
+%
+%\begin{proof}
+%The empire of $a$ corresponds to the largest subproof $\Sigma$ in any $\Pi\toNet\links$ with as conclusion the introduction rule of $\named a\bot$.
+%%
+%In one direction, by Definition~\ref{def:proofs to nets} $a$ may link anywhere in a translation of $\Sigma$ to a net; if $\named v\1$ is in $\Sigma$, then $\links'$ is a net.
+%%
+%In the other direction, if $\links\perm*\links'$, then for any switching of $(\Gamma,\links')$ there is a path from $\links(a)=w$ to 
+%
 %%Let $\sigma$ be the empire of $a$ in $(\Gamma,\links)$.
 %%
 %In one direction, if $v$ is in $\sigma$, then since $\sigma$ is a subnet, for any switching of $\sigma$ there is a path from $\links(a)$ to $v$ not passing through $a$.
