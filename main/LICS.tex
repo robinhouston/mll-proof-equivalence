@@ -23,6 +23,8 @@
 \let\beforesection=\medskip
 \let\aftersection=\noindent
 
+\let\capsabbrev=\uppercase
+
 
 \author{
   \IEEEauthorblockN{Willem Heijltjes}
@@ -40,7 +42,7 @@
 	}
 }
 
-\title{No proof nets for MLL with units\\[5pt]\Large Proof equivalence in MLL is \textsc{pspace}-complete}
+\title{No proof nets for \capsabbrev{mll} with units\\[5pt]\Large Proof equivalence in \capsabbrev{mll} is \capsabbrev{pspace}-complete}
 
 %============================================================
 
@@ -49,15 +51,15 @@
 \maketitle
 
 \begin{abstract}
-MLL proof equivalence is the problem of deciding whether two proofs in multiplicative linear logic are related by a series of inference permutations.
+\capsabbrev{mll} proof equivalence is the problem of deciding whether two proofs in multiplicative linear logic are related by a series of inference permutations.
 %
 It is also known as the word problem for $*$-autonomous categories.
 %
-Previous work has shown the problem to be equivalent to a rewiring problem on proof nets, which are not canonical for full MLL due to the presence of the two units.
+Previous work has shown the problem to be equivalent to a rewiring problem on proof nets, which are not canonical for full \capsabbrev{mll} due to the presence of the two units.
 %
-Drawing from recent work on reconfiguration problems, in this paper it is shown that \textsc{mll} proof equivalence is \textsc{pspace}-complete, using a reduction from Nondeterministic Constraint Logic.
+Drawing from recent work on reconfiguration problems, in this paper it is shown that \capsabbrev{mll} proof equivalence is \capsabbrev{pspace}-complete, using a reduction from Nondeterministic Constraint Logic.
 %
-An important consequence of the result is that the existence of a satisfactory notion of proof nets for MLL with units is ruled out (under current complexity assumptions).
+An important consequence of the result is that the existence of a satisfactory notion of proof nets for \capsabbrev{mll} with units is ruled out (under current complexity assumptions).
 \end{abstract}
 
 
@@ -68,40 +70,38 @@ An important consequence of the result is that the existence of a satisfactory n
 
 \aftersection
 %
-The question of equivalence of proofs goes back to Lambek \cite{Lambek-1968}, who realised that the then-new tool of category-theoretic logic gave a notion of proof equivalence that was coarser and better-behaved than syntactic equality.
+The question of equivalence of proofs goes back to Lambek \cite{Lambek-1968}, who realised that the new tool of category-theoretic logic gave a notion of proof equivalence that was coarser and better-behaved than syntactic equality.
 
-A striking technical innovation of linear logic was the introduction of proof nets \cite{Girard-1987,Danos-Regnier-1989}, which define a canonical form for proofs in the unitless fragment of multiplicative linear logic -- two proofs are equivalent if and only if they have the same proof net -- so proof nets offer a simple decision procedure for proofs in this fragment. This naturally raises the question whether proof nets can be extended to work in the presence of units. There is a line of work in this direction, beginning with \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996} via \cite{Strassburger-Lamarche-2004} and perhaps culminating with \cite{HughesFreeStar,HughesMLLProofNets}; but these proof nets are not canonical and must be identified up to a rewiring equivalence.
+Later, a striking technical innovation of linear logic was the introduction of proof nets \cite{Girard-1987,Danos-Regnier-1989}, which define a canonical form for proofs in the unitless fragment of multiplicative linear logic -- two proofs are equivalent if and only if they have the same proof net -- so proof nets offer a simple decision procedure for proofs in this fragment. This naturally raises the question whether proof nets can be extended to work in the presence of units. The work in this direction begins with \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996} via \cite{Strassburger-Lamarche-2004} and perhaps culminates in \cite{HughesFreeStar,HughesMLLProofNets}; but these proof nets are not canonical and must be identified up to a rewiring equivalence.
 
-So the question remains whether there exist fully canonical proof nets for full \textsc{mll}. Canonical proof nets have been found for several other fragments of linear logic: the combined multiplicative-additive fragment without units \cite{Hughes-vanGlabbeek-2005}, and the additive fragment, including the additive units \cite{Heijltjes-2011}.
+So the question remains whether there exist fully canonical proof nets for full \capsabbrev{mll}. Canonical proof nets have been found for several other fragments of linear logic: the combined multiplicative-additive fragment without units \cite{Hughes-vanGlabbeek-2005}, and the additive fragment, including the additive units \cite{Heijltjes-2011}.
 
-In this paper we establish that the proof equivalence problem for multiplicative linear logic with units is \textsc{pspace}-complete. It follows that there can be no satisfactory canonical notion of proof net.
+In this paper we establish that the proof equivalence problem for multiplicative linear logic with units is \capsabbrev{pspace}-complete. It follows that there can be no satisfactory canonical notion of proof net.
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 \subsection*{Constraint logic and reconfiguration problems}
 
-The proof of \textsc{pspace}-completeness relies on a polynomial reduction from the configuration-to-configuration problem in nondeterministic
+\aftersection The proof of \capsabbrev{pspace}-completeness relies on a polynomial reduction from the configuration-to-configuration problem in nondeterministic
 \emph{constraint logic}, a graphical formalism recently introduced as a uniform tool for use in complexity reductions \cite{Demaine-Hearn-2008}.
 %
-Constraint logic is a simple graph rewriting mechanism, where weighted edges may be reversed as long as the given in-flow constraint for each vertex is satisfied; the configuration-to-configuration question is whether two graphs are related by a sequence of valid rewriting steps.
+Constraint logic is a simple graph rewriting formalism, where weighted edges may be reversed as long as the given in-flow constraint for each vertex is satisfied; the configuration-to-configuration question is whether two graphs are related by a sequence of valid rewriting steps.
 
 This is one of a class of problems called \emph{reconfiguration problems} \cite{ReconfigurationProblems}: can one solution to a given problem be transformed into another by a series of elementary changes, while remaining valid throughout?
 %
 For example, the reconfiguration problem for boolean satisfiability (SAT) asks whether one satisfying assignment can be transformed into another by changing the value of one atomic formula at a time, without passing via a non-satisfying assignment.
 %
-It is not uncommon for an \textsc{np}-complete problem to have an associated reconfiguration problem that is \textsc{pspace}-complete \cite{ReconfigurationProblems}; one example is SAT-reconfiguration, which is \textsc{pspace}-complete.
-
-MLL proof equivalence may be regarded as the reconfiguration problem associated with MLL proof search, which is \textsc{np}-complete \cite{Kanovich-1992,Lincoln-Winkler-1994}.
+It is not uncommon for an \capsabbrev{np}-complete problem to have an associated reconfiguration problem that is \capsabbrev{pspace}-complete \cite{ReconfigurationProblems}; one example is SAT-reconfiguration, which is \capsabbrev{pspace}-complete. \capsabbrev{mll} proof equivalence may be regarded as the reconfiguration problem associated with \capsabbrev{mll} proof search, which is \capsabbrev{np}-complete \cite{Kanovich-1992,Lincoln-Winkler-1994}.
 
 %------------------------------------------------------------
 
 \begin{figure}[!b]
-\quad\MLLrule b
-\hfill\MLLrule 1
-\hfill\MLLrule p
-\hfill\MLLrule t
+\quad\capsabbrev{mll}rule b
+\hfill\capsabbrev{mll}rule 1
+\hfill\capsabbrev{mll}rule p
+\hfill\capsabbrev{mll}rule t
 \quad
-\caption{Inference rules for unit-only \MLL}
+\caption{Inference rules for unit-only \capsabbrev{mll}}
 \label{fig:MLL}
 \end{figure}
 
@@ -111,21 +111,21 @@ MLL proof equivalence may be regarded as the reconfiguration problem associated 
 \[
 \begin{array}{@{}rcl@{}}
 	\multicolumn{3}{@{}c@{}}{
-		\vc{\scale{\MLLperm{bb1}}} ~\perm~ \vc{\scale{\MLLperm{bb2}}}
+		\vc{\scale{\capsabbrev{mll}perm{bb1}}} ~\perm~ \vc{\scale{\capsabbrev{mll}perm{bb2}}}
 		\hfill
-		\vc{\scale{\MLLperm{bp1}}} ~\perm~ \vc{\scale{\MLLperm{bp2}}}
+		\vc{\scale{\capsabbrev{mll}perm{bp1}}} ~\perm~ \vc{\scale{\capsabbrev{mll}perm{bp2}}}
 	}
 \\ \\[6pt]
 	\multicolumn{3}{@{}c@{}}{
-		\vc{\scale{\MLLperm{bt2}}} ~\perm~ \vc{\scale{\MLLperm{bt1}}}
-								   ~\perm~ \vc{\scale{\MLLperm{bt3}}}
+		\vc{\scale{\capsabbrev{mll}perm{bt2}}} ~\perm~ \vc{\scale{\capsabbrev{mll}perm{bt1}}}
+								   ~\perm~ \vc{\scale{\capsabbrev{mll}perm{bt3}}}
 	}
 \\ \\[6pt]
-	\vc{\scale{\MLLperm{pp1}}} &\perm& \vc{\scale{\MLLperm{pp2}}}
+	\vc{\scale{\capsabbrev{mll}perm{pp1}}} &\perm& \vc{\scale{\capsabbrev{mll}perm{pp2}}}
 \\ \\[6pt]
-	\vc{\scale{\MLLperm{pt1}}} &\perm& \vc{\scale{\MLLperm{pt2}}}
+	\vc{\scale{\capsabbrev{mll}perm{pt1}}} &\perm& \vc{\scale{\capsabbrev{mll}perm{pt2}}}
 \\ \\[6pt]
-	\vc{\scale{\MLLperm{tt1}}} &\perm& \vc{\scale{\MLLperm{tt2}}}
+	\vc{\scale{\capsabbrev{mll}perm{tt1}}} &\perm& \vc{\scale{\capsabbrev{mll}perm{tt2}}}
 \end{array}
 \]
 \caption{Permutations}
@@ -134,7 +134,7 @@ MLL proof equivalence may be regarded as the reconfiguration problem associated 
 
 \beforesection
 
-\section{MLL}
+\section{\capsabbrev{mll}}
 
 \aftersection
 %
@@ -171,7 +171,7 @@ Only cut-free proofs are considered, and no cut-rule is added.
 %
 \emph{Equivalence} of proofs $(\perm)$ in (cut-free, unit-only) multiplicative linear logic is the congruence generated by the permutations given in Figure~\ref{fig:permutations}.
 %
-\emph{\MLL\ proof equivalence} is the problem of deciding whether two given proofs are equivalent.
+\emph{\capsabbrev{mll}\ proof equivalence} is the problem of deciding whether two given proofs are equivalent.
 %
 \end{definition}
 
@@ -180,9 +180,9 @@ Only cut-free proofs are considered, and no cut-rule is added.
 
 \subsection*{Proof nets}
 
-Proof nets provide a solution to proof equivalence for MLL$^-$ (MLL without units).
+Proof nets provide a solution to proof equivalence for \capsabbrev{mll} without units.
 %
-For full MLL, they reduce the proof equivalence problem to a simple rewiring relation \cite{HughesMLLProofNets}.
+For full \capsabbrev{mll}, they reduce the proof equivalence problem to a simple rewiring relation \cite{HughesMLLProofNets}.
 
 
 \begin{definition}
@@ -213,9 +213,9 @@ An edge $\edge a{\links(a)}$ in a proof net or switching graph is called a \emph
 \begin{definition}
 \label{def:proof net equivalence}
 %
-A \emph{permutation} $(\perm*)$ between proof nets is the redirection of exactly one link.
+A \emph{rewiring} $(\perm*)$ between proof nets is the redirection of exactly one link.
 %
-\emph{Equivalence} $(\perm)$ of proof nets over a sequent $\Gamma$ is the equivalence generated by permutations.
+\emph{Equivalence} $(\perm)$ of proof nets over a sequent $\Gamma$ is the equivalence generated by rewirings.
 %
 \end{definition}
 
@@ -233,7 +233,7 @@ The relation $(\toNet)$ interprets a proof $\Pi$ for a sequent $\Delta$ by a lin
 % 
 $\Pi\toNet\links$ if for each $\named a\bot$ in $\Delta$, if $\Gamma$ is the context of the inference introducing $\named a\bot$, as illustrated below, then $\links(a)$ is the name of some $1$ in $\Gamma$.
 \[
-	\infer[\MLLlabel b]{\Gamma,\named a\bot}{\Gamma}
+	\infer[\capsabbrev{mll}label b]{\Gamma,\named a\bot}{\Gamma}
 \]
 %
 \end{definition}
@@ -266,7 +266,7 @@ For proofs $\Pi$, $\Pi'$ and proof nets $\links$, $\links'$ such that $\Pi\toNet
 
 
 \noindent
-The above proposition means that \MLL\ proof equivalence is the problem of deciding equivalence of proof nets.
+The above proposition means that \capsabbrev{mll}\ proof equivalence is the problem of deciding equivalence of proof nets.
 %
 % We will use proof net equivalence to encode constraint logic.
 
@@ -297,7 +297,7 @@ For example, the following denote the same sequent:
 	\draw (7.75,0) -- (8.75,0) node[bullet] (e) {};
 \end{tikzpicture}
 \]
-The links of a proof net are added to the sequent as colored arrows.
+The links of a proof net are added to the sequent as coloured arrows.
 %
 The following example is a proof net for the above sequent.
 \[
@@ -405,7 +405,7 @@ A dashed edge will indicate that two vertices are connected, in a proof net or a
 %
 In this section we will explore the global rewiring behaviour of proof nets.
 %
-In particular, we will look at notions of subnets, and we will give a simple account of equivalence for the fragment of MLL that omits the par, i.e.\ that of sequents of formulae constructed over $\1$, $\bot$, and $\tn$.
+In particular, we will look at notions of subnets, and we will give a simple account of equivalence for the fragment of \capsabbrev{mll} that omits the par, i.e.\ that of sequents of formulae constructed over $\1$, $\bot$, and $\tn$.
 
 
 \begin{figure*}
@@ -435,7 +435,7 @@ In particular, we will look at notions of subnets, and we will give a simple acc
 \subsection*{Subnets}
 
 
-We will discuss (and adapt) some convenient standard notions for MLL proofs and proof nets, and relate them to rewiring.
+We will discuss (and adapt) some convenient standard notions for \capsabbrev{mll} proofs and proof nets, and relate them to rewiring.
 %
 Firstly we will look at subnets---see also \cite{Bellin-vandeWiele-1995}.
 
@@ -520,7 +520,7 @@ For the `if' direction, it follows by induction on the nesting of sub-sequents t
 %
 For the `only if' direction, given a sequentialisation of $(\Gamma,\links)$, a sub-sequent $s(v)\leq\Gamma$ for each $\named v\parr$ is found by taking the conclusion $\Delta, A\named v\parr B$ of its introduction rule, below.
 \[
-	\infer[\MLLlabel p]{\Delta,A\named v\parr B}{\Delta,A,B}
+	\infer[\capsabbrev{mll}label p]{\Delta,A\named v\parr B}{\Delta,A,B}
 \]
 \vskip-12pt
 \end{IEEEproof}
@@ -622,7 +622,7 @@ Otherwise, $\Delta=\Delta'$.
 \subsection*{Equivalence without $\parr$}
 
 
-A basic observation on MLL is that the identity proof for $\bot\tn\bot,\1\parr\1$ is not equivalent to the `symmetry' or `twist' proof for the same sequent.
+A basic observation on \capsabbrev{mll} is that the identity proof for $\bot\tn\bot,\1\parr\1$ is not equivalent to the `symmetry' or `twist' proof for the same sequent.
 %
 This will hold in general: exchanging the targets of two links generally results in an inequivalent net, in particular when the $\bot$-instances are connected by a tensor.
 %
@@ -641,7 +641,7 @@ By the rewiring path shown in Figure~\ref{fig:double exchange}.
 \end{IEEEproof}
 
 
-This dynamic completely characterises rewiring in the fragment of MLL that omits the par.
+This dynamic completely characterises rewiring in the fragment of \capsabbrev{mll} that omits the par.
 %
 The following standard notion of \emph{balance} characterises provability for it.
 
@@ -768,7 +768,7 @@ Secondly, the problem that proof nets up to a single exchange of links are gener
 
 \aftersection
 %
-\emph{Non-deterministic constraint logic} \cite{Hearn-Demaine-2005,Demaine-Hearn-2008} is a simple graph-rewriting formalism, introduced as a convenient tool for \textsc{PSPACE}-hardness reductions.
+\emph{Non-deterministic constraint logic} \cite{Hearn-Demaine-2005,Demaine-Hearn-2008} is a simple graph-rewriting formalism, introduced as a convenient tool for \capsabbrev{pspace}-hardness reductions.
 %
 A rewrite step consists of the reversal of a single edge in a \emph{constraint graph}, a graph with weighted, directed edges and an \emph{inflow constraint} on each vertex.
 %
@@ -777,7 +777,7 @@ Rewrite steps must preserve the condition that the total weight of the incoming 
 The specific problem we will use is the \emph{configuration--to--configuration} problem, which asks whether a path of rewrite steps exists between two constraint graphs.
 
 
-We will introduce minor adaptations to this formalism to suit our reduction to MLL proof equivalence.
+We will introduce minor adaptations to this formalism to suit our reduction to \capsabbrev{mll} proof equivalence.
 %
 Mainly, a constraint graph itself will have \emph{undirected} edges, while a separate notion of \emph{configuration} imposes a direction on them.
 %
@@ -803,7 +803,7 @@ $\sum\{w(e)\mid\gamma(e)=v\}\geq c(v)$.
 \end{itemize} 
 
 \smallskip
-A \emph{reconfiguration step} $\gamma\perm*\delta$ relates two (partial) configurations for an \textsc{ncg} $G$ that differ in value (or definedness) on exactly one edge.
+A \emph{reconfiguration step} $\gamma\perm*\delta$ relates two (partial) configurations for an \capsabbrev{ncg} $G$ that differ in value (or definedness) on exactly one edge.
 %
 The reflexive--transitive closure of $(\perm*)$ will be denoted $(\perm)$.
 %
@@ -826,25 +826,25 @@ if $\gamma'$ and $\gamma''$ are total configurations that both agree with a part
 \end{IEEEproof}
 
 
-\emph{Non-deterministic constraint graph reconfiguration} or \emph{\textsc{ncg}-reconfiguration} is the problem of deciding whether two total configurations for a constraint graph are connected by a sequence of reconfiguration steps.
+\emph{Non-deterministic constraint graph reconfiguration} or \emph{\capsabbrev{ncg}-reconfiguration} is the problem of deciding whether two total configurations for a constraint graph are connected by a sequence of reconfiguration steps.
 %
-%By the above proposition, \textsc{ncg}-reconfiguration is unaffected by inclusion or exclusion of partial configurations.
+%By the above proposition, \capsabbrev{ncg}-reconfiguration is unaffected by inclusion or exclusion of partial configurations.
 
 
 
 \begin{theorem}[\cite{Hearn-Demaine-2005}]
-\textsc{ncg}-reconfiguration is \textsc{pspace}-complete.
+\capsabbrev{ncg}-reconfiguration is \capsabbrev{pspace}-complete.
 \end{theorem}
 
 %By Proposition~\ref{prop:partial simulates total reconfiguration} the following is then immediate.
 %
 %\begin{proposition}
-%Partial \textsc{ncg}-reconfiguration is \textsc{pspace}-complete.
-%%\textsc{pncg}-reconfiguration is \textsc{pspace}-complete.
+%Partial \capsabbrev{ncg}-reconfiguration is \capsabbrev{pspace}-complete.
+%%\capsabbrev{pncg}-reconfiguration is \capsabbrev{pspace}-complete.
 %\end{proposition}
 
 
-We will demonstrate the \textsc{pspace}-hardness of MLL proof equivalence by an encoding of \textsc{ncg}-reconfiguration in MLL proof nets.
+We will demonstrate the \capsabbrev{pspace}-hardness of \capsabbrev{mll} proof equivalence by an encoding of \capsabbrev{ncg}-reconfiguration in \capsabbrev{mll} proof nets.
 
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -852,7 +852,7 @@ We will demonstrate the \textsc{pspace}-hardness of MLL proof equivalence by an 
 \subsection*{The encoding}
 
 
-The basis of the encoding of constraint graphs in MLL is formed by \emph{weight elements}, which encode one unit of weight on an edge, and \emph{constraint elements}, that encode one unit towards the inflow constraint of a vertex.
+The basis of the encoding of constraint graphs in \capsabbrev{mll} is formed by \emph{weight elements}, which encode one unit of weight on an edge, and \emph{constraint elements}, that encode one unit towards the inflow constraint of a vertex.
 %
 The arithmetic of linking formulae of the form $\bigtn(\bot^n)$ to formulae $\bigparr(1^m)$ will be used to ensure that a weight element may be linked to only two vertices.
 %
@@ -872,7 +872,7 @@ Below left is a weight element, below right a constraint element.
 	\draw (1,0)--(2,0);
 \end{tikzpicture}
 \]
-For all edges and vertices in the encoding of a constraint graph, the sum $i+j+k=m+n$ will be the same---this way, a priori any weight element may connect to any constraint element.
+For all edges and vertices in the encoding of a constraint graph, the sum $i+j+k=m+n$ will be the same -- this way, a priori any weight element may connect to any constraint element.
 %
 The value of $m$ (and thus $n$) will differ for each vertex.
 %
@@ -880,7 +880,7 @@ The weight element above will be able to connect naturally to those constraint e
 \[
 	\connectingElements 1 \qquad \connectingElements 2
 \]
-To ensure that no other connections can be made, values are chosen such that $m\bmod3=1$ and $n\bmod3=2$, and accordingly $i\bmod3=1$, $j\bmod3=0$, and $k\bmod3=2$.
+To ensure that no other connections can be made, values are chosen such that $m\equiv1$ and $n\equiv2$ $(\bmod3)$, and accordingly $i\equiv1$, $j\equiv0$, and $k\equiv2$ $(\bmod3)$.
 
 
 In a constraint graph, the sum of weights is usually greater than the sum of all inflow constraints---otherwise, no edge can move, or no configuration exists.
@@ -943,7 +943,7 @@ It would be natural to encode an edge of weight $n$ by an edge-gadget with $n$ w
 %
 However, there is a minor issue that prevents this straightforward approach.
 %
-Where one weight element cannot `fill' an inappropriate constraint element, two weight elements can, in the way illustrated below.
+Although one weight element cannot `fill' an inappropriate constraint element, two weight elements can, in the way illustrated below.
 %
 \[
 \begin{tikzpicture}[x=5mm,y=-5mm,octo]
@@ -1152,8 +1152,8 @@ After contracting the scope of each $W$, each edge-gadget in the scope of $\itn 
 
 \aftersection
 %
-In this section we will establish that in our encoding of constraint graphs %partial \textsc{ncg}-reconfiguration 
-in MLL, reconfiguration on graphs is captured by proof equivalence in MLL.
+In this section we will establish that in our encoding of constraint graphs %partial \capsabbrev{ncg}-reconfiguration 
+in \capsabbrev{mll}, reconfiguration on graphs is captured by proof equivalence in \capsabbrev{mll}.
 %
 Up to minor technical details, it will be shown that $\itn\gamma\perm\itn\delta$ if and only if $\gamma\perm\delta$, in two parts: completeness ($\Leftarrow$) and soundness ($\Rightarrow$).
 
@@ -1305,7 +1305,7 @@ A second such exchange is needed to re-attach $d_0$ and $d_1$ to their original 
 
 \end{enumerate}
 
-In each case, if one of the weight absorbers exchanged is linked to by multiple $\bot$-occurrences within the same weight element, these may be termporarily attached elsewhere.
+In each case, if one of the weight absorbers exchanged is linked to by multiple $\bot$-occurrences within the same weight element, these may be temporarily attached elsewhere.
 %
 \end{IEEEproof}
 
@@ -1358,7 +1358,7 @@ The resulting proof net is $\itn\delta$ modulo a permutation of weight absorbers
 \subsection*{Soundness}
 
 
-It will be shown that proof net rewiring $\itn\gamma\perm\itn\delta$ is sound for \textsc{ncg}-reconfiguration, $\gamma\perm\delta$.
+It will be shown that proof net rewiring $\itn\gamma\perm\itn\delta$ is sound for \capsabbrev{ncg}-reconfiguration, $\gamma\perm\delta$.
 %
 To each proof net $\links$ for an encoded constraint graph $\itn G$ we will associate a partial configuration $\gamma=\coitn\links$, such that 1) a rewiring step $\links\perm*\links$ corresponds to a reconfiguration path $\coitn\links\perm\coitn{\links'}$, and 2) it is a retraction of the encoding of configurations, $\coitn{\itn\gamma}=\gamma$.
 
@@ -1467,7 +1467,7 @@ It follows that $\coitn\links\perm\coitn{\links'}$ by moving each $e_i$ in turn,
 
 \beforesection
 
-\section{MLL proof equivalence is \textsc{pspace}-complete}
+\section{\capsabbrev{mll} proof equivalence is \capsabbrev{pspace}-complete}
 
 \aftersection
 %
@@ -1475,16 +1475,16 @@ We are now ready to state our main theorem.
 
 
 \begin{theorem}
-MLL proof equivalence is \textsc{pspace}-complete.
+\capsabbrev{mll} proof equivalence is \capsabbrev{pspace}-complete.
 \end{theorem}
 
 \begin{IEEEproof}
-MLL proof equivalence has at most non-deterministic polynomial space complexity: a proof net may be represented in linear space (with respect to a proof); a single rewiring step is performed without requiring additional space; and a non-deterministic algorithm may guess the correct rewiring sequence.
+\capsabbrev{mll} proof equivalence has at most non-deterministic polynomial space complexity: a proof net may be represented in linear space (with respect to a proof); a single rewiring step is performed without requiring additional space; and a non-deterministic algorithm may guess the correct rewiring sequence.
 %
-Then by Savitch's Theorem \cite{Savitch-1970} MLL proof equivalence is in \textsc{pspace}.
+Then by Savitch's Theorem \cite{Savitch-1970} \capsabbrev{mll} proof equivalence is in \capsabbrev{pspace}.
 
 
-\textsc{pspace}-hardness follows by the encoding of \textsc{ncg}-reconfiguration, which in its completed form is stated:
+\capsabbrev{pspace}-hardness follows by the encoding of \capsabbrev{ncg}-reconfiguration, which in its completed form is stated:
 \[
 	\gamma\perm\delta \qquad\iff\qquad \itn\gamma\perm\itn\delta_\gamma~.
 \]
