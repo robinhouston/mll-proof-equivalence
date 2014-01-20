@@ -96,10 +96,10 @@ It is not uncommon for an \capsabbrev{np}-complete problem to have an associated
 %------------------------------------------------------------
 
 \begin{figure}[!b]
-\quad\capsabbrev{mll}rule b
-\hfill\capsabbrev{mll}rule 1
-\hfill\capsabbrev{mll}rule p
-\hfill\capsabbrev{mll}rule t
+\quad\MLLrule b
+\hfill\MLLrule 1
+\hfill\MLLrule p
+\hfill\MLLrule t
 \quad
 \caption{Inference rules for unit-only \capsabbrev{mll}}
 \label{fig:MLL}
@@ -111,21 +111,21 @@ It is not uncommon for an \capsabbrev{np}-complete problem to have an associated
 \[
 \begin{array}{@{}rcl@{}}
 	\multicolumn{3}{@{}c@{}}{
-		\vc{\scale{\capsabbrev{mll}perm{bb1}}} ~\perm~ \vc{\scale{\capsabbrev{mll}perm{bb2}}}
+		\vc{\scale{\MLLperm{bb1}}} ~\perm~ \vc{\scale{\MLLperm{bb2}}}
 		\hfill
-		\vc{\scale{\capsabbrev{mll}perm{bp1}}} ~\perm~ \vc{\scale{\capsabbrev{mll}perm{bp2}}}
+		\vc{\scale{\MLLperm{bp1}}} ~\perm~ \vc{\scale{\MLLperm{bp2}}}
 	}
 \\ \\[6pt]
 	\multicolumn{3}{@{}c@{}}{
-		\vc{\scale{\capsabbrev{mll}perm{bt2}}} ~\perm~ \vc{\scale{\capsabbrev{mll}perm{bt1}}}
-								   ~\perm~ \vc{\scale{\capsabbrev{mll}perm{bt3}}}
+		\vc{\scale{\MLLperm{bt2}}} ~\perm~ \vc{\scale{\MLLperm{bt1}}}
+								   ~\perm~ \vc{\scale{\MLLperm{bt3}}}
 	}
 \\ \\[6pt]
-	\vc{\scale{\capsabbrev{mll}perm{pp1}}} &\perm& \vc{\scale{\capsabbrev{mll}perm{pp2}}}
+	\vc{\scale{\MLLperm{pp1}}} &\perm& \vc{\scale{\MLLperm{pp2}}}
 \\ \\[6pt]
-	\vc{\scale{\capsabbrev{mll}perm{pt1}}} &\perm& \vc{\scale{\capsabbrev{mll}perm{pt2}}}
+	\vc{\scale{\MLLperm{pt1}}} &\perm& \vc{\scale{\MLLperm{pt2}}}
 \\ \\[6pt]
-	\vc{\scale{\capsabbrev{mll}perm{tt1}}} &\perm& \vc{\scale{\capsabbrev{mll}perm{tt2}}}
+	\vc{\scale{\MLLperm{tt1}}} &\perm& \vc{\scale{\MLLperm{tt2}}}
 \end{array}
 \]
 \caption{Permutations}
@@ -233,7 +233,7 @@ The relation $(\toNet)$ interprets a proof $\Pi$ for a sequent $\Delta$ by a lin
 % 
 $\Pi\toNet\links$ if for each $\named a\bot$ in $\Delta$, if $\Gamma$ is the context of the inference introducing $\named a\bot$, as illustrated below, then $\links(a)$ is the name of some $1$ in $\Gamma$.
 \[
-	\infer[MLLlabel b]{\Gamma,\named a\bot}{\Gamma}
+	\infer[\MLLlabel b]{\Gamma,\named a\bot}{\Gamma}
 \]
 %
 \end{definition}
@@ -520,7 +520,7 @@ For the `if' direction, it follows by induction on the nesting of sub-sequents t
 %
 For the `only if' direction, given a sequentialisation of $(\Gamma,\links)$, a sub-sequent $s(v)\leq\Gamma$ for each $\named v\parr$ is found by taking the conclusion $\Delta, A\named v\parr B$ of its introduction rule, below.
 \[
-	\infer[MLLlabel p]{\Delta,A\named v\parr B}{\Delta,A,B}
+	\infer[\MLLlabel p]{\Delta,A\named v\parr B}{\Delta,A,B}
 \]
 \vskip-12pt
 \end{IEEEproof}
