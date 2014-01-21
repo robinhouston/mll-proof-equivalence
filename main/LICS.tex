@@ -406,11 +406,14 @@ A dashed edge will indicate that two vertices are connected, in a proof net or a
 \]
 
 
+
+
 %------------------------------------------------------------
 
 \beforesection
 
 \section{Rewiring proof nets}
+\label{sec:rewiring}
 
 \aftersection
 %
@@ -418,11 +421,10 @@ In this section we will explore the global rewiring behaviour of proof nets.
 %
 We will look at notions of subnets, and we will give a simple account of equivalence for the fragment of \capsabbrev{mll} that omits the par.
 %
-Furthermore, we will  \emph{parity}, 
+Furthermore, we will introduce a notion of relative \emph{parity} between nets, which if odd, guarantees inequivalence.
 
 %i.e.\ that of sequents of formulae constructed over $\1$, $\bot$, and $\tn$.
 
-% TODO: mention the parity problem
 
 \begin{figure*}
 \[
@@ -730,9 +732,15 @@ Then using Lemma~\ref{lem:rewiring within empire} re-attach $b$ to $z$, and repe
 \aftersubsection
 We shall associate a \emph{parity} with any two linkings $\links$ and $\links'$ of the same sequent $\Gamma$. We shall find that the parity of equivalent linkings is always even; and that the converse holds when $\Gamma$ is a basic sequent.
 
-For this argument we shall assume that the connectives $\tn$ and $\parr$ are n-ary, and that every argument of a $\tn$ is a $\parr$ and vice versa. Assume also that $\Gamma$ consists of a single formula, if necessary by introducing a $\parr$ at the root. Now fix an arbitrary switching of $\Gamma$; this switching together with a linking $\links$ defines a tree whose vertices are the subformulae of $\Gamma$ and whose edges are the edges of the chosen switching together with the links of $\links$. Take the root of the formula $\Gamma$ to be the root of this tree. Now consider the edges of the tree to be directed away from the root; so the root has in-degree $0$ and the other vertices have in-degree $1$. This therefore establishes a bijection between the edges of the tree and the non-root vertices.
+For this argument we shall assume that the connectives $\tn$ and $\parr$ are n-ary, and that every argument of a $\tn$ is a $\parr$ and vice versa. Assume also that $\Gamma$ consists of a single formula, if necessary by introducing a $\parr$ at the root. Now fix an arbitrary switching of $\Gamma$; this switching together with a linking $\links$ defines a tree whose vertices are the subformulae of $\Gamma$ and whose edges are the edges of the chosen switching together with the links of $\links$. Take the root of the formula $\Gamma$ to be the root of this tree.
 %
-A second linking $\links'$ similarly establishes such a bijection. Given both linkings $\links$ and $\links'$, we compose these bijections to obtain a permutation of the proper subformulae of $\Gamma$. Finally the parity of the pair of linkings is taken to be the parity of this permutation.
+Now consider the bijection between non-root vertices and edges that associates each vertex with the edge towards its parent. 
+%
+A second linking $\links'$ similarly establishes such a bijection. Given both linkings $\links$ and $\links'$, we compose these bijections to obtain a permutation of the non-root vertices in $\Gamma$. Finally the parity of the pair of linkings is taken to be the parity of this permutation.
+%
+% Now consider the edges of the tree to be directed away from the root; so the root has in-degree $0$ and the other vertices have in-degree $1$. This therefore establishes a bijection between the edges of the tree and the non-root vertices.
+%
+%A second linking $\links'$ similarly establishes such a bijection. Given both linkings $\links$ and $\links'$, we compose these bijections to obtain a permutation of the proper subformulae of $\Gamma$. Finally the parity of the pair of linkings is taken to be the parity of this permutation.
 
 \begin{lemma}
 	The parity is well-defined, in the sense that it does not depend on the choice of switching.
@@ -773,7 +781,9 @@ Firstly, making proof nets equivalent is generally easier than preventing them f
 %
 The focus of our encoding will therefore be on preventing undesired linkings from being proof nets at all, rather than being unreachable by rewiring.
 %
-Secondly, the problem that proof nets up to a single exchange of links are generally not equivalent is too subtle to be useful as a feature of an encoding, and shall mean no more than a technical distraction.
+Secondly, the problem that proof nets up to a single exchange of links are generally not equivalent is too subtle to be useful as a feature of an encoding.
+%
+It will prove a minor technical distraction, that we will call the `parity problem'.
 
 
 
@@ -822,7 +832,7 @@ $\sum\{w(e)\mid\gamma(e)=v\}\geq c(v)$.
 \end{itemize} 
 
 \smallskip
-A \emph{reconfiguration step} $\gamma\perm*\delta$ relates two (partial) configurations for an \capsabbrev{ncg} $G$ that differ in value (or definedness) on exactly one edge.
+A \emph{reconfiguration step} $\gamma\perm*\delta$ relates two (partial) configurations for $G$ that differ in value (or definedness) on exactly one edge; this edge is then called \emph{mobile} in $\gamma$ and $\delta$.
 %
 The reflexive--transitive closure of $(\perm*)$ will be denoted $(\perm)$.
 %
@@ -1181,9 +1191,9 @@ After contracting the scope of each $W$, each edge-gadget in the scope of $\itn 
 In this section we will establish that in our encoding of constraint graphs %partial \capsabbrev{ncg}-reconfiguration 
 in \capsabbrev{mll}, reconfiguration on graphs is captured by proof equivalence in \capsabbrev{mll}.
 %
-Up to minor technical details, it will be shown that $\itn\gamma\perm\itn\delta$ if and only if $\gamma\perm\delta$, in two parts: completeness ($\Leftarrow$) and soundness ($\Rightarrow$).
-
-% TODO: mention the parity problem
+It will be shown that $\gamma\perm\delta$ if and only if $\itn\gamma\perm\itn\delta$ (modulo the parity problem---see Section~\ref{sec:rewiring}).
+%
+This will be separated into two parts: completeness ($\Rightarrow$) and soundness ($\Leftarrow$) .
 
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1205,7 +1215,7 @@ Linkings between weight elements and weight absorbers will remain arbitrary, and
 
 In a proof net for $\itn G$, an edge-gadget $\itn e$ is \emph{well linked} if: 1) its indicator connects to the indicator target of an appropriate vertex-gadget $\itn v$, and 2) each weight element is either in a standard linking with a constraint element of $\itn v$, or linked only to weight absorbers.
 %
-A well-linked edge-gadget is \emph{free} if all its weight elements connect to weight absorbers.
+A well-linked edge-gadget is \emph{mobile} if all its weight elements connect to weight absorbers.
 %
 In the following main lemma we will exchange the weight element linking to a constraint element.
 %
@@ -1301,11 +1311,11 @@ The next lemma will demonstrate how weight absorbers can be exchanged freely, bu
 
 \begin{lemma}
 \label{lem:permute weight absorbers}
-If $\links$ is a well linked proof net for $\itn G$ with a free edge-gadget $\itn e$, and $\links'$ agrees with $\links$ up to an even permutation of weight absorbers, then $\links\perm\links'$.
+If $\links$ is a well linked proof net for $\itn G$ with a mobile edge-gadget $\itn e$, and $\links'$ agrees with $\links$ up to an even permutation of weight absorbers, then $\links\perm\links'$.
 \end{lemma}
 
 \begin{IEEEproof}
-Let $e_0$ be the indicator of $\itn e$; since $\itn e$ is free, $e_0$ may re-attach anywhere within the proof net.
+Let $e_0$ be the indicator of $\itn e$; since $\itn e$ is mobile, $e_0$ may re-attach anywhere within the proof net.
 %
 Let $e_1$ and $e_2$ be arbitrary other $\bot$-occurrences in $\itn e$.
 
@@ -1369,7 +1379,7 @@ Let $\gamma$ and $\delta$ agree on every edge except $e$, where $\gamma(e)=v$ an
 %
 Firstly, using Lemma~\ref{lem:octopus roll}, for the edges $d$ other than $e$ such that $\gamma(d)=v$, the weight elements of the edge-gadgets $\itn d$ may be linked to the constraint elements of $\itn v$, in accordance with the target configuration $\itn\delta$.
 %
-Since $e$ is mobile in $\gamma$, the weights of the edges $d$ suffice to fill the inflow constraint of $v$, and correspondingly the weight elements of edge-gadgets $\itn d$ suffice to fill the constraint elements of $\itn v$, so that $\itn e$ is free.
+Since $e$ is mobile in $\gamma$, the weights of the edges $d$ suffice to fill the inflow constraint of $v$, and correspondingly the weight elements of edge-gadgets $\itn d$ suffice to fill the constraint elements of $\itn v$, so that $\itn e$ is mobile.
 %
 Next, the indicator vertex of $\itn e$, which links to the indicator target of $\itn v$, is re-attached to the indicator target of $\itn w$.
 %
