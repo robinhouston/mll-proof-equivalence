@@ -416,8 +416,13 @@ A dashed edge will indicate that two vertices are connected, in a proof net or a
 %
 In this section we will explore the global rewiring behaviour of proof nets.
 %
-In particular, we will look at notions of subnets, and we will give a simple account of equivalence for the fragment of \capsabbrev{mll} that omits the par, i.e.\ that of sequents of formulae constructed over $\1$, $\bot$, and $\tn$.
+We will look at notions of subnets, and we will give a simple account of equivalence for the fragment of \capsabbrev{mll} that omits the par.
+%
+Furthermore, we will  \emph{parity}, 
 
+%i.e.\ that of sequents of formulae constructed over $\1$, $\bot$, and $\tn$.
+
+% TODO: mention the parity problem
 
 \begin{figure*}
 \[
@@ -652,7 +657,7 @@ By the rewiring path shown in Figure~\ref{fig:double exchange}.
 \end{IEEEproof}
 
 
-This dynamic completely characterises rewiring in the fragment of \capsabbrev{mll} that omits the par.
+This dynamic will be used to characterise rewiring in the fragment of \capsabbrev{mll} that omits the par.
 %
 The following standard notion of \emph{balance} characterises provability for it.
 
@@ -703,7 +708,7 @@ It will be shown that any net $\links$ is equivalent to one $\links'$ where $\li
 
 To find $\links'$, if $\links(a)=z$ we are done.
 %
-Next, if the path from $\links(a)$ to $z$ does not pass through $a$, then by Lemma~\ref{lem:rewiring within empire} $\links'$ may be obtained from $\links$ by rewiring only $\links'(a)=z$.
+Next, if the path from $\links(a)$ to $z$ does not pass through $a$, then by Lemma~\ref{lem:rewiring within empire} $\links'$ may be obtained from $\links$ by changing only $\links'(a)=z$.
 %
 Thirdly, let $\links(b)=z$ for a $\named b\bot$ in $A$.
 %
@@ -762,7 +767,7 @@ Given two proof nets of even parity, both must be in the other equivalence class
 The previous illustrates that equivalence in the fragment without $\parr$ is determined by two main characteristics: 1) proof nets that differ by the exchange of exactly two links are generally not equivalent; and 2) as long as there are at least two tensor-formulae in the sequent, proof nets are equivalent whenever this is possible while respecting the previous.
 
 
-These characteristics hold the following lessons on rewiring for the design of our encoding in Section~\ref{sec:encoding}. 
+These characteristics hold the following lessons on rewiring for the design of our encoding, in Section~\ref{sec:encoding}. 
 %
 Firstly, making proof nets equivalent is generally easier than preventing them from being equivalent, and in particular changing a formula $A$ to $A\tn\bot$ dramatically increases its rewiring potential.
 %
@@ -790,13 +795,14 @@ Rewrite steps must preserve the condition that the total weight of the incoming 
 The specific problem we will use is the \emph{configuration--to--configuration} problem, which asks whether a path of rewrite steps exists between two constraint graphs.
 
 
-We will introduce minor adaptations to this formalism to suit our reduction to \capsabbrev{mll} proof equivalence.
+
+We shall choose a variant of this formalism to suit our reduction to \capsabbrev{mll} proof equivalence.
 %
-Mainly, a constraint graph itself will have \emph{undirected} edges, while a separate notion of \emph{configuration} imposes a direction on them.
+A constraint graph itself will have \emph{undirected} edges, while a separate notion of \emph{configuration} imposes a direction on them.
 %
 A constraint graph may then be encoded as a sequent, and a configuration as a proof net.
 %
-In addition, we will allow \emph{partial} configurations, where edges may be left undirected---as long as the inflow constraints are satisfied by the directed edges.
+As a minor adaptation, we will allow \emph{partial} configurations, where edges may be left undirected---as long as the inflow constraints are satisfied by the directed edges.
 
 
 \begin{definition} 
@@ -990,12 +996,19 @@ Although one weight element cannot `fill' an inappropriate constraint element, t
 In such an inappropriate linking, since both halves of the constraint element are connected, the weight elements must be disconnected---otherwise, the linking would violate the switching condition.
 %
 That means the weight elements must belong to different edges.
+
+
+As the linkings above illustrate, it may occur that one subformula of a weight element $A\parr B\parr C$ fills one half of a constraint element.
 %
-For the same reason, to fill the next weight element, one half may be filled by a weight element from a previous edge, but to fill the other half requires an additional edge to be involved.
+Consequently, a weight element can fill three halves, but only of different constraint elements.
 %
-To fill $n$ constraint elements inappropriately therefore requires $n+1$ edges.
+The other three halves may be filled by weight elements of a different edge---so to fill 3 constraint elements requires 2 inappropriate edges.
 %
-It thus suffices to multiply the number of constraint elements by the number of edges, and encode a vertex with inflow constraint $c$ by a vertex-gadget with $c\times|E|$ constraint elements (where $|E|$ denotes the number of edges in the constraint graph).
+To fill the next three constraint elements, at most 1 previous inappropriate edge may be used, and one additional one is needed.
+%
+To fill $3n$ constraint elements inappropriately therefore requires $n+1$ edges.
+%
+It thus suffices to multiply the number of constraint elements by three times the number of edges, and encode a vertex with inflow constraint $c$ by a vertex-gadget with $c\times3\times|E|$ constraint elements (where $|E|$ denotes the number of edges in the constraint graph).
 
 
 The complete encoding of a constraint graph will be a sequent consisting of: 1) all vertex-gadgets combined in a single formula via tensors, 2) all edge-gadgets as individual formulae, 3) a sufficient number of weight absorbers ($\1$-formulae).
@@ -1016,7 +1029,7 @@ Let $G=(V,E,c,v,w)$, and let $V=\{v_1,\dotsc,v_n\}$ and $E=\{e_1,\dotsc,e_m\}$ w
 \noindent
 The encoding of a vertex $v_k$ is the formula
 \[
-	\itn{v_k} = \bigparr\big(C_n(k)^{m\times c(v_k)} \big)\parr\1
+	\itn{v_k} = \bigparr\big(C_n(k)^{3m\times c(v_k)} \big)\parr\1
 \]
 where each \emph{constraint element} $C_n(k)$ is the formula
 \[
@@ -1026,7 +1039,7 @@ where each \emph{constraint element} $C_n(k)$ is the formula
 \noindent
 The encoding of an edge $e$ connecting vertices $v_i$ and $v_j$ with $i<j$ is the formula
 \[
-	\itn{e} = \bigtn\big(W_n(i,j)^{m\times w(e)}\big)\tn\bot
+	\itn{e} = \bigtn\big(W_n(i,j)^{3m\times w(e)}\big)\tn\bot
 \]
 where each \emph{weight element} $W_n(i,j)$ is the formula
 \[
@@ -1038,7 +1051,7 @@ The encoding of the graph $G$ is the sequent
 \[
 	\itn G = \itn{v_1}\tn\dotso\tn\itn{v_n}, \itn{e_1},\dotsc,\itn{e_m}, 1^p
 \]
-where $p=m\times(|w|-|c|)\times(3n+4)$.
+where $p=3m\times(|w|-|c|)\times(3n+4)$.
 
 \end{definition}
 
@@ -1170,6 +1183,7 @@ in \capsabbrev{mll}, reconfiguration on graphs is captured by proof equivalence 
 %
 Up to minor technical details, it will be shown that $\itn\gamma\perm\itn\delta$ if and only if $\gamma\perm\delta$, in two parts: completeness ($\Leftarrow$) and soundness ($\Rightarrow$).
 
+% TODO: mention the parity problem
 
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1427,16 +1441,23 @@ Since $i\neq a,b$, and since no $\tn$-subformula of $W$ can connect to more than
 
 The vertex-gadget $\itn{v_i}$ is the formula
 \[
-	\itn{v_i} = \bigparr\big(C^{m\times c(v_i)} \big)\parr 1~.
+	\itn{v_i} = \bigparr\big(C^{3m\times c(v_i)} \big)\parr 1~.
 \]
-It will be shown that $m$ inappropriate edge-gadgets may balance at most $m-1$ constraint elements $C$.
+It will be shown that $m$ inappropriate edge-gadgets may balance at most $3(m-1)$ constraint elements $C$.
 
 
-Let the root nodes of the two $\parr$-subformulae of each instance of $C$ be labelled $x_j$ and $y_j$, for $1\leq j\leq m\times c(v_i)$. 
+Two edge-gadgets may balance at most three constraint elements: one weight element $W$ has three subformulae, which may each balance at most one half of a constraint element; the other halves may be balanced by different weight elements of the second edge-gadget.
 %
-If the scopes $s(x_j)$ and $s(y_m)$ of any $x_j$ and $y_m$ are balanced by weight elements $W$ and $W'$ of the same edge-gadget $\itn e$, then since $W$ and $W'$ are connected by a tensor, there are switchings of $W$, $W'$, $s(x_j)$, and $s(y_m)$ such that $x_j$ and $y_m$ are connected in the proof net for $\itn G$.
+In the same way, adding one further edge-gadget allows at most three further constraint elements to be filled, since previous edges may connect to only one half of each constraint element.
 %
-Then the first constraint element of $\itn{v_i}$ requires 2 edge-gadgets to balance, and each successive element requires one additional edge-gadget.
+Then to balance $3m$ constraint elements inappropriately requires $m+1$ edge-gadgets.
+%
+%
+%Let the root nodes of the two $\parr$-subformulae of each instance of $C$ be labelled $x_j$ and $y_j$, for $1\leq j\leq 3m\times c(v_i)$. 
+%%
+%If the scopes $s(x_j)$ and $s(y_m)$ of any $x_j$ and $y_m$ are balanced by weight elements $W$ and $W'$ of the same edge-gadget $\itn e$, then since $W$ and $W'$ are connected by a tensor, there are switchings of $W$, $W'$, $s(x_j)$, and $s(y_m)$ such that $x_j$ and $y_m$ are connected in the proof net for $\itn G$.
+%%
+%Then the first constraint element of $\itn{v_i}$ requires 2 edge-gadgets to balance, and each successive element requires one additional edge-gadget.
 \end{IEEEproof}
 
 
