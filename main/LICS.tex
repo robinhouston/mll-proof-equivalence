@@ -796,28 +796,21 @@ It will prove a minor technical distraction, that we will call the `parity probl
 
 \aftersection
 %
-\emph{Non-deterministic constraint logic} \cite{Hearn-Demaine-2005,Demaine-Hearn-2008} is a simple graph-rewriting formalism, introduced as a convenient tool for \capsabbrev{pspace}-hardness reductions.
+\emph{Non-deterministic constraint logic} \cite{Hearn-Demaine-2005,Demaine-Hearn-2008,GamesPuzzlesAndComputation} is a simple graph-rewriting formalism, used here as a convenient tool for \capsabbrev{pspace}-hardness reductions.
 %
-A rewrite step consists of the reversal of a single edge in a \emph{constraint graph}, a graph with weighted, directed edges and an \emph{inflow constraint} on each vertex.
-%
-Rewrite steps must preserve the condition that the total weight of the incoming edges of each vertex is at least its inflow constraint.
-%
+A \emph{constraint graph} is a graph with weighted edges and an \emph{inflow constraint} -- a natural number that may be taken to be always $2$ -- on each vertex. A \emph{configuration} is an assignment of directions to the edges of the underlying undirected constraint graph. A rewrite step consists of the reversal of a single edge in a configuration:
+rewrite steps must preserve the condition that the total weight of the incoming edges at each vertex is at least its inflow constraint.
+
+
 The specific problem we will use is the \emph{configuration--to--configuration} problem, which asks whether a path of rewrite steps exists between two constraint graphs.
-
-
-
-We shall choose a variant of this formalism to suit our reduction to \capsabbrev{mll} proof equivalence.
 %
-A constraint graph itself will have \emph{undirected} edges, while a separate notion of \emph{configuration} imposes a direction on them.
+A constraint graph may be encoded as a sequent, and a configuration as a proof net.
 %
-A constraint graph may then be encoded as a sequent, and a configuration as a proof net.
-%
-As a minor adaptation, we will allow \emph{partial} configurations, where edges may be left undirected---as long as the inflow constraints are satisfied by the directed edges.
+It is useful for us to generalise the notion of configuration a little: we will allow \emph{partial} configurations, where edges may be left undirected---as long as the inflow constraints are satisfied by the directed edges.
 
 
 \begin{definition} 
 A \emph{constraint graph} $G=(V,E,c,v,w)$ consists of: a set $V$ of vertices with \emph{inflow constraint} $c\colon V\to\mathbb N$; and a set $E$ of undirected edges with \emph{weight} $w\colon E\to\mathbb N$, connecting vertices $v(e)=\{v_1,v_2\}\subseteq V$.
-%of at most one undirected edge $e$ per vertex-pair $v(e)=\{v_1,v_2\}$, with \emph{weight} $w\colon E\to N$.
 
 \smallskip
 
@@ -861,7 +854,7 @@ if $\gamma'$ and $\gamma''$ are total configurations that both agree with a part
 
 
 
-\begin{theorem}[\cite{Hearn-Demaine-2005}]
+\begin{theorem}[\cite{GamesPuzzlesAndComputation}, Theorem~5.15]
 \capsabbrev{ncg}-reconfiguration is \capsabbrev{pspace}-complete.
 \end{theorem}
 
