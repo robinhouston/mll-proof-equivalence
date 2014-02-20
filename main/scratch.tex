@@ -1,15 +1,239 @@
 \documentclass[conference]{IEEEtran}
 
+
+
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mllequiv,willemtools}
+
+
+
+\newcommand\parityNetA{
+  \begin{tikzpicture}[x=6mm,y=-7mm]
+	\node[pn] (a) at (-2,2) {$\nx a\1$};
+	\node[pn] (b) at (-1,2) {$\nx b\1$};
+	\node[pn] (c) at (1,2) {$\nx c\tn$};
+	\node[pn] (d) at (0,1) {$\nx d\bot$};
+	\node[pn] (e) at (1,1) {$\nx e\bot$};
+	\node[pn] (f) at (2,1) {$\nx f\bot$};
+	\node[pn] (g) at (4,2) {$\nx g\tn$};
+	\node[pn] (h) at (3,1) {$\nx h\bot$};
+	\node[pn] (i) at (5,1) {$\nx i\pr$};
+	\node[pn] (j) at (4,0) {$\nx j\1$};
+	\node[pn] (k) at (6,0) {$\nx k\1$};
+	%
+	\draw (c)--(d) (c)--(e) (c)--(f) (g)--(h) (g)--(i);
+	\draw[thick,dash pattern=on 3pt off 2pt] (i)--(j) (i)--(k);
+	%
+	\draw[octar,bend right=45] (d) to (b);
+	\draw[octar,bend left=60]  (e) to (k);
+	\draw[octar,bend left=45]  (f) to (j);
+	\draw[octar,bend right=60] (h) to (a);
+  \end{tikzpicture}
+}
+
+\newcommand\parityNetB{
+  \begin{tikzpicture}[x=6mm,y=-4mm]
+	\node[pn] (a) at (-1,3) {$\nx a\1$};
+	\node[pn] (b) at (0,10) {$\nx b\1$};
+	\node[pn] (c) at (1,7) {$\nx c\tn$};
+	\node[pn] (d) at (0,8) {$\nx d\bot$};
+	\node[pn] (e) at (2,8) {$\nx e\bot$};
+	\node[pn] (f) at (1,5) {$\nx f\bot$};
+	\node[pn] (g) at (0,0) {$\nx g\tn$};
+	\node[pn] (h) at (-1,1) {$\nx h\bot$};
+	\node[pn] (i) at (1,1) {$\nx i\pr$};
+	\node[pn] (j) at (1,3) {$\nx j\1$};
+	\node[pn] (k) at (2,10) {$\nx k\1$};
+	%
+	\draw (c)--(d) (c)--(f) (g)--(h);
+	\draw ($(g)!0.45!(i)$) -- (i);
+	\draw ($(c)!0.4!(e)$) -- (e);
+	\draw[thick,dash pattern=on 2pt off 2pt] (i)--(j);
+	%
+	\draw[octar,bend right=45] (d) to (b);
+	\draw[octar,bend right=45]  (e) to (k);
+	\draw[octar,bend left=45]  (f) to (j);
+	\draw[octar,bend right=45] (h) to (a);
+  \end{tikzpicture}
+}
+
+\newcommand\parityNetC[1]{
+	\begin{tikzpicture}[x=5mm,y=-4mm,octo]
+	  \node[pn] (1) at (-1,2) {$\nx a\1$};
+	  \node[pn] (2) at ( 1,2) {$\nx b\1$};
+	  \node[pn] (a) at ( 0,5) {$\bot$};
+	  %
+	  \draw (-.5,2) -- (2) -- (0,0) -- (1);
+	  \draw (a) -- (1,7) -- (-1,7) -- (a);
+	  %
+	  \SWITCH{#1}
+	    {1}{\draw[thepink,->,bend right=25] (a) to ($(1)+(.5,.5)$);}
+	    {2}{\draw[thepink,->,bend left]  (a) to (2);}
+	  \DEFAULT{}
+	  \node[circ,outer sep=2pt,draw opacity=0] at (0,9) {};
+	\end{tikzpicture}
+}
+
+\newcommand\parityNetD[1]{
+  \SWITCH{#1}
+  {3}{\begin{tikzpicture}[x=5mm,y=-4mm,octo]
+	  \node[pn] (a) at (0,2) {$\bot$};
+	  \node[pn] (2) at (1,7) {$\nx b\1$};
+	  \node[pn] (1) at (0,9) {$\nx a\1$};
+	  %
+	  \draw (0,0) -- (1,2) -- (a) -- (-1,2) -- (0,0);
+	  \draw (1) -- (2) -- (2,9) -- (1);
+	  %
+	  \draw[thepink,->,bend left] (a) to (2);
+	\end{tikzpicture}
+  }
+  \DEFAULT{
+	\begin{tikzpicture}[x=5mm,y=-4mm,octo]
+	  \node[pn] (a) at (0,2) {$\bot$};
+	  \node[pn] (1) at (0,5) {$\nx a\1$};
+	  \node[pn] (2) at (1,7) {$\nx b\1$};
+	  %
+	  \draw (0,0) -- (1,2) -- (a) -- (-1,2) -- (0,0);
+	  \draw (1) -- (2) -- (-1,7) -- (1);
+	  %
+	  \SWITCH{#1}
+	    {1}{\draw[thepink,->,bend left]  (a) to (1);}
+	    {2}{\draw[thepink,->,bend left] (a) to (2);}
+	  \DEFAULT{}
+	  \node[circ,outer sep=2pt,draw opacity=0] at (0,9) {};
+	\end{tikzpicture}
+  }
+}
+\newcommand\parityNetE{
+  \begin{tikzpicture}[x=1mm,y=-7mm]
+	\node[pn] (a1) at ( 0,0) {$a$};
+	\node[pn] (a2) at (10,0) {$v_0$};
+	\node[pn] (a3) at (20,0) {$v_1$};
+	\node[pn] (an) at (40,0) {$v_{2n}$};
+	\node[pn] (b) at (50,0) {$b$};
+	\node at (30,.5) {$\dots$};
+	%
+	\draw ($(a1)+(2,0)$)--(a2)--(a3)--($(a3)+(4,0)$) ($(an)+(-5,0)$)--(an)--(b);
+	%
+	\foreach \a in {a1,a2,a3,an,b} {
+	  \draw (\a)--+(4,1)--+(-4,1)--(\a);
+	}
+  \end{tikzpicture}
+}
+
 
 \makeTheoremDefs
 
 \begin{document}
 
+\tikzstyle{octar}=[thepink,->,octo]
+\tikzstyle{pn}=[inner sep=1pt]
+\newcommand\nx[2]{#2_{\smash{\makebox[0pt][l]{\ensuremath{\scriptstyle{#1}}}}}}
 
+Given a named sequent $\Gamma$, we can identify edges across all switching graphs for all proof nets for $\Gamma$ by their parent connective: a tensor $\bigtn(A_1,\dotsc,A_n)$ named $v$ has $n$ edges $v(1),\dotsc,v(n)$; a par $\named v\pr$ has one switched edge $v(1)$; and $\named v\bot$ has the jump $v(1)$.
+%
+For a switching graph, selecting a vertex as the root establishes a bijection between edges and the remaining nodes, which associates each edge with its target.
+%
+The example below displays a proof net on the left, and on the right the switching graph choosing the edge $\edge ij$ for the par $\named i\pr$, with chosen root $g$.
 \[
-
+	\vc{\parityNetA} \qquad \vc{\parityNetB}
 \]
+The tree above right associates, for example, the edge $c(3)$ with the vertex $c$, and $i(1)$ with $j$.
+%
+Two proof nets for the same sequent establish two such bijections, composing which gives a permutation on the (non-root) vertices.
+%
+If the nets are equivalent, the parity of this permutation is even.
+%
+This follows from what will be established next: a single rewiring connects switching graphs with even parity, and so does switching a single par.
+%
+The case for rewiring is illustrated; that for switching is similar.
+%
+For rewiring a jump $\edge va$ to $\edge vb$ (named $v(1)$ in the above scheme) there are two possibilities.
+%
+If the jump is directed towards the root, illustrated below left, then each node is connected to the root via the same edge, and the permutation is the identity.
+%
+If the jump is directed downward, the subtree of $a$ will get the new root node $b$, as illustrated below right.
+%
+\[
+	\vc{\parityNetC1} \perm \vc{\parityNetC2}
+\quad \vc{\rule{.5pt}{4cm}} \quad
+	\vc{\parityNetD1} \perm \vc{\parityNetD2} \kern5pt{=}\kern-5pt \vc{\parityNetD3}
+\]
+%
+The vertices that are assigned a new edge are exactly those on the path from $a$ to $b$ in the switching graph, illustrated below.
+%
+\[
+	\parityNetE
+\]
+%
+Since proof nets were assumed to be strictly alternating---each even $v_i$ is a $\bot$ or $\pr$, each odd $v_j$ a $\1$ or $\tn$---there are an odd number of vertices on this path, $2n+3$.
+%
+The permutation it induces is a cyclic one, matching each $v_i$ with $v_{i+1}$, $v_{2n}$ with $b$, $b$ with $a$, and $a$ with $v_0$.
+%
+A cyclic permutation of odd length is an odd permutation.
+
 
 \end{document}
+
+
+
+
+
+
+
+\newcommand\parityNetC[1]{
+	\begin{tikzpicture}[x=5mm,y=-4mm,octo]
+	  \node[circ,  outer sep=2pt] (1) at (-1,2) {};
+	  \node[circ,  outer sep=2pt] (2) at ( 1,2) {};
+	  \node[bullet,outer sep=2pt] (a) at ( 0,5) {};
+	  %
+	  \node[anchor=north east] at (1) {$a\vphantom b$};
+	  \node[anchor=north west] at (2) {$b$};
+	  %
+	  \draw (0,0) -- (1) -- (2) -- (0,0);
+	  \draw (a) -- (1,7) -- (-1,7) -- (a);
+	  %
+	  \SWITCH{#1}
+	    {1}{\draw[thepink,->,bend right] (a) to (1);}
+	    {2}{\draw[thepink,->,bend left]  (a) to (2);}
+	  \DEFAULT{}
+	\end{tikzpicture}
+}
+
+\newcommand\parityNetD[1]{
+  \SWITCH{#1}
+  {3}{\begin{tikzpicture}[x=5mm,y=-4mm,octo]
+	  \node[bullet,outer sep=2pt] (a) at (0,2) {};
+	  \node[circ,  outer sep=2pt] (2) at (1,7) {};
+	  \node[circ,  outer sep=2pt] (1) at (0,9) {};
+	  %
+	  \node[anchor=south east] at (1) {$a$};
+	  \node[anchor=south east] at (2) {$b$};
+	  %
+	  \draw (0,0) -- (1,2) -- (a) -- (-1,2) -- (0,0);
+	  \draw (1) -- (2) -- (2,9) -- (1);
+	  %
+	  \draw[thepink,->,bend left] (a) to (2);
+	\end{tikzpicture}
+  }
+  \DEFAULT{
+	\begin{tikzpicture}[x=5mm,y=-4mm,octo]
+	  \node[bullet,outer sep=2pt] (a) at (0,2) {};
+	  \node[circ,  outer sep=2pt] (1) at (0,5) {};
+	  \node[circ,  outer sep=2pt] (2) at (1,7) {};
+	  %
+	  \node[anchor=south east] at (1) {$a$};
+	  \node[anchor=north west] at (2) {$b$};
+	  %
+	  \draw (0,0) -- (1,2) -- (a) -- (-1,2) -- (0,0);
+	  \draw (1) -- (2) -- (-1,7) -- (1);
+	  %
+	  \SWITCH{#1}
+	    {1}{\draw[thepink,->,bend left]  (a) to (1);}
+	    {2}{\draw[thepink,->,bend left] (a) to (2);}
+	  \DEFAULT{}
+	  \node[circ,outer sep=2pt,draw opacity=0] at (0,9) {};
+	\end{tikzpicture}
+  }
+}
+
