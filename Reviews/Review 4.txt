@@ -1,0 +1,61 @@
+----------------------- REVIEW 4 ---------------------
+PAPER: 112
+TITLE: No proof nets for MLL with units: Proof equivalence in MLL is PSPACE-complete
+AUTHORS: Willem Heijltjes and Robin Houston
+
+OVERALL EVALUATION: 3 (strong accept (I will champion this paper))
+REVIEWER'S CONFIDENCE: 5 (expert)
+
+----------- REVIEW -----------
+SUMMARY
+
+The contribution of this paper is to show that a certain equivalence relation on proofs of unit-only multiplicative linear logic (MLLu) is PSPACE-complete.  The relation in question is canonical and may be explained in two ways:
+- syntactically, it is the equivalence induced by the commutations used by the cut-elimination procedure (i.e., instead of commuting cuts, one may commute the rules above the cut until its active formulas are both principal);
+- semantically, it is the smallest equivalence included in the denotational equivalence of every model of MLLu (i.e., the equivalence induced by interpreting MLLu in the free *-autonomous category on 1 object).
+Therefore, two proofs which are equivalent in this sense must be seen as proof-theoretically equal.
+
+The problem the authors consider is:
+
+  MLLu EQUIVALENCE:
+  Given two MLLu proofs, are they equivalent?
+
+To prove that MLLu EQUIVALENCE is PSPACE-complete (with respect to Polytime reductions) the authors reduce to it a problem known as "Nondeterministc Constraint Logic" (NCL), which was previously shown to be PSPACE-complete by Demaine and Hearn.  
+
+NCL is based on the notion of constraint graph, also introduced by Demaine and Hearn.  A constraint graph is an undirected graph in which both edges and nodes are weighted by integers.  Such weights are needed to define the notion of "configuration" of a constraint graph: an orientation for every edge such that the inflow of each node (sum of the weights of incoming edges) is at least equal to its own weight.  The configurations of a constraint graph may be seen as the states of a one-player game (a "puzzle") in which the goal is, for instance, to reverse the orientation of a fixed target edge.  Of course, not all edges may be reversed in a configuration (it may violate the flow constraints); moreover, the choice of which edge to reverse will enable or disable further reversals in the next configuration.  So the puzzle is not trivial to solve.  As a matter of fact, every instance of QSAT may be encoded as the starting configuration of such a puzzle which is solvable iff the i
+nstance is a valid formula, proving PSPACE-hardness (membership in PSPACE is easy: just do a non-deterministc search for the solution, using polynomial space, and apply Savitch theorem).
+
+The reduction of NCL to MLLu EQUIVALENCE is, as may be expected, quite technical and involves encoding constraint graphs as MLLu proofs.  The authors' task is slightly facilitated by Hughes's formulation of MLLu proof nets with so-called jumps.  A MLLu proof net with jumps, proving the formula A, is nothing but the tree of A in which each occurrence of Bottom "jumps" to some occurrence of One, and which satisfies the Danos-Regnier criterion, with jumps considered as edges.  It is sometimes possible to "reassign" a jump, i.e., one may take an occurrence of Bottom in a proof net R and make it jump to a different occurrence of One preserving the Danos-Regnier criterion, thus obtaining another proof net R'.  In that case, one writes R ~_1 R' and one denotes by ~ the reflexive-transitive closure of ~_1.  Now, every MMLu proof Pi (in sequent calculus) induces a set of proof nets with jumps.  Hughes proved that two sequent calculus proofs of the same formula Pi, Pi' are equivalent (
+in the sense of MLLu EQUIVALENCE) iff any two proof nets R, R' associated with Pi, Pi', respectively, are such that R ~ R'.  Therefore, MLLu EQUIVALENCE reduces to a sort of puzzle, too: starting from a proof net, one progressively tries to reassign jumps with the goal of obtaining a target proof net.
+
+Intuitively, the jump reassignments in proof nets play the role of edge reversals in configurations of NCL.  The fact that the Danos-Regnier criterion must be satisfied plays the role of the flow constraints.  From here, the way to obtain an actual reduction is far from straightforward and I must confess that I didn't have the time to check the details of the proofs.  However, the above intuitions convince me of the soundness of the author's idea.
+
+
+EVALUATION
+
+This is an awesome result.  For years people have known that something was "wrong" with MLLu proof nets but had only limited arguments to justify this feeling.  The idea of this paper (which I find simply brilliant) gives a much more solid obstacle justifying the lack of a satisfactory notion of proof net for MLLu.  I strongly recommend acceptance.
+
+I nevertheless have a few remarks, which I would be grateful if the authors could address:
+
+- the implications of the PSPACE-completeness result on the existence of MLLu proof nets are left implicit by the authors.  In fact, the situation is not so clear as they lead us to believe.  Their argument, I think (I can only guess because they don't give one!), goes more or less like this: any good notion of proof net for MLLu must be such that, if Pi and Pi' are equivalent, then they are mapped to the same proof net.  Since equality of proof nets is at the very worst in NP (the complexity of graph isomorphism; but, probably, with just a bit more clever representations one may make it much simpler, even linear-time I guess), this would prove PSPACE = NP (or P), which is considered extremely unlikely.  Now, this argument rests the tacit assumption that the two following tasks are relatively easy (i.e., strictly below PSPACE according to current beliefs):
+1) deciding proof net equality;
+2) deciding whether a proof net represents a sequent calculus proof.
+The morphisms of the free *-autonomous category on 1 object are trivial examples of "proof nets" for MLLu violating assumption (1), but this is obviously cheating.  If we further demand that our proof nets be some sort of graphs, then assumption (1) is pretty safe.  However, the authors' result does not rule out the (admittedly a bit perverse) possibility that there is a satisfactory notion of proof net for MLLu violating (2).  Although far fetched, this is definitely not impossible.  Usually, proof nets representing sequent calculus proofs are defined by induction on the rules of sequent calculus in such a way that (2) holds: basically, this is because each rule trivially adds a node to the proof net (or some other fairly simple operation).  But one may imagine that adding "the next node" in a proof net might be a very hard task, requiring for example the exploration of an exponential number of possibilities based on the proof net built so far by induction.  I stress that, i
+f such proof nets came with all the expected properties (correctness criterion, cut-elimination preserving such criterion, etc.), then they would most certainly be considered "satisfactory".  They would be an alternative, bureaucracy-free syntax for proofs (i.e., in which equivalence is equality), independent of sequent calculus and in which one may do MLL proof theory as in (or better than) sequent calculus.  The fact that their relationship with sequent calculus is computationally hard would at that point be just a (necessary) nuisance.
+
+- Based on the above discussion, I find the title of the paper to be a bit misleading.  I encourage the authors to lower its tone a little, i.e., something in the vein of "MLL proof nets with units are hard".  Moreover, I think that a further merit of this paper is to give a hint to those people who still seek proof nets with units (if such specimens exist out there): look for objects which are hard to compute from sequent calculus proofs.  So the negative contents of this paper may turn into something positive after all!
+
+- Complexity-based arguments ruling out certain "simple" solutions for proof nets with units are not a novelty of this paper.  If I am not mistaken, Lafont (who is not mentioned here) was the first to observe (in his "From Proof Nets to Interaction Nets") that:
+i. unlike MLL without units, no polynomial time "parsing-style" correctness criterion could exist for MLLu proof nets, unless P=NP (this is because a correctness criterion for MLLu is also a provability criterion, and provability is NP-complete);
+ii. for the same reason, no "Danos-Regnier-style" criterion could exist, unless NP = coNP (Danos-Regnier being clearly a coNP property).
+
+- Finally, I think that the paper would greatly benefit from more intuitions and more illustrations concerning the authors' approach and the constructions they develop.  Adding a few examples, if possible, would be great, even if this means leaving some detailed proofs to a journal version of the paper (this is acceptable for a conference).
+
+
+TYPOS
+
+Proposition 9: sub-sequents ARE either disjoint...
+
+p.5, c.1, l.-18: "while respecting the previous": previous what?
+
+p.5, c.1, l.-17: "These characteristics hold the following lessons": this sentence is awkward.
+

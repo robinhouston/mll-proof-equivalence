@@ -1,0 +1,16 @@
+----------------------- REVIEW 3 ---------------------
+PAPER: 112
+TITLE: No proof nets for MLL with units: Proof equivalence in MLL is PSPACE-complete
+AUTHORS: Willem Heijltjes and Robin Houston
+
+OVERALL EVALUATION: 2 (accept (Strong paper but I won't champion it))
+REVIEWER'S CONFIDENCE: 4 (high)
+
+----------- REVIEW -----------
+There has been a lot of interest in building canonical, parallel proof structures for logics, in particular, for linear logic.  While there have been some successes (Girard's proof nets for MLL without units) and some "questionable" progress (proof nets for MALL without units), there is the unfortunate issue of how to treat units.  Various partial attempts have been made (some by the first author) but the picture has been unsatisfactory.  Thus, it is important that this submission settles that question: there can be no satisfactory notion of proof nets for MLL with units.  The authors achieve this result by showing that proof equivalence is PSPACE-complete.
+
+The main part of the paper does a detailed reduction (with proofs) to the config-to-config problem in non-deterministic constraint logic, shown to be PSPACE-complete in 2008.
+
+This is a nicely written paper with an important result.   The proof is hard but that is not surprising.
+
+What does your result say about MLL with exponentials?  The question-mark exponential can also be weakened (as well as contracted).

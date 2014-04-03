@@ -1,0 +1,60 @@
+----------------------- REVIEW 2 ---------------------
+PAPER: 112
+TITLE: No proof nets for MLL with units: Proof equivalence in MLL is PSPACE-complete
+AUTHORS: Willem Heijltjes and Robin Houston
+
+OVERALL EVALUATION: 3 (strong accept (I will champion this paper))
+REVIEWER'S CONFIDENCE: 5 (expert)
+
+----------- REVIEW -----------
+Proof nets are a graphic formalism for linear logic proofs. They brought many new perspective and results in proof theory and, via the Curry-Howard isomorphism, in the theory of lambda-calculus. Essentially, they are a formalism circumventing the need of working with equivalence classes of proofs, needed to study normalization in settings as sequent calculus, where linear logic is usually presented.
+
+A system of proof nets is accepted only when it comes with a correctness criterion, i.e. a graph-theoretical characterizations of the graphs encoding the proofs (as the freely generated language of proof-like graphs, called proof structures, contains graphs that do not encode any proof).
+
+Proof nets, in fact, exist only for a few fragments of linear logic. The multiplicative fragment (without units), MLL, admits many different criteria, and its theory of proof nets is very rich.
+
+It is well-known that, as soon as the system is extended with the multiplicative units, no criteria exist unless one adds some ad-hoc tweak as jumps (i.e. additional edges), the mix rule, or axioms with bottoms. The problem concerns bottom (the unit for par), that introduces lack of connectedness in the graphical representation of proofs.
+
+The usual workarounds, unfortunately, are not satisfactory:
+
+- Jumps are problematic wrt cut-elimination, and force to work with equivalence classes of proofs (where classes are given by jumps rewiring), against the very purpose of proof nets;
+
+- the mix rule is debatable in itself (for instance it makes proof-search simply unfeasible) and also leads to a bad notion of subnet, breaking most properties of MLL proof nets;
+
+- attaching bottoms to axioms does not scale up to second-order quantifiers.
+
+There also is a folklore argument by Girard, for which any criterion for MLL with units is necessary NP-complete. Thus, there is no hope for the units: there cannot be a useful notion of proof net, unless one uses a tweak or changes somehow the logic.
+
+This fact is extremely embarrassing for the proof theory of linear logic, it essentially shows that there is something inherently wrong with the system. In terms of graphical syntaxes it shows that there is a dramatic lack of understanding of disconnecting rules.
+
+One of the most common solutions to this apparently unsolvable problem is to attach bottoms with jumps, regardless of non-canonicity. The graph then becomes connected and one can use any criterion for MLL without units. It follows that correctness can be checked in linear time, as proved by Guerrini.
+
+The drawback of this solution is that proof nets equality now is a non-trivial relation, as it has to be checked up to equivalence classes, i.e. up to rewiring of jumps.
+
+The paper shows that equality checking for proof nets with jumps is a PSPACE-complete problem. Therefore, the notion of proof nets is useless, even if the criterion is linear.
+
+This negative result is about an apparently small fragment of linear logic. However, the exponentials - the expressive part of linear logic - present exactly the same problem, as the weakening rule is a generalization of the bottom rule. Thus, the paper morally states that there cannot be a useful notion of proof net for linear logic. 
+
+In my opinion this paper provides an essential contribution to the problem of proof nets for the multiplicative units, that I consider the main open problem in the proof theory of linear logic. Moreover, the result is proved in a nice and original way, by providing a polynomial reduction of a simple PSPACE-complete problem on graphs.
+
+Therefore, I strongly suggest to accept the paper.
+
+My only negative comment is that the technical details are not easy to follow (an example of encoding would be terribly helpful!). In fact, I had a hard time trying to follow definitions and proofs, and I cannot give a 100% guarantee of the correctness of the result. However, I am convinced that the result is correct and, given its relevance, I consider the technicalities of the paper a minor point.
+
+A general suggestion is to add an overview of the technical development. Technical problems and choices are motivated locally, but it would help to have a global scheme before the details.
+
+
+MINOR COMMENTS
+
+- proposition 5: you did not define what is a net.
+
+- proposition 9, point 1: “sub-sequents either…” => “sub-sequents *are* either”.
+
+- paragraph after proposition 16: “after removing \bot-formulae” => “after removing *dangling* \bot-formulae”.
+
+- proposition 19: you did not define what a tensor-formula is, do it.
+
+- The part about parity is generally obscure to me. First of all, in the definition of n-ary connectives you forgot the base case (“every argument of a tensor is a par and vice versa” leads to infinite nets). But the point is the definition of parity via composition of bijections, which is really difficult to see, an example would be very helpful. The paragraph before section IV is also mysterious. What does “dramatically increases its rewiring potential” mean?
+
+- when you start explaining the encoding, the image for the vertex-gadget (page 6, bottom of the left column) uses a box, but boxes have only been introduced in connection with tensors, and in that case there is no tensor.
+

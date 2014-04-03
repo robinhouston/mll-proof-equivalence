@@ -1,0 +1,51 @@
+----------------------- REVIEW 1 ---------------------
+PAPER: 112
+TITLE: No proof nets for MLL with units: Proof equivalence in MLL is PSPACE-complete
+AUTHORS: Willem Heijltjes and Robin Houston
+
+OVERALL EVALUATION: 3 (strong accept (I will champion this paper))
+REVIEWER'S CONFIDENCE: 4 (high)
+
+----------- REVIEW -----------
+This paper solves a long standing open problem: What is the complexity of deciding whether two sequent proofs in multiplicative linear logic are the same modulo some "trivial" rule permutations? Or equivalently, what is the complexity of the word problem for morphisms in star-autonomous categories?
+
+The paper shows that it is PSPACE-complete. For me, having worked on the problem myself, this is surprising and embarrassing at the same time. Surprising, because I kind of believed the problem to be simpler. Embarrassing, because nobody in the linear logic community has noticed it before. In fact, once you know the problem of non-deterministic constraint graph (NCG) reconfiguration is PSPACE-complete, the result is not so surpising anymore.
+
+However, the encoding of constraint graphs as MLL sequents and the proof that the encoding is correct (i.e., a proof of the sequent corresponds to a configuration of the graph, and proof equivalence corresponds to reconfiguration) offer some unexpected twists. In fact, I had to get in touch with the authors about some points that were unclear to me. But now I am confident that there is no substantial error in the paper, and I am impressed by the authors ingenuity. There are many neat little ideas in the paper.
+
+
+
+Suggestions/Typos:
+------------------
+
+Prop.5 is not from [5]. [5] does not even mention the units. So, maybe one should refer to some paper which gives a proof for
+sequentialization with units.
+
+Prop.9 is confusing. I got the idea (which is almost trivial) only after a long back and forth with the authors. I guess some
+clarification is needed here. For example: What do you mean by
+"immediate subsequent"? "immediate" of what? the par, or Gamma? And why is it not trivial that you get a tree if you contract everything that is "immediate" below the root?
+
+Prop.10: Here sigma is used for the empire, before it was a
+graph. This is confusing. It is better to use different letters for different concepts.
+
+There is another terminology confusion. In the first part of the paper l is a linking, but later you use l also for proof net (e.g. in 31 and 32).
+
+Prop.19: The storyline of the proof is confusing. It would be easier for the reader to list the cases explicitely.
+
+Lemma 20: As it is written, it is incomprehensible. The authors sent me a one page explanation with pictures, and I have to say that the argument quite clever. I am not sure what to suggest to improve the situation. Maybe making the pictures in the paper a bit smaller, to buy some space for this lemma.
+
+Def 27: The picture after it shows 2 and 3 instead of 1 and 3.
+
+Lemma 31: almost all bottoms in that lemma and its proof should be 1s (also in the first and the last picture). In 4 and 6 it should be D to X (instead of C to X).
+
+Lemma 32: as it stands, it is a waste of space. First, the lemma is crucial, but its place in the overall argument should be made
+clearer. Second, the proof lists all the pieces but does not show how to fit them together, which means it is very difficult to read. Only if one fully understands the whole picture, one can read that proof. But then one does not need that proof anymore. So, I suggest to give the big picture of the proof (and list all the cases), and then show the details of one case (the most complicated one), and then say that the others are similar. This should take only half the space of what it takes now.
+
+Lemma 37: I think it is better to add a sentence saying that all the constraint elements of all the vertex encodings must be balanced because we have a proof net, and that these constraint elements can only be balanced either appropriately or inappropriately. These are two trivial facts, but without them it is not clear why the proof actually proves the lemma. 
+
+Reference [20]: Maybe it is better if you cite the journal version instead: "From Proof Nets to the Free *-Autonomous Category", LMCS 2(4), 2006. (Btw, this also contains a proof of Prop.5)
+
+Another observation: I think you use and old version of IEEEtran. The latest one has better spacing.
+
+
+Reviewer: Lutz Strassburger
