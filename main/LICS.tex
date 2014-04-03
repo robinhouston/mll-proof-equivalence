@@ -77,7 +77,7 @@ An important consequence of the result is that the existence of a satisfactory n
 %
 The question of equivalence of proofs goes back to Lambek \cite{Lambek-1968}, who realised that the new tool of category-theoretic logic gave a notion of proof equivalence that was coarser and better-behaved than syntactic equality.
 
-Later, a striking technical innovation of linear logic was the introduction of proof nets \cite{Girard-1987,Danos-Regnier-1989}, which define a canonical form for proofs in the unitless fragment of multiplicative linear logic -- two proofs are equivalent if and only if they have the same proof net -- so proof nets offer a simple decision procedure for proofs in this fragment. This naturally raises the question whether proof nets can be extended to work in the presence of units. The work in this direction begins with \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996} via \color{red}\cite{Lamarche-Strassburger-2006}\color{black} and perhaps culminates in \cite{HughesFreeStar,HughesMLLProofNets}; but these proof nets are not canonical and must be identified up to a rewiring equivalence.
+Later, a striking technical innovation of linear logic was the introduction of proof nets \cite{Girard-1987,Danos-Regnier-1989}, which define a canonical form for proofs in the unitless fragment of multiplicative linear logic -- two proofs are equivalent if and only if they have the same proof net -- so proof nets offer a simple decision procedure for proofs in this fragment. This naturally raises the question whether proof nets can be extended to work in the presence of units. The work in this direction begins with \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996} via \color{red}\cite{Lamarche-Strassburger-2006} \color{black} and perhaps culminates in \cite{HughesFreeStar,HughesMLLProofNets}; but these proof nets are not canonical and must be identified up to a rewiring equivalence.
 
 So the question remains whether there exist fully canonical proof nets for full \capsabbrev{mll}. Canonical proof nets have been found for several other fragments of linear logic: the combined multiplicative-additive fragment without units \cite{Hughes-vanGlabbeek-2005}, and the additive fragment, including the additive units \cite{Heijltjes-2011}.
 
@@ -186,7 +186,7 @@ Only cut-free proofs are considered, and no cut-rule is added.
 \end{definition}
 
 
-The permutations of sequent proofs are exactly the identifications imposed by the categorical semantics of \capsabbrev{mll}, star-autonomous categories \cite{Barr-1991} (and semi-star-autonomous categories \cite{Houston-2008} for \capsabbrev{mll} without units).
+The permutations of sequent proofs are exactly the identifications imposed by the categorical semantics of \capsabbrev{mll}, star-autonomous categories \cite{Barr-1991} (and semi-star-autonomous categories \cite{Houston-2008,Heijltjes-Strassburger} for \capsabbrev{mll} without units).
 %
 Proof equivalence for \capsabbrev{mll} is therefore equivalent to the \emph{word problem} for star-autonomous categories: the problem whether two representations denote the same morphism in any star-autonomous category.
 
@@ -300,7 +300,7 @@ The units $1$ and $\bot$ are represented by a circle $\circ$ and a disc $\bullet
 %
 formulae related by a tensor will be connected by edges; 
 and
-formulae related by a par will be juxtaposed, and collected in a box when a par-formula is an immediate subformula of a tensor-formula.
+formulae related by a par will be juxtaposed, and collected in a box when a par-formula is an immediate subformula of a tensor-formula \color{red}(or for illustrative purposes)\color{black}.
 %
 For example, the following denote the same sequent:
 \[
@@ -634,13 +634,13 @@ In a proof net, the \emph{kingdom} and the \emph{empire} of a vertex $v$ are res
 In working with the rewiring relation, the notion of empire can be particularly useful.
 %
 \color{red} 
-We will denote the empire of $v$ in $\links$ by $\emp v$.
+We will denote the empire of $v$ in $\links$ by $\emp v$ (used both as a graph and a set of vertices).
 \color{black}
 
 
 \begin{proposition}[{\cite[Proposition 2.b]{Bellin-vandeWiele-1995}}]
 \label{prop:empire propagation}
-The empire $\emp v$ is determined by propagation from $v$: 1) through links; 2) up towards subformulae; 3) into a tensor if one of its subformulae is in $\emp v$; 4) into a par if all its subformulae are in $\emp v$; 5) except never into a par or tensor if $v$ is a subformula.
+The empire $\emp v$ is determined by propagation from $v$: 1) through links;\\ \color{red} 2) up towards subformulae;\\ 3) into a tensor if one of its subformulae is in $\emp v-\{v\}$;\\ 4) into a par if all its subformulae are in $\emp v-\{v\}$.%;\\ 5) except never into a par or tensor if $v$ is a subformula.
 \end{proposition}
 
 
@@ -774,7 +774,7 @@ An unbalanced sequent is uninhabited.
 
 Let a \emph{basic} sequent be one of formulae constructed only over $\1$, $\bot$, and $\tn$.
 %
-After removing $\bot$-formulae and replacing subformulae $\1\tn A$ with $A$, basic sequents consist of formulae of the form $1$ or $\bigtn(\bot^n)$ with $n\geq2$.
+After removing \color{red}dangling \color{black} $\bot$-formulae and replacing subformulae $\1\tn A$ with $A$, basic sequents consist of formulae of the form $1$ or $\bigtn(\bot^n)$ with $n\geq2$.
 
 
 \begin{proposition}
@@ -960,8 +960,53 @@ It will prove a minor technical distraction, that we will call the `parity probl
 %
 \emph{Non-deterministic constraint logic} \cite{Hearn-Demaine-2005,Demaine-Hearn-2008,GamesPuzzlesAndComputation} is a simple graph-rewriting formalism, used here as a convenient tool for \capsabbrev{pspace}-hardness reduction.
 %
-A \emph{constraint graph} is a graph with weighted edges and an \emph{inflow constraint} -- a natural number that may be taken to be always $2$ -- on each vertex. A \emph{configuration} is an assignment of directions to the edges of the underlying undirected constraint graph. A rewrite step consists of the reversal of a single edge in a configuration:
+A \emph{constraint graph} is a graph with weighted edges and an \emph{inflow constraint}---a natural number that may be taken to be always $2$---on each vertex. A \emph{configuration} is an assignment of directions to the edges of the underlying undirected constraint graph. A rewrite step consists of the reversal of a single edge in a configuration:
 rewrite steps must preserve the condition that the total weight of the incoming edges at each vertex is at least its inflow constraint.
+
+
+\color{red}
+Figure~\ref{fig:NCL example} shows an example rewrite sequence in a constraint graph.
+%
+The central node has inflow constraint 2, the thick blue (dark grey) edge has weight 2, and the thinner red (light grey) edges have weight 1.
+\color{black}
+
+\begin{figure}\color{red}
+$
+\quad
+\vc{\begin{tikzpicture}[x=3mm,y=3mm]
+	\draw[ncl2,->-] (0,0) -- (3,0);
+	\draw[ncl1,->-] (3,0) -- (5,2);
+	\draw[ncl1,->-] (3,0) -- (5,-2);
+	\node[nclnode] at (3,0) {};
+\end{tikzpicture}}
+\,\perm*\hfill
+\vc{\begin{tikzpicture}[x=3mm,y=3mm]
+	\draw[ncl2,->-] (0,0) -- (3,0);
+	\draw[ncl1,-<-] (3,0) -- (5,2);
+	\draw[ncl1,->-] (3,0) -- (5,-2);
+	\node[nclnode] at (3,0) {};
+\end{tikzpicture}}
+\,\perm*\hfill
+\vc{\begin{tikzpicture}[x=3mm,y=3mm]
+	\draw[ncl2,->-] (0,0) -- (3,0);
+	\draw[ncl1,-<-] (3,0) -- (5,2);
+	\draw[ncl1,-<-] (3,0) -- (5,-2);
+	\node[nclnode] at (3,0) {};
+\end{tikzpicture}}
+\,\perm*\hfill
+\vc{\begin{tikzpicture}[x=3mm,y=3mm]
+	\draw[ncl2,-<-] (0,0) -- (3,0);
+	\draw[ncl1,-<-] (3,0) -- (5,2);
+	\draw[ncl1,-<-] (3,0) -- (5,-2);
+	\node[nclnode] at (3,0) {};
+\end{tikzpicture}}
+\quad
+$
+
+\smallskip
+\caption{A series of reconfiguration steps in a constraint graph}
+\label{fig:NCL example}
+\end{figure}
 
 
 The specific problem we will use is the \emph{configuration--to--configuration} problem, which asks whether a path of rewrite steps exists between two constraint graphs.
@@ -1237,7 +1282,7 @@ Firstly we will define a standard way of linking a weight element to a constrain
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
 \begin{definition}
 \label{def:standard linkings}
-For a weight element $W=W_n(i,j)=A\parr B\parr C$,
+For $W=W_n(i,j)=A\parr B\parr C$ a weight element,
 \begin{enumerate}
 	\item
 for a constraint element $C=C_n(i)=X\tn Y$, the \emph{standard linking} for the sequent $W,C$ links the first $\bot$ in $A$ to the first $\1$ in $X$, the first $\bot$ in $B$ and $C$ each to the first $\1$ in $Y$, and each remaining $\bot$ in $A,B,C$ to a remaining $\1$ in $X,Y$ in their order of occurrence;

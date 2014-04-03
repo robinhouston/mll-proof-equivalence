@@ -3,7 +3,7 @@
 \RequirePackage{proof,rotating,stmaryrd,willemtools}
 
 \RequirePackage{tikz}
-\usetikzlibrary{arrows,calc}
+\usetikzlibrary{arrows,calc,decorations.markings}
 
 
 
@@ -148,6 +148,29 @@
   {tt2} {\infer[\MLLlabel t]{\Gamma,\Delta,\Lambda,A\tn B,C\tn D}{\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B,C}{\Gamma,A && \Delta,B,C} && \Lambda,D}}
  \DEFAULT{}
 }
+
+
+%---------- Constraint graphs
+
+%\tikzset{->-/.style={decoration={
+%  markings,
+%  mark=at position #1 with {\arrow{>}}},postaction={decorate}}}
+
+\tikzset{->-/.style={decoration={
+  markings,
+  mark=at position .75 with {\arrow{>}}},postaction={decorate}}}
+\tikzset{-<-/.style={decoration={
+  markings,
+  mark=at position .4 with {\arrow{<}}},postaction={decorate}}}
+
+\definecolor{thegrey1}{rgb}{.72,.72,.72}
+\definecolor{thegrey2}{rgb}{.50,.50,.50}
+\definecolor{thered}{rgb}{1,.29,.27}
+\definecolor{theblue}{rgb}{0,.24,.98}
+
+\tikzstyle{nclnode}=[draw=thegrey2,fill=thegrey1,circle,inner sep=0pt, minimum size=4pt]
+\tikzstyle{ncl1}=[line cap=round,line width=1.5pt,thered]
+\tikzstyle{ncl2}=[line cap=round,line width=3pt,theblue]
 
 
 %---------- Proof nets
