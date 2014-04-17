@@ -83,13 +83,13 @@ An important consequence of the result is that the existence of a satisfactory n
 %
 The question of equivalence of proofs goes back to Lambek \cite{Lambek-1968}, who realised that the new tool of category-theoretic logic gave a notion of proof equivalence that was coarser and better-behaved than syntactic equality.
 
-Later, a striking technical innovation of linear logic was the introduction of proof nets \cite{Girard-1987,Danos-Regnier-1989}, which define a canonical form for proofs in the unitless fragment of multiplicative linear logic -- two proofs are equivalent if and only if they have the same proof net -- so proof nets offer a simple decision procedure for proofs in this fragment. This naturally raises the question whether proof nets can be extended to work in the presence of units. The work in this direction begins with \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996} via \color{red}\cite{Lamarche-Strassburger-2006} \color{black} and perhaps culminates in \cite{HughesFreeStar,HughesMLLProofNets}; but these proof nets are not canonical and must be identified up to a rewiring equivalence.
+Later, a striking technical innovation of linear logic was the introduction of proof nets \cite{Girard-1987,Danos-Regnier-1989}, which define a canonical form for proofs in the unitless fragment of multiplicative linear logic---two proofs are equivalent if and only if they have the same proof net---so proof nets offer a simple decision procedure for proofs in this fragment. This naturally raises the question whether proof nets can be extended to work in the presence of units. The work in this direction begins with \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996} via \color{red}\cite{Lamarche-Strassburger-2006} \color{black} and perhaps culminates in \cite{HughesFreeStar,HughesMLLProofNets}; but these proof nets are not canonical and must be identified up to a rewiring equivalence.
 
 So the question remains whether there exist fully canonical proof nets for full \capsabbrev{mll}. Canonical proof nets have been found for several other fragments of linear logic: the combined multiplicative-additive fragment without units \cite{Hughes-vanGlabbeek-2005}, and the additive fragment, including the additive units \cite{Heijltjes-2011}.
 
 In this paper we establish that the proof equivalence problem for multiplicative linear logic with units is \capsabbrev{pspace}-complete. It follows that there can be no satisfactory canonical notion of proof net: 
 \color{red}
-it is reasonable to ask that both the translation from proofs to nets and equality of proof nets are polynomial-time computable---but this would imply \capsabbrev{p}\,=\,\capsabbrev{pspace}.
+if a notion of proof net existed where both the translation from proofs to nets and equality of proof nets are polynomial-time computable, this would imply that \capsabbrev{p}\,=\,\capsabbrev{pspace}.
 \color{black}
 
 
@@ -98,10 +98,10 @@ it is reasonable to ask that both the translation from proofs to nets and equali
 \subsection*{Constraint logic and reconfiguration problems}
 
 \aftersubsection
-The proof of \capsabbrev{pspace}-completeness relies on a polynomial reduction from the configuration-to-configuration problem in nondeterministic
+The proof of \capsabbrev{pspace}-completeness relies on a polynomial reduction from the configuration-to-configuration problem in non-deterministic
 \emph{constraint logic}, a graphical formalism recently introduced as a uniform tool for use in complexity reductions \cite{Demaine-Hearn-2008}.
 %
-Constraint logic is a simple graph rewriting formalism, where weighted edges may be reversed as long as the given in-flow constraint for each vertex is satisfied; the configuration-to-configuration question is whether two graphs are related by a sequence of valid rewriting steps.
+Constraint logic is a simple graph rewriting formalism, where weighted edges may be reversed as long as the given in-flow constraint for each vertex is satisfied; the configuration-to-configuration problem asks whether two graphs are related by a sequence of rewriting steps.
 
 This is one of a class of problems called \emph{reconfiguration problems} \cite{ReconfigurationProblems}: can one solution to a given problem be transformed into another by a series of elementary changes, while remaining valid throughout?
 %
@@ -166,7 +166,9 @@ The connectives $\tn$ and $\parr$ will be considered up to associativity, and \e
 A \emph{sequent} $\Gamma,\Delta$ will be a multiset of formulae.
 %
 Within a sequent, connectives and units will be \emph{named} with distinct elements from an arbitrary set of names, e.g.\
-$\named a1\named b\parr\named c1,\named d\bot\named e\tn\named f\bot$.
+\[
+	\named a1\named b\parr\named c1,\named d\bot\named e\tn\named f\bot~.
+\]
 %
 This allows to 1) identify \emph{occurrences} of subformulae uniquely by the name of their root connective, e.g.\ as $\named bA$, 2) distinguish the two proofs of the above sequent while using standard multiset sequents, and 3) easily extract proof nets, as graphs using the names of connectives as vertices.
 %
@@ -185,7 +187,7 @@ Only cut-free proofs are considered, and no cut-rule is added.
 \begin{definition}
 \label{def:equivalence}
 %
-\emph{Equivalence} of proofs $(\perm)$ in (cut-free, unit-only) multiplicative linear logic is the congruence generated by the permutations given in Figure~\ref{fig:permutations}.
+\emph{Equivalence} $(\perm)$ of proofs in (cut-free, unit-only) multiplicative linear logic is the congruence generated by the permutations given in Figure~\ref{fig:permutations}.
 %
 \emph{\capsabbrev{mll}\ proof equivalence} is the problem of deciding whether two given proofs are equivalent.
 %
@@ -229,7 +231,21 @@ For a sequent $\Gamma$,
 \noindent
 An edge $\edge a{\links(a)}$ in a proof net or switching graph is called a \emph{link} or a \emph{jump}.
 %
-% MAYBE SAY: The restriction that links must target $\1$-occurrences (rather than any connective) can be circumvented by replacing a subformula $A$ by the equivalent $A\tn\1$.
+\color{red}
+The restriction that jumps must target $\1$-occurrences (rather than any connective) is a convenience---it can be circumvented by replacing a subformula $A$ by the equivalent $A\tn\1$.
+\color{black}
+
+\begin{figure}
+\color{red}
+\[
+	\netA 1223 ~\perm*~
+	\netA 1323 ~\perm*~
+	\netA 1321 ~\perm*~
+	\netA 2321
+\]
+\caption{A rewiring sequence on proof nets}
+\label{fig:net rewiring}
+\end{figure}
 
 
 \begin{definition}
@@ -237,15 +253,25 @@ An edge $\edge a{\links(a)}$ in a proof net or switching graph is called a \emph
 %
 A \emph{rewiring} $(\perm*)$ between proof nets is the redirection of exactly one link.
 %
-\emph{Equivalence} $(\perm)$ of proof nets over a sequent $\Gamma$ is the equivalence generated by rewirings.
+\emph{Equivalence} $(\perm)$ of proof nets over a sequent $\Gamma$ is the equivalence generated by rewiring.
 %
 \end{definition}
 
-
 \noindent
-In the sequent calculus, the introduction rule for $\bot$ joins a $\bot$-formula to a sequent $\Gamma$, rather than an occurrence of $\1$.
+\color{red}
+An example rewiring sequence is given in Figure~\ref{fig:net rewiring}, using the notation for proof nets introduced below.
+\color{black}
+
+
+To translate a sequent proof to a proof net requires to find a target for each jump from a $\bot$-formula.
 %
-The interpretation of a proof as a proof net may attach the corresponding link to an arbitrary $\1$ in $\Gamma$.
+The inference rule for $\bot$ introduces it into a sequent $\Gamma$; in the corresponding proof net, any occurrence of $\1$ in $\Gamma$ may serve as the target of the jump.
+
+%The translation from sequent proofs to proof nets is as follows.
+
+%In the sequent calculus, the rule for $\bot$ introduces a $\bot$-formula into a sequent $\Gamma$, rather than an occurrence of $\1$, as in proof nets.
+%
+%The interpretation of a proof as a proof net may attach the corresponding link to an arbitrary $\1$ in $\Gamma$.
 
 
 \begin{definition}
@@ -275,7 +301,7 @@ For a net $\links$ for $\Gamma$, there is a proof $\Pi$ of $\Gamma$ such that $\
 
 
 \noindent
-Proof nets are canonical representations of proofs in the absence of units: they factor out the permutations among tensor- and par-inferences, which are the last three permutations in Figure~\ref{fig:permutations}.
+Proof nets are a canonical representation of proofs in the absence of the units: they factor out the permutations among tensor- and par-inferences, which are the last three permutations in Figure~\ref{fig:permutations}.
 %
 Equivalence of proof nets is generated by the four remaining permutations, on $\bot$-introduction.
 
@@ -302,11 +328,10 @@ The above proposition means that \capsabbrev{mll}\ proof equivalence is the prob
 \aftersubsection
 We will use a concise diagrammatic notation for sequents and proof nets.
 %
-The units $1$ and $\bot$ are represented by a circle $\circ$ and a disc $\bullet$ respectively;
+The units $1$ and $\bot$ are represented by a circle~($\circ$) and a disc~($\bullet$) respectively;
 %
 formulae related by a tensor will be connected by edges; 
-and
-formulae related by a par will be juxtaposed, and collected in a box when a par-formula is an immediate subformula of a tensor-formula \color{red}(or for illustrative purposes)\color{black}.
+formulae related by a par will be juxtaposed, and collected in a box when a par-formula is an immediate subformula of a tensor-formula \color{red}(and also for illustrative purposes)\color{black}.
 %
 For example, the following denote the same sequent:
 \[
@@ -423,6 +448,469 @@ A path in a proof net or switching graph is indicated $\path ab$, and illustrate
 \]
 
 
+%------------------------------------------------------------
+
+\beforesection
+
+\section{Encoding constraint logic}
+\label{sec:encoding}
+
+\aftersection
+%
+\emph{Non-deterministic constraint logic} \cite{Hearn-Demaine-2005,Demaine-Hearn-2008,GamesPuzzlesAndComputation} is a simple graph-rewriting formalism, used here as a convenient tool for \capsabbrev{pspace}-hardness reduction.
+%
+A \emph{constraint graph} is a graph with weighted edges and an \emph{inflow constraint}---a natural number that may be taken to be always $2$---on each vertex. A \emph{configuration} is an assignment of directions to the edges of the underlying undirected constraint graph. A rewrite step consists of the reversal of a single edge in a configuration:
+rewrite steps must preserve the condition that the total weight of the incoming edges at each vertex is at least its inflow constraint.
+
+
+\color{red}
+Figure~\ref{fig:NCL example} shows an example rewrite sequence in a constraint graph.
+%
+The central node has inflow constraint 2, the thick blue edge has weight 2, and the thinner red edges have weight 1.
+\color{black}
+
+
+
+The specific problem we will use is the \emph{configuration--to--configuration} problem, which asks whether a path of rewrite steps exists between two constraint graphs.
+%
+A constraint graph may be encoded as a sequent, and a configuration as a proof net.
+%
+It is useful for us to generalise the notion of configuration a little: we will allow \emph{partial} configurations, where edges may be left undirected---as long as the inflow constraints are satisfied by the directed edges.
+
+
+\begin{definition} 
+A \emph{constraint graph} $G=(V,E,c,v,w)$ consists of: a set $V$ of vertices with \emph{inflow constraint} $c\colon V\to\mathbb N$; and a set $E$ of undirected edges with \emph{weight} $w\colon E\to\mathbb N$, connecting the two vertices $v(e)=\{v_1,v_2\}\subseteq V$.
+
+\smallskip
+
+A \emph{(partial) configuration} for a constraint graph is a (partial) function $\gamma\colon E\to V$ such that
+\begin{itemize}
+	\item
+for every edge $e$, if $\gamma(e)$ is defined then $\gamma(e)\in v(e)$,
+	\item
+for every vertex $v$, the total weight of its incoming edges is at least its inflow constraint, 
+%$\sum\{\kern1pt w(e)\kern1pt|\kern1pt\gamma(e)=v\kern1pt\}\geq c(v)$.
+$\sum\{w(e)\mid\gamma(e)=v\}\geq c(v)$.
+\end{itemize} 
+
+\smallskip
+A \emph{reconfiguration step} $\gamma\perm*\delta$ relates two (partial) configurations for $G$ that differ in value (or definedness) on exactly one edge; this edge is then called \emph{mobile} in $\gamma$ and $\delta$.
+%
+The reflexive--transitive closure of $(\perm*)$ will be denoted $(\perm)$.
+%
+\end{definition}
+
+
+\begin{proposition}
+\label{prop:partial simulates total reconfiguration}
+For total configurations $\gamma$ and $\delta$, if $\gamma\perm\delta$ then $\gamma$ and $\delta$ are also connected by a sequence of reconfiguration steps over total configurations only.
+\end{proposition}
+
+
+\begin{proof}
+By the following two observations: firstly, 
+%
+if $\gamma\perm*\delta$ for partial configurations, then these may be completed to total configurations $\gamma'\perm*\delta'$ or $\gamma'=\delta'$; and secondly,
+%
+if $\gamma'$ and $\gamma''$ are total configurations that both agree with a partial configuration $\gamma$ where the latter is defined, then $\gamma'$ and $\gamma''$ are connected by reversing the edges on which they disagree one after another.
+%
+\end{proof}
+
+
+\emph{Non-deterministic constraint graph reconfiguration} or \emph{\capsabbrev{ncg}-reconfiguration} is the problem of deciding whether two total configurations of a constraint graph are connected by a sequence of reconfiguration steps.
+%
+%By the above proposition, \capsabbrev{ncg}-reconfiguration is unaffected by inclusion or exclusion of partial configurations.
+
+
+\begin{figure}\color{red}
+$
+~
+\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
+	\draw[ncl2,->-] (0,0) -- (3,0);
+	\draw[ncl1,->-] (3,0) -- (5,2);
+	\draw[ncl1,->-] (3,0) -- (5,-2);
+	\node[nclnode] at (3,0) {};
+\end{tikzpicture}}
+\hfill\perm*\,
+\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
+	\draw[ncl2,->-] (0,0) -- (3,0);
+	\draw[ncl1,-<-] (3,0) -- (5,2);
+	\draw[ncl1,->-] (3,0) -- (5,-2);
+	\node[nclnode] at (3,0) {};
+\end{tikzpicture}}
+\hfill\perm*\,
+\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
+	\draw[ncl2,->-] (0,0) -- (3,0);
+	\draw[ncl1,-<-] (3,0) -- (5,2);
+	\draw[ncl1,-<-] (3,0) -- (5,-2);
+	\node[nclnode] at (3,0) {};
+\end{tikzpicture}}
+\hfill\perm*\,
+\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
+	\draw[ncl2,-<-] (0,0) -- (3,0);
+	\draw[ncl1,-<-] (3,0) -- (5,2);
+	\draw[ncl1,-<-] (3,0) -- (5,-2);
+	\node[nclnode] at (3,0) {};
+\end{tikzpicture}}
+~
+$
+
+\smallskip
+\caption{A series of reconfiguration steps in a constraint graph}
+\label{fig:NCL example}
+\end{figure}
+
+\begin{theorem}[\cite{GamesPuzzlesAndComputation}, Theorem~5.15]
+\capsabbrev{ncg}-reconfiguration is \capsabbrev{pspace}-complete.
+\end{theorem}
+
+%By Proposition~\ref{prop:partial simulates total reconfiguration} the following is then immediate.
+%
+%\begin{proposition}
+%Partial \capsabbrev{ncg}-reconfiguration is \capsabbrev{pspace}-complete.
+%%\capsabbrev{pncg}-reconfiguration is \capsabbrev{pspace}-complete.
+%\end{proposition}
+
+
+We will demonstrate the \capsabbrev{pspace}-hardness of \capsabbrev{mll} proof equivalence by an encoding of \capsabbrev{ncg}-reconfiguration in \capsabbrev{mll} proof nets.
+
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+\begin{figure*}
+\color{red}
+\[
+\vc{\scalebox{0.36}{\BIGexample 3}}
+\quad\perm\quad
+\vc{\scalebox{0.36}{\BIGexample 2}}
+\quad\perm\quad
+\vc{\scalebox{0.36}{\BIGexample 1}}
+\]
+\caption{Rewiring three edge-gadgets connected to a single vertex-gadget}
+\label{fig:encoding example}
+\end{figure*}
+
+
+\subsection*{The encoding}
+
+\aftersubsection
+The basis of the encoding of constraint graphs in \capsabbrev{mll} is formed by \emph{weight elements}, which encode one unit of weight on an edge, and \emph{constraint elements}, that encode one unit towards the inflow constraint of a vertex.
+%
+The arithmetic of linking formulae of the form $\bigtn(\bot^n)$ to formulae $\bigparr(1^m)$ will be used to ensure that a weight element may be linked to only two vertices.
+%
+Below left is a weight element, below right a constraint element.
+\[
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[big_] (A) at (0,0) {$i'$}; 
+	\node[big_] (B) at (2,0) {$j'$};
+	\node[big_] (C) at (4,0) {$k'$};
+	\draw[rounded corners] (-1,-1) rectangle (5,1);
+\end{tikzpicture}
+\qquad\qquad
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[big1] (1) at (0,0) {$m'$}; 
+	\node[big1] (2) at (3,0) {$n'$};
+	\draw[rounded corners] (-1,-1) rectangle (1,1) (2,-1) rectangle (4,1);
+	\draw (1,0)--(2,0);
+\end{tikzpicture}
+\]
+For all edges and vertices in the encoding of a constraint graph, the sum $i+j+k=m+n$ will be the same -- this way, a priori any weight element may connect to any constraint element.
+%
+The value of $m$ (and thus $n$) will differ for each vertex.
+%
+The weight element above will be able to connect naturally to those constraint elements where $m=i$ and where $m=i+j$, as illustrated below.
+\[
+	\connectingElements 1 \qquad \connectingElements 2
+\]
+To ensure that no other connections can be made, values are chosen such that $m\equiv1$ and $n\equiv2 \pmod 3$, and accordingly $i\equiv1$, $j\equiv0$, and $k\equiv2\pmod 3$.
+
+
+In a constraint graph, the sum of all weights is usually greater than the sum of all inflow constraints---otherwise, no edge can move, or no configuration exists.
+%
+An encoding will therefore have weight elements not connected to constraint elements.
+%
+These will instead connect to additional, separate $\1$-formulae, referred to as \emph{weight absorbers}, as follows.
+%
+\[
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[big_] (A) at (0,0) {}; 
+	\node[big_] (B) at (2,0) {};
+	\node[big_] (C) at (4,0) {};
+	\draw[rounded corners] (-1,-1) rectangle (5,1);
+	\node[big1] (1) at (7.5,0) {};
+	\begin{scope}[thepink,->,big>]
+		\draw[bend left=30] (A) to (1);
+		\draw[bend right=30] (B) to (1);
+		\draw (C) to (1);
+	\end{scope}
+\end{tikzpicture}
+\]
+%
+An edge will be encoded by an \emph{edge-gadget}, illustrated below left, constructed by stringing together a number of similar weight elements plus a single \emph{indicator} vertex.
+%
+Illustrated below right is a \emph{vertex-gadget} encoding a vertex, formed by a number of constraint elements plus a single \emph{indicator target}.
+%
+\[
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[big_] (A) at (0,0) {$i'$}; 
+	\node[big_] (B) at (2,0) {$j'$};
+	\node[big_] (C) at (4,0) {$k'$};
+	\draw[rounded corners] (-1,-1) rectangle (5,1);
+	\node[big_] (D) at (0,4) {$i'$}; 
+	\node[big_] (E) at (2,4) {$j'$};
+	\node[big_] (F) at (4,4) {$k'$};
+	\draw[rounded corners] (-1,3) rectangle (5,5);
+	\draw (2,1)--(2,1.5) (2,2.5)--(2,3);
+	\draw[dotted] (2,1.5)--(2,2.5);
+	\draw (2,-1)--(2,-2) node[bullet] {};
+	\path (0,-2.5)--(1,-2.5);
+\end{tikzpicture}
+\qquad\qquad
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[big1] (1) at (0,0) {$m'$}; 
+	\node[big1] (2) at (3,0) {$n'$};
+	\draw[rounded corners] (-1,-1) rectangle (1,1) (2,-1) rectangle (4,1);
+	\draw (1,0)--(2,0);
+	\node[big1] (3) at (0,4) {$m'$};
+	\node[big1] (4) at (3,4) {$n'$};
+	\draw[rounded corners] (-1,3) rectangle (1,5) (2,3) rectangle (4,5);
+	\draw (1,4)--(2,4);
+	\draw[dotted] (1.5,1.5)--(1.5,2.6);
+	\node[circ] at (1.5,-2) {};
+	\draw[rounded corners] (-1.5,-2.5) rectangle (4.5,5.5);
+\end{tikzpicture}
+\]
+%
+It would be natural to encode an edge of weight $n$ by an edge-gadget with $n$ weight elements.
+%
+However, there is a minor issue that prevents this straightforward approach.
+%
+Although one weight element cannot `fill' an inappropriate constraint element, two weight elements can, in the way illustrated below.
+%
+\[
+\begin{tikzpicture}[x=5mm,y=-5mm,octo]
+	\node[big_] (A) at (-1,0) {}; 
+	\draw (.75,0) node[big_] (B1) {} -- (2.25,0) node[big_] (B2) {};
+	\node[big_] (C) at (4,0) {};
+	\draw[rounded corners] (-2,-1) rectangle (5,1);
+	\draw (7,0) node[big_] (D1) {} -- (8.5,0) node[big_] (D2) {}; 
+	\node[big_] (E) at (10.25,0) {};
+	\node[big_] (F) at (12,0) {};
+	\draw[rounded corners] (6,-1) rectangle (13,1);
+	\node[big1] (1) at (1,4) {};
+	\node[big1] (2) at (4,4) {}; 
+	\node[big1] (3) at (7,4) {};
+	\node[big1] (4) at (10,4) {};
+	\draw[rounded corners] (3,3) rectangle (5,5) (6,3) rectangle (8,5);
+	\draw (5,4)--(6,4);
+	\begin{scope}[thepink,->,big>]
+		\draw[bend right=25] (A)  to (1);
+		\draw[bend right=15] (B1) to (1);
+		\draw[bend right=25] (B2) to (2);
+		\draw[bend right=15] (C)  to (2);
+		\draw[bend left=15] (D1) to (3);
+		\draw[bend right=15] (D2) to (4);
+		\draw[bend left=20] (E)  to (4);
+		\draw[bend left=20] (F)  to (4);
+	\end{scope}
+\end{tikzpicture}
+\]
+%
+In such an inappropriate linking, since both halves of the constraint element are connected, the weight elements must be disconnected---otherwise, the linking would violate the switching condition.
+%
+That means the weight elements must belong to different edges.
+
+
+As the linkings above illustrate, it may occur that one subformula of a weight element $A\parr B\parr C$ fills one half of a constraint element.
+%
+Consequently, a weight element can fill three halves, but only of different constraint elements.
+%
+The other three halves may be filled by weight elements of a different edge---so to fill 3 constraint elements requires 2 inappropriate edges.
+%
+To fill the next three constraint elements, at most 1 previous inappropriate edge may be used, and one additional one is needed.
+%
+To fill $3n$ constraint elements inappropriately therefore requires $n+1$ edges.
+%
+It thus suffices to multiply the number of constraint elements by three times the number of edges, and encode a vertex with inflow constraint $c$ by a vertex-gadget with $c\times3\times|E|$ constraint elements (where $|E|$ denotes the number of edges in the constraint graph).
+
+
+\color{red}
+The complete encoding of a constraint graph $G$ will be a sequent $\Gamma=\itn G$ consisting of: 1) all vertex-gadgets combined in a single formula via tensors, 2) all edge-gadgets as individual formulae, 3) a sufficient number of weight absorbers ($\1$-formulae).
+%
+A configuration for $G$ will be encoded as a proof net for $\Gamma$, and conversely each proof net for $\Gamma$ may be interpreted as a (partial) configuration for $G$.
+
+
+Figure~\ref{fig:encoding example} displays an encoding of the constraint graph of Figure~\ref{fig:NCL example}, where two edge-gadgets of weight 1, and one of weight 2, connect to a central vertex-gadget with inflow constraint 2.
+%
+The jumps from the three indicator vertices, at the bottom, indicate which vertex an edge is directed at.
+%
+Indicator jumps can only be rewired (between vertices) when the edge-gadget is connected only to weight absorbers---in the first net of Figure~\ref{fig:encoding example}, the two leftmost edges are mobile, and in the third, the rightmost edge is mobile.
+%
+All three nets in Figure~\ref{fig:encoding example} then correspond to the third graph in Figure~\ref{fig:NCL example}, but the first net allows rewiring to the second and first graph, and the third net allows rewiring to the fourth graph.
+%
+\color{black}
+
+
+%
+For the formal definition, let $|V|$ and $|E|$ denote the number of vertices and edges, respectively, in a constraint graph $G=(V,E,c,v,w)$, and let $|c|$ and $|w|$ denote the sum of all inflow constraints and the sum of all weights respectively:
+\[
+	|c| = \sum_{v\in V}c(v) \qquad |w| = \sum_{e\in E}w(e)~.
+\]
+
+
+
+\begin{definition}
+\label{def:graph encoding}
+The \emph{encoding} $\itn G$ of a constraint graph $G$ is a sequent constructed as follows.
+%
+Let $G=(V,E,c,v,w)$, and let $V=\{v_1,\dotsc,v_n\}$ and $E=\{e_1,\dotsc,e_m\}$ where $|V|=n$ and $|E|=m$.
+
+\noindent
+The encoding of a vertex $v_k$ is the formula
+\[
+	\itn{v_k} = \bigparr\big(C_n(k)^{3m\times c(v_k)} \big)\parr\1
+\]
+where each \emph{constraint element} $C_n(k)$ is the formula
+\[
+	C_n(k) = \bigparr\big(1^{3k+2}\big) \tn \bigparr\big(1^{3(n-k)+3}\big)
+\]
+
+\noindent
+The encoding of an edge $e$ connecting vertices $v_i$ and $v_j$ with $i<j$ is the formula
+\[
+	\itn{e} = \bigtn\big(W_n(i,j)^{3m\times w(e)}\big)\tn\bot
+\]
+where each \emph{weight element} $W_n(i,j)$ is the formula
+\[
+	W_n(i,j) = \bigtn\big(\bot^{3i+2}\big)\parr\bigtn\big(\bot^{3(j-i)+1}\big)\parr\bigtn\big(\bot^{3(n-j)+3}\big)
+\]
+
+\noindent
+The encoding of the graph $G$ is the sequent
+\[
+	\itn G = \itn{v_1}\tn\dotso\tn\itn{v_n}, \itn{e_1},\dotsc,\itn{e_m}, 1^p
+\]
+where $p=3m\times(|w|-|c|)\times(3n+4)$.
+
+\end{definition}
+
+
+
+In the above definition, the final $\1$-subformula of a vertex-gadget $\itn{v_k}$ is its \emph{indicator target}; the final $\bot$-subformula of an edge-gadget $\itn{e}$ is its \emph{indicator}; and in the completed encoding $\itn G$ the $p$ instances of $\1$ are the \emph{weight absorbers}.
+%
+In a constraint graph $G$, a vertex $v$ and an edge $e$ will be called \emph{appropriate} (for each other) if $v\in v(e)$, and \emph{inappropriate} otherwise.
+%
+This notion is extended to vertex-gadgets $\itn v$ and edge-gadgets $\itn e$ in $\itn G$, and their respective constraint elements and weight elements.
+
+
+
+A configuration $\gamma$ for a constraint graph $G$ will be encoded as a proof net for the sequent $\itn G$.
+%
+Firstly we will define a standard way of linking a weight element to a constraint element.
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+\begin{definition}
+\label{def:standard linkings}
+For $W=W_n(i,j)=A\parr B\parr C$ a weight element,
+\begin{enumerate}
+	\item
+for a constraint element $C=C_n(i)=X\tn Y$, the \emph{standard linking} for the sequent $W,C$ links the first $\bot$ in $A$ to the first $\1$ in $X$, the first $\bot$ in $B$ and $C$ each to the first $\1$ in $Y$, and each remaining $\bot$ in $A,B,C$ to a remaining $\1$ in $X,Y$ in their order of occurrence;
+	\item
+for $C=C_n(j)=X\tn Y$, the \emph{standard linking} for $W,C$ is defined as above, except the first $\bot$ in $B$ links to the first $\1$ in $X$;
+	\item
+the \emph{standard linking} for the sequent $W,\1^{3n+4}$ links the first $\bot$ in $A$, $B$, and $C$ to the first $\1$, and each remaining $\bot$ to a remaining $\1$ in order of occurrence.
+\end{enumerate}
+\end{definition}
+
+The standard linkings defined in the \color{red} second \color{black} and third case of the above definition are illustrated below.
+
+\[
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[circ] (1) at (-.25,0) {};
+	\node[big1] (2) at (1,0) {};
+	\node[big1] (3) at (2.5,0) {};
+	\node[big1] (4) at (5.5,0) {};
+	\draw[rounded corners] (-1,-1) rectangle (3.5,1) (4.5,-1) rectangle (6.5,1);
+	\draw (3.5,0)--(4.5,0);
+	%
+	\draw (-.25,4) node[bullet] (a) {} -- (.75,4) node[big_] (A) {};
+	\draw (2.25,4) node[bullet] (b) {} -- (3.25,4) node[big_] (B) {};
+	\node[big_] (C) at (5.5,4) {};
+	\draw[rounded corners] (-1,3) rectangle (6.5,5);
+	%
+	\begin{scope}[thepink,->]
+		\draw[bend right=5] (a) to (1);
+		\draw[bend right=10] (b) to (1);
+		\draw[big>,bend left=25] (A) to (2);
+		\draw[big>,bend left=20] (B) to (3);
+		\draw[big>,bend left=15] (C) to (4);
+	\end{scope}
+\end{tikzpicture}
+\qquad
+\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[circ] (1) at (.75,0) {};
+	\node[big1] (2) at (2,0) {};
+	\node[big1] (3) at (3.5,0) {};
+	\node[big1] (4) at (5,0) {};
+	%
+	\draw ( 0  ,4) node[bullet] (a) {} -- ( 1  ,4) node[big_] (A) {};
+	\draw ( 2.5,4) node[bullet] (b) {} -- ( 3.5,4) node[big_] (B) {};
+	\draw ( 5  ,4) node[bullet] (c) {} -- ( 6  ,4) node[big_] (C) {};
+	\draw[rounded corners] (-.5,3) rectangle (7,5);
+	\path (0,-1) -- (1,-1);
+	%
+	\begin{scope}[thepink,->]
+		\draw[bend right=5] (a) to (1);
+		\draw[bend right=10] (b) to (1);
+		\draw[bend right=15] (c) to (1);
+		\draw[big>,bend left=25] (A) to (2);
+		\draw[big>,bend left=20] (B) to (3);
+		\draw[big>,bend left=15] (C) to (4);
+	\end{scope}
+\end{tikzpicture}
+\]
+
+\begin{proposition}
+\label{prop:element linkings}
+The standard linkings of Definition~\ref{def:standard linkings} are proof nets.
+\end{proposition}
+
+
+The encoding of a configuration is then as follows.
+
+
+
+\begin{definition}
+\label{def:configuration encoding}
+The \emph{encoding} $\itn\gamma$ of a total configuration $\gamma$ for a constraint graph $G$ is a linking $\links$ for $\itn G$, constructed incrementally for each successive edge $e$ and for each successive weight element $W$ within $e$, as follows.
+%
+Let $\gamma(e)=v$; firstly, the indicator of $\itn e$ is linked to the indicator target of $\itn v$.
+%
+Then successively for each weight element $W$ in $e$, if $\itn v$ has a first free constraint element $C$, extend $\itn\gamma$ to include the standard linking on $W,C$; otherwise, extend $\itn\gamma$ by the standard linking on the sequent consisting of $W$ plus the first $3n+4$ free weight absorbers.
+\end{definition}
+
+
+
+\begin{proposition}
+If $\gamma$ is a total configuration for $G$ then $\itn\gamma$ is a proof net for $\itn G$.
+\end{proposition}
+
+\begin{proof}
+Using Proposition~\ref{prop:scoping correctness}, it is sufficient to give a suitable scope for each $\parr$. 
+%
+The scope of each weight element $W$ is the sequent $W,C$ or $W,1^{3n+4}$ of its standard linking, which forms a proof net by Proposition~\ref{prop:element linkings}.
+%
+The scope of each vertex-gadget $\itn v$ contains the edge-gadgets $\itn e$ such that $\gamma(e)=v$, plus all the weight absorbers within scopes of weight elements inside $\itn e$.
+%
+Since the weights of the connected edges $e$ sum to more than the inflow constraint of $v$, there are no unused constraint elements remaining in $\itn v$.
+%
+After contracting the scope of each $W$, each edge-gadget in the scope of $\itn v$ becomes a single string of connected vertices, connected to other edge-gadgets only via the indicator target of $\itn v$, thus forming a tree.
+\end{proof}
+
+
+
+
 
 
 %------------------------------------------------------------
@@ -484,7 +972,11 @@ A \emph{subnet} $(\Gamma',\links') \leq (\Gamma,\links)$ of a proof net is a net
 \end{definition}
 
 
-The root vertices of $\Gamma'$ are the \emph{ports} of the sub-sequent $\Gamma'$ and of the subnet $(\Gamma',\links')$.
+
+%\noindent
+The \emph{ports} of a sub-sequent $\Gamma'$ or subnet $(\Gamma',\links')$ are the root vertices of $\Gamma'$.
+%
+%The root vertices of $\Gamma'$ are the \emph{ports} of the sub-sequent $\Gamma'$ and of the subnet $(\Gamma',\links')$.
 %
 A \emph{scope} of a par $\named v\parr$ is a subnet that has $v$ as a port.
 
@@ -492,11 +984,11 @@ A \emph{scope} of a par $\named v\parr$ is a subnet that has $v$ as a port.
 The scopes of a par correspond to the possible subproofs of its introduction rule in a sequentialisation of the proof net that it occurs in.
 %
 \color{red}
-In the graph of a proof net, the scope of a par can be made explicit as a \emph{box}, as illustrated below left.
+In the graph of a proof net, a chosen scope of a par can be made explicit as a \emph{box}, as illustrated below left.
 %
 Boxes may replace the switching condition as a correctness criterion: in the example, both the outside and the inside of the box form a tree.
 %
-To make this precise, we will consider the action of \emph{closing} a box, which will mean we consider it as a single vertex in the graph.
+To make this precise, we will consider the action of \emph{closing} a box, which means it is regarded as a single vertex in the graph, as illustrated below right.
 
 \[
 \begin{tikzpicture}[x=5mm,y=-5mm,octo]
@@ -646,7 +1138,7 @@ We will denote the empire of $v$ in $\links$ by $\emp v$ (used both as a graph a
 
 \begin{proposition}[{\cite[Proposition 2.b]{Bellin-vandeWiele-1995}}]
 \label{prop:empire propagation}
-The empire $\emp v$ is determined by propagation from $v$: 1) through links;\\ \color{red} 2) up towards subformulae;\\ 3) into a tensor if one of its subformulae is in $\emp v-\{v\}$;\\ 4) into a par if all its subformulae are in $\emp v-\{v\}$.%;\\ 5) except never into a par or tensor if $v$ is a subformula.
+The empire $\emp v$ is determined by propagation from $v$: 1) through links; \color{red} 2) up towards subformulae; 3) into a tensor if one of its subformulae is in $\emp v-\{v\}$; 4) into a par if all its subformulae are in $\emp v-\{v\}$.%;\\ 5) except never into a par or tensor if $v$ is a subformula.
 \end{proposition}
 
 
@@ -954,453 +1446,6 @@ Secondly, the problem that proof nets up to a single exchange of links are gener
 It will prove a minor technical distraction, that we will call the `parity problem'.
 
 
-
-%------------------------------------------------------------
-
-\beforesection
-
-\section{Encoding constraint logic}
-\label{sec:encoding}
-
-\aftersection
-%
-\emph{Non-deterministic constraint logic} \cite{Hearn-Demaine-2005,Demaine-Hearn-2008,GamesPuzzlesAndComputation} is a simple graph-rewriting formalism, used here as a convenient tool for \capsabbrev{pspace}-hardness reduction.
-%
-A \emph{constraint graph} is a graph with weighted edges and an \emph{inflow constraint}---a natural number that may be taken to be always $2$---on each vertex. A \emph{configuration} is an assignment of directions to the edges of the underlying undirected constraint graph. A rewrite step consists of the reversal of a single edge in a configuration:
-rewrite steps must preserve the condition that the total weight of the incoming edges at each vertex is at least its inflow constraint.
-
-
-\color{red}
-Figure~\ref{fig:NCL example} shows an example rewrite sequence in a constraint graph.
-%
-The central node has inflow constraint 2, the thick blue (dark grey) edge has weight 2, and the thinner red (light grey) edges have weight 1.
-\color{black}
-
-\begin{figure}\color{red}
-$
-~
-\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
-	\draw[ncl2,->-] (0,0) -- (3,0);
-	\draw[ncl1,->-] (3,0) -- (5,2);
-	\draw[ncl1,->-] (3,0) -- (5,-2);
-	\node[nclnode] at (3,0) {};
-\end{tikzpicture}}
-\hfill\perm*\,
-\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
-	\draw[ncl2,->-] (0,0) -- (3,0);
-	\draw[ncl1,-<-] (3,0) -- (5,2);
-	\draw[ncl1,->-] (3,0) -- (5,-2);
-	\node[nclnode] at (3,0) {};
-\end{tikzpicture}}
-\hfill\perm*\,
-\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
-	\draw[ncl2,->-] (0,0) -- (3,0);
-	\draw[ncl1,-<-] (3,0) -- (5,2);
-	\draw[ncl1,-<-] (3,0) -- (5,-2);
-	\node[nclnode] at (3,0) {};
-\end{tikzpicture}}
-\hfill\perm*\,
-\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
-	\draw[ncl2,-<-] (0,0) -- (3,0);
-	\draw[ncl1,-<-] (3,0) -- (5,2);
-	\draw[ncl1,-<-] (3,0) -- (5,-2);
-	\node[nclnode] at (3,0) {};
-\end{tikzpicture}}
-~
-$
-
-\smallskip
-\caption{A series of reconfiguration steps in a constraint graph}
-\label{fig:NCL example}
-\end{figure}
-
-
-The specific problem we will use is the \emph{configuration--to--configuration} problem, which asks whether a path of rewrite steps exists between two constraint graphs.
-%
-A constraint graph may be encoded as a sequent, and a configuration as a proof net.
-%
-It is useful for us to generalise the notion of configuration a little: we will allow \emph{partial} configurations, where edges may be left undirected---as long as the inflow constraints are satisfied by the directed edges.
-
-
-\begin{definition} 
-A \emph{constraint graph} $G=(V,E,c,v,w)$ consists of: a set $V$ of vertices with \emph{inflow constraint} $c\colon V\to\mathbb N$; and a set $E$ of undirected edges with \emph{weight} $w\colon E\to\mathbb N$, connecting vertices $v(e)=\{v_1,v_2\}\subseteq V$.
-
-\smallskip
-
-A \emph{(partial) configuration} for a constraint graph is a (partial) function $\gamma\colon E\to V$ such that
-\begin{itemize}
-	\item
-for every edge $e$, if $\gamma(e)$ is defined then $\gamma(e)\in v(e)$,
-	\item
-for every vertex $v$, the total weight of its incoming edges is at least its inflow constraint, 
-%$\sum\{\kern1pt w(e)\kern1pt|\kern1pt\gamma(e)=v\kern1pt\}\geq c(v)$.
-$\sum\{w(e)\mid\gamma(e)=v\}\geq c(v)$.
-\end{itemize} 
-
-\smallskip
-A \emph{reconfiguration step} $\gamma\perm*\delta$ relates two (partial) configurations for $G$ that differ in value (or definedness) on exactly one edge; this edge is then called \emph{mobile} in $\gamma$ and $\delta$.
-%
-The reflexive--transitive closure of $(\perm*)$ will be denoted $(\perm)$.
-%
-\end{definition}
-
-
-\begin{proposition}
-\label{prop:partial simulates total reconfiguration}
-For total configurations $\gamma$ and $\delta$, if $\gamma\perm\delta$ then $\gamma$ and $\delta$ are also connected by a sequence of reconfiguration steps over total configurations only.
-\end{proposition}
-
-
-\begin{proof}
-By the following two observations: firstly, 
-%
-if $\gamma\perm*\delta$ for partial configurations, then these may be completed to total configurations $\gamma'\perm*\delta'$ or $\gamma'=\delta'$; and secondly,
-%
-if $\gamma'$ and $\gamma''$ are total configurations that both agree with a partial configuration $\gamma$ where the latter is defined, then $\gamma'$ and $\gamma''$ are connected by reversing the edges on which they disagree one after another.
-%
-\end{proof}
-
-
-\emph{Non-deterministic constraint graph reconfiguration} or \emph{\capsabbrev{ncg}-reconfiguration} is the problem of deciding whether two total configurations of a constraint graph are connected by a sequence of reconfiguration steps.
-%
-%By the above proposition, \capsabbrev{ncg}-reconfiguration is unaffected by inclusion or exclusion of partial configurations.
-
-
-
-\begin{theorem}[\cite{GamesPuzzlesAndComputation}, Theorem~5.15]
-\capsabbrev{ncg}-reconfiguration is \capsabbrev{pspace}-complete.
-\end{theorem}
-
-%By Proposition~\ref{prop:partial simulates total reconfiguration} the following is then immediate.
-%
-%\begin{proposition}
-%Partial \capsabbrev{ncg}-reconfiguration is \capsabbrev{pspace}-complete.
-%%\capsabbrev{pncg}-reconfiguration is \capsabbrev{pspace}-complete.
-%\end{proposition}
-
-
-We will demonstrate the \capsabbrev{pspace}-hardness of \capsabbrev{mll} proof equivalence by an encoding of \capsabbrev{ncg}-reconfiguration in \capsabbrev{mll} proof nets.
-
-
-% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-\begin{figure*}
-\color{red}
-\[
-\vc{\scalebox{0.36}{\BIGexample 3}}
-\quad\perm\quad
-\vc{\scalebox{0.36}{\BIGexample 2}}
-\quad\perm\quad
-\vc{\scalebox{0.36}{\BIGexample 1}}
-\]
-\caption{Rewiring three edge-gadgets connecting to a single vertex-gadget}
-\label{fig:connection example}
-\end{figure*}
-
-
-\subsection*{The encoding}
-
-\aftersubsection
-The basis of the encoding of constraint graphs in \capsabbrev{mll} is formed by \emph{weight elements}, which encode one unit of weight on an edge, and \emph{constraint elements}, that encode one unit towards the inflow constraint of a vertex.
-%
-The arithmetic of linking formulae of the form $\bigtn(\bot^n)$ to formulae $\bigparr(1^m)$ will be used to ensure that a weight element may be linked to only two vertices.
-%
-Below left is a weight element, below right a constraint element.
-\[
-\begin{tikzpicture}[x=5mm,y=5mm,octo]
-	\node[big_] (A) at (0,0) {$i'$}; 
-	\node[big_] (B) at (2,0) {$j'$};
-	\node[big_] (C) at (4,0) {$k'$};
-	\draw[rounded corners] (-1,-1) rectangle (5,1);
-\end{tikzpicture}
-\qquad\qquad
-\begin{tikzpicture}[x=5mm,y=5mm,octo]
-	\node[big1] (1) at (0,0) {$m'$}; 
-	\node[big1] (2) at (3,0) {$n'$};
-	\draw[rounded corners] (-1,-1) rectangle (1,1) (2,-1) rectangle (4,1);
-	\draw (1,0)--(2,0);
-\end{tikzpicture}
-\]
-For all edges and vertices in the encoding of a constraint graph, the sum $i+j+k=m+n$ will be the same -- this way, a priori any weight element may connect to any constraint element.
-%
-The value of $m$ (and thus $n$) will differ for each vertex.
-%
-The weight element above will be able to connect naturally to those constraint elements where $m=i$ and where $m=i+j$, as illustrated below.
-\[
-	\connectingElements 1 \qquad \connectingElements 2
-\]
-To ensure that no other connections can be made, values are chosen such that $m\equiv1$ and $n\equiv2$ $(\bmod3)$, and accordingly $i\equiv1$, $j\equiv0$, and $k\equiv2$ $(\bmod3)$.
-
-
-In a constraint graph, the sum of weights is usually greater than the sum of all inflow constraints---otherwise, no edge can move, or no configuration exists.
-%
-An encoding will therefore have weight elements not connected to constraint elements.
-%
-These will instead connect to additional, separate $\1$-formulae, referred to as \emph{weight absorbers}, as follows.
-%
-\[
-\begin{tikzpicture}[x=5mm,y=5mm,octo]
-	\node[big_] (A) at (0,0) {}; 
-	\node[big_] (B) at (2,0) {};
-	\node[big_] (C) at (4,0) {};
-	\draw[rounded corners] (-1,-1) rectangle (5,1);
-	\node[big1] (1) at (7.5,0) {};
-	\begin{scope}[thepink,->,big>]
-		\draw[bend left=30] (A) to (1);
-		\draw[bend right=30] (B) to (1);
-		\draw (C) to (1);
-	\end{scope}
-\end{tikzpicture}
-\]
-%
-An edge will be encoded by an \emph{edge-gadget}, illustrated below left, constructed by stringing together a number of similar weight elements plus a single \emph{indicator} vertex.
-%
-Illustrated below right is a \emph{vertex-gadget} encoding a vertex, formed by a number of constraint elements plus a single \emph{indicator target}.
-%
-\[
-\begin{tikzpicture}[x=5mm,y=5mm,octo]
-	\node[big_] (A) at (0,0) {$i'$}; 
-	\node[big_] (B) at (2,0) {$j'$};
-	\node[big_] (C) at (4,0) {$k'$};
-	\draw[rounded corners] (-1,-1) rectangle (5,1);
-	\node[big_] (D) at (0,4) {$i'$}; 
-	\node[big_] (E) at (2,4) {$j'$};
-	\node[big_] (F) at (4,4) {$k'$};
-	\draw[rounded corners] (-1,3) rectangle (5,5);
-	\draw (2,1)--(2,1.5) (2,2.5)--(2,3);
-	\draw[dotted] (2,1.5)--(2,2.5);
-	\draw (2,-1)--(2,-2) node[bullet] {};
-	\path (0,-2.5)--(1,-2.5);
-\end{tikzpicture}
-\qquad\qquad
-\begin{tikzpicture}[x=5mm,y=5mm,octo]
-	\node[big1] (1) at (0,0) {$m'$}; 
-	\node[big1] (2) at (3,0) {$n'$};
-	\draw[rounded corners] (-1,-1) rectangle (1,1) (2,-1) rectangle (4,1);
-	\draw (1,0)--(2,0);
-	\node[big1] (3) at (0,4) {$m'$};
-	\node[big1] (4) at (3,4) {$n'$};
-	\draw[rounded corners] (-1,3) rectangle (1,5) (2,3) rectangle (4,5);
-	\draw (1,4)--(2,4);
-	\draw[dotted] (1.5,1.5)--(1.5,2.6);
-	\node[circ] at (1.5,-2) {};
-	\draw[rounded corners] (-1.5,-2.5) rectangle (4.5,5.5);
-\end{tikzpicture}
-\]
-%
-It would be natural to encode an edge of weight $n$ by an edge-gadget with $n$ weight elements.
-%
-However, there is a minor issue that prevents this straightforward approach.
-%
-Although one weight element cannot `fill' an inappropriate constraint element, two weight elements can, in the way illustrated below.
-%
-\[
-\begin{tikzpicture}[x=5mm,y=-5mm,octo]
-	\node[big_] (A) at (-1,0) {}; 
-	\draw (.75,0) node[big_] (B1) {} -- (2.25,0) node[big_] (B2) {};
-	\node[big_] (C) at (4,0) {};
-	\draw[rounded corners] (-2,-1) rectangle (5,1);
-	\draw (7,0) node[big_] (D1) {} -- (8.5,0) node[big_] (D2) {}; 
-	\node[big_] (E) at (10.25,0) {};
-	\node[big_] (F) at (12,0) {};
-	\draw[rounded corners] (6,-1) rectangle (13,1);
-	\node[big1] (1) at (1,4) {};
-	\node[big1] (2) at (4,4) {}; 
-	\node[big1] (3) at (7,4) {};
-	\node[big1] (4) at (10,4) {};
-	\draw[rounded corners] (3,3) rectangle (5,5) (6,3) rectangle (8,5);
-	\draw (5,4)--(6,4);
-	\begin{scope}[thepink,->,big>]
-		\draw[bend right=25] (A)  to (1);
-		\draw[bend right=15] (B1) to (1);
-		\draw[bend right=25] (B2) to (2);
-		\draw[bend right=15] (C)  to (2);
-		\draw[bend left=15] (D1) to (3);
-		\draw[bend right=15] (D2) to (4);
-		\draw[bend left=20] (E)  to (4);
-		\draw[bend left=20] (F)  to (4);
-	\end{scope}
-\end{tikzpicture}
-\]
-%
-In such an inappropriate linking, since both halves of the constraint element are connected, the weight elements must be disconnected---otherwise, the linking would violate the switching condition.
-%
-That means the weight elements must belong to different edges.
-
-
-As the linkings above illustrate, it may occur that one subformula of a weight element $A\parr B\parr C$ fills one half of a constraint element.
-%
-Consequently, a weight element can fill three halves, but only of different constraint elements.
-%
-The other three halves may be filled by weight elements of a different edge---so to fill 3 constraint elements requires 2 inappropriate edges.
-%
-To fill the next three constraint elements, at most 1 previous inappropriate edge may be used, and one additional one is needed.
-%
-To fill $3n$ constraint elements inappropriately therefore requires $n+1$ edges.
-%
-It thus suffices to multiply the number of constraint elements by three times the number of edges, and encode a vertex with inflow constraint $c$ by a vertex-gadget with $c\times3\times|E|$ constraint elements (where $|E|$ denotes the number of edges in the constraint graph).
-
-
-The complete encoding of a constraint graph will be a sequent consisting of: 1) all vertex-gadgets combined in a single formula via tensors, 2) all edge-gadgets as individual formulae, 3) a sufficient number of weight absorbers ($\1$-formulae).
-%
-For the formal definition, let $|V|$ and $|E|$ denote the number of vertices and edges, respectively, in a constraint graph $G=(V,E,c,v,w)$, and let $|c|$ and $|w|$ denote the sum of all inflow constraints and the sum of all weights respectively:
-\[
-	|c| = \sum_{v\in V}c(v) \qquad |w| = \sum_{e\in E}w(e)~.
-\]
-
-
-
-\begin{definition}
-\label{def:graph encoding}
-The \emph{encoding} $\itn G$ of a constraint graph $G$ is a sequent constructed as follows.
-%
-Let $G=(V,E,c,v,w)$, and let $V=\{v_1,\dotsc,v_n\}$ and $E=\{e_1,\dotsc,e_m\}$ where $|V|=n$ and $|E|=m$.
-
-\noindent
-The encoding of a vertex $v_k$ is the formula
-\[
-	\itn{v_k} = \bigparr\big(C_n(k)^{3m\times c(v_k)} \big)\parr\1
-\]
-where each \emph{constraint element} $C_n(k)$ is the formula
-\[
-	C_n(k) = \bigparr\big(1^{3k+2}\big) \tn \bigparr\big(1^{3(n-k)+3}\big)
-\]
-
-\noindent
-The encoding of an edge $e$ connecting vertices $v_i$ and $v_j$ with $i<j$ is the formula
-\[
-	\itn{e} = \bigtn\big(W_n(i,j)^{3m\times w(e)}\big)\tn\bot
-\]
-where each \emph{weight element} $W_n(i,j)$ is the formula
-\[
-	W_n(i,j) = \bigtn\big(\bot^{3i+2}\big)\parr\bigtn\big(\bot^{3(j-i)+1}\big)\parr\bigtn\big(\bot^{3(n-j)+3}\big)
-\]
-
-\noindent
-The encoding of the graph $G$ is the sequent
-\[
-	\itn G = \itn{v_1}\tn\dotso\tn\itn{v_n}, \itn{e_1},\dotsc,\itn{e_m}, 1^p
-\]
-where $p=3m\times(|w|-|c|)\times(3n+4)$.
-
-\end{definition}
-
-
-
-In the above definition, the final $\1$-subformula of a vertex-gadget $\itn{v_k}$ is its \emph{indicator target}; the final $\bot$-subformula of an edge-gadget $\itn{e}$ is its \emph{indicator}; and in the completed encoding $\itn G$ the $p$ instances of $\1$ are the \emph{weight absorbers}.
-%
-In a constraint graph $G$, a vertex $v$ and an edge $e$ will be called \emph{appropriate} (for each other) if $v\in v(e)$, and \emph{inappropriate} otherwise.
-%
-This notion is extended to vertex-gadgets $\itn v$ and edge-gadgets $\itn e$ in $\itn G$, and their respective constraint elements and weight elements.
-
-
-
-A configuration $\gamma$ for a constraint graph $G$ will be encoded as a proof net for the sequent $\itn G$.
-%
-Firstly we will define a standard way of linking a weight element to a constraint element.
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
-\begin{definition}
-\label{def:standard linkings}
-For $W=W_n(i,j)=A\parr B\parr C$ a weight element,
-\begin{enumerate}
-	\item
-for a constraint element $C=C_n(i)=X\tn Y$, the \emph{standard linking} for the sequent $W,C$ links the first $\bot$ in $A$ to the first $\1$ in $X$, the first $\bot$ in $B$ and $C$ each to the first $\1$ in $Y$, and each remaining $\bot$ in $A,B,C$ to a remaining $\1$ in $X,Y$ in their order of occurrence;
-	\item
-for $C=C_n(j)=X\tn Y$, the \emph{standard linking} for $W,C$ is defined as above, except the first $\bot$ in $B$ links to the first $\1$ in $X$;
-	\item
-the \emph{standard linking} for the sequent $W,\1^{3n+4}$ links the first $\bot$ in $A$, $B$, and $C$ to the first $\1$, and each remaining $\bot$ to a remaining $\1$ in order of occurrence.
-\end{enumerate}
-\end{definition}
-
-The standard linkings defined in the \color{red} second \color{black} and third case of the above definition are illustrated below.
-
-\[
-\begin{tikzpicture}[x=5mm,y=5mm,octo]
-	\node[circ] (1) at (-.25,0) {};
-	\node[big1] (2) at (1,0) {};
-	\node[big1] (3) at (2.5,0) {};
-	\node[big1] (4) at (5.5,0) {};
-	\draw[rounded corners] (-1,-1) rectangle (3.5,1) (4.5,-1) rectangle (6.5,1);
-	\draw (3.5,0)--(4.5,0);
-	%
-	\draw (-.25,4) node[bullet] (a) {} -- (.75,4) node[big_] (A) {};
-	\draw (2.25,4) node[bullet] (b) {} -- (3.25,4) node[big_] (B) {};
-	\node[big_] (C) at (5.5,4) {};
-	\draw[rounded corners] (-1,3) rectangle (6.5,5);
-	%
-	\begin{scope}[thepink,->]
-		\draw[bend right=5] (a) to (1);
-		\draw[bend right=10] (b) to (1);
-		\draw[big>,bend left=25] (A) to (2);
-		\draw[big>,bend left=20] (B) to (3);
-		\draw[big>,bend left=15] (C) to (4);
-	\end{scope}
-\end{tikzpicture}
-\qquad
-\begin{tikzpicture}[x=5mm,y=5mm,octo]
-	\node[circ] (1) at (.75,0) {};
-	\node[big1] (2) at (2,0) {};
-	\node[big1] (3) at (3.5,0) {};
-	\node[big1] (4) at (5,0) {};
-	%
-	\draw ( 0  ,4) node[bullet] (a) {} -- ( 1  ,4) node[big_] (A) {};
-	\draw ( 2.5,4) node[bullet] (b) {} -- ( 3.5,4) node[big_] (B) {};
-	\draw ( 5  ,4) node[bullet] (c) {} -- ( 6  ,4) node[big_] (C) {};
-	\draw[rounded corners] (-.5,3) rectangle (7,5);
-	\path (0,-1) -- (1,-1);
-	%
-	\begin{scope}[thepink,->]
-		\draw[bend right=5] (a) to (1);
-		\draw[bend right=10] (b) to (1);
-		\draw[bend right=15] (c) to (1);
-		\draw[big>,bend left=25] (A) to (2);
-		\draw[big>,bend left=20] (B) to (3);
-		\draw[big>,bend left=15] (C) to (4);
-	\end{scope}
-\end{tikzpicture}
-\]
-
-\begin{proposition}
-\label{prop:element linkings}
-The standard linkings of Definition~\ref{def:standard linkings} are proof nets.
-\end{proposition}
-
-
-The encoding of a configuration is then as follows.
-
-
-
-\begin{definition}
-\label{def:configuration encoding}
-The \emph{encoding} $\itn\gamma$ of a total configuration $\gamma$ for a constraint graph $G$ is a linking $\links$ for $\itn G$, constructed incrementally for each successive edge $e$ and for each successive weight element $W$ within $e$, as follows.
-%
-Let $\gamma(e)=v$; firstly, the indicator of $\itn e$ is linked to the indicator target of $\itn v$.
-%
-Then successively for each weight element $W$ in $e$, if $\itn v$ has a first free constraint element $C$, extend $\itn\gamma$ to include the standard linking on $W,C$; otherwise, extend $\itn\gamma$ by the standard linking on the sequent consisting of $W$ plus the first $3n+4$ free weight absorbers.
-\end{definition}
-
-
-
-\begin{proposition}
-If $\gamma$ is a total configuration for $G$ then $\itn\gamma$ is a proof net for $\itn G$.
-\end{proposition}
-
-\begin{proof}
-Using Proposition~\ref{prop:scoping correctness}, it is sufficient to give a suitable scope for each $\parr$. 
-%
-The scope of each weight element $W$ is the sequent $W,C$ or $W,1^{3n+4}$ of its standard linking, which forms a proof net by Proposition~\ref{prop:element linkings}.
-%
-The scope of each vertex-gadget $\itn v$ contains the edge-gadgets $\itn e$ such that $\gamma(e)=v$, plus all the weight absorbers within scopes of weight elements inside $\itn e$.
-%
-Since the weights of the connected edges $e$ sum to more than the inflow constraint of $v$, there are no unused constraint elements remaining in $\itn v$.
-%
-After contracting the scope of each $W$, each edge-gadget in the scope of $\itn v$ becomes a single string of connected vertices, connected to other edge-gadgets only via the indicator target of $\itn v$, thus forming a tree.
-\end{proof}
-
-
-
 %------------------------------------------------------------
 
 \beforesection
@@ -1617,7 +1662,7 @@ The resulting proof net is $\itn\delta$ modulo a permutation of weight absorbers
 \aftersubsection
 It will be shown that proof net rewiring $\itn\gamma\perm\itn\delta$ is sound for \capsabbrev{ncg}-reconfiguration, $\gamma\perm\delta$.
 %
-To each proof net $\links$ for an encoded constraint graph $\itn G$ we will associate a partial configuration $\gamma=\coitn\links$, such that 1) a rewiring step $\links\perm*\links$ corresponds to a reconfiguration path $\coitn\links\perm\coitn{\links'}$, and 2) it is a retraction of the encoding of configurations, $\coitn{\itn\gamma}=\gamma$.
+To each proof net $\links$ for an encoded constraint graph $\itn G$ we will associate a partial configuration $\gamma=\coitn\links$, such that 1) a rewiring step $\links\perm*\links$ corresponds to a reconfiguration path $\coitn\links\perm\coitn{\links'}$, and 2) the function $\coitn-$ is a retraction of the encoding of configurations, $\coitn{\itn\gamma}=\gamma$.
 
 
 
