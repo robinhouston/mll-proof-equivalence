@@ -978,35 +978,35 @@ The central node has inflow constraint 2, the thick blue (dark grey) edge has we
 
 \begin{figure}\color{red}
 $
-\quad
-\vc{\begin{tikzpicture}[x=3mm,y=3mm]
+~
+\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
 	\draw[ncl2,->-] (0,0) -- (3,0);
 	\draw[ncl1,->-] (3,0) -- (5,2);
 	\draw[ncl1,->-] (3,0) -- (5,-2);
 	\node[nclnode] at (3,0) {};
 \end{tikzpicture}}
-\,\perm*\hfill
-\vc{\begin{tikzpicture}[x=3mm,y=3mm]
+\hfill\perm*\,
+\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
 	\draw[ncl2,->-] (0,0) -- (3,0);
 	\draw[ncl1,-<-] (3,0) -- (5,2);
 	\draw[ncl1,->-] (3,0) -- (5,-2);
 	\node[nclnode] at (3,0) {};
 \end{tikzpicture}}
-\,\perm*\hfill
-\vc{\begin{tikzpicture}[x=3mm,y=3mm]
+\hfill\perm*\,
+\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
 	\draw[ncl2,->-] (0,0) -- (3,0);
 	\draw[ncl1,-<-] (3,0) -- (5,2);
 	\draw[ncl1,-<-] (3,0) -- (5,-2);
 	\node[nclnode] at (3,0) {};
 \end{tikzpicture}}
-\,\perm*\hfill
-\vc{\begin{tikzpicture}[x=3mm,y=3mm]
+\hfill\perm*\,
+\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
 	\draw[ncl2,-<-] (0,0) -- (3,0);
 	\draw[ncl1,-<-] (3,0) -- (5,2);
 	\draw[ncl1,-<-] (3,0) -- (5,-2);
 	\node[nclnode] at (3,0) {};
 \end{tikzpicture}}
-\quad
+~
 $
 
 \smallskip
@@ -1083,6 +1083,21 @@ We will demonstrate the \capsabbrev{pspace}-hardness of \capsabbrev{mll} proof e
 
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+\begin{figure*}
+\color{red}
+\[
+\vc{\scalebox{0.36}{\BIGexample 3}}
+\quad\perm\quad
+\vc{\scalebox{0.36}{\BIGexample 2}}
+\quad\perm\quad
+\vc{\scalebox{0.36}{\BIGexample 1}}
+\]
+\caption{Rewiring three edge-gadgets connecting to a single vertex-gadget}
+\label{fig:connection example}
+\end{figure*}
+
 
 \subsection*{The encoding}
 
