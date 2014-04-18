@@ -22,9 +22,9 @@
 \shortJournalNames
 \makeTheoremDefs
 
-\let\beforesection=\medskip
-\let\aftersection=\noindent
-\let\aftersubsection=\noindent
+\let\beforesection=\relax%\medskip
+\let\aftersection=\relax%\noindent
+\let\aftersubsection=\relax%\noindent
 
 \let\capsabbrev=\uppercase
 
@@ -42,10 +42,14 @@
  {Kiln Enterprises}
  {robin@kiln.it}
 
+\exclusivelicense
 \conferenceinfo{CSL-LICS 2014}{July 14--18, 2014, Vienna, Austria} 
 \copyrightyear{2014} 
 \copyrightdata{978-1-4503-2886-9}
-\doi{nnnnnnn.nnnnnnn}
+\doi{2603088.2603126}
+
+% FOR PERSONAL USE, ADD:
+%"© [Owner] [Year]. This is the author's version of the work. It is posted here for your personal use. Not for redistribution. The definitive version was published in {Source Publication}, http://dx.doi.org/10.1145/{number}."
 
 %============================================================
 
@@ -89,7 +93,7 @@ So the question remains whether there exist fully canonical proof nets for full 
 
 In this paper we establish that the proof equivalence problem for multiplicative linear logic with units is \capsabbrev{pspace}-complete. It follows that there can be no satisfactory canonical notion of proof net: 
 \color{red}
-if a notion of proof net existed where both the translation from proofs to nets and equality of proof nets are polynomial-time computable, this would imply that \capsabbrev{p}\,=\,\capsabbrev{pspace}.
+if a notion of proof net were to exist where both the translation from proofs to nets and equality of proof nets are polynomial-time computable, this would imply that \capsabbrev{p}\,=\,\capsabbrev{pspace}.
 \color{black}
 
 
@@ -571,7 +575,8 @@ $
 %%\capsabbrev{pncg}-reconfiguration is \capsabbrev{pspace}-complete.
 %\end{proposition}
 
-
+\noindent
+%
 We will demonstrate the \capsabbrev{pspace}-hardness of \capsabbrev{mll} proof equivalence by an encoding of \capsabbrev{ncg}-reconfiguration in \capsabbrev{mll} proof nets.
 
 
@@ -873,7 +878,8 @@ The standard linkings defined in the \color{red} second \color{black} and third 
 
 \begin{proposition}
 \label{prop:element linkings}
-The standard linkings of Definition~\ref{def:standard linkings} are proof nets.
+%The standard linkings of Definition~\ref{def:standard linkings} are proof nets.
+Standard linkings are proof nets.
 \end{proposition}
 
 
