@@ -49,7 +49,8 @@
 \doi{2603088.2603126}
 
 % FOR PERSONAL USE, ADD:
-%"© [Owner] [Year]. This is the author's version of the work. It is posted here for your personal use. Not for redistribution. The definitive version was published in {Source Publication}, http://dx.doi.org/10.1145/{number}."
+
+%"© [Owner] [Year]. This is the author's version of the work. It is posted here for your personal use. Not for redistribution. The definitive version was published in {Source Publication}, http://dx.doi.org/10.1145/{number}."
 
 %============================================================
 
@@ -1502,19 +1503,38 @@ After closing the box of each $W$, each edge-gadget in the box of $\itn v$ becom
 
 
 
+Finally, if two connected configurations $\gamma\perm\delta$ are encoded individually as $\itn\gamma$ and $\itn\delta$, these may not be equivalent simply because their parity happens to be odd.
+%
+For that reason we shall adjust the encoding of the second to guarantee an even parity between them.
+
+
+\begin{definition}
+%
+Let $\itn\delta'$ be $\itn\delta$ with the first two weight absorbers exchanged.
+%
+For configurations $\gamma$ and $\delta$ for $G$, let $\itn\delta_\gamma$ be $\itn\delta$ if it has even parity with $\itn\gamma$, and $\itn\delta'$ otherwise.
+%
+\end{definition}
+
+
+
+
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 \subsection*{Completeness}
 
 \aftersubsection
-Given a reconfiguration path $\gamma\perm\delta$ over total configurations, we will demonstrate a rewiring sequence between $\itn\gamma$ and $\itn\delta$ up to, possibly, a single exchange of two links in $\itn\delta$.
+Given a reconfiguration path $\gamma\perm\delta$ over total configurations, we will demonstrate a rewiring sequence between $\itn\gamma$ and $\itn\delta_\gamma$.
 %
-The central part of the argument will be to show how the weight element linking to a constraint element may be exchanged for another.
+The central part of the argument will be to show how the weight element linking to a constraint element may be exchanged for another (Lemma~\ref{lem:octopus roll}).
 %
-Once the weight elements of an edge-gadget are no longer connected to any constraint elements, the edge-gadget may straightforwardly be moved from one vertex-gadget to another by re-attaching its indicator link.
+Before and after the exchange, the constraint element and the weight element connecting to it will be in a standard linking.
 %
-Throughout the rewiring process, weight elements and constraint elements will be kept in a standard linking, and according to the connectivity specified by the target configuration $\itn\delta$.
+
+
+
+Once the weight elements of an edge-gadget are no longer connected to any constraint elements, the edge-gadget becomes mobile, and may straightforwardly be moved from one vertex-gadget to another by re-attaching its indicator link.
 %
 Linkings between weight elements and weight absorbers will remain arbitrary, and will be re-adjusted to match $\itn\delta$ at the end of the process.
 
@@ -1612,59 +1632,47 @@ The link from $i$ is re-attached to $v$ to yield the final configuration.
 
 In the exchange of weight elements in the above lemma, weight elements link to weight absorbers in arbitrary fashion.
 %
-The next lemma will demonstrate how weight absorbers can be exchanged freely, but only with two exchanges at once. 
+\color{red}
+To be able to correct for this, the next lemma will demonstrate that, modulo parity, weight absorbers can be re-arranged at will.
+
 
 
 
 \begin{lemma}
 \label{lem:permute weight absorbers}
-If $\links$ is a well linked proof net for $\itn G$ with a mobile edge-gadget $\itn e$, and $\links'$ agrees with $\links$ up to an even permutation of weight absorbers, then $\links\perm\links'$.
+If $\links$ and $\links'$ are well-linked proof nets for $\itn G$ that are equal up to an even permutation of weight absorbers, then $\links\perm\links'$ if $\links$ and $\links'$ have at least one mobile edge-gadget $\itn e$.
 \end{lemma}
 
 \begin{proof}
-Let $e_0$ be the indicator of $\itn e$; since $\itn e$ is mobile, $e_0$ may re-attach anywhere within the proof net.
+To reconfigure $\links'$ into $\links$, we will use the double exchange operation of Lemma~\ref{lem:double exchange} to exchange two arbitrary weight absorbers at a time, as well as two chosen jumps in the mobile edge-gadget $\itn e$.
 %
-Let $e_1$ and $e_2$ be arbitrary other $\bot$-occurrences in $\itn e$.
-
-\begin{enumerate}
-
-	\item
-To exchange two weight absorbers $v$ and $w$ linked to by other edge-gadgets than $\itn e$, attach $e_0$ to $v$, and apply Lemma~\ref{lem:double exchange} to exchange $v$ and $w$ while also exchanging the targets of $e_0$ and $e_1$.
-
-	\item
-To reinstate $e_0$ as the connection between $\itn e$ and the remainder of the proof net, either perform another exchange as above, or exchange $v$ and $w$ twice again, once exchanging also the targets of $e_1$ and $e_2$, and once exchanging also the targets of $e_2$ and $e_0$.
-
-	\item
-To exchange a weight absorber $w$ linked from a $\named d\bot$ outside $\itn e$ for the target $v$ of $e_1$, first attach $e_0$ to $w$, then re-attach $d$ to $v$.
+Firstly, let $e_0$ be the indicator of $\itn e$.
 %
-At this point, $e_1$ forms the only connect between $\itn e$ and the remainder of the proof net; to reinstate $e_0$ in this role, do as above, producing a net effect of cycling the targets of $e_1$, $e_2$, and $d$.
+Note that since $\itn e$ is mobile, $e_0$ may re-attach anywhere within the proof net.
 
-	\item
-Finally, to exchange weight absorbers $v$ and $w$ linked by $\itn e$, attach $e_0$ to the indicator target of a vertex-gadget where also another edge-gadget $\itn d$ is connected, with indicator $d_0$ and an arbitrary other $\bot$-occurrence $d_1$.
+
+We will need two basic operations: 1) to exchange two arbitrary weight absorbers $v$ and $w$ linked from outside $\itn e$; and 2) to exchange an arbitrary weight absorber linked from inside $\itn e$ with one linked from outside $\itn e$.
 %
-Connect $d_0$ to $v$, and apply Lemma~\ref{lem:double exchange} to exchange $v$ and $w$, as well as exchanging the targets of $d_0$ and $d_1$.
+Since we are using double exchanges, each operation will also exchange two arbitrary jumps from $\itn e$ (but not that from $e_0$).
 %
-A second such exchange is needed to re-attach $d_0$ and $d_1$ to their original targets.
+By using operation 1) twice, we obtain a third, where four arbitrary weight absorbers linked from inside $\itn e$ are pairwise exchanged.
+%
+Since $\links'$ and $\links$ differ by an even permutation of weight absorbers, these three operations together give $\links'\sim\links$.
 
-\end{enumerate}
 
-In each case, if one of the weight absorbers exchanged is linked to by multiple $\bot$-occurrences within the same weight element, these may be temporarily attached elsewhere.
+To perform operation 1), exchanging $v$ and $w$ as well as the jumps from $e_1$ and $e_2$ in $\itn e$, first connect $e_0$ to $v$.
+%
+Then apply Lemma~\ref{lem:double exchange} three times: exchanging $v$ and $w$, and the targets of $e_0$ and $e_1$; exchanging $w$ and $v$, and the targets of $e_1$ and $e_2$; and exchanging $v$ and $w$, and the targets of $e_2$ and $e_0$.
+%
+The result is a net exchange of $v$ and $w$, and the targets of $e_1$ and $e_2$.
+
+
+Operation 2) is performed similarly.
+%
+In both cases, if one of the weight absorbers exchanged is linked to by multiple $\bot$-occurrences within the same weight element, these may be temporarily attached elsewhere.
 %
 \end{proof}
-
-
-
-If two connected configurations $\gamma\perm\delta$ are encoded individually as $\itn\gamma$ and $\itn\delta$, these may not be equivalent simply because their parity happens to be odd.
-%
-For that reason we shall adjust the encoding of the second to guarantee an even parity between them.
-
-\begin{definition}
-%
-Let $\itn\delta'$ be $\itn\delta$ with the first two weight absorbers exchanged.
-%
-For configurations $\gamma$ and $\delta$ for $G$, let $\itn\delta_\gamma$ be $\itn\delta$ if it has even parity with $\itn\gamma$, and $\itn\delta'$ otherwise.
-%
-\end{definition}
+\color{black}
 
 
 
