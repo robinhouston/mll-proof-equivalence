@@ -769,7 +769,6 @@ The encoding will be made formal in Section~\ref{sec:correctness}; first we will
 
 \color{black}
 
-
 %------------------------------------------------------------
 
 \beforesection
@@ -781,13 +780,14 @@ The encoding will be made formal in Section~\ref{sec:correctness}; first we will
 %
 In this section we will explore the global rewiring behaviour of proof nets.
 %
-We will look at notions of subnets, and we will give a simple account of equivalence for the fragment of \capsabbrev{mll} that omits the par.
-%
-Furthermore, we will introduce a notion of relative \emph{parity} between nets, which if odd, guarantees inequivalence.
+We will look at notions of subnets; we will introduce a notion of relative \emph{parity} between nets, which if odd, guarantees inequivalence; and we will give a simple account of equivalence for the fragment of \capsabbrev{mll} that omits the par.
 
+
+\color{red}
+The notions and results introduced in this section will be used in the main proofs of the paper, in Section~\ref{sec:correctness}, which show that the encoding of \capsabbrev{ncg}-reconfiguration in \capsabbrev{MLL} proof equivalence, as described informally in the previous section, is correct.
+\color{black}
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 
 \subsection*{Subnets}
 
@@ -888,9 +888,8 @@ Given a boxing $s$, it follows by induction on the nesting of boxes that the gra
 %
 In the other direction, given a sequentialisation of $(\Gamma,\links)$, a box $s(v)\leq\Gamma$ for each $\named v\parr$ is found by taking the conclusion $\Delta, A\named v\parr B$ of its introduction rule, below.
 \[
-	\infer[\MLLlabel p]{\Delta,A\named v\parr B}{\Delta,A,B}
+	\infer[\MLLlabel p]{\Delta,A\named v\parr B}{\Delta,A,B} \qedhere
 \]
-\vskip-12pt
 \end{proof}
 
 \color{black}
@@ -978,16 +977,25 @@ We will denote the empire of $v$ in $\links$ by $\emp v$ (used both as a graph a
 
 \begin{proposition}[{\cite[Proposition 2.b]{Bellin-vandeWiele-1995}}]
 \label{prop:empire propagation}
-The empire $\emp v$ is determined by propagation from $v$: 1) through links; \color{red} 2) up towards subformulae; 3) into a tensor if one of its subformulae is in $\emp v-\{v\}$; 4) into a par if all its subformulae are in $\emp v-\{v\}$.%;\\ 5) except never into a par or tensor if $v$ is a subformula.
+The empire $\emp v$ is determined by propagation from $v$: 1) through links; \color{red} 2) up towards subformulae; 3) into a tensor if one of its subformulae is in $\emp v-\{v\}$; 4) into a par if all its subformulae are in $\emp v-\{v\}$.
 \end{proposition}
 
 
-Empires are connected to rewiring in the following ways.
+\noindent
+\color{red}
+The following three lemmata show how empires are connected to rewiring.
+%
+Firstly (Lemma~\ref{lem:rewiring within empire}), a jump from $\named v\bot$ may be rewired to exactly those $\1$-occurences that are in the empire of $v$.
+%
+Secondly (Lemma~\ref{lem:rewiring preserves empire}), rewiring this jump preserves the empire of $v$, up to that rewiring.
+%
+Thirdly (Lemma~\ref{lem:rewiring affects empires}), the empire of any other vertex $w$ will grow or shrink, or neither, but not both.
+\color{black}
 
 
 \begin{lemma}
 \label{lem:rewiring within empire}
-For a proof net $(\Gamma,\links)$ where $\links(a)=v$ and $w$ names a $\1$-occurrence in $\Gamma$, the following are equivalent:
+For a proof net $(\Gamma,\links)$ where $\links(a)=v$, and $w$ names a $\1$-occurrence in $\Gamma$, the following are equivalent:
 %
 \begin{enumerate}
 	\item
@@ -1015,12 +1023,6 @@ Finally, it is shown that 1 implies 3, by contraposition.
 If for some switching of $\links$ the path $\path vw$ passes through $a$, then in $\links'$ there is no path $\path av$ (and two paths $\path aw$) for that switching, so that $\links'$ is not a net.
 %
 \end{proof}
-
-\color{red}
-Rewiring a jump from $\named v\bot$ preserves the empire of $v$, up to that rewiring, by the first lemma below.
-%
-By the second lemma, the empire of any other vertex $w$ grows or shrinks, or neither, but not both.
-\color{black}
 
 \begin{lemma}
 \label{lem:rewiring preserves empire}
@@ -1059,10 +1061,10 @@ If the empire of $v$ includes $w$ but not $w'$, then it is propagated through $a
 If the empire of $v$ includes $w'$ but not $w$, then $\Delta\leq\Delta'$.
 
 	\item
-Otherwise, $\Delta=\Delta'$.
+Otherwise, $\Delta=\Delta'$. \hfill\qedhere
 \end{enumerate}
-\vskip-12pt
 \end{proof}
+
 
 
 \begin{figure*}
@@ -1086,129 +1088,17 @@ Otherwise, $\Delta=\Delta'$.
 \end{figure*}
 
 
-
-
-% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-\subsection*{Equivalence without $\parr$}
-
-\aftersubsection
-A basic observation on \capsabbrev{mll} is that the identity proof for $\bot\tn\bot,\1\parr\1$ is not equivalent to the `symmetry' or `twist' proof for the same sequent.
-%
-This will hold in general: exchanging the targets of two links generally results in an inequivalent net, in particular when the $\bot$-instances are connected by a tensor.
-%
-However, a double such exchange commonly does give an equivalent net.
-
-
-\begin{lemma}
-\label{lem:double exchange}
-Let $\links$ be a proof net with for every switching a path
-$\links(a){\xedge}a{\xpath}b{\xedge}\links(b){\xpath}\links(c){\xedge}c{\xpath}d{\xedge}\links(d)$.
-%
-Then $\links\perm\links'$ where $\links'(a)=\links(b)$ and $\links'(b)=\links(a)$, $\links'(c)=\links(d)$, and $\links'(d)=\links(c)$, and $\links'(z)=\links(z)$ otherwise.
-%
-%Let $\links$ be a proof net where $\links(a)=u$, $\links(b)=v$, $\links(c)=x$, and $\links(d)=y$, and for any switching the path $\path uy$ passes through $\edge bv$ and $\edge xc$.
-%
-%Then $\links\perm\links'$ where $\links'(a)=v$, $\links'(b)=u$, $\links'(c)=y$, and $\links'(d)=x$, and $\links'(z)=\links(z)$ otherwise.
-\end{lemma}
-
-\begin{proof}
-By the rewiring path shown in Figure~\ref{fig:double exchange}.
-\end{proof}
-
-
-This dynamic will be used to characterise rewiring in the fragment of \capsabbrev{mll} that omits the par.
-%
-The following standard notion of \emph{balance} characterises provability for it.
-
-
-\begin{definition}
-The \emph{balance} of a sequent is the number of $\bot$s minus the number of $\parr$s and commas.
-%
-A sequent is \emph{balanced} if its balance is zero.
-\end{definition}
-
-
-\begin{proposition}
-\label{prop:unbalanced then uninhabited}
-An unbalanced sequent is uninhabited.
-\end{proposition}
-
-
-Let a \emph{basic} sequent be one of formulae constructed only over $\1$, $\bot$, and $\tn$.
-%
-After removing \color{red}dangling \color{black} $\bot$-formulae and replacing subformulae $\1\tn A$ with $A$, basic sequents consist of formulae of the form $1$ or $\bigtn(\bot^n)$ with $n\geq2$.
-
-
-\begin{proposition}
-A basic sequent is inhabited if and only if it is balanced.
-\end{proposition}
-
-\begin{proposition}
-A basic sequent $\bigtn(\bot^n),\1^n$ is inhabited by exactly $n!$ inequivalent proof nets.
-\end{proposition}
-
-\begin{proposition}
-\label{prop:level0 max binary}
-%
-A basic sequent with at least two tensor-formulae has at most two equivalence classes of proof nets.
-%
-\end{proposition}
-
-
-\begin{proof}
-By induction on the size of a sequent $\Gamma$.
-%
-The base case is the sequent $\1,\1,\bot\tn\bot$, which has two inequivalent proof nets.
-%
-For the inductive step,
-%
-\color{red}
-let $\Gamma=\Gamma',A\tn\named a\bot,\named z\1$ where $A\tn\named a\bot$ is a largest $\tn$-formula in $\Gamma$.
-%
-It will be shown that any net $\links$ is equivalent to one $\links'$ where $\links'(a)=z$; then by induction, the subnet $\links'$ restricted to $\Gamma',A$ belongs to one of two equivalence classes.
-%
-To find $\links'$, there are two cases.
-
-1) The path $\path az$ is via $\links(a)$.
-%
-If $\links(a)=z$, we are done. Otherwise, by Lemma~\ref{lem:rewiring within empire} $\links'$ may be obtained from $\links$ by changing only $\links'(a)=z$.
-
-
-2) The path $\path az$ is via some $\named b\bot$ in $A$.
-%
-Firstly, if $\links(b)\neq z$, use Lemma~\ref{lem:rewiring within empire} to re-attach $b$ to $z$.
-%
-Next, let $\named c\bot$ and $\named d\bot$ be occurrences in a separate formula $B$ such that $c$ links to the same $\1$-occurrence as some $\bot$ in $A$.
-%
-Then $\links'$ is obtained by linking $c$ to $b$, and applying Lemma~\ref{lem:double exchange} to exchange the targets of $a$ and $b$, as well as those of $c$ and $d$.
-%
-\end{proof}
-\color{black}
-
-%
-%To find $\links'$, if $\links(a)=z$ we are done.
-%%
-%Next, if the path from $\links(a)$ to $z$ does not pass through $a$, then by Lemma~\ref{lem:rewiring within empire} $\links'$ may be obtained from $\links$ by changing only $\links'(a)=z$.
-%%
-%Thirdly, let $\links(b)=z$ for a $\named b\bot$ in $A$.
-%%
-%Let $\named c\bot$ and $\named d\bot$ be occurrences in a separate formula $B$ such that $c$ links to the same $\1$-occurrence as some $\bot$ in $A$.
-%%
-%Then $\links'$ is obtained by first linking $c$ to $b$, and then applying Lemma~\ref{lem:double exchange} to exchange the targets of $a$ and $b$, as well as the targets of $c$ and $d$.
-%
-%
-%Finally, let the path from $a$ to $z$ pass $\named b\bot$ in $A$.
-%%
-%Then using Lemma~\ref{lem:rewiring within empire} re-attach $b$ to $z$, and repeat as above.
-
-
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 \subsection*{Parity}
 
 \aftersubsection
+A basic observation on \capsabbrev{mll} is that the identity proof for $\bot\tn\bot,\1\parr\1$ is not equivalent to the `symmetry' or `twist' proof for the same sequent.
+%
+This will hold in general: exchanging the targets of two links generally results in an inequivalent net, in particular when the $\bot$-instances are connected by a tensor.
+
+
+
 We shall associate a \emph{parity} with any two linkings $\links$ and $\links'$ of the same sequent $\Gamma$. We shall find that the parity of equivalent linkings is always even; and that the converse holds when $\Gamma$ is a basic sequent.
 
 For this argument we shall assume that the connectives $\tn$ and $\parr$ are n-ary, and that every argument of a $\tn$ is a $\parr$ and vice versa. Assume also that $\Gamma$ consists of a single formula, if necessary by introducing a $\parr$ at the root. Now fix an arbitrary switching of $\Gamma$; this switching together with a linking $\links$ defines a tree whose vertices are the subformulae of $\Gamma$ and whose edges are the edges of the chosen switching together with the links of $\links$. Take the root of the formula $\Gamma$ to be the root of this tree.
@@ -1312,11 +1202,133 @@ Secondly, the problem that proof nets up to a single exchange of links are gener
 It will prove a minor technical distraction, that we will call the `parity problem'.
 
 
+
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+\subsection*{Equivalence without $\parr$}
+
+\aftersubsection
+
+
+
+
+A basic observation on \capsabbrev{mll} is that the identity proof for $\bot\tn\bot,\1\parr\1$ is not equivalent to the `symmetry' or `twist' proof for the same sequent.
+%
+This will hold in general: exchanging the targets of two links generally results in an inequivalent net, in particular when the $\bot$-instances are connected by a tensor.
+%
+However, a double such exchange commonly does give an equivalent net.
+
+
+\begin{lemma}
+\label{lem:double exchange}
+Let $\links$ be a proof net with for every switching a path
+$\links(a){\xedge}a{\xpath}b{\xedge}\links(b){\xpath}\links(c){\xedge}c{\xpath}d{\xedge}\links(d)$.
+%
+Then $\links\perm\links'$ where $\links'(a)=\links(b)$ and $\links'(b)=\links(a)$, $\links'(c)=\links(d)$, and $\links'(d)=\links(c)$, and $\links'(z)=\links(z)$ otherwise.
+%
+%Let $\links$ be a proof net where $\links(a)=u$, $\links(b)=v$, $\links(c)=x$, and $\links(d)=y$, and for any switching the path $\path uy$ passes through $\edge bv$ and $\edge xc$.
+%
+%Then $\links\perm\links'$ where $\links'(a)=v$, $\links'(b)=u$, $\links'(c)=y$, and $\links'(d)=x$, and $\links'(z)=\links(z)$ otherwise.
+\end{lemma}
+
+\begin{proof}
+By the rewiring path shown in Figure~\ref{fig:double exchange}.
+\end{proof}
+
+
+This dynamic will be used to characterise rewiring in the fragment of \capsabbrev{mll} that omits the par.
+%
+%The following standard notion of \emph{balance} characterises provability for it.
+
+
+\begin{definition}
+The \emph{balance} of a sequent is the number of $\bot$s minus the number of $\parr$s and commas.
+%
+A sequent is \emph{balanced} if its balance is zero.
+\end{definition}
+
+
+\begin{proposition}
+\label{prop:unbalanced then uninhabited}
+An unbalanced sequent is uninhabited.
+\end{proposition}
+
+
+Let a \emph{basic} sequent be one of formulae constructed only over $\1$, $\bot$, and $\tn$.
+%
+After removing \color{red}dangling \color{black} $\bot$-formulae and replacing subformulae $\1\tn A$ with $A$, basic sequents consist of formulae of the form $1$ or $\bigtn(\bot^n)$ with $n\geq2$.
+
+
+\begin{proposition}
+A basic sequent is inhabited if and only if it is balanced.
+\end{proposition}
+
+\begin{proposition}
+A basic sequent $\bigtn(\bot^n),\1^n$ is inhabited by exactly $n!$ inequivalent proof nets.
+\end{proposition}
+
+\begin{proposition}
+\label{prop:level0 max binary}
+%
+A basic sequent with at least two tensor-formulae has at most two equivalence classes of proof nets.
+%
+\end{proposition}
+
+
+\begin{proof}
+By induction on the size of a sequent $\Gamma$.
+%
+The base case is the sequent $\1,\1,\bot\tn\bot$, which has two inequivalent proof nets.
+%
+For the inductive step,
+%
+\color{red}
+let $\Gamma=\Gamma',A\tn\named a\bot,\named z\1$ where $A\tn\named a\bot$ is a largest $\tn$-formula in $\Gamma$.
+%
+It will be shown that any net $\links$ is equivalent to one $\links'$ where $\links'(a)=z$; then by induction, the subnet $\links'$ restricted to $\Gamma',A$ belongs to one of two equivalence classes.
+%
+To find $\links'$, there are two cases.
+
+1) The path $\path az$ is via $\links(a)$.
+%
+If $\links(a)=z$, we are done. Otherwise, by Lemma~\ref{lem:rewiring within empire} $\links'$ may be obtained from $\links$ by changing only $\links'(a)=z$.
+
+
+2) The path $\path az$ is via some $\named b\bot$ in $A$.
+%
+Firstly, if $\links(b)\neq z$, use Lemma~\ref{lem:rewiring within empire} to re-attach $b$ to $z$.
+%
+Next, let $\named c\bot$ and $\named d\bot$ be occurrences in a separate formula $B$ such that $c$ links to the same $\1$-occurrence as some $\bot$ in $A$.
+%
+Then $\links'$ is obtained by linking $c$ to $b$, and applying Lemma~\ref{lem:double exchange} to exchange the targets of $a$ and $b$, as well as those of $c$ and $d$.
+%
+\end{proof}
+\color{black}
+
+%
+%To find $\links'$, if $\links(a)=z$ we are done.
+%%
+%Next, if the path from $\links(a)$ to $z$ does not pass through $a$, then by Lemma~\ref{lem:rewiring within empire} $\links'$ may be obtained from $\links$ by changing only $\links'(a)=z$.
+%%
+%Thirdly, let $\links(b)=z$ for a $\named b\bot$ in $A$.
+%%
+%Let $\named c\bot$ and $\named d\bot$ be occurrences in a separate formula $B$ such that $c$ links to the same $\1$-occurrence as some $\bot$ in $A$.
+%%
+%Then $\links'$ is obtained by first linking $c$ to $b$, and then applying Lemma~\ref{lem:double exchange} to exchange the targets of $a$ and $b$, as well as the targets of $c$ and $d$.
+%
+%
+%Finally, let the path from $a$ to $z$ pass $\named b\bot$ in $A$.
+%%
+%Then using Lemma~\ref{lem:rewiring within empire} re-attach $b$ to $z$, and repeat as above.
+
+
 %------------------------------------------------------------
 
 \beforesection
 
-\section{Correctness of the encoding}
+\section{Formalising the encoding}
 \label{sec:correctness}
 
 \aftersection
@@ -1592,7 +1604,7 @@ Lemma~\ref{lem:double exchange} allows to swap the targets of the link from $B$ 
 	\item
 The link from $i$ is re-attached to $v$ to yield the final configuration.
 %
-\displayOcto{\octorollA2}%\QEDhere}
+\displayOcto{\octorollA2}\qedhere
 \end{enumerate}
 \end{proof}
 
