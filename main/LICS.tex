@@ -1524,6 +1524,8 @@ For configurations $\gamma$ and $\delta$ for $G$, let $\itn\delta_\gamma$ be $\i
 
 \subsection*{Completeness}
 
+\color{red}
+
 \aftersubsection
 Given a reconfiguration path $\gamma\perm\delta$ over total configurations, we will demonstrate a rewiring sequence between $\itn\gamma$ and $\itn\delta_\gamma$.
 %
@@ -1531,18 +1533,25 @@ The central part of the argument will be to show how the weight element linking 
 %
 Before and after the exchange, the constraint element and the weight element connecting to it will be in a standard linking.
 %
+The linking between weight elements and weight absorbers need not be standard: it will be shown that weight absorbers may be freely rearranged, as long as parity remains even (Lemma~\ref{lem:permute weight absorbers}).
 
 
 
-Once the weight elements of an edge-gadget are no longer connected to any constraint elements, the edge-gadget becomes mobile, and may straightforwardly be moved from one vertex-gadget to another by re-attaching its indicator link.
+For a reconfiguration step $\gamma\perm*\delta$ where the edge $e$ changes direction from $v$ to $w$, the rewiring sequence $\itn\gamma\perm\itn\delta_\gamma$ will be as follows.
 %
-Linkings between weight elements and weight absorbers will remain arbitrary, and will be re-adjusted to match $\itn\delta$ at the end of the process.
-
-
-
-In a proof net for $\itn G$, an edge-gadget $\itn e$ is \emph{well linked} if: 1) its indicator connects to the indicator target of an appropriate vertex-gadget $\itn v$, and 2) each weight element is either in a standard linking with a constraint element of $\itn v$, or linked only to weight absorbers.
+First, the weight elements of edge-gadgets connecting to $\itn v$ are rearranged to match their target configuration, in $\itn\delta_\gamma$, which means the weight elements of $\itn e$ connect only to weight absorbers.
 %
-A well-linked edge-gadget is \emph{mobile} if all its weight elements connect to weight absorbers.
+Then $\itn e$ is moved from $\itn v$ to $\itn w$ by rewiring its indicator link, from the indicator of $\itn v$ to that of $\itn w$.
+%
+Next, the weight elements connecting to $\itn w$ are rewired to match $\itn\delta_\gamma$, and finally, weight absorbers are rearranged to match $\itn\delta_\gamma$ as well.
+
+
+
+To describe the intermediate stages of such a rewiring sequence, call an edge-gadget $\itn e$ \emph{well linked} if: 1) its indicator connects to the indicator target of an appropriate vertex-gadget $\itn v$, and 2) each weight element is either in a standard linking with a constraint element of $\itn v$, or linked only to weight absorbers (in arbitrary fashion).
+%
+\color{black}
+%
+A well-linked edge-gadget is \emph{mobile} if all its weight elements connect only to weight absorbers.
 %
 In the following main lemma we will exchange the weight element linking to a constraint element.
 %
@@ -1596,7 +1605,7 @@ Secondly, the link from the first $\bot$ of $D$ is moved to $X$, and those from 
 
 
 	\item\label{item:exchange added}
-In the present configuration, the links from the weight elements form two subnets: one over the sub-sequents $A,B,X,D,1^m$, and one over the sub-sequent $C,Y,E,F,1^k$, for some $m$ and $k$.
+In the present configuration, the links from the weight elements form two subnets: one over the sub-sequent $A,B,X,D,1^m$, and one over the sub-sequent $C,Y,E,F,1^k$, for some $m$ and $k$.
 %
 By Proposition~\ref{prop:parity determines equivalence}, these subnets are equivalent to any other over the same sequent, as long as their parity is preserved.
 %
