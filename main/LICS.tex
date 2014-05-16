@@ -65,6 +65,7 @@
 \category{F.4.1}{Mathematical logic and formal languages}{Mathematical logic}[Proof theory]
 \category{F.2.2}{Analysis of algorithms and problem complexity}{Nonnumerical algorithms and problems}[Complexity of proof procedures]
 
+\keywords{linear logic, proof equivalence, proof nets, constraint logic, \capsabbrev{pspace}-completeness}
 
 \begin{abstract}
 \capsabbrev{mll} proof equivalence is the problem of deciding whether two proofs in multiplicative linear logic are related by a series of inference permutations.
@@ -88,14 +89,16 @@ An important consequence of the result is that the existence of a satisfactory n
 %
 The question of equivalence of proofs goes back to Lambek \cite{Lambek-1968}, who realised that the new tool of category-theoretic logic gave a notion of proof equivalence that was coarser and better-behaved than syntactic equality.
 
-Later, a striking technical innovation of linear logic was the introduction of proof nets \cite{Girard-1987,Danos-Regnier-1989}, which define a canonical form for proofs in the unitless fragment of multiplicative linear logic---two proofs are equivalent if and only if they have the same proof net---so proof nets offer a simple decision procedure for proofs in this fragment. This naturally raises the question whether proof nets can be extended to work in the presence of units. The work in this direction begins with \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996} via \color{red}\cite{Lamarche-Strassburger-2006} \color{black} and perhaps culminates in \cite{HughesFreeStar,HughesMLLProofNets}; but these proof nets are not canonical and must be identified up to a rewiring equivalence.
+Later, a striking technical innovation of linear logic was the introduction of proof nets \cite{Girard-1987,Danos-Regnier-1989}, which define a canonical form for proofs in the unitless fragment of multiplicative linear logic---two proofs are equivalent if and only if they have the same proof net---so proof nets offer a simple decision procedure for proofs in this fragment. This naturally raises the question whether proof nets can be extended to work in the presence of units. The work in this direction begins with \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996} via \cite{Lamarche-Strassburger-2006} and perhaps culminates in \cite{HughesFreeStar,HughesMLLProofNets}; but these proof nets are not canonical and must be identified up to a rewiring equivalence.
 
 So the question remains whether there exist fully canonical proof nets for full \capsabbrev{mll}. Canonical proof nets have been found for several other fragments of linear logic: the combined multiplicative-additive fragment without units \cite{Hughes-vanGlabbeek-2005}, and the additive fragment, including the additive units \cite{Heijltjes-2011}.
 
-In this paper we establish that the proof equivalence problem for multiplicative linear logic with units is \capsabbrev{pspace}-complete. It follows that there can be no satisfactory canonical notion of proof net: 
-\color{red}
-if a notion of proof net were to exist where both the translation from proofs to nets and equality of proof nets are polynomial-time computable, this would imply that \capsabbrev{p}\,=\,\capsabbrev{pspace}.
-\color{black}
+In this paper we establish that the proof equivalence problem for multiplicative linear logic with units is \capsabbrev{pspace}-complete. 
+%
+This effectively rules out the existence of a satisfactory notion of proof net for \capsabbrev{mll} with units---one that reduces proof equivalence to syntactic equality, and where the translation from proofs to proof nets and equality of proof nets are both tractable.
+
+%It follows that there can be no satisfactory canonical notion of proof net: if a notion of proof net were to exist where both the translation from proofs to nets and equality of proof nets are polynomial-time computable, this would imply that \capsabbrev{p}\,=\,\capsabbrev{pspace}.
+
 
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -112,11 +115,61 @@ This is one of a class of problems called \emph{reconfiguration problems} \cite{
 %
 For example, the reconfiguration problem for boolean satisfiability (SAT) asks whether one satisfying assignment can be transformed into another by changing the value of one atomic formula at a time, without passing via a non-satisfying assignment.
 %
-It is not uncommon for an \capsabbrev{np}-complete problem to have an associated reconfiguration problem that is \capsabbrev{pspace}-complete \cite{ReconfigurationProblems}; one example is SAT-reconfiguration, which is \capsabbrev{pspace}-complete. \capsabbrev{mll} proof equivalence may be regarded as the reconfiguration problem associated with \capsabbrev{mll} proof search, which is \capsabbrev{np}-complete \cite{Kanovich-1992,Lincoln-Winkler-1994}.
+It is not uncommon for an \capsabbrev{np}-complete problem to have an associated reconfiguration problem that is \capsabbrev{pspace}-complete \cite{ReconfigurationProblems}; an example of this is SAT-reconfiguration. \capsabbrev{mll} proof equivalence may be regarded as the reconfiguration problem associated with \capsabbrev{mll} proof search, which is \capsabbrev{np}-complete \cite{Kanovich-1992,Lincoln-Winkler-1994}.
 
 %------------------------------------------------------------
+\beforesection
 
-\begin{figure}[!b]
+\section{\capsabbrev{mll}}
+
+\aftersection
+%
+The formulae of unit-only multiplicative linear logic are given by the following grammar.
+%
+\setMidspace{5pt}
+\[
+	A,B,C \Coloneq \bot \Mid 1 \Mid A\parr B \Mid A\tn B
+\]
+%
+The connectives $\tn$ and $\parr$ will be considered up to associativity, and \emph{duality} $\dual A$ is via DeMorgan.
+%
+A \emph{sequent} $\Gamma,\Delta$ will be a multiset of formulae.
+%
+Within a sequent, connectives and units will be \emph{named} with distinct elements from an arbitrary set of names, e.g.\
+\[
+	\named a1\named b\parr\named c1,\named d\bot\named e\tn\named f\bot~.
+\]
+%
+This allows to 1) identify \emph{occurrences} of subformulae uniquely by the name of their root connective, e.g.\ as $\named bA$, 2) distinguish the two proofs of the above sequent while using standard multiset sequents, and 3) easily extract proof nets, as graphs using the names of connectives as vertices.
+%
+Names will often be left implicit.
+
+
+
+Proofs are constructed from the inference rules in Figure~\ref{fig:MLL}, where the names of units and connectives are preserved through inferences.
+%
+Only cut-free proofs are considered, and no cut-rule is added.
+%
+\emph{Permutations} of inference rules are displayed in Figure~\ref{fig:permutations}; the symmetric variants of the last two permutations, \emph{par-tensor} and \emph{tensor-tensor}, have been omitted.
+
+
+
+\begin{definition}
+\label{def:equivalence}
+%
+\emph{Equivalence} $(\perm)$ of proofs in (cut-free, unit-only) multiplicative linear logic is the congruence generated by the permutations given in Figure~\ref{fig:permutations}.
+%
+\emph{\capsabbrev{mll}\ proof equivalence} is the problem of deciding whether two given proofs are equivalent.
+%
+\end{definition}
+
+
+The permutations of sequent proofs are exactly the identifications imposed by the categorical semantics of \capsabbrev{mll}, star-autonomous categories \cite{Barr-1991} (and semi-star-autonomous categories \cite{Houston-2008,Heijltjes-Strassburger} for \capsabbrev{mll} without units).
+%
+Proof equivalence for \capsabbrev{mll} is therefore equivalent to the \emph{word problem} for star-autonomous categories: the problem whether two term representations denote the same morphism in any star-autonomous category.
+
+
+\begin{figure}
 \quad\MLLrule b
 \hfill\MLLrule 1
 \hfill\MLLrule p
@@ -153,56 +206,6 @@ It is not uncommon for an \capsabbrev{np}-complete problem to have an associated
 \label{fig:permutations}
 \end{figure}
 
-\beforesection
-
-\section{\capsabbrev{mll}}
-
-\aftersection
-%
-The formulae of unit-only multiplicative linear logic are given by the following grammar.
-%
-\setMidspace{5pt}
-\[
-	A,B,C \Coloneq \bot \Mid 1 \Mid A\parr B \Mid A\tn B
-\]
-%
-The connectives $\tn$ and $\parr$ will be considered up to associativity, and \emph{duality} $\dual A$ is via DeMorgan.
-%
-A \emph{sequent} $\Gamma,\Delta$ will be a multiset of formulae.
-%
-Within a sequent, connectives and units will be \emph{named} with distinct elements from an arbitrary set of names, e.g.\
-\[
-	\named a1\named b\parr\named c1,\named d\bot\named e\tn\named f\bot~.
-\]
-%
-This allows to 1) identify \emph{occurrences} of subformulae uniquely by the name of their root connective, e.g.\ as $\named bA$, 2) distinguish the two proofs of the above sequent while using standard multiset sequents, and 3) easily extract proof nets, as graphs using the names of connectives as vertices.
-%
-Names will mostly be left implicit.
-
-
-
-Proofs are constructed from the inference rules in Figure~\ref{fig:MLL}, where the names of units and connectives are preserved through inferences.
-%
-Only cut-free proofs are considered, and no cut-rule is added.
-%
-\emph{Permutations} of inference rules are displayed in Figure~\ref{fig:permutations}; the symmetric variants of the last two permutations, \emph{par-tensor} and \emph{tensor-tensor}, have been omitted.
-
-
-
-\begin{definition}
-\label{def:equivalence}
-%
-\emph{Equivalence} $(\perm)$ of proofs in (cut-free, unit-only) multiplicative linear logic is the congruence generated by the permutations given in Figure~\ref{fig:permutations}.
-%
-\emph{\capsabbrev{mll}\ proof equivalence} is the problem of deciding whether two given proofs are equivalent.
-%
-\end{definition}
-
-
-The permutations of sequent proofs are exactly the identifications imposed by the categorical semantics of \capsabbrev{mll}, star-autonomous categories \cite{Barr-1991} (and semi-star-autonomous categories \cite{Houston-2008,Heijltjes-Strassburger} for \capsabbrev{mll} without units).
-%
-Proof equivalence for \capsabbrev{mll} is therefore equivalent to the \emph{word problem} for star-autonomous categories: the problem whether two representations denote the same morphism in any star-autonomous category.
-
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -236,12 +239,10 @@ For a sequent $\Gamma$,
 \noindent
 An edge $\edge a{\links(a)}$ in a proof net or switching graph is called a \emph{link} or a \emph{jump}.
 %
-\color{red}
 The restriction that jumps must target $\1$-occurrences (rather than any connective) is a convenience---it can be circumvented by replacing a subformula $A$ by the equivalent $A\tn\1$.
-\color{black}
+
 
 \begin{figure}
-\color{red}
 \[
 	\netA 1223 ~\perm*~
 	\netA 1323 ~\perm*~
@@ -263,9 +264,8 @@ A \emph{rewiring} $(\perm*)$ between proof nets is the redirection of exactly on
 \end{definition}
 
 \noindent
-\color{red}
 An example rewiring sequence is given in Figure~\ref{fig:net rewiring}, using the notation for proof nets introduced below.
-\color{black}
+
 
 
 To translate a sequent proof to a proof net requires to find a target for each jump from a $\bot$-formula.
@@ -293,7 +293,7 @@ $\Pi\toNet\links$ if for each $\named a\bot$ in $\Delta$, if $\Gamma$ is the con
 
 
 
-\begin{proposition}[\cite{Danos-Regnier-1989}, \color{red}\cite{Lamarche-Strassburger-2006}\color{black}]
+\begin{proposition}[\cite{Danos-Regnier-1989}, \cite{Lamarche-Strassburger-2006}]
 \label{prop:correctness and sequentialisation}
 %
 %
@@ -315,7 +315,8 @@ Equivalence of proof nets is generated by the four remaining permutations, on $\
 \begin{proposition}[\cite{HughesMLLProofNets}] %[\citeauthor{HughesMLLProofNets}, \citeyear{HughesMLLProofNets}]
 \label{prop:proof nets work}
 %
-For proofs $\Pi$, $\Pi'$ and proof nets $\links$, $\links'$ such that $\Pi\toNet\links$ and $\Pi'\toNet\links'$, $\Pi\perm\Pi'$ if and only if $\links\perm\links'$.
+%If $\Pi\toNet\links$ and $\Pi'\toNet\links'$, then $\Pi\perm\Pi'$ if and only if $\links\perm\links'$.
+For proofs $\Pi$, $\Pi'$ and proof nets $\links$, $\links'$, if $\Pi\toNet\links$ and $\Pi'\toNet\links'$, then $\Pi\perm\Pi'$ if and only if $\links\perm\links'$.
 %
 \end{proposition}
 
@@ -336,7 +337,7 @@ We will use a concise diagrammatic notation for sequents and proof nets.
 The units $1$ and $\bot$ are represented by a circle~($\circ$) and a disc~($\bullet$) respectively;
 %
 formulae related by a tensor will be connected by edges; 
-formulae related by a par will be juxtaposed, and collected in a box when a par-formula is an immediate subformula of a tensor-formula \color{red}(and also for illustrative purposes)\color{black}.
+formulae related by a par will be juxtaposed, and collected in a box when a par-formula is an immediate subformula of a tensor-formula (and also for illustrative purposes).
 %
 For example, the following denote the same sequent:
 \[
@@ -374,7 +375,7 @@ The following example is a proof net for the above sequent.
 
 We will denote by $A^n$ the sequent consisting of $n$ occurrences of a formula $A$.
 %
-Given a sequent $\Gamma=A_1,\dotsc,A_n$ we will write $\bigtn\Gamma$ for $A_1\tn\cdots\tn A_n$, and $\bigparr\Gamma$ for $A_1\parr\cdots\parr A_n$.
+Given a sequent $\Gamma=A_1,\dotsc,A_n$ we will write $\bigtn\Gamma$ for $A_1\!\tn\cdots\tn A_n$, and $\bigparr\Gamma$ for $A_1\!\parr\cdots\parr\! A_n$.
 %
 In diagrammatic notation, a big disc will represent an $n$-ary tensor over only $\bot$-formulae, $\bigtn(\bot^n)$, and a big circle will represent an $n$-ary par (or a sequent) over only $1$-formulae, $\bigparr(\1^n)$.
 %
@@ -435,11 +436,8 @@ Nodes will be labelled $i'$ for $i+1$, so that both the abbreviated formulae and
 }
 \]
 %
-\color{red}
 A path in a proof net or switching graph is indicated $\path ab$, and illustrated as below.
-\color{black}
 %
-%A dashed edge will indicate that two vertices are connected, in a proof net or a switching graph, as illustrated below.
 \[
 \begin{tikzpicture}[x=5mm,y=5mm,octo]
 	\node[bullet] (a) at (0,0) {}; \node[bullet] (b) at (2,0) {}; \draw[dashed] (a)--(b);
@@ -447,8 +445,6 @@ A path in a proof net or switching graph is indicated $\path ab$, and illustrate
 \qquad
 \begin{tikzpicture}[x=5mm,y=5mm,octo]
 	\node[circ] (a) at (0,0) {}; \node[circ] (b) at (2,0) {}; \draw[dashed] (a)--(b);
-	%\coordinate (a') at ($(a) + (.6,0)$); \coordinate (b') at ($(b) + (-.6,0)$);
-	%\draw[thepink,dashed] (a')--(b'); \draw[thepink,->] (a')--(a.center); \draw[thepink,->] (b')--(b.center);
 \end{tikzpicture}
 \]
 
@@ -464,15 +460,13 @@ A path in a proof net or switching graph is indicated $\path ab$, and illustrate
 %
 \emph{Non-deterministic constraint logic} \cite{Hearn-Demaine-2005,Demaine-Hearn-2008,GamesPuzzlesAndComputation} is a simple graph-rewriting formalism, used here as a convenient tool for \capsabbrev{pspace}-hardness reduction.
 %
-A \emph{constraint graph} is a graph with weighted edges and an \emph{inflow constraint}---a natural number that may be taken to be always $2$---on each vertex. A \emph{configuration} is an assignment of directions to the edges of the underlying undirected constraint graph. A rewrite step consists of the reversal of a single edge in a configuration:
-rewrite steps must preserve the condition that the total weight of the incoming edges at each vertex is at least its inflow constraint.
+A \emph{constraint graph} is a graph with weighted edges and an \emph{inflow constraint}---a natural number that may be taken to be always $2$---on each vertex. A \emph{configuration} is an assignment of directions to the edges of the underlying undirected constraint graph. A rewrite step consists of the reversal of a single edge in a configuration, while preserving the condition that the total weight of the incoming edges at each vertex is at least its inflow constraint.
 
 
-\color{red}
-Figure~\ref{fig:NCL example} shows an example rewrite sequence in a constraint graph.
+
+Figure~\ref{fig:NCL example} shows an example rewrite sequence in a part of a constraint graph.
 %
 The central node has inflow constraint 2, the thick blue edge has weight 2, and the thinner red edges have weight 1.
-\color{black}
 
 
 
@@ -527,7 +521,7 @@ if $\gamma'$ and $\gamma''$ are total configurations that both agree with a part
 %By the above proposition, \capsabbrev{ncg}-reconfiguration is unaffected by inclusion or exclusion of partial configurations.
 
 
-\begin{figure}\color{red}
+\begin{figure}
 $
 ~
 \vc{\begin{tikzpicture}[x=-3mm,y=3mm]
@@ -585,7 +579,6 @@ We will demonstrate the \capsabbrev{pspace}-hardness of \capsabbrev{mll} proof e
 
 
 \begin{figure*}
-\color{red}
 \[
 \vc{\scalebox{0.36}{\BIGexample 3}}
 \quad\perm\quad
@@ -741,8 +734,8 @@ To fill $3n$ constraint elements inappropriately therefore requires $n+1$ edges.
 It thus suffices to multiply the number of constraint elements by three times the number of edges, and encode a vertex with inflow constraint $c$ by a vertex-gadget with $c\times3\times|E|$ constraint elements (where $|E|$ denotes the number of edges in the constraint graph).
 
 
-\color{red}
-The complete encoding of a constraint graph $G$ will be a sequent $\Gamma$ consisting of:
+
+The complete encoding of a constraint graph $G$ will then be a sequent $\Gamma$ consisting of:
 % 1) all vertex-gadgets combined in a single formula via tensors, 2) all edge-gadgets as individual formulae, 3) a sufficient number of weight absorbers ($\1$-formulae).
 \begin{enumerate}
  	\item
@@ -768,7 +761,7 @@ All three nets in Figure~\ref{fig:encoding example} then correspond to the third
 
 The encoding will be made formal in Section~\ref{sec:correctness}; first we will establish some basic results for rewiring on proof nets.
 
-\color{black}
+
 
 %------------------------------------------------------------
 
@@ -784,9 +777,9 @@ In this section we will explore the global rewiring behaviour of proof nets.
 We will look at notions of subnets; we will introduce a notion of relative \emph{parity} between nets, which if odd, guarantees inequivalence; and we will give a simple account of equivalence for the fragment of \capsabbrev{mll} that omits the par.
 
 
-\color{red}
+
 The notions and results introduced in this section will be used in the main proofs of the paper, in Section~\ref{sec:correctness}, which show that the encoding of \capsabbrev{ncg}-reconfiguration in \capsabbrev{MLL} proof equivalence, as described informally in the previous section, is correct.
-\color{black}
+
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -808,18 +801,10 @@ A \emph{subnet} $(\Delta,\links') \leq (\Gamma,\links)$ of a proof net is a net 
 
 
 
-%\noindent
-\color{red}
 The \emph{ports} of a sub-sequent $\Gamma'$ or subnet $(\Gamma',\links')$ are the root vertices of $\Gamma'$.
 %
-%The root vertices of $\Gamma'$ are the \emph{ports} of the sub-sequent $\Gamma'$ and of the subnet $(\Gamma',\links')$.
-%
 For a vertex $v$ naming a par, tensor, or bottom, the subnets of which it is a port correspond to the possible subproofs of the rule introducing $v$ in a sequentialisation (the subproof of a $\1$-subformula must always be empty).
-%
-%
-%A \emph{scope} of a par $\named v\parr$ is a subnet that has $v$ as a port.
-%
-%The scopes of a par correspond to the possible subproofs of its introduction rule in a sequentialisation of the proof net that it occurs in.
+
 
 
 In the graph of a proof net, a chosen subnet for a par can be made explicit as a \emph{box}, as illustrated below left.
@@ -893,105 +878,30 @@ In the other direction, given a sequentialisation of $(\Gamma,\links)$, a box $s
 \]
 \end{proof}
 
-\color{black}
-
-%
-%In the graph of a proof net, the scope of a par $\named v\parr$ may be \emph{contracted} to a single vertex $v$ by removing all vertices except $v$,  and re-attaching the edges of any removed vertices to $v$.
-%%
-%In the example below, a scope of a (ternary) par is indicated (left) and contracted (right).
-%\[
-%\begin{tikzpicture}[x=5mm,y=-5mm,octo]
-%	\draw (-2.25,0) node[bullet] (x) {} -- (-1.25,0) node[bullet] (y) {}
-%		  (.25,0) node[bullet] (a) {} -- (1.25,0) node[bullet] (b) {}
-%		  ( 2.75,0) node[bullet] (c) {} -- (3.75,0) node[bullet] (d) {};
-%	\node[circ] (0) at (5.75,0) {};
-%	\node[circ] (1) at (-1,3) {};
-%	\node[circ] (2) at (1,3) {}; \node[circ] (3) at (2,3) {}; \node[circ] (4) at (3,3) {};
-%	\draw[rounded corners] (0,2) rectangle (4,4);
-%	\draw (4,3) -- (5.5,3) node[bullet] (e) {};
-%	\begin{scope}[thepink,->]
-%			\draw[bend right=10] (x) to (1);
-%			\draw[bend right=20] (y) to (2);
-%			\draw[bend right=10] (a) to (2);
-%			\draw[bend right=10] (b) to (3);
-%			\draw[bend left=10]  (c) to (3);
-%			\draw[bend left=10]  (d) to (4);
-%			\draw[bend right=10] (e) to (0);
-%	\end{scope}
-%	\draw[dashed,rounded corners] (-.25,-.5) rectangle (4.25,4.25);
-%\end{tikzpicture}
-%\qquad\qquad
-%\begin{tikzpicture}[x=5mm,y=-5mm,octo]
-%	\draw (-2.25,0) node[bullet] (x) {} -- (-1.25,0) node[bullet] (y) {};
-%	\node[circ] (0) at (3,0) {};
-%	\node[circ] (1) at (-1,3) {};
-%	\node[draw,rounded corners,minimum size=16pt] (box) at (1,3) {};
-%	\draw (box)--(3,3) node[bullet] (e) {};
-%	\begin{scope}[thepink,->]
-%			\draw[bend right=10] (x) to (1);
-%			\draw[bend right=20] (y) to (box);
-%			\draw[bend right=10] (e) to (0);
-%	\end{scope}
-%	\path (0,4.25)--(1,4.25);
-%\end{tikzpicture}
-%\]
-%%
-%The contraction of a scope corresponds to the use of a box,  may replace the switching condition as a correctness criterion:
-%%
-%The following is a variant of the local retraction algorithm by Danos \cite{Danos-1990}.
-
-%
-%\begin{proposition}
-%\label{prop:scoping correctness}
-%A linking $\links$ for a sequent $\Gamma$ is a proof net if and only if each $\named v\parr$ is a port of a sub-sequent $s(v)\leq\Gamma$ such that:
-%
-%\begin{enumerate}
-%	\item
-%sub-sequents either disjoint or strictly nested: if $s(v)\cap s(w)\neq\varnothing$ then $s(w)<s(v)$ or $s(v)<s(w)$; and
-%	\item
-%for each $\named v\parr$ the graph $\sigma(v)=(s(v),\links|_{s(v)})$ becomes a tree when all \color{red} (immediate) sub-sequents $s(w)<s(v)$ are contracted.
-%\end{enumerate}
-%%
-%\end{proposition}
-%
-%
-%\begin{proof}
-%For the `if' direction, it follows by induction on the nesting of sub-sequents that each graph $\sigma(v)$ satisfies the switching condition.
-%%
-%For the `only if' direction, given a sequentialisation of $(\Gamma,\links)$, a sub-sequent $s(v)\leq\Gamma$ for each $\named v\parr$ is found by taking the conclusion $\Delta, A\named v\parr B$ of its introduction rule, below.
-%\[
-%	\infer[\MLLlabel p]{\Delta,A\named v\parr B}{\Delta,A,B}
-%\]
-%\vskip-12pt
-%\end{proof}
-
-
 
 In a proof net, the \emph{kingdom} and the \emph{empire} of a vertex $v$ are respectively the smallest and largest subnet that have $v$ as a port.
 %
 In working with the rewiring relation, the notion of empire can be particularly useful.
 %
-\color{red} 
 We will denote the empire of $v$ in $\links$ by $\emp v$ (used both as a graph and a set of vertices).
-\color{black}
+
 
 
 \begin{proposition}[{\cite[Proposition 2.b]{Bellin-vandeWiele-1995}}]
 \label{prop:empire propagation}
-The empire $\emp v$ is determined by propagation from $v$: 1) through links; \color{red} 2) up towards subformulae; 3) into a tensor if one of its subformulae is in $\emp v-\{v\}$; 4) into a par if all its subformulae are in $\emp v-\{v\}$.
+The empire $\emp v$ is determined by propagation from $v$: 1) through links; 2) up towards subformulae; 3) into a tensor if one of its subformulae is in $\emp v-\{v\}$; 4) into a par if all its subformulae are in $\emp v-\{v\}$.
 \end{proposition}
 
 
 \noindent
-\color{red}
 The following three lemmata show how empires are connected to rewiring.
 %
-Firstly (Lemma~\ref{lem:rewiring within empire}), a jump from $\named v\bot$ may be rewired to exactly those $\1$-occurences that are in the empire of $v$.
+Firstly, a jump from $\named v\bot$ may be rewired to exactly those $\1$-occurences that are in the empire of $v$ (Lemma~\ref{lem:rewiring within empire}).
 %
-Secondly (Lemma~\ref{lem:rewiring preserves empire}), rewiring this jump preserves the empire of $v$, up to that rewiring.
+Secondly, rewiring this jump preserves the empire of $v$, up to that rewiring (Lemma~\ref{lem:rewiring preserves empire}).
 %
-Thirdly (Lemma~\ref{lem:rewiring affects empires}), the empire of any other vertex $w$ will grow or shrink, or neither, but not both.
-\color{black}
+Thirdly, the empire of any other vertex $w$ will grow or shrink, or neither, but not both (Lemma~\ref{lem:rewiring affects empires}).
+
 
 
 \begin{lemma}
@@ -1070,8 +980,6 @@ Otherwise, $\Delta=\Delta'$. \hfill\qedhere
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-\color{red}
-
 \subsection*{Parity}
 
 \aftersubsection
@@ -1098,16 +1006,16 @@ Here, we will introduce a similar necessary condition for the equivalence of two
 We shall associate a \emph{parity} with any pair of linkings $\links$ and $\links'$ over the same sequent $\Gamma$, and we shall find that the parity of equivalent linkings is always even.
 
 
-For this argument we will work with formulae over alternating $n$-ary connectives $\tn$ and $\parr$; i.e.\ every argument of a $\tn$ is a $\parr$ and vice versa.
+For this argument we will work with $n$-ary connectives $\tn$ and $\parr$, and alternating formulae, i.e.\ every argument of a $\tn$ is a $\parr$ and vice versa.
 %
-The units are then given by the $0$-ary case; moreover, we need not rule out $1$-ary connectives.
+The units are given by the $0$-ary connectives, and we need not rule out unary ones.
 %
 We will consider a given named sequent $\Gamma$, but will assume that it consists of a single formula, if necessary by introducing a $\parr$ at the root.
 
 
 To be able to compare arbitrary proof nets over $\Gamma$, we will use the following naming scheme for the edges of a switching graph, for any proof net over $\Gamma$.
 %
-A tensor $\bigtn(A_1,\dotsc,A_n)$ named $v$ has $n$ edges, which we shall name $v(1),\dotsc,v(n)$; a par $\named v\pr$ has one switched edge named $v(1)$; and $\named v\bot$ has the jump named $v(1)$.
+A tensor $\bigtn(A_1,\dotsc,A_n)$ named $v$ has $n$ edges, which we shall name $v(1)$ through $v(n)$; a par $\named v\pr$ has one switched edge, to be named $v(1)$; and $\named v\bot$ has the jump named $v(1)$.
 %
 The naming scheme identifies edges across all switching graphs of all proof nets for $\Gamma$.
 
@@ -1118,19 +1026,9 @@ This establishes a bijection between the edges and the non-root vertices, which 
 
 
 
-\begin{figure}
-\[
-	\vc{\parityNetA} \qquad \vc{\parityNetB}
-\]
-\caption{A switching graph of a proof net as a directed tree}
-\label{fig:directed switching graph}
-\end{figure}
-
-
-
 The example in Figure~\ref{fig:directed switching graph} displays a proof net on the left, and on the right the switching graph choosing the edge $\edge ij$ for the par $i$, and the edge $\edge rg$ for the root par $r$.
 %
-The induced bijection associates for example the edge named $r(1)$ with the vertex $g$, the edge $g(1)$ with $h$, and the edge $h(1)$ with $a$, and it associates $f(1)$ with $f$ and $c(3)$ with $c$.
+The induced bijection associates for example the edge named $r(1)$ with the vertex $g$, the edge $g(1)$ with $h$, and the edge $h(1)$ with $a$; it further associates $f(1)$ with $f$ and $c(3)$ with $c$.
 
 
 Given two proof nets $\links$ and $\links'$ for $\Gamma$, and a switching graph for each (not necessarily given by the same switching of $\Gamma$), we obtain two bijections between edges and (non-root) vertices.
@@ -1146,24 +1044,11 @@ We will show that both 1) rewiring and 2) choosing a different switching induce 
 By 2) we may define the parity of two proof nets $\links$ and $\links'$ to be that over arbitrary switching graphs; then by 1) it follows that proof nets with odd parity are inequivalent.
 
 
-
-\begin{figure}
-\[
-	\vc{\parityNetC1} \perm \vc{\parityNetC2}
-\quad \vc{\rule{.5pt}{4cm}} \quad
-	\vc{\parityNetD1} \perm \vc{\parityNetD2} \kern5pt{=}\kern-5pt \vc{\parityNetD3}
-\]
-\caption{Rewiring on a switching graph as a directed tree}
-\label{fig:rewiring directed switching graph}
-\end{figure}
-
-
-
 We will demonstrate 1), while 2) is similar.
 %
 Let $\links\perm*\links'$ by rewiring a jump from $\edge va$ to $\edge vb$.
 %
-By fixing a switching for $\Gamma$, we obtain a switching graph for each of the two nets; note that the jump is named $v(1)$ in each.
+By fixing a switching for $\Gamma$, we obtain a switching graph for each of the two nets, where the jump is named $v(1)$ in each.
 %
 There are two possibilities, illustrated in Figure~\ref{fig:rewiring directed switching graph}.
 %
@@ -1201,6 +1086,29 @@ We may thus conclude that:
 \begin{proposition}
 Two equivalent proof nets have even parity.
 \end{proposition}
+
+
+\begin{figure}
+\[
+	\vc{\parityNetA} \qquad \vc{\parityNetB}
+\]
+\caption{A switching graph of a proof net as a directed tree}
+\label{fig:directed switching graph}
+\end{figure}
+
+
+
+\begin{figure}
+\[
+	\vc{\parityNetC1} \perm \vc{\parityNetC2}
+\quad \vc{\rule{.5pt}{4cm}} \quad
+	\vc{\parityNetD1} \perm \vc{\parityNetD2} \kern5pt{=}\kern-5pt \vc{\parityNetD3}
+\]
+\caption{Rewiring on the directed tree of a switching graph}
+\label{fig:rewiring directed switching graph}
+\end{figure}
+
+
 
 
 %Now consider the bijection between non-root vertices and edges that associates each vertex with the edge towards its parent. 
@@ -1311,7 +1219,6 @@ The base case is the sequent $\1,\1,\bot\tn\bot$, which has two inequivalent pro
 %
 For the inductive step,
 %
-\color{red}
 let $\Gamma=\Gamma',A\tn\named a\bot,\named z\1$ where $A\tn\named a\bot$ is a largest $\tn$-formula in $\Gamma$.
 %
 It will be shown that any net $\links$ is equivalent to one $\links'$ where $\links'(a)=z$; then by induction, the subnet $\links'$ restricted to $\Gamma',A$ belongs to one of two equivalence classes.
@@ -1332,7 +1239,7 @@ Next, let $\named c\bot$ and $\named d\bot$ be occurrences in a separate formula
 Then $\links'$ is obtained by linking $c$ to $b$, and applying Lemma~\ref{lem:double exchange} to exchange the targets of $a$ and $b$, as well as those of $c$ and $d$.
 %
 \end{proof}
-\color{black}
+
 
 
 
@@ -1357,27 +1264,24 @@ Given two proof nets of even parity, both must be in the other equivalence class
 
 \aftersection
 %
-In this section we will establish that in our encoding of constraint graphs %partial \capsabbrev{ncg}-reconfiguration 
-in \capsabbrev{mll}, reconfiguration on graphs is captured by proof equivalence in \capsabbrev{mll}.
+We will formalise the encoding of \capsabbrev{ncg}-reconfiguration into \capsabbrev{mll} proof equivalence that was informally introduced in Section~\ref{sec:encoding}.
 %
-It will be shown that $\gamma\perm\delta$ if and only if $\itn\gamma\perm\itn\delta$ (modulo the parity problem---see Section~\ref{sec:rewiring}).
+A constraint graph $G$ will be encoded as a sequent $\itn G$, and a configuration $\gamma$ for $G$ will be encoded as a proof net $\itn\gamma$ for $\itn G$.
 %
-This will be separated into two parts: completeness ($\Rightarrow$) and soundness ($\Leftarrow$) .
+We will show that $\gamma\perm\delta$ if and only if $\itn\gamma\perm\itn\delta$ (modulo a small adjustment to ensure even parity between $\itn\gamma$ and $\itn\delta$).
 
 
-%
-For the formal definition, let $|V|$ and $|E|$ denote the number of vertices and edges, respectively, in a constraint graph $G=(V,E,c,v,w)$, and let $|c|$ and $|w|$ denote the sum of all inflow constraints and the sum of all weights respectively:
+For a constraint graph $G=(V,E,c,v,w)$, let $|V|$ and $|E|$ denote the number of vertices and edges, and let $|c|$ and $|w|$ denote the sum of all inflow constraints and the sum of all weights, respectively:
 \[
 	|c| = \sum_{v\in V}c(v) \qquad |w| = \sum_{e\in E}w(e)~.
 \]
-
 
 
 \begin{definition}
 \label{def:graph encoding}
 The \emph{encoding} $\itn G$ of a constraint graph $G$ is a sequent constructed as follows.
 %
-Let $G=(V,E,c,v,w)$, and let $V=\{v_1,\dotsc,v_n\}$ and $E=\{e_1,\dotsc,e_m\}$ where $|V|=n$ and $|E|=m$.
+Let $G=(V,E,c,v,w)$ with $|V|=n$, $|E|=m$, $V=\{v_1,\dotsc,v_n\}$, and $E=\{e_1,\dotsc,e_m\}$.
 
 \noindent
 The encoding of a vertex $v_k$ is the formula
@@ -1436,7 +1340,7 @@ the \emph{standard linking} for the sequent $W,\1^{3n+4}$ links the first $\bot$
 \end{enumerate}
 \end{definition}
 
-The standard linkings defined in the \color{red} second \color{black} and third case of the above definition are illustrated below.
+The standard linkings defined in the second and third case of the above definition are illustrated below.
 
 \[
 \begin{tikzpicture}[x=5mm,y=5mm,octo]
@@ -1528,7 +1432,7 @@ After closing the box of each $W$, each edge-gadget in the box of $\itn v$ becom
 
 Finally, if two connected configurations $\gamma\perm\delta$ are encoded individually as $\itn\gamma$ and $\itn\delta$, these may not be equivalent simply because their parity happens to be odd.
 %
-For that reason we shall adjust the encoding of the second to guarantee an even parity between them.
+For that reason we shall adjust the encoding of the second to guarantee an even parity.
 
 
 \begin{definition}
@@ -1540,6 +1444,11 @@ For configurations $\gamma$ and $\delta$ for $G$, let $\itn\delta_\gamma$ be $\i
 \end{definition}
 
 
+In the remainder, we will show that our encoding is correct, i.e.\ that $\gamma\perm\delta$ if and only if $\itn\gamma\perm\itn\delta_\gamma$.
+%
+This will be separated into two parts: completeness ($\Rightarrow$) and soundness ($\Leftarrow$) .
+
+
 
 
 
@@ -1547,7 +1456,6 @@ For configurations $\gamma$ and $\delta$ for $G$, let $\itn\delta_\gamma$ be $\i
 
 \subsection*{Completeness}
 
-\color{red}
 
 \aftersubsection
 Given a reconfiguration path $\gamma\perm\delta$ over total configurations, we will demonstrate a rewiring sequence between $\itn\gamma$ and $\itn\delta_\gamma$.
@@ -1572,8 +1480,6 @@ Next, the weight elements connecting to $\itn w$ are rewired to match $\itn\delt
 
 To describe the intermediate stages of such a rewiring sequence, call an edge-gadget $\itn e$ \emph{well linked} if: 1) its indicator connects to the indicator target of an appropriate vertex-gadget $\itn v$, and 2) each weight element is either in a standard linking with a constraint element of $\itn v$, or linked only to weight absorbers (in arbitrary fashion).
 %
-\color{black}
-%
 A well-linked edge-gadget is \emph{mobile} if all its weight elements connect only to weight absorbers.
 %
 In the following main lemma we will exchange the weight element linking to a constraint element.
@@ -1587,84 +1493,100 @@ In a proof net $\links$ for $\Gamma=\itn v,\itn{e_1},\dotsc,\itn{e_m},1^p$ where
 \end{lemma}
 
 
-\renewcommand\scalefactor{0.88}
+\renewcommand\scalefactor{0.80}
 
 \newcommand\displayOcto[1]{%
- \NoIndent{%
-   \smallskip%
+% \NoIndent{%
+   \medskip%
    \centerline{%
 	 \scale{#1}%
-  }}%
-  \bigskip%
+  }%
+  \medskip%
 }
 
 
 \begin{proof}
 Let $W_i=A\parr B\parr C$, $W_j=D\parr E\parr F$, and $C=X\tn Y$.
 %
-The path of rewirings will be illustrated for the case where $A,B,X$ and $D,X$, and thus also $C,Y$ and $E,F,Y$, are balanced sequents; other cases are similar.
-%
-\begin{enumerate}
-	\item
-The initial configuration is illustrated below. 
+The rewiring path will be illustrated for the case where $A,B,X$ and $D,X$, and thus also $C,Y$ and $E,F,Y$, are balanced sequents; other cases are similar.
+
+
+\displayOcto{\octorollA1}
+
+
+\noindent
+1.\quad The initial configuration is illustrated above. 
 %
 Other edges, other weight and constraint elements, and the outer box of the vertex-gadget, are omitted.
 %
 The vertices $i$, $j$, and  $v$ are the indicators of $\itn{e_i}$ and $\itn{e_j}$ and the indicator target of $\itn v$, respectively.
-%
-\displayOcto{\octorollA1}
 
 
-	\item
-The link $i-v$ is re-attached to connect to a weight absorber together with only the links from the first $\bot$ of each of $D$, $E$, and $F$. 
-%
 \displayOcto{\octorollB2}
 
 
-	\item
-Secondly, the link from the first $\bot$ of $D$ is moved to $X$, and those from the first $\bot$ of $E$ and $F$ are moved to $Y$.
+\noindent
+2.\quad The link $i-v$ is re-connected to a weight absorber together with only the links from the first $\bot$ of each of $D$, $E$, and $F$. 
 %
+
+
 \displayOcto{\octorollB3}
 
 
-	\item\label{item:exchange added}
+\noindent
+3.\quad The link from the first $\bot$ of $D$ is moved to $X$, and those from the first $\bot$ of $E$ and $F$ are moved to $Y$.
+%
+
+
+\displayOcto{\octorollC}
+
+
+\noindent
+4.\quad %\label{item:exchange added}
 In the present configuration, the links from the weight elements form two subnets: one over the sub-sequent $A,B,X,D,1^m$, and one over the sub-sequent $C,Y,E,F,1^k$, for some $m$ and $k$.
 %
 By Proposition~\ref{prop:parity determines equivalence}, these subnets are equivalent to any other over the same sequent, as long as their parity is preserved.
 %
-It is then sufficient to choose linkings so that $D\parr E\parr F$ is in a a standard linking with $X\tn Y$, with a minor adjustment: two links from $C$ to $X$ should remain exchanged, compared to the standard linking, for step \ref{item:exchange needed} below.
+It is then sufficient to choose linkings so that $D\parr E\parr F$ is in a a standard linking with $X\tn Y$, with a minor adjustment: two links from $C$ to $X$ should remain exchanged, compared to the standard linking, for step 6 %\ref{item:exchange needed}
+below.
 %
 The links of $A,B,C$ link to the weight absorbers $1^m$ and $1^k$, with one remaining link from $B$ to $X$ and one from $C$ to $Y$.
 %
-\displayOcto{\octorollC}
 
 
-	\item
-The link from $C$ to $Y$ is moved towards a weight absorber connected to $A,B$.
-%
 \displayOcto{\octorollD1}
 
 
-	\item\label{item:exchange needed}
-The link from $B$ to $X$ is the one remaining connection between the edge-gadgets $\itn{e_i}$ and $\itn{e_j}$.
+\noindent
+5.\quad The link from $C$ to $Y$ is moved towards a weight absorber connected to $A,B$.
 %
-Lemma~\ref{lem:double exchange} allows to swap the targets of the link from $B$ to $X$ and the link from $i$, and simultaneously undo the exchange in the links from $C$ to $X$ added in step \ref{item:exchange added} above.
-%
+
+
 \displayOcto{\octorollD2}
 
 
-	\item
-The link from $i$ is re-attached to $v$ to yield the final configuration.
+\noindent
+6.\quad %\label{item:exchange needed}
+The link from $B$ to $X$ is the one remaining connection between the edge-gadgets $\itn{e_i}$ and $\itn{e_j}$.
 %
-\displayOcto{\octorollA2}\qedhere
-\end{enumerate}
+Lemma~\ref{lem:double exchange} allows to swap the targets of the link from $B$ to $X$ and the link from $i$, and simultaneously undo the exchange in the links from $C$ to $X$ added in step 4 %\ref{item:exchange added} 
+above.
+%
+
+
+\displayOcto{\octorollA2}
+
+
+\noindent
+7.\quad The link from $i$ is re-attached to $v$ to yield the final configuration.
+%\qedhere
+%\end{enumerate}
 \end{proof}
 
 
 
 In the exchange of weight elements in the above lemma, weight elements link to weight absorbers in arbitrary fashion.
 %
-\color{red}
 To be able to correct for this, the next lemma will demonstrate that, modulo parity, weight absorbers can be re-arranged at will.
 
 
@@ -1704,7 +1626,7 @@ Operation 2) is performed similarly.
 In both cases, if one of the weight absorbers exchanged is linked to by multiple $\bot$-occurrences within the same weight element, these may be temporarily attached elsewhere.
 %
 \end{proof}
-\color{black}
+
 
 
 
@@ -1741,9 +1663,9 @@ The resulting proof net is $\itn\delta$ modulo a permutation of weight absorbers
 \subsection*{Soundness}
 
 \aftersubsection
-It will be shown that proof net rewiring $\itn\gamma\perm\itn\delta$ is sound for \capsabbrev{ncg}-reconfiguration, $\gamma\perm\delta$.
+It will be shown that proof net rewiring $\itn\gamma\perm\itn\delta_\gamma$ is sound for \capsabbrev{ncg}-reconfiguration, $\gamma\perm\delta$.
 %
-To each proof net $\links$ for an encoded constraint graph $\itn G$ we will associate a partial configuration $\gamma=\coitn\links$, such that 1) a rewiring step $\links\perm*\links$ corresponds to a reconfiguration path $\coitn\links\perm\coitn{\links'}$, and 2) the function $\coitn-$ is a retraction of the encoding of configurations, $\coitn{\itn\gamma}=\gamma$.
+To each proof net $\links$ for an encoded constraint graph $\itn G$ we will associate a partial configuration $\gamma=\coitn\links$, such that 1) a rewiring step between $\links$ and $\links'$ corresponds to a reconfiguration path $\coitn\links\perm\coitn{\links'}$, and 2) the function $\coitn-$ is a retraction of the encoding of configurations, $\coitn{\itn\gamma}=\gamma$.
 
 
 
@@ -1777,44 +1699,32 @@ In a proof net for $\itn G$, for each node $v$ in $G$, the weights of the approp
 
 
 \begin{proof}
-Let $|V|=n$ and $|E|=m$, and consider the vertex $v_i$ and an edge $e$ connecting vertices $v_a$ and $v_b$ where $i\neq a,b$.
 %
-Each constraint element in $\itn{v_i}$ is an instance of the formula
-\[
-	C = \bigparr\big(1^{3i+2}\big) \tn \bigparr\big(1^{3(n-i)+3}\big)~.
-\]
-The two $\parr$-subformulae have a balance of $-3i-1$ and respectively $-3(n-i)-2$.
+Let $|E|=m$.
 %
-Each weight element in $\itn{e}$ is an instance of 
-\[
-	W = \bigtn\big(\bot^{3a+2}\big)\parr\bigtn\big(\bot^{3(b-a)+1}\big)\parr\bigtn\big(\bot^{3(n-b)+3}\big)~.
-\]
-For each of the three $\tn$-subformulae, adding it to the scope of a $\parr$ will change its balance by $3a+1$, $3(b-a)$, and $3(n-b)+2$ respectively.
+We will show that the inappropriate edge-gadgets in $G$ are insufficient to fill $3m$ weight elements in $\itn v$.
 %
-In pairs, they add to the balance of a scope by $3b+1$ (1st and 2nd subformula), $3(a+n-b)+3$ (1st and 3rd), and $3(n-a)+2$ (2nd and 3rd).
-%
-Since $i\neq a,b$, and since no $\tn$-subformula of $W$ can connect to more than one $\parr$-subformula of $C$ (by Proposition~\ref{prop:tensor has disjoint subnets}), it follows that $W$ can balance the scope of at most one of both $\parr$-subformulae of $C$.
+Since weight elements come in multiples of $3m$, it follows that to fill the $3m\times c(v)$ constraint elements of $v$, there must be at least as many appropriate weight elements available.
 
 
-The vertex-gadget $\itn{v_i}$ is the formula
-\[
-	\itn{v_i} = \bigparr\big(C^{3m\times c(v_i)} \big)\parr 1~.
-\]
-It will be shown that $m$ inappropriate edge-gadgets may balance at most $3(m-1)$ constraint elements $C$.
+
+Let $e$ be inappropriate for $v$; let $C=A\tn B$ be a constraint element in $\itn v$, and $W=X\parr Y\parr Z$ weight element  in $\itn e$.
+%
+To find a proof net for the sequent $W,C$ requires to assign balanced boxes to the par-formulae $A$ and $B$.
+%
+Since $e$ is inappropriate, the sequents $A,X$ and $A,X,Y$ are not balanced, while the balance of each of the other sequents of $A$ with one or more of $X,Y,Z$ is always $1$ or $2$ $\pmod 3$.
+%
+It follows that there is no proof net for $W,C$.
 
 
+Next, it will be shown that to balance $3m$ constraint elements requires at least $m+1$ inappropriate edge-gadgets.
+%
 Two edge-gadgets may balance at most three constraint elements: one weight element $W$ has three subformulae, which may each balance at most one half of a constraint element; the other halves may be balanced by different weight elements of the second edge-gadget.
 %
 In the same way, adding one further edge-gadget allows at most three further constraint elements to be filled, since previous edges may connect to only one half of each constraint element.
 %
 Then to balance $3m$ constraint elements inappropriately requires $m+1$ edge-gadgets.
 %
-%
-%Let the root nodes of the two $\parr$-subformulae of each instance of $C$ be labelled $x_j$ and $y_j$, for $1\leq j\leq 3m\times c(v_i)$. 
-%%
-%If the scopes $s(x_j)$ and $s(y_m)$ of any $x_j$ and $y_m$ are balanced by weight elements $W$ and $W'$ of the same edge-gadget $\itn e$, then since $W$ and $W'$ are connected by a tensor, there are switchings of $W$, $W'$, $s(x_j)$, and $s(y_m)$ such that $x_j$ and $y_m$ are connected in the proof net for $\itn G$.
-%%
-%Then the first constraint element of $\itn{v_i}$ requires 2 edge-gadgets to balance, and each successive element requires one additional edge-gadget.
 \end{proof}
 
 
@@ -1824,7 +1734,7 @@ Using the above, a proof net for $\itn G$ may be interpreted as a configuration 
 
 
 \begin{definition}
-For a proof net $\links$ for $\itn G$, let $\coitn\links$ be the partial configuration for $G$ where $\coitn\links(e)$ is $v$ if 1) $e$ is appropriate for $v$ and 2) $\itn e$ belongs to the empire of $\itn v$, and undefined otherwise.
+For a proof net $\links$ for $\itn G$, let $\coitn\links$ be the partial configuration for $G$ where $\coitn\links(e)$ is $v$ if both $e$ is appropriate for $v$ and $\itn e$ belongs to the empire of $\itn v$, and  undefined otherwise.
 \end{definition}
 
 
@@ -1842,7 +1752,7 @@ The proof will consider the case where $\links\perm*\links'$; the general case f
 %
 By Lemma~\ref{lem:rewiring affects empires}, the empire of each vertex-gadget $\itn v$ contains either a subset of, a superset of, or exactly the same edge-gadgets in $\links'$ as it does in $\links$.
 %
-Let $\itn e_1$ through $\itn e_n$ be the edge-gadgets moving in or out of the empire of $\itn v$.
+Let $\itn e_1$ through $\itn e_n$ be the edge-gadgets moving into or out of the empire of $\itn v$.
 %
 By Lemma~\ref{lem:appropriate edge weights} other edge-gadgets must fill the constraint elements of $\itn v$.
 %
@@ -1874,7 +1784,7 @@ We are now ready to state our main theorem.
 Then by Savitch's Theorem \cite{Savitch-1970} \capsabbrev{mll} proof equivalence is in \capsabbrev{pspace}.
 
 
-\capsabbrev{pspace}-hardness follows by the encoding of \capsabbrev{ncg}-reconfiguration, which in its completed form is stated:
+\capsabbrev{pspace}-hardness is by the encoding of \capsabbrev{ncg}-reconfiguration, which in its completed form is stated:
 \[
 	\gamma\perm\delta \qquad\iff\qquad \itn\gamma\perm\itn\delta_\gamma~.
 \]
@@ -1883,11 +1793,11 @@ The direction $(\Rightarrow)$ is by Lemma~\ref{lem:completeness}; the direction 
 %
 \end{proof}
 
+\newpage
 
 \acks
 
-We would like to thank Lutz Stra{\ss}burger for comments and discussion, and the anonymous referees.
-
+We would like to thank Lutz Stra{\ss}burger for comments and discussion, and the anonymous referees for their constructive observations.
 
 %===========================
 \bibliographystyle{plain}
@@ -1897,3 +1807,49 @@ We would like to thank Lutz Stra{\ss}burger for comments and discussion, and the
 
 
 \end{document}
+
+%
+%Write $b(A)$ for the balance of a formula (or sequent) $A$.
+%%
+%Each constraint element in $\itn v$ is an instance of the formula $C=A\tn B$, where $b(A)\equiv 2$ and $b(B)\equiv 1\pmod 3$.
+%%
+%For $e$ inappropriate for $v$, a weight element $W=X\pr Y\pr Z$ in $\itn e$ satisfies $b(X)\equiv 2$, $b(Y)\equiv 1$, and $b(Z)\equiv 0\pmod 3$. 
+%%
+%To find a proof net for $W,C$ we need to assign balanced boxes to the par-formulae $A$ and $B$.
+%%
+%Since $e$ is inappropriate, the sequents $A,X$ and $A,X,Y$ are not balanced, while the balance $b(A,Y)\equiv 2$, $b(A,Z)\equiv 
+
+
+%Each constraint element in $\itn{v_i}$ is an instance of the formula
+%\[
+%	C = \bigparr\big(1^{3i+2}\big) \tn \bigparr\big(1^{3(n-i)+3}\big)~.
+%\]
+%The two $\parr$-subformulae have a balance of $-3i-1$ and respectively $-3(n-i)-2$.
+%%
+%Each weight element in $\itn{e}$ is an instance of 
+%\[
+%	W = \bigtn\big(\bot^{3a+2}\big)\parr\bigtn\big(\bot^{3(b-a)+1}\big)\parr\bigtn\big(\bot^{3(n-b)+3}\big)~.
+%\]
+%We will show that within the sequent $C,W$, it is not possible to assign a balanced box to both $\parr$-subformulae of $C$.
+%%
+%For each of the three $\tn$-subformulae, adding it to the box of a $\parr$ will change its balance by $3a+1$, $3(b-a)$, and $3(n-b)+2$ respectively.
+%%
+%In pairs, they add to the balance of a box by $3b+1$ (1st and 2nd subformula), $3(a+n-b)+3$ (1st and 3rd), and $3(n-a)+2$ (2nd and 3rd).
+%%
+%Since $i\neq a,b$, and since no $\tn$-subformula of $W$ can connect to more than one $\parr$-subformula of $C$ (by Proposition~\ref{prop:tensor has disjoint subnets}), it follows that $W$ can balance the box of at most one of both $\parr$-subformulae of $C$.
+%
+%
+%Next, the vertex-gadget $\itn{v_i}$ is the formula
+%\[
+%	\itn{v_i} = \bigparr\big(C^{3m\times c(v_i)} \big)\parr 1~.
+%\]
+%It will be shown that $m$ inappropriate edge-gadgets may balance at most $3(m-1)$ constraint elements $C$.
+%
+%
+%Two edge-gadgets may balance at most three constraint elements: one weight element $W$ has three subformulae, which may each balance at most one half of a constraint element; the other halves may be balanced by different weight elements of the second edge-gadget.
+%%
+%In the same way, adding one further edge-gadget allows at most three further constraint elements to be filled, since previous edges may connect to only one half of each constraint element.
+%%
+%Then to balance $3m$ constraint elements inappropriately requires $m+1$ edge-gadgets.
+%%
+
