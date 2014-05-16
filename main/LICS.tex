@@ -1290,7 +1290,7 @@ The encoding of a vertex $v_k$ is the formula
 \]
 where each \emph{constraint element} $C_n(k)$ is the formula
 \[
-	C_n(k) = \bigparr\big(1^{3k+2}\big) \tn \bigparr\big(1^{3(n-k)+3}\big)
+	C_n(k) = \bigparr\big(1^{3k+2}\big) \tn \bigparr\big(1^{3(n-k)+3}\big)~.
 \]
 
 \noindent
@@ -1300,7 +1300,7 @@ The encoding of an edge $e$ connecting vertices $v_i$ and $v_j$ with $i<j$ is th
 \]
 where each \emph{weight element} $W_n(i,j)$ is the formula
 \[
-	W_n(i,j) = \bigtn\big(\bot^{3i+2}\big)\parr\bigtn\big(\bot^{3(j-i)+1}\big)\parr\bigtn\big(\bot^{3(n-j)+3}\big)
+	W_n(i,j) = \bigtn\big(\bot\!^{3i+2}\big)\parr\bigtn\big(\bot\!^{3(j-i)+1}\big)\parr\bigtn\big(\bot\!^{3(n-j)+3}\big)\,.
 \]
 
 \noindent
@@ -1752,7 +1752,7 @@ The proof will consider the case where $\links\perm*\links'$; the general case f
 %
 By Lemma~\ref{lem:rewiring affects empires}, the empire of each vertex-gadget $\itn v$ contains either a subset of, a superset of, or exactly the same edge-gadgets in $\links'$ as it does in $\links$.
 %
-Let $\itn e_1$ through $\itn e_n$ be the edge-gadgets moving into or out of the empire of $\itn v$.
+Let $\itn {e_1}$ through $\itn {e_n}$ be the edge-gadgets moving into or out of the empire of $\itn v$.
 %
 By Lemma~\ref{lem:appropriate edge weights} other edge-gadgets must fill the constraint elements of $\itn v$.
 %
