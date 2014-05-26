@@ -1454,37 +1454,33 @@ In a proof net $\links$ for $\Gamma=\itn v,\itn{e_1},\dotsc,\itn{e_m},1^p$ where
 
 
 \begin{proof}
-Let $W_i=A\parr B\parr C$, $W_j=D\parr E\parr F$, and $C=X\tn Y$.
+Let $W_i=A\parr B\parr C$, $W_j=D\parr E\parr F$, and $V=X\tn Y$.
 %
 The rewiring path will be illustrated for the case where $A,B,X$ and $D,X$, and thus also $C,Y$ and $E,F,Y$, are balanced sequents; other cases are similar.
 
 
-\displayOcto{\octorollA1}
-
 
 \noindent
-1.\quad The initial configuration is illustrated above. 
+1.\quad The initial configuration is illustrated below.
 %
 Other edges, other weight and constraint elements, and the outer box of the vertex-gadget, are omitted.
 %
 The vertices $i$, $j$, and  $v$ are the indicators of $\itn{e_i}$ and $\itn{e_j}$ and the indicator target of $\itn v$, respectively.
 
+\displayOcto{\octorollA1}
+
+
+\noindent
+2.\quad The link $i-v$ is re-connected to a weight absorber together with only the links from the first $\bot$ of each of $D$, $E$, and $F$:
 
 \displayOcto{\octorollB2}
 
 
 \noindent
-2.\quad The link $i-v$ is re-connected to a weight absorber together with only the links from the first $\bot$ of each of $D$, $E$, and $F$. 
+3.\quad The link from the first $\bot$ of $D$ is moved to $X$, and those from the first $\bot$ of $E$ and $F$ are moved to $Y$:
 
 
 \displayOcto{\octorollB3}
-
-
-\noindent
-3.\quad The link from the first $\bot$ of $D$ is moved to $X$, and those from the first $\bot$ of $E$ and $F$ are moved to $Y$.
-
-
-\displayOcto{\octorollC}
 
 
 \noindent
@@ -1497,14 +1493,14 @@ It is then sufficient to choose linkings so that $D\parr E\parr F$ is in a a sta
 The links of $A,B,C$ link to the weight absorbers $1^m$ and $1^k$, with one remaining link from $B$ to $X$ and one from $C$ to $Y$.
 
 
-\displayOcto{\octorollD1}
+\displayOcto{\octorollC}
 
 
 \noindent
 5.\quad The link from $C$ to $Y$ is moved towards a weight absorber connected to $A,B$.
 
 
-\displayOcto{\octorollD2}
+\displayOcto{\octorollD1}
 
 
 \noindent
@@ -1513,11 +1509,13 @@ The links of $A,B,C$ link to the weight absorbers $1^m$ and $1^k$, with one rema
 Lemma~\ref{lem:double exchange} allows to swap the targets of the link from $B$ to $X$ and the link from $i$, and simultaneously undo the exchange in the links from $D$ to $X$ added in step 4 above.
 
 
-\displayOcto{\octorollA2}
+\displayOcto{\octorollD2}
 
 
 \noindent
-7.\quad The link from $i$ is re-attached to $v$ to yield the final configuration.
+7.\quad The link from $i$ is re-attached to $v$ to yield the final configuration:
+
+\displayOcto{\octorollA2}
 %
 \end{proof}
 
