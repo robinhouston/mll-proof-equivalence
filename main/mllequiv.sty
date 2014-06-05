@@ -550,18 +550,18 @@
 \newcommand\octorollB[1]{
   \begin{tikzpicture}[octoroll]
 	\node[circ] (a1a) at (0,2) {}; \node[big1] (a1) at (-2.5,0) {}; \node[big1] (a2) at (0,0) {}; \node[big1] (a3) at (2.5,0) {};
-	\node[big_] (d1) at (-8.5,4) {};
-	\node[big_] (d2) at (-6  ,4) {};
-	\node[big_] (d3) at (-3.5,4) {};
+	\node[big_] (d1) at (-8.5,4) {\normalsize $A$};
+	\node[big_] (d2) at (-6  ,4) {\normalsize $B$};
+	\node[big_] (d3) at (-3.5,4) {\normalsize $C$};
 	\draw[rounded corners] (-10,3) rectangle (-2,5);
 	\draw[dashed] (-2,4)--(-1,4) node[bullet] (d) {};
-	\draw ( 3  ,4) node[bullet] (e1a) {} -- ( 4  ,4) node[big_] (e1) {};
-	\draw ( 5.5,4) node[bullet] (e2a) {} -- ( 6.5,4) node[big_] (e2) {};
-	\draw ( 8  ,4) node[bullet] (e3a) {} -- ( 9  ,4) node[big_] (e3) {};
+	\draw ( 3  ,4) node[bullet] (e1a) {} -- ( 4  ,4) node[big_] (e1) {\normalsize $D$};
+	\draw ( 5.5,4) node[bullet] (e2a) {} -- ( 6.5,4) node[big_] (e2) {\normalsize $E$};
+	\draw ( 8  ,4) node[bullet] (e3a) {} -- ( 9  ,4) node[big_] (e3) {\normalsize $F$};
 	\draw[rounded corners] (10,3) rectangle (2,5);
 	\draw[dashed] (2,4)--(1,4) node[bullet] (e) {};
-	\node[big1] (v1) at (-2,8) {};
-	\node[big1] (v2) at ( 2,8) {};
+	\node[big1] (v1) at (-2,8) {\normalsize $X$};
+	\node[big1] (v2) at ( 2,8) {\normalsize $Y$};
 	\draw[rounded corners] (-3.5,7) rectangle (-0.5,9);
 	\draw[rounded corners] ( 3.5,7) rectangle ( 0.5,9);
 	\draw (-0.5,8)--(0.5,8);
@@ -585,18 +585,18 @@
 \newcommand\octorollC{
   \begin{tikzpicture}[octoroll]
 	\node[circ] (a1a) at (0,2) {}; \node[big1] (a1) at (-2.5,0) {}; \node[big1] (a2) at (0,0) {}; \node[big1] (a3) at (2.5,0) {};
-	\node[big_] (d1) at (-9,4) {};
-	\draw (-7.25,4) node[big_] (d2) {} -- (-6.25,4) node[bullet] (d2a) {};
-	\draw (-5,4) node[big_] (d3) {} -- (-3.5,4) node[big_] (d3a) {} -- (-2.5,4) node[bullet] (d3b) {};
+	\node[big_] (d1) at (-9,4) {\normalsize $A$};
+	\draw (-7.25,4) node[big_] (d2) {\normalsize $B$} -- (-6.25,4) node[bullet] (d2a) {};
+	\draw (-5,4) node[big_] (d3) {\normalsize $C$} -- (-3.5,4) node[big_] (d3a) {\normalsize $C$} -- (-2.5,4) node[bullet] (d3b) {};
 	\draw[rounded corners] (-10,3) rectangle (-2,5);
 	\draw[dashed] (-2,4)--(-1,4) node[bullet] (d) {};
-	\node[big_] (e1) at ( 3.5,4) {};
-	\node[big_] (e2) at ( 6  ,4) {};
-	\node[big_] (e3) at ( 8.5,4) {};
+	\node[big_] (e1) at ( 3.5,4) {\normalsize $D$};
+	\node[big_] (e2) at ( 6  ,4) {\normalsize $E$};
+	\node[big_] (e3) at ( 8.5,4) {\normalsize $F$};
 	\draw[rounded corners] (10,3) rectangle (2,5);
 	\draw[dashed] (2,4)--(1,4) node[bullet] (e) {};
-	\node[big1] (v1) at (-2,8) {};
-	\node[big1] (v2) at ( 2,8) {};
+	\node[big1] (v1) at (-2,8) {\normalsize $X$};
+	\node[big1] (v2) at ( 2,8) {\normalsize $Y$};
 	\draw[rounded corners] (-3.5,7) rectangle (-0.5,9);
 	\draw[rounded corners] ( 3.5,7) rectangle ( 0.5,9);
 	\draw (-0.5,8)--(0.5,8);
@@ -614,18 +614,18 @@
 \newcommand\octorollD[1]{
   \begin{tikzpicture}[octoroll]
 	\node[big1] (a1) at (0,0) {}; \node[circ] (a1a) at (0,2) {};
-	\node[big_] (d1) at (-8.5,4) {};
-	\draw (-6,4) node[big_] (d2a) {} -- (-5,4) node[bullet] (d2b) {};
-	\node[big_] (d3) at (-3.5,4) {};
+	\node[big_] (d1) at (-8.5,4) {\normalsize $A$};
+	\draw (-6,4) node[big_] (d2a) {\normalsize $B$} -- (-5,4) node[bullet] (d2b) {};
+	\node[big_] (d3) at (-3.5,4) {\normalsize $C$};
 	\draw[rounded corners] (-10,3) rectangle (-2,5);
 	\draw[dashed] (-2,4)--(-1,4) node[bullet] (d) {};
-	\node[big_] (e1) at ( 3.5,4) {};
-	\node[big_] (e2) at ( 6  ,4) {};
-	\node[big_] (e3) at ( 8.5,4) {};
+	\node[big_] (e1) at ( 3.5,4) {\normalsize $D$};
+	\node[big_] (e2) at ( 6  ,4) {\normalsize $E$};
+	\node[big_] (e3) at ( 8.5,4) {\normalsize $F$};
 	\draw[rounded corners] (10,3) rectangle (2,5);
 	\draw[dashed] (2,4)--(1,4) node[bullet] (e) {};
-	\node[big1] (v1) at (-2,8) {};
-	\node[big1] (v2) at ( 2,8) {};
+	\node[big1] (v1) at (-2,8) {\normalsize $X$};
+	\node[big1] (v2) at ( 2,8) {\normalsize $Y$};
 	\draw[rounded corners] (-3.5,7) rectangle (-0.5,9);
 	\draw[rounded corners] ( 3.5,7) rectangle ( 0.5,9);
 	\draw (-0.5,8)--(0.5,8);
@@ -645,14 +645,14 @@
 \newcommand\octorollE[1]{
   \begin{tikzpicture}[octoroll]
 	\node[big1] (a1) at (0,0) {}; \node[circ] (a1a) at (0,2) {};
-	\node[big_] (d1) at (-8.5,4) {};
+	\node[big_] (d1) at (-8.5,4) {\normalsize $A$};
 	\draw (-6,4) node[big_] (d2a) {} -- (-5,4) node[bullet] (d2b) {};
 	\node[big_] (d3) at (-3.5,4) {};
 	\draw[rounded corners] (-10,3) rectangle (-2,5);
 	\draw[dashed] (-2,4)--(-1,4) node[bullet] (d) {};
 	\draw (2.75,4) node[bullet] (e1a) {} -- (3.5,4) node[bullet] (e1b) {} -- (4.5,4) node[big_] (e1c) {};
-	\node[big_] (e2) at ( 6.5,4) {};
-	\node[big_] (e3) at ( 8.5,4) {};
+	\node[big_] (e2) at ( 6.5,4) {\normalsize $B$};
+	\node[big_] (e3) at ( 8.5,4) {\normalsize $C$};
 	\draw[rounded corners] (10,3) rectangle (2,5);
 	\draw[dashed] (2,4)--(1,4) node[bullet] (e) {};
 	\node[circ] (v1a) at (-3.25,8) {}; \node[circ] (v1b) at (-2.5,8) {}; \node[big1] (v1c) at (-1.5,8) {};
