@@ -17,6 +17,38 @@
 \let\capsabbrev=\uppercase
 
 
+
+
+% MLL
+%   remove naming - work with occurrences instead ??
+%   explain cut-elimination
+%   define *-autonomous categories
+
+% PROOF NETS
+%   separate section for proof nets
+%   discuss both small-step and big-step equivalence
+%      connect jumps anywhere / to positive leaves (1,a) only
+%   example translation: proof => net
+% 
+%   add 3-partition example
+%
+
+% CONSTRAINT LOGIC
+%	add separate section for constraint logic
+%	
+
+% PARITY
+%   stress alternation over n-arity
+%   explain n-arity is safe
+%   mention alternatives ??
+%   clear up argument where possible
+
+
+
+
+
+
+
 \title{Proof equivalence in MLL is PSPACE-complete}
 
 \author{Willem Heijltjes and Robin Houston}
@@ -81,16 +113,6 @@ An important consequence of the result is that the existence of a satisfactory n
 
 \section{\capsabbrev{mll}}
 
-
-% TODO
-%   remove naming - work with occurrences instead
-%   explain cut-elimination
-%   define *-autonomous categories
-
-%   separate section for proof nets
-%   discuss both small-step and big-step equivalence
-%      connect jumps anywhere / to positive leaves (1,a) only
-%   example translation: proof => net
 
 
 
@@ -411,13 +433,6 @@ A path in a proof net or switching graph is indicated $\path ab$, and illustrate
 
 %------------------------------------------------------------
 
-% TO DO
-%   add 3-partition example
-%
-
-% TO DO
-%	add separate section for constraint logic
-%	
 
 \section{Encoding constraint logic}
 \label{sec:encoding}
@@ -939,6 +954,7 @@ Otherwise, $\Delta=\Delta'$. \hfill\qedhere
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 \subsection*{Parity}
+
 
 
 The linearity of \capsabbrev{mll} means that in a proof or proof net, there is always a certain balance to the number of $\bot$- and $\parr$-occurrences. 
