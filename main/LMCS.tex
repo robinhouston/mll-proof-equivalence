@@ -1,4 +1,4 @@
-\documentclass{sigplanconf}
+\documentclass{lmcs}
 
 \usepackage{amssymb,amsthm,amsmath}
 \usepackage{microtype}
@@ -14,42 +14,13 @@
 \shortJournalNames
 \makeTheoremDefs
 
-\let\beforesection=\relax%\medskip
-\let\aftersection=\relax%\noindent
-\let\aftersubsection=\relax%\noindent
-
 \let\capsabbrev=\uppercase
 
 
+\title{Proof equivalence in MLL is PSPACE-complete}
 
-\title{No proof nets for \capsabbrev{mll} with units}
-\subtitle{Proof equivalence in \capsabbrev{mll} is \capsabbrev{pspace}-complete}
+\author{Willem Heijltjes and Robin Houston}
 
-\authorinfo
- {Willem Heijltjes}
- {University of Bath}
- {w.b.heijltjes@bath.ac.uk}
-\authorinfo
- {Robin Houston}
- {Kiln Enterprises}
- {robin@kiln.it}
-
-\exclusivelicense
-\conferenceinfo{CSL-LICS 2014}{July 14--18, 2014, Vienna, Austria} 
-\copyrightyear{2014} 
-\copyrightdata{978-1-4503-2886-9}
-\doi{2603088.2603126}
-
-
-\authorversion
-  {2014}
-  {CSL-LICS}
-  {2014}
-  {2603088.2603126}
-
-% FOR PERSONAL USE, ADD:
-
-%"© [Owner] [Year]. This is the author's version of the work. It is posted here for your personal use. Not for redistribution. The definitive version was published in {Source Publication}, http://dx.doi.org/10.1145/{number}."
 
 %============================================================
 
@@ -61,10 +32,10 @@
 % F.2.2 - Nonnumerical Algorithms and Problems (Complexity of proof procedures)
 % F.4.1 - Mathematical logic (Proof theory)
 
-\category{F.4.1}{Mathematical logic and formal languages}{Mathematical logic}[Proof theory]
-\category{F.2.2}{Analysis of algorithms and problem complexity}{Nonnumerical algorithms and problems}[Complexity of proof procedures]
+%\category{F.4.1}{Mathematical logic and formal languages}{Mathematical logic}[Proof theory]
+%\category{F.2.2}{Analysis of algorithms and problem complexity}{Nonnumerical algorithms and problems}[Complexity of proof procedures]
 
-\keywords{linear logic, proof equivalence, proof nets, constraint logic, \capsabbrev{pspace}-completeness}
+%\keywords{linear logic, proof equivalence, proof nets, constraint logic, \capsabbrev{pspace}-completeness}
 
 \begin{abstract}
 \capsabbrev{mll} proof equivalence is the problem of deciding whether two proofs in multiplicative linear logic are related by a series of inference permutations.
@@ -79,46 +50,50 @@ An important consequence of the result is that the existence of a satisfactory n
 \end{abstract}
 
 %------------------------------------------------------------
-\beforesection
+
 
 \section{Introduction}
 
-\aftersection
+
 %
-The question of equivalence of proofs goes back to Lambek \cite{Lambek-1968}, who realised that the new tool of category-theoretic logic gave a notion of proof equivalence that was coarser and better-behaved than syntactic equality.
 
-Later, a striking technical innovation of linear logic was the introduction of proof nets \cite{Girard-1987,Danos-Regnier-1989}, which define a canonical form for proofs in the unitless fragment of multiplicative linear logic---two proofs are equivalent if and only if they have the same proof net---so proof nets offer a simple decision procedure for proofs in this fragment. This naturally raises the question whether proof nets can be extended to work in the presence of units. The work in this direction begins with \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996} via \cite{Lamarche-Strassburger-2006} and perhaps culminates in \cite{HughesFreeStar,HughesMLLProofNets}; but these proof nets are not canonical and must be identified up to a rewiring equivalence.
+\cite{Lambek-1968}
 
-So the question remains whether there exist fully canonical proof nets for full \capsabbrev{mll}. Canonical proof nets have been found for several other fragments of linear logic: the combined multiplicative-additive fragment without units \cite{Hughes-vanGlabbeek-2005}, and the additive fragment, including the additive units \cite{Heijltjes-2011}.
-
-In this paper we establish that the proof equivalence problem for multiplicative linear logic with units is \capsabbrev{pspace}-complete. 
-%
-This effectively rules out the existence of a satisfactory notion of proof net for \capsabbrev{mll} with units---one that reduces proof equivalence to syntactic equality, and where the translation from proofs to proof nets and equality of proof nets are both tractable.
+\cite{Girard-1987,Danos-Regnier-1989}
+\cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996}
+\cite{Lamarche-Strassburger-2006}
+\cite{HughesFreeStar,HughesMLLProofNets}
 
 
-% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\cite{Hughes-vanGlabbeek-2005}
+\cite{Heijltjes-2011}
 
-\subsection*{Constraint logic and reconfiguration problems}
+\cite{Demaine-Hearn-2008}
 
-\aftersubsection
-The proof of \capsabbrev{pspace}-completeness relies on a polynomial reduction from the configuration-to-configuration problem in non-deterministic
-\emph{constraint logic}, a graphical formalism recently introduced as a uniform tool for use in complexity reductions \cite{Demaine-Hearn-2008}.
-%
-Constraint logic is a simple graph rewriting formalism, where weighted edges may be reversed as long as the given in-flow constraint for each vertex is satisfied; the configuration-to-configuration problem asks whether two graphs are related by a sequence of rewriting steps.
+\cite{ReconfigurationProblems}
+\cite{Kanovich-1992,Lincoln-Winkler-1994}.
 
-This is one of a class of problems called \emph{reconfiguration problems} \cite{ReconfigurationProblems}: can one solution to a given problem be transformed into another by a series of elementary changes, while remaining valid throughout?
-%
-For example, the reconfiguration problem for boolean satisfiability (SAT) asks whether one satisfying assignment can be transformed into another by changing the value of one atomic formula at a time, without passing via a non-satisfying assignment.
-%
-It is not uncommon for an \capsabbrev{np}-complete problem to have an associated reconfiguration problem that is \capsabbrev{pspace}-complete \cite{ReconfigurationProblems}; an example of this is SAT-reconfiguration. \capsabbrev{mll} proof equivalence may be regarded as the reconfiguration problem associated with \capsabbrev{mll} proof search, which is \capsabbrev{np}-complete \cite{Kanovich-1992,Lincoln-Winkler-1994}.
+
+
 
 %------------------------------------------------------------
-\beforesection
+
 
 \section{\capsabbrev{mll}}
 
-\aftersection
-%
+
+% TODO
+%   remove naming - work with occurrences instead
+%   explain cut-elimination
+%   define *-autonomous categories
+
+%   separate section for proof nets
+%   discuss both small-step and big-step equivalence
+%      connect jumps anywhere / to positive leaves (1,a) only
+%   example translation: proof => net
+
+
+
 The formulae of unit-only multiplicative linear logic are given by the following grammar.
 %
 \setMidspace{5pt}
@@ -206,7 +181,7 @@ Proof equivalence for \capsabbrev{mll} is therefore equivalent to the \emph{word
 
 \subsection*{Proof nets}
 
-\aftersubsection
+
 Proof nets provide a solution to proof equivalence for \capsabbrev{mll} without units.
 %
 For full \capsabbrev{mll}, they reduce the proof equivalence problem to a simple rewiring relation \cite{HughesMLLProofNets}.
@@ -316,7 +291,7 @@ The above proposition means that \capsabbrev{mll}\ proof equivalence is the prob
 
 \subsection*{Notation}
 
-\aftersubsection
+
 We will use a concise diagrammatic notation for sequents and proof nets.
 %
 The units $1$ and $\bot$ are represented by a circle~($\circ$) and a disc~($\bullet$) respectively;
@@ -436,12 +411,18 @@ A path in a proof net or switching graph is indicated $\path ab$, and illustrate
 
 %------------------------------------------------------------
 
-\beforesection
+% TO DO
+%   add 3-partition example
+%
+
+% TO DO
+%	add separate section for constraint logic
+%	
 
 \section{Encoding constraint logic}
 \label{sec:encoding}
 
-\aftersection
+
 %
 \emph{Non-deterministic constraint logic} \cite{Hearn-Demaine-2005,Demaine-Hearn-2008,GamesPuzzlesAndComputation} is a simple graph-rewriting formalism, used here as a convenient tool for \capsabbrev{pspace}-hardness reduction.
 %
@@ -570,7 +551,7 @@ We will demonstrate the \capsabbrev{pspace}-hardness of \capsabbrev{mll} proof e
 
 \subsection*{The encoding}
 
-\aftersubsection
+
 The basis of the encoding of constraint graphs in \capsabbrev{mll} is formed by \emph{weight elements}, which encode one unit of weight on an edge, and \emph{constraint elements}, that encode one unit towards the inflow constraint of a vertex.
 %
 The arithmetic of linking formulae of the form $\bigtn(\bot^n)$ to formulae $\bigparr(1^m)$ will be used to ensure that a weight element may be linked to only two vertices.
@@ -742,12 +723,12 @@ The encoding will be made formal in Section~\ref{sec:correctness}; first we will
 
 %------------------------------------------------------------
 
-\beforesection
+
 
 \section{Rewiring proof nets}
 \label{sec:rewiring}
 
-\aftersection
+
 %
 In this section we will explore the global rewiring behaviour of proof nets.
 %
@@ -762,7 +743,7 @@ The notions and results introduced in this section will be used in the main proo
 
 \subsection*{Subnets}
 
-\aftersubsection
+
 We will discuss (and adapt) some convenient standard notions for \capsabbrev{mll} proofs and proof nets, and relate them to rewiring.
 %
 Firstly we will look at subnets---see also \cite{Bellin-vandeWiele-1995}.
@@ -851,7 +832,7 @@ Given a boxing $s$, it follows by induction on the nesting of boxes that the gra
 %
 In the other direction, given a sequentialisation of $(\Gamma,\links)$, a box $s(v)\leq\Gamma$ for each $\named v\parr$ is found by taking the conclusion $\Delta, A\named v\parr B$ of its introduction rule, below.
 \[
-	\infer[\MLLlabel p]{\Delta,A\named v\parr B}{\Delta,A,B} \qedhere
+	\infer[\MLLlabel p]{\Delta,A\named v\parr B}{\Delta,A,B}
 \]
 \end{proof}
 
@@ -959,7 +940,7 @@ Otherwise, $\Delta=\Delta'$. \hfill\qedhere
 
 \subsection*{Parity}
 
-\aftersubsection
+
 The linearity of \capsabbrev{mll} means that in a proof or proof net, there is always a certain balance to the number of $\bot$- and $\parr$-occurrences. 
 %
 This observation gives a well-known necessary condition for the provability of a sequent.
@@ -1112,7 +1093,7 @@ Two equivalent proof nets have even parity.
 
 \subsection*{Equivalence without $\parr$}
 
-\aftersubsection
+
 Let a \emph{basic} sequent be one of formulae constructed only over $\1$, $\bot$, and $\tn$.
 %
 After removing dangling $\bot$-formulae and replacing subformulae $\1\tn A$ with $A$, basic sequents consist of formulae of the form $1$ or $\bigtn(\bot^n)$ with $n\geq2$.
@@ -1207,12 +1188,12 @@ Given two proof nets of even parity, both must be in the other equivalence class
 
 %------------------------------------------------------------
 
-\beforesection
+
 
 \section{Formalising the encoding}
 \label{sec:correctness}
 
-\aftersection
+
 %
 We will formalise the encoding of \capsabbrev{ncg}-reconfiguration into \capsabbrev{mll} proof equivalence that was informally introduced in Section~\ref{sec:encoding}.
 %
@@ -1406,7 +1387,7 @@ This will be separated into two parts: completeness ($\Rightarrow$) and soundnes
 \subsection*{Completeness}
 
 
-\aftersubsection
+
 Given a reconfiguration path $\gamma\perm\delta$ over total configurations, we will demonstrate a rewiring sequence between $\itn\gamma$ and $\itn\delta_\gamma$.
 %
 The central part of the argument will be to show how the weight element linking to a constraint element may be exchanged for another (Lemma~\ref{lem:octopus roll}).
@@ -1598,7 +1579,7 @@ The resulting proof net is $\itn\delta$ modulo a permutation of weight absorbers
 
 \subsection*{Soundness}
 
-\aftersubsection
+
 It will be shown that proof net rewiring $\itn\gamma\perm\itn\delta_\gamma$ is sound for \capsabbrev{ncg}-reconfiguration, $\gamma\perm\delta$.
 %
 To each proof net $\links$ for an encoded constraint graph $\itn G$ we will associate a partial configuration $\gamma=\coitn\links$, such that 1) a rewiring step between $\links$ and $\links'$ corresponds to a reconfiguration path $\coitn\links\perm\coitn{\links'}$, and 2) the function $\coitn-$ is a retraction of the encoding of configurations, $\coitn{\itn\gamma}=\gamma$.
@@ -1701,11 +1682,11 @@ It follows that $\coitn\links\perm\coitn{\links'}$ by moving each $e_i$ in turn,
 
 %------------------------------------------------------------
 
-\beforesection
+
 
 \section{\capsabbrev{mll} proof equivalence is \capsabbrev{pspace}-complete}
 
-\aftersection
+
 %
 We are now ready to state our main theorem.
 
@@ -1731,7 +1712,7 @@ The direction $(\Rightarrow)$ is by Lemma~\ref{lem:completeness}; the direction 
 
 \newpage
 
-\acks
+%\acks
 
 We would like to thank Lutz Stra{\ss}burger for comments and discussion, and the anonymous referees for their constructive observations.
 
