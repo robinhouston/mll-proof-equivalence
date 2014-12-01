@@ -1,4 +1,4 @@
-all: LICS.pdf
+all: LICS.pdf LMCS.pdf
 
 .PHONY: all
 
