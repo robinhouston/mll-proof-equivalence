@@ -64,8 +64,8 @@
 
 \newcommand*{\coloneq}{
  \mathrel{%
-  \rlap{\raisebox{0.3ex}{$\m@th\cdot$}}%
-        \raisebox{-0.3ex}{$\m@th\cdot$}%
+  \rlap{\raisebox{0.3ex}{$\m@th\cdot$}}\raisebox{-0.3ex}{$\m@th\cdot$}\kern-0.8pt%
+  \rlap{\raisebox{0.3ex}{$\m@th\cdot$}}\raisebox{-0.3ex}{$\m@th\cdot$}%
  }=}
  
 \newcommand\Mid{\mid}
@@ -113,25 +113,29 @@
  \kern-3pt\scriptstyle{
  \SWITCH{#1}
   1 {1}
+  a {\mathsf{ax}}
   b {\bot}
+  c {\mathsf{cut}}
   p {\parr}
   t {\tn}
  \DEFAULT{#1}
 }}
 
-\newcommand\MLLrule[1]{
+\newcommand\MLLrule[1]{\vc{
  \SWITCH{#1}
-  1 {\infer[\MLLlabel 1]{1\vphantom\Gamma}{}}
+  1 {\infer[\MLLlabel 1]{1\vphantom\Gamma}{\vphantom\Gamma}}
+  a {\infer[\MLLlabel a]{A,\dual A\vphantom\Gamma}{\vphantom\Gamma}}
   b {\infer[\MLLlabel b]{\Gamma,\bot}{\Gamma}}
+  c {\infer[\MLLlabel c]{\Gamma,\Delta}{\Gamma,A && \Delta,\dual A}}
   p {\infer[\MLLlabel p]{\Gamma,A\parr B}{\Gamma,A,B}}
   t {\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B}{\Gamma,A && \Delta,B}}
  \DEFAULT{}
-}
+}}
 
 
 %---------- Permutations
 
-\newcommand\MLLperm[1]{
+\newcommand\MLLperm[1]{\vc{%
  \SWITCH{#1}
   {bb1} {\infer[\MLLlabel b]{\Gamma,\named a\bot,\named b\bot}{\infer[\MLLlabel b]{\Gamma,\named a\bot}{\Gamma}}}
   {bb2} {\infer[\MLLlabel b]{\Gamma,\named a\bot,\named b\bot}{\infer[\MLLlabel b]{\Gamma,\named b\bot}{\Gamma}}}
@@ -147,8 +151,21 @@
   {tt1} {\infer[\MLLlabel t]{\Gamma,\Delta,\Lambda,A\tn B,C\tn D}{\Gamma,A && \infer[\MLLlabel t]{\Delta,\Lambda,B,C\tn D}{\Delta,B,C && \Lambda,D}}}
   {tt2} {\infer[\MLLlabel t]{\Gamma,\Delta,\Lambda,A\tn B,C\tn D}{\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B,C}{\Gamma,A && \Delta,B,C} && \Lambda,D}}
  \DEFAULT{}
-}
+}}
 
+%---------- Cut / identity elimination
+
+\newcommand\MLLelim[1]{\vc{%
+ \SWITCH{#1}
+  {a0} {\infer[\MLLlabel a]{\1,\bot}{\vphantom\Gamma}}
+  {a1} {\infer[\MLLlabel b]{\1,\bot}{\infer[\MLLlabel 1]{\1}{\vphantom\Gamma}}}
+  {a2} {\infer[\MLLlabel a]{A\tn B,\dual A\parr\dual B}{\vphantom\Gamma}}
+  {a3} {\infer[\MLLlabel p]{A\tn B,\dual A\parr\dual B}{\infer[\MLLlabel t]{A\tn B,\dual A,\dual B}{\infer[\MLLlabel a]{A,\dual A}{} && \infer[\MLLlabel a]{B,\dual B}{}}}}
+  {c0} {\infer[\MLLlabel c]{\Gamma}{\infer[\MLLlabel 1]{1\vphantom\Gamma}{} && \infer[\MLLlabel b]{\Gamma,\bot}{\Gamma}}}
+  {c1} {\infer[\MLLlabel c]{\Gamma,\Delta,\Lambda}{\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B}{\Gamma,A && \Delta,B} && \infer[\MLLlabel p]{\Lambda,\dual A\parr\dual B}{\Lambda,\dual A,\dual B}}}
+  {c2} {\infer[\MLLlabel c]{\Gamma,\Delta,\Lambda}{\Gamma,A && \infer[\MLLlabel c]{\Delta,\Lambda,\dual A}{\Delta,B && \Lambda,\dual A,\dual B}}}
+ \DEFAULT{}
+}}
 
 %---------- Constraint graphs
 
