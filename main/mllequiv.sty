@@ -36,10 +36,24 @@
   \xdash\hskip1.5pt%
   \xdash\hskip1pt
 }
+\newcommand\xjump{%
+  \raisebox{.5ex}{%
+    \begin{tikzpicture}
+    	\draw[jump,thick] (0,0) -- (8pt,0pt);
+	\end{tikzpicture}%
+}}
+\newcommand\xpmuj{%
+  \raisebox{.5ex}{%
+    \begin{tikzpicture}
+    	\draw[jump,thick] (0,0) -- (-8pt,0pt);
+	\end{tikzpicture}%
+}}
+
 
 \newcommand\path[2]{#1{\xpath}#2}
 \newcommand\edge[2]{#1{\xedge}#2}
-
+\newcommand\jump[2]{#1{\xjump}#2}
+\newcommand\pmuj[2]{#1{\xpmuj}#2}
 
 %---------- Hacking
 
@@ -205,9 +219,91 @@
 \tikzstyle{octoroll}=[x=5mm,y=-5mm,octo]
 \tikzstyle{octar}=[thepink,->,octo]
 \tikzstyle{pn}=[inner sep=1pt]
+\tikzstyle{jump}=[thepink,->,thick]
 
 \newcommand\nx[2]{#2_{\smash{\makebox[0pt][l]{\ensuremath{\scriptstyle{#1}}}}}}
 
+
+\newcommand\examplenet{
+  \begin{tikzpicture}[x=8mm,y=8mm,inner sep=1pt]
+	\node (a) at (0,1) {$\bot$};
+	\node (b) at (2,1) {$\bot$};
+	\node (c) at (1,0) {$\tn$};
+	\node (d) at (3,0) {1};
+	\node (e) at (4,2) {$\bot$};
+	\node (f) at (6,2) {1};
+	\node (g) at (5,1) {$\pr$};
+	\node (h) at (7,1) {$\bot$};
+	\node (i) at (6,0) {$\tn$};
+	\node (j) at (8,1) {1};
+	\node (k) at (10,1) {$\bot$};
+	\node (l) at (9,0) {$\pr$};
+	%
+	\draw[thick] (a)--(c)--(b) (g)--(i)--(h);
+	\draw[thick,dashed] (e)--(g)--(f) (j)--(l)--(k);
+	%
+	\draw[jump,out=90,in=135,looseness=0.8] (a) to (f.north);
+	\draw[jump,out=45,in=90] (b) to (d);
+	\draw[jump,out=135,in=90] (e) to (d);
+	\draw[jump,out=45,in=90,looseness=1.5] (h) to (l);
+	\draw[jump,out=135,in=45] (k) to (j);
+  \end{tikzpicture}
+}
+
+
+\newcommand\PN[2]{\vc{
+  \SWITCH{#1}
+  b	{\begin{tikzpicture}[x=6mm,y=6mm]
+		\node[inner sep=1pt] (A) at (-1,1) {$\bot$};
+		\node[inner sep=1pt] (B) at ( 1,1) {$a$};
+		\node[inner sep=0pt] (t) at (0,0) {$\phantom\tn$};
+		\node (b) at (0,3) {$\bot$};
+		%
+		\draw[jump,overlay,bend right] (A) to (B);
+		\SWITCH{#2}
+		{1} {\draw[jump,overlay,bend left]  (b) to (A);}
+		{2} {\draw[jump,overlay,bend right] (b) to (B);}
+		\DEFAULT{}
+  	\end{tikzpicture}}
+  p {\begin{tikzpicture}[x=6mm,y=6mm]
+		\node[inner sep=1pt] (A) at (-1,1) {$a$};
+		\node[inner sep=1pt] (B) at ( 1,1) {$b$};
+		\node[inner sep=0pt] (p) at (0,0) {$\pr$};
+		\node (b) at (0,3) {$\bot$};
+		%
+		\draw[thick,dashed] (A)--(t)--(B);
+		\SWITCH{#2}
+		{1} {\draw[jump,overlay,bend left]  (b) to (A);}
+		{2} {\draw[jump,overlay]		    (b) to (p);}
+		{3} {\draw[jump,overlay,bend right] (b) to (B);}
+		\DEFAULT{}
+	\end{tikzpicture}}
+  q	{\begin{tikzpicture}[x=6mm,y=6mm]
+		\node[inner sep=1pt] (A) at (-1,1) {$a$};
+		\node[inner sep=1pt] (B) at ( 1,1) {$b$};
+		\node[inner sep=0pt] (t) at (0,0) {$\phantom\pr$};
+		\node (b) at (0,3) {$\bot$};
+		%
+		\SWITCH{#2}
+		{1} {\draw[jump,overlay,bend left]  (b) to (A);}
+		{2} {\draw[jump,overlay,bend right] (b) to (B);}
+		\DEFAULT{}
+  	\end{tikzpicture}}
+  t {\begin{tikzpicture}[x=6mm,y=6mm]
+		\node[inner sep=1pt] (A) at (-1,1) {$a$};
+		\node[inner sep=1pt] (B) at ( 1,1) {$b$};
+		\node[inner sep=0pt] (t) at (0,0) {$\tn$};
+		\node (b) at (0,3) {$\bot$};
+		%
+		\draw[thick] (A)--(t)--(B);
+		\SWITCH{#2}
+		{1} {\draw[jump,overlay,bend left]  (b) to (A);}
+		{2} {\draw[jump,overlay]    		(b) to (t);}
+		{3} {\draw[jump,overlay,bend right] (b) to (B);}
+		\DEFAULT{}
+  	\end{tikzpicture}}
+  \DEFAULT{}
+}}
 
 
 \newcommand\netA[4]{\vcenter{\hbox{
