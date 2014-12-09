@@ -324,8 +324,6 @@ If $\Pi\toNet\links$ and $\Pi'\toNet\links'$, then $\Pi\perm\Pi'$ if and only if
 \end{proposition}
 
 
-\end{document}
-
 \begin{figure}
 \[
 	\netA 1223 ~\perm*~
@@ -469,22 +467,13 @@ A path in a proof net or switching graph is indicated $\path ab$, and illustrate
 %
 \emph{Non-deterministic constraint logic} \cite{Hearn-Demaine-2005,Demaine-Hearn-2008,GamesPuzzlesAndComputation} is a simple graph-rewriting formalism, used here as a convenient tool for \capsabbrev{pspace}-hardness reduction.
 %
-A \emph{constraint graph} is a graph with weighted edges and an \emph{inflow constraint}---a natural number that may be taken to be always $2$---on each vertex. A \emph{configuration} is an assignment of directions to the edges of the underlying undirected constraint graph. A rewrite step consists of the reversal of a single edge in a configuration, while preserving the condition that the total weight of the incoming edges at each vertex is at least its inflow constraint.
-
-
+A \emph{constraint graph} is a graph with weighted edges and an \emph{inflow constraint}---a natural number that may be taken to be always $2$---on each vertex. A \emph{configuration} is an assignment of directions to the edges of the underlying undirected constraint graph, where at each vertex the total weight of the incoming edges is at least the inflow constraint of that vertex. A rewrite step consists of the reversal of a single edge in a configuration, such that all the inflow constraints remain satisfied.
 
 Figure~\ref{fig:NCL example} shows an example rewrite sequence in a part of a constraint graph.
 %
 The central node has inflow constraint 2, the thick blue edge has weight 2, and the thinner red edges have weight 1.
 
-
-
-The specific problem we will use is the \emph{configuration--to--configuration} problem, which asks whether a path of rewrite steps exists between two constraint graphs.
-%
-A constraint graph may be encoded as a sequent, and a configuration as a proof net.
-%
 It is useful for us to generalise the notion of configuration a little: we will allow \emph{partial} configurations, where edges may be left undirected---as long as the inflow constraints are satisfied by the directed edges.
-
 
 \begin{definition} 
 A \emph{constraint graph} $G=(V,E,c,v,w)$ consists of: a set $V$ of vertices with \emph{inflow constraint} $c\colon V\to\mathbb N$; and a set $E$ of undirected edges with \emph{weight} $w\colon E\to\mathbb N$, connecting the two vertices $v(e)=\{v_1,v_2\}\subseteq V$.
@@ -507,12 +496,10 @@ The reflexive--transitive closure of $(\perm*)$ will be denoted $(\perm)$.
 %
 \end{definition}
 
-
 \begin{proposition}
 \label{prop:partial simulates total reconfiguration}
 For total configurations $\gamma$ and $\delta$, if $\gamma\perm\delta$ then $\gamma$ and $\delta$ are also connected by a sequence of reconfiguration steps over total configurations only.
 \end{proposition}
-
 
 \begin{proof}
 By the following two observations: firstly, 
@@ -523,10 +510,7 @@ if $\gamma'$ and $\gamma''$ are total configurations that both agree with a part
 %
 \end{proof}
 
-
 \emph{Non-deterministic constraint graph reconfiguration} or \emph{\capsabbrev{ncg}-reconfiguration} is the problem of deciding whether two total configurations of a constraint graph are connected by a sequence of reconfiguration steps.
-
-
 
 \begin{figure}
 $
@@ -569,6 +553,12 @@ $
 \begin{theorem}[\cite{GamesPuzzlesAndComputation}, Theorem~5.15]
 \capsabbrev{ncg}-reconfiguration is \capsabbrev{pspace}-complete.
 \end{theorem}
+
+This result may seem surprising at first. To give a feel for the dynamics that make this problem \capsabbrev{pspace}-hard, we shall exhibit an example where an exponentially-long reconfiguration sequence is needed.
+
+\noindent\boat{1}\hskip3em\boat{10}
+
+\noindent\boat{11}\hskip3em\boat{20}
 
 
 \section{Encoding constraint logic}
@@ -1136,8 +1126,7 @@ Two equivalent proof nets have even parity.
 \label{fig:double exchange}
 \end{figure*}
 
-
-\subsection*{Equivalence without $\pr$}
+\subsection*{Equivalence without $\protect\pr$}
 
 
 Let a \emph{basic} sequent be one of formulae constructed only over $\1$, $\bot$, and $\tn$.

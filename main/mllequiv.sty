@@ -203,6 +203,105 @@
 \tikzstyle{ncl1}=[line cap=round,line width=1.5pt,thered]
 \tikzstyle{ncl2}=[line cap=round,line width=3pt,theblue]
 
+\def\boat#1{
+\begin{tikzpicture}[x=6mm,y=10mm]
+    \newcount\i
+    \i#1\relax
+    \newif\ifboat
+    \ifnum\i>10
+        \boattrue
+        \advance\i by -10
+    \else
+        \boatfalse
+    \fi
+    \foreach \a/\p in {a/{(0,2)},b/{(3,3)},c/{(3,1)},d/{(6,3)},e/{(6,1)},f/{(4,2)},1/{(3,4.5)},0/{(3,-.5)}}
+        {\node[nclnode,minimum size=5pt,outer sep=2pt] (\a) at \p {};}
+%
+    \begin{scope}[ncl1,->,cap = butt]
+        \ifnum\i<3
+            \draw (a) to[out=60,in=180] (b);
+        \else
+            \draw (b) to[out=180,in=60] (a);
+        \fi
+        \ifnum\i<9
+            \draw (c) to[in=300,out=180] (a);
+        \else
+            \draw (a) to[out=300,in=180] (c);
+        \fi
+        \ifnum\i<3
+            \draw (d) -- (b);
+        \else
+            \draw (b) -- (d);
+        \fi
+        \ifnum\i<9
+            \draw (c) -- (e);
+        \else
+            \draw (e) -- (c);
+        \fi
+        \ifnum\i<6
+            \draw (d) -- (e);
+        \else
+            \draw (e) -- (d);
+        \fi
+    \end{scope}
+%
+    \begin{scope}[ncl2,->,cap = butt]
+        \ifboat\else
+            \ifnum\i<4
+                \draw (f) -- (a);
+            \else
+                \ifnum\i<8
+                    \draw (a) -- (f);
+                \else
+                    \draw (f) -- (a);
+                \fi
+            \fi
+        \fi
+        \ifnum\i<2
+            \draw (b) -- (1);
+        \else
+            \draw (1) -- (b);
+        \fi
+        \ifnum\i<10
+            \draw (0) -- (c);
+        \else
+            \draw (c) -- (0);
+        \fi
+        \ifnum\i<7
+            \draw (f) -- (d);
+        \else
+            \draw (d) -- (f);
+        \fi
+        \ifnum\i<5
+            \draw (e) -- (f);
+        \else
+            \draw (f) -- (e);
+        \fi
+    \end{scope}
+%
+    \ifboat
+        \foreach \a/\p in
+{a1/{(2,1.5)},b1/{(1.5,2)},c1/{(2.5,2)},d1/{(1.5,2.5)},e1/{(2.5,2.5)},f1/{(2,2.16)}}
+            {\node[nclnode,minimum size=3pt,outer sep=1pt] (\a) at \p {};}
+%
+        \begin{scope}[ncl1,line width=.8pt,->,cap = butt]
+            \draw (a1) to[out=150,in=270] (b1);
+            \draw (c1) to[in=30,out=270] (a1);
+            \draw (d1) -- (b1);
+            \draw (c1) -- (e1);
+            \draw (d1) -- (e1);
+        \end{scope}
+%
+        \begin{scope}[ncl2,line width=1pt,->,cap = butt]
+            \draw (f1) -- (a1);
+            \draw (f1) -- (d1);
+            \draw (e1) -- (f1);
+        \end{scope}
+        \draw[ncl2,->,line width=2pt,cap = butt] (b1) -- (a);
+        \draw[ncl2,->,line width=2pt,cap = butt] (f) -- (c1);
+    \fi
+\end{tikzpicture}
+}
 
 %---------- Proof nets
 
