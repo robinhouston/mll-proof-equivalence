@@ -1,6 +1,6 @@
 
 
-\RequirePackage{proof,rotating,stmaryrd,willemtools}
+\RequirePackage{nicefrac,proof,rotating,stmaryrd,willemtools}
 
 \RequirePackage{tikz}
 \usetikzlibrary{arrows,calc,decorations.markings}
@@ -204,6 +204,83 @@
 \tikzstyle{ncl1}=[line cap=round,line width=1.5pt,thered]
 \tikzstyle{ncl2}=[line cap=round,line width=3pt,theblue]
 
+\newcommand\boat[1]{\vc{
+  \SWITCH{#1}
+  0 {\@boat00000000}
+  1 {\@boat10000000}
+  2 {\@boat11000000}
+  3 {\@boat11100000}
+  4 {\@boat11110000}
+  5 {\@boat11111000}
+  6 {\@boat11111100}
+  7 {\@boat11011100}
+  8 {\@boat11011110}
+  9 {\@boat11011111}
+  \DEFAULT{}
+}}
+
+\newcommand\@boat[8]{
+  \begin{tikzpicture}[x=3mm,y=6mm,rotate=0]
+	\foreach \a/\p in 
+		{a/{(0,2)},b/{(3,3)},c/{(3,1)},d/{(6,3)},e/{(6,1)},f/{(4,2)},1/{(3,4.5)},0/{(3,-.5)}}
+		{\node[nclnode,minimum size=5pt,outer sep=2pt] (\a) at \p {};}
+	%
+	\begin{scope}[thered,line width=1.2pt,->,cap = butt]
+	  \ifx#20\draw (a) to[out= 60,in=180] (b);\else\draw (b) to[out=180,in= 60] (a);\fi
+	  \ifx#70\draw (c) to[out=180,in=300] (a);\else\draw (a) to[out=300,in=180] (c);\fi
+	  \ifx#20\draw (d) -- (b);\else\draw (b) -- (d);\fi
+	  \ifx#70\draw (c) -- (e);\else\draw (e) -- (c);\fi
+	  \ifx#50\draw (d) -- (e);\else\draw (e) -- (d);\fi
+	\end{scope}
+	%
+	\begin{scope}[theblue,line width=2pt,->,cap = butt]
+	  \ifx#30\draw (f) -- (a);\else \draw (a)--(f);\fi
+	  \ifx#10\draw (b) -- (1);\else \draw (1)--(b);\fi
+	  \ifx#80\draw (0) -- (c);\else \draw (c)--(0);\fi
+	  \ifx#60\draw (f) -- (d);\else \draw (d)--(f);\fi
+	  \ifx#40\draw (e) -- (f);\else \draw (f)--(e);\fi
+	\end{scope}
+	%
+  \end{tikzpicture}
+}
+
+\newcommand\boats{
+  \begin{tikzpicture}[x=3mm,y=3mm]
+	\node[nclnode,minimum size=5pt,outer sep=2pt] (1) at (-5,4) {};
+	\node[nclnode,minimum size=5pt,outer sep=2pt] (0) at (11,4) {};
+	%
+	\foreach \a/\p in 
+		{a/{3,-3},b/{-2,4},c/{8,4},d/{-2,12},e/{8,12},f/{3,9}}
+		{\node[nclnode,minimum size=5pt,outer sep=2pt] (\a0) at (\p) {};}
+	\foreach \a/\p in
+		{a/{0,4},b/{3,6},c/{3,2},d/{6,6},e/{6,2},f/{4,4}}
+		{\node[nclnode,minimum size=5pt,outer sep=2pt] (\a1) at (\p) {};}
+	%
+	\begin{scope}[thered,line width=1.2pt,->,cap = butt]
+	  \draw (b0) to[out=270,in=150] (a0);
+	  \draw (a0) to[out= 30,in=270] (c0);
+	  \draw (b1) to[out=180,in= 60] (a1);
+	  \draw (a1) to[out=300,in=180] (c1);
+	  \foreach \i in {0,1} {
+		\draw (b\i) -- (d\i);
+		\draw (e\i) -- (c\i);
+		\draw (e\i) -- (d\i);
+	   }
+	 \end{scope}
+	 \begin{scope}[theblue,line width=2pt,->,cap = butt]
+	  \draw (a1)--(f1);
+	  \draw  (1)--(b0);
+	  \draw (c0)--(0);
+	  \draw (c1)--(a0);
+	  \draw (f0)--(b1);
+	  \foreach \i in {0,1} {
+		\draw (d\i)--(f\i);
+		\draw (f\i)--(e\i);
+	  }
+	\end{scope}
+  \end{tikzpicture}
+}
+
 
 %---------- Proof nets
 
@@ -214,7 +291,7 @@
 \tikzstyle{bullet}=[draw,solid,fill=black,circle,minimum size=6pt,inner sep=0pt]
 
 \tikzstyle{big1} = [draw,circle,minimum size=16pt,inner sep=0pt,font=\scriptsize]
-\tikzstyle{big_} = [big1,text=white,fill=black]
+\tikzstyle{big_} = [big1,text=white,fill=black,font=\boldmath\scriptsize]
 \tikzstyle{big>} = [line width=3pt]
 
 \tikzstyle{octoroll}=[x=5mm,y=-5mm,octo]
@@ -224,6 +301,13 @@
 
 \newcommand\nx[2]{#2_{\smash{\makebox[0pt][l]{\ensuremath{\scriptstyle{#1}}}}}}
 
+\newcommand\bignodes[1]{
+  \vc{\begin{tikzpicture}[octo,x=6mm,y=4mm]
+	\ifx#13\node[big_]{$n'$};\else\node[big1]{$n'$};\fi
+	\ifx#12\draw[rounded corners]\else\path[use as bounding box]\fi
+	   (-1,-1) rectangle (1,1);
+  \end{tikzpicture}}
+}
 
 \newcommand\examplenet{
   \begin{tikzpicture}[x=8mm,y=8mm,inner sep=1pt]
