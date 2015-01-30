@@ -333,7 +333,7 @@ A main technical advantage of this restriction is that cut-elimination can be pe
 Finally, the following proposition states that equivalence is preserved when translating between proofs and proof nets, which means that \capsabbrev{mll}\ proof equivalence is equivalent to the problem of deciding equivalence of proof nets.
 
 
-\begin{proposition}[\cite{Blute-Cockett-Seely-Trimble-1994,Hughes-2012-nets}]
+\begin{proposition}[\cite{Blute-Cockett-Seely-Trimble-1996,Hughes-2012-nets}]
 \label{prop:proof nets work}
 %
 If $\Pi\toNet\links$ and $\Pi'\toNet\links'$, then $\Pi\perm\Pi'$ if and only if $\links\perm\links'$.
@@ -464,7 +464,7 @@ The above examples illustrate how the diagrammatic notation replaces the connect
 
 To lay out a sequent as a diagram in two dimensions may lead to ambiguity when multiple occurrences of the same formula are present, as is the case for the formula $\bot\tn\bot$ in the above examples. Where necessary, this will be resolved by adding the names of chosen $\bot$-formulae and $1$-formulae to a diagram. When discussing different proof nets over the same sequent, the sequent will be laid out in a consistent manner.
 
-Figure~\ref{fig:_*_,1,1,1,_*_} uses the diagrammatic notation to display the rewiring relation over the proof nets for the sequent $\bot\tn\bot,1,1,1,\bot\tn\bot$, an interesting example also highlighted in \cite{Lamarche-Strassburger-2005}. There are 24 proof nets in total, forming two equivalence classes, each consisting of a single cyclic rewiring path. 
+Figure~\ref{fig:_*_,1,1,1,_*_} uses the diagrammatic notation to display the rewiring relation over the proof nets for the sequent $\bot\tn\bot,1,1,1,\bot\tn\bot$, an interesting example also highlighted in \cite{Strassburger-Lamarche-2004}. There are 24 proof nets in total, forming two equivalence classes, each consisting of a single cyclic rewiring path. 
 
 
 \begin{figure}
@@ -662,12 +662,11 @@ An example rewrite sequence is given in Figure~\ref{fig:NCL example}. This parti
 
 
 
-
 %
 A constraint graph may be encoded as a sequent, and a configuration as a proof net.
 %
-It is useful for us to generalise the notion of configuration a little: we will allow \emph{partial} configurations, where edges may be left undirected---as long as the inflow constraints are satisfied by the directed edges.
 
+It is useful for us to generalise the notion of configuration a little: we will allow \emph{partial} configurations, where edges may be left undirected---as long as the inflow constraints are satisfied by the directed edges.
 
 \begin{definition} 
 A \emph{constraint graph} $G=(V,E,c,v,w)$ consists of: a set $V$ of vertices with \emph{inflow constraint} $c\colon V\to\mathbb N$; and a set $E$ of undirected edges with \emph{weight} $w\colon E\to\mathbb N$, connecting the two vertices $v(e)=\{v_1,v_2\}\subseteq V$.
@@ -690,12 +689,10 @@ The reflexive--transitive closure of $(\perm*)$ will be denoted $(\perm)$.
 %
 \end{definition}
 
-
 \begin{proposition}
 \label{prop:partial simulates total reconfiguration}
 For total configurations $\gamma$ and $\delta$, if $\gamma\perm\delta$ then $\gamma$ and $\delta$ are also connected by a sequence of reconfiguration steps over total configurations only.
 \end{proposition}
-
 
 \begin{proof}
 By the following two observations: firstly, 
@@ -706,15 +703,18 @@ if $\gamma'$ and $\gamma''$ are total configurations that both agree with a part
 %
 \end{proof}
 
-
 \emph{Non-deterministic constraint graph reconfiguration} or \emph{\capsabbrev{ncg}-reconfiguration} is the problem of deciding whether two total configurations of a constraint graph are connected by a sequence of reconfiguration steps.
-
-
 
 
 \begin{theorem}[\cite{GamesPuzzlesAndComputation}, Theorem~5.15]
 \capsabbrev{ncg}-reconfiguration is \capsabbrev{pspace}-complete.
 \end{theorem}
+
+This result may seem surprising at first. To give a feel for the dynamics that make this problem \capsabbrev{pspace}-hard, we shall exhibit an example where an exponentially-long reconfiguration sequence is needed.
+
+\noindent\boat{1}\hskip3em\boat{10}
+
+\noindent\boat{11}\hskip3em\boat{20}
 
 
 \section{Encoding constraint logic}
@@ -1325,8 +1325,7 @@ Two equivalent proof nets have even parity.
 \label{fig:double exchange}
 \end{figure*}
 
-
-\subsection*{Equivalence without $\pr$}
+\subsection*{Equivalence without $\protect\pr$}
 
 
 Let a \emph{basic} sequent be one of formulae constructed only over $\1$, $\bot$, and $\tn$.
