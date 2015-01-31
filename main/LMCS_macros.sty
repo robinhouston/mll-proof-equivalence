@@ -6,7 +6,6 @@
 \usetikzlibrary{arrows,calc,decorations.markings}
 
 
-
 % UNSORTED
 
 \let\origalt=\alt
@@ -294,12 +293,14 @@
 
 \tikzstyle{big1} = [draw,circle,minimum size=16pt,inner sep=0pt,font=\scriptsize]
 \tikzstyle{big_} = [big1,text=white,fill=black,font=\boldmath\scriptsize]
-\tikzstyle{big>} = [line width=3pt]
+\tikzstyle{big>} = [line width=3pt,thepink,->]
 
 \tikzstyle{octoroll}=[x=5mm,y=-5mm,octo]
 \tikzstyle{octar}=[thepink,->,octo]
 \tikzstyle{pn}=[inner sep=1pt]
 \tikzstyle{jump}=[thepink,->,thick]
+
+\tikzstyle{thicker} = [line width=1.5pt]
 
 \newcommand\nx[2]{#2_{\smash{\makebox[0pt][l]{\ensuremath{\scriptstyle{#1}}}}}}
 
@@ -1157,5 +1158,229 @@
 	\end{scope}
 \end{tikzpicture}
 }}
+
+
+\newcommand\andexample[1]{
+  \vc{\begin{tikzpicture}[x=-3mm,y=3mm]
+  \SWITCH{#1}
+  1{\draw[ncl2,->-] (0,0) -- (3,0);
+	\draw[ncl1,->-] (3,0) -- (5,2);
+	\draw[ncl1,->-] (3,0) -- (5,-2); }
+  2{\draw[ncl2,->-] (0,0) -- (3,0);
+	\draw[ncl1,-<-] (3,0) -- (5,2);
+	\draw[ncl1,->-] (3,0) -- (5,-2); }
+  3{\draw[ncl2,->-] (0,0) -- (3,0);
+	\draw[ncl1,-<-] (3,0) -- (5,2);
+	\draw[ncl1,-<-] (3,0) -- (5,-2); }
+  4{\draw[ncl2,-<-] (0,0) -- (3,0);
+	\draw[ncl1,-<-] (3,0) -- (5,2);
+	\draw[ncl1,-<-] (3,0) -- (5,-2); }
+  \DEFAULT{}
+  \node[nclnode] at (3,0) {};
+  \end{tikzpicture}
+}}
+
+
+\newcommand\ANDexample[1]{
+	\def\XA{-1}\def\YA{14}
+	\def\XB{-1}\def\YB{-2}
+	\def\XC{18}\def\YC{8}
+	\def\XU{1}
+	\def\XV{1}
+	\def\XW{20}
+	{\scalebox{0.55}{
+	\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	    %% EDGES
+		\node[big_] (A1) at ($(0,0) + (\XA,\YA)$) {}; 
+		\node[big_] (A2) at ($(2,0) + (\XA,\YA)$) {};
+		\node[big_] (A3) at ($(4,0) + (\XA,\YA)$) {};
+		\draw[rounded corners] ($(-1,-1) + (\XA,\YA)$) rectangle ($(5,1) + (\XA,\YA)$);
+	 	\draw ($(2,-1) + (\XA,\YA)$) -- ($(2,-2) + (\XA,\YA)$) node[bullet] (a) {};
+		%
+		\node[big_] (B1) at ($(0,0) + (\XB,\YB)$) {}; 
+		\node[big_] (B2) at ($(2,0) + (\XB,\YB)$) {};
+		\node[big_] (B3) at ($(4,0) + (\XB,\YB)$) {};
+		\draw[rounded corners] ($(-1,-1) + (\XB,\YB)$) rectangle ($(5,1) + (\XB,\YB)$);
+	 	\draw ($(2,1) + (\XB,\YB)$) -- ($(2,2) + (\XB,\YB)$) node[bullet] (b) {};
+		%
+		\node[big_] (D1) at ($(0,3) + (\XC,\YC)$) {}; 
+		\node[big_] (D2) at ($(2,3) + (\XC,\YC)$) {};
+		\node[big_] (D3) at ($(4,3) + (\XC,\YC)$) {};
+		\draw[rounded corners] ($(-1,2) + (\XC,\YC)$) rectangle ($(5,4) + (\XC,\YC)$);
+		\draw ($(2,2) + (\XC,\YC)$) -- ($(2,1) + (\XC,\YC)$);
+		\node[big_] (C1) at ($(0,0) + (\XC,\YC)$) {}; 
+		\node[big_] (C2) at ($(2,0) + (\XC,\YC)$) {};
+		\node[big_] (C3) at ($(4,0) + (\XC,\YC)$) {};
+		\draw[rounded corners] ($(-1,-1) + (\XC,\YC)$) rectangle ($(5,1) + (\XC,\YC)$);
+	 	\draw ($(2,-1) + (\XC,\YC)$) -- ($(2,-2) + (\XC,\YC)$) node[bullet] (c) {};
+		%% VERTICES
+	  	\node[circ] (x) at (10.5,3) {};
+		\node[big1] (1) at ( 9,5) {}; 
+		\node[big1] (2) at (12,5) {};
+		\draw[rounded corners] (8,4) rectangle (10,6) (11,4) rectangle (13,6);
+		\draw (10,5)--(11,5);
+		\node[big1] (3) at ( 9,8) {};
+		\node[big1] (4) at (12,8) {};
+		\draw[rounded corners] (8,7) rectangle (10,9) (11,7) rectangle (13,9);
+		\draw (10,8)--(11,8);
+		\draw[rounded corners] (7.5,2.5) rectangle (13.5,9.5);
+		%
+		\node[circ] (u) at ($(0,9) + (\XU,0)$) {};
+		\draw[rounded corners] ($(-3,8.5) + (\XU,0)$) rectangle ($(3,9.5) + (\XU,0)$);
+		\draw ($(3,9) + (\XU,0)$)--(7.5,9);
+		%
+		\node[circ] (v) at ($(0,3) + (\XV,0)$) {};
+		\draw[rounded corners] ($(-3,2.5) + (\XV,0)$) rectangle ($(3,3.5) + (\XV,0)$);
+		\draw ($(3,3) + (\XV,0)$)--(7.5,3);
+		%
+		\node[circ] (w) at ($(0,3) + (\XW,0)$) {};
+		\draw[rounded corners] ($(-3,2.5) + (\XW,0)$) rectangle ($(3,3.5) + (\XW,0)$);
+		\draw ($(-3,3) + (\XW,0)$)--(13.5,3);
+		%% ABSORBERS
+		\node[big1] (Z1) at (10.5,14) {};
+		\node[big1] (Z2) at (10.5,-2) {};
+		%% LINKS
+		\SWITCH {#1}
+		1  {\draw[jump,thicker,thered,bend left=10] (a) to (u);
+			\draw[jump,thicker,thered,bend right=10](b) to (v);
+			\draw[jump,thicker,theblue,bend left=10] (c) to (x);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=10] (A1) to (Z1);
+      			\draw[bend left=10] (A2) to (Z1);
+      			\draw[bend left=10] (A3) to (Z1);
+          		\draw[bend left=10] (B1) to (Z2);
+          		\draw[bend left=10] (B2) to (Z2);
+          		\draw[bend left=10] (B3) to (Z2);
+    		\end{scope}
+    		\begin{scope}[big>,theblue]
+    	  		\draw[bend left=20] (D1) to (3);
+    	  		\draw[bend left=10] (D2) to (4);
+    	  		\draw[bend left=10] (D3) to (4);
+    	  		\draw[bend left=20] (C1) to (1);
+    	  		\draw[bend left=10] (C2) to (2);
+    	  		\draw[bend left=10] (C3) to (2);
+			\end{scope}	
+		}
+		2  {\draw[jump,thicker,thered,bend right=35](a) to (x);
+			\draw[jump,thicker,thered,bend right=10](b) to (v);
+			\draw[jump,thicker,theblue,bend left=10](c) to (x);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=10] (A1) to (Z1);
+      			\draw[bend left=10] (A2) to (Z1);
+      			\draw[bend left=10] (A3) to (Z1);
+          		\draw[bend left=10] (B1) to (Z2);
+          		\draw[bend left=10] (B2) to (Z2);
+          		\draw[bend left=10] (B3) to (Z2);
+    		\end{scope}
+			\begin{scope}[big>,theblue]
+		  		\draw[bend left=20] (D1) to (3);
+	  			\draw[bend left=10] (D2) to (4);
+	  			\draw[bend left=10] (D3) to (4);
+				\draw[bend left=20] (C1) to (1);
+    	  		\draw[bend left=10] (C2) to (2);
+    	  		\draw[bend left=10] (C3) to (2);
+			\end{scope}
+		}
+		3  {\draw[jump,thicker,thered,bend right=35](a) to (x);
+			\draw[jump,thicker,thered,bend right=10](b) to (x);
+			\draw[jump,thicker,theblue,bend left=10](c) to (x);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=10] (A1) to (Z1);
+      			\draw[bend left=10] (A2) to (Z1);
+      			\draw[bend left=10] (A3) to (Z1);
+          		\draw[bend left=10] (B1) to (Z2);
+          		\draw[bend left=10] (B2) to (Z2);
+          		\draw[bend left=10] (B3) to (Z2);
+    		\end{scope}
+			\begin{scope}[big>,theblue]
+		  		\draw[bend left=20] (D1) to (3);
+	  			\draw[bend left=10] (D2) to (4);
+	  			\draw[bend left=10] (D3) to (4);
+				\draw[bend left=20] (C1) to (1);
+    	  		\draw[bend left=10] (C2) to (2);
+    	  		\draw[bend left=10] (C3) to (2);
+			\end{scope}
+		}
+		4  {\draw[jump,thicker,thered,bend right=35](a) to (x);
+			\draw[jump,thicker,thered,bend left=20] (b) to (x);
+			\draw[jump,thicker,theblue,bend left=10](c) to (x);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=10] (A1) to (3);
+    	  		\draw[bend left=10] (A2) to (3);
+    	  		\draw[bend right=10](A3) to (4);
+          		\draw[bend left=10] (B1) to (Z2);
+          		\draw[bend left=10] (B2) to (Z2);
+          		\draw[bend left=10] (B3) to (Z2);
+    		\end{scope}
+			\begin{scope}[big>,theblue]
+    	  		\draw[bend left=10] (D1) to (Z1);
+    	  		\draw[bend left=10] (D2) to (Z1);
+    	  		\draw[bend left=10] (D3) to (Z1);
+    	  		\draw[bend left=20] (C1) to (1);
+    	  		\draw[bend left=10] (C2) to (2);
+    	  		\draw[bend left=10] (C3) to (2);
+    		\end{scope}
+		}
+		5  {\draw[jump,thicker,thered,bend right=35](a) to (x);
+			\draw[jump,thicker,thered,bend left=20] (b) to (x);
+			\draw[jump,thicker,theblue,bend left=10] (c) to (x);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=10] (A1) to (3);
+    	  		\draw[bend left=10] (A2) to (3);
+    	  		\draw[bend right=10](A3) to (4);
+          		\draw[bend right=10](B1) to (1);
+          		\draw[bend right=10](B2) to (1);
+          		\draw[bend left=10] (B3) to (2);
+    		\end{scope}
+			\begin{scope}[big>,theblue]
+    	  		\draw[bend left=10] (D1) to (Z1);
+    	  		\draw[bend left=10] (D2) to (Z1);
+    	  		\draw[bend left=10] (D3) to (Z1);
+    	  		\draw[bend right=10] (C1) to (Z2);
+    	  		\draw[bend right=16] (C2) to (Z2);
+    	  		\draw[bend right=20] (C3) to (Z2);
+    		\end{scope}
+		}
+		6  {\draw[jump,thicker,thered,bend right=35](a) to (x);
+			\draw[jump,thicker,thered,bend left=20] (b) to (x);
+			\draw[jump,thicker,theblue,bend left=10] (c) to (w);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=10] (A1) to (3);
+    	  		\draw[bend left=10] (A2) to (3);
+    	  		\draw[bend right=10](A3) to (4);
+          		\draw[bend right=10](B1) to (1);
+          		\draw[bend right=10](B2) to (1);
+          		\draw[bend left=10] (B3) to (2);
+    		\end{scope}
+			\begin{scope}[big>,theblue]
+    	  		\draw[bend left=10] (D1) to (Z1);
+    	  		\draw[bend left=10] (D2) to (Z1);
+    	  		\draw[bend left=10] (D3) to (Z1);
+    	  		\draw[bend right=10] (C1) to (Z2);
+    	  		\draw[bend right=16] (C2) to (Z2);
+    	  		\draw[bend right=20] (C3) to (Z2);
+    		\end{scope}
+		}
+		\DEFAULT{}
+%
+\end{tikzpicture}
+}}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

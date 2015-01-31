@@ -17,7 +17,7 @@
 \let\capsabbrev=\uppercase
 
 \newcommand\jumpsto{\jump}
-
+\newcommand\Perm{\mathbf\sim}
 
 % MLL
 %   x remove naming - work with occurrences instead ??
@@ -55,6 +55,7 @@
 %============================================================
 
 \begin{document}
+
 
 % ACM classifications:
 % F.2.2 - Nonnumerical Algorithms and Problems (Complexity of proof procedures)
@@ -627,35 +628,13 @@ We will need no such restrictions, and will encode the general case. However, fo
 
 An example rewrite sequence is given in Figure~\ref{fig:NCL example}. This particular specimen encodes a logical conjunction, and is not unlike an \textsc{and}-gate: in order to invert the weight 2 edge on the right, both weight 1 edges on the left must be inverted first.
 
+
 \begin{figure}
 \[
-\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
-	\draw[ncl2,->-] (0,0) -- (3,0);
-	\draw[ncl1,->-] (3,0) -- (5,2);
-	\draw[ncl1,->-] (3,0) -- (5,-2);
-	\node[nclnode] at (3,0) {};
-\end{tikzpicture}}
-\quad\perm*\quad
-\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
-	\draw[ncl2,->-] (0,0) -- (3,0);
-	\draw[ncl1,-<-] (3,0) -- (5,2);
-	\draw[ncl1,->-] (3,0) -- (5,-2);
-	\node[nclnode] at (3,0) {};
-\end{tikzpicture}}
-\quad\perm*\quad
-\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
-	\draw[ncl2,->-] (0,0) -- (3,0);
-	\draw[ncl1,-<-] (3,0) -- (5,2);
-	\draw[ncl1,-<-] (3,0) -- (5,-2);
-	\node[nclnode] at (3,0) {};
-\end{tikzpicture}}
-\quad\perm*\quad
-\vc{\begin{tikzpicture}[x=-3mm,y=3mm]
-	\draw[ncl2,-<-] (0,0) -- (3,0);
-	\draw[ncl1,-<-] (3,0) -- (5,2);
-	\draw[ncl1,-<-] (3,0) -- (5,-2);
-	\node[nclnode] at (3,0) {};
-\end{tikzpicture}}
+	\andexample 1 \quad\perm*\quad
+	\andexample 2 \quad\perm*\quad
+	\andexample 3 \quad\perm*\quad
+	\andexample 4
 \]
 \caption{A series of reconfiguration steps in a constraint graph}
 \label{fig:NCL example}
@@ -747,35 +726,14 @@ The example is then as follows. Figure~\ref{fig:boats} gives a reconfiguration s
 \end{figure}
 
 
-
-
-\end{document}
-
-% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+%------------------------------------------------------------
 
 
 \section{Encoding constraint logic}
 \label{sec:encoding}
-\noindent
-%
-We will demonstrate the \capsabbrev{pspace}-hardness of \capsabbrev{mll} proof equivalence by an encoding of \capsabbrev{ncg}-reconfiguration in \capsabbrev{mll} proof nets.
 
 
-
-\begin{figure*}
-\[
-\vc{\scalebox{0.36}{\BIGexample 3}}
-\quad\perm\quad
-\vc{\scalebox{0.36}{\BIGexample 2}}
-\quad\perm\quad
-\vc{\scalebox{0.36}{\BIGexample 1}}
-\]
-\caption{Rewiring three edge-gadgets connected to a single vertex-gadget}
-\label{fig:encoding example}
-\end{figure*}
-
-
-\subsection*{The encoding}
+We will demonstrate the \capsabbrev{pspace}-hardness of \capsabbrev{mll} proof equivalence by an encoding of \capsabbrev{ncg}-reconfiguration in \capsabbrev{mll} proof nets. A sequent will encode a constraint graph, and a proof net a configuration, such that rewiring  the proof net corresponds to reconfiguration.
 
 
 The basis of the encoding of constraint graphs in \capsabbrev{mll} is formed by \emph{weight elements}, which encode one unit of weight on an edge, and \emph{constraint elements}, that encode one unit towards the inflow constraint of a vertex.
@@ -946,9 +904,44 @@ All three nets in Figure~\ref{fig:encoding example} then correspond to the third
 The encoding will be made formal in Section~\ref{sec:correctness}; first we will establish some basic results for rewiring on proof nets.
 
 
+\newcommand\ANDmark[1]{\makebox[0pt][r]{\Large{\textbf{#1}}}}
+
+\begin{figure}[p]
+\[
+\begin{array}{@{}r@{\hspace{16pt}}|@{\hspace{16pt}}l@{}}
+	\ANDexample 1 \ANDmark 1 & \ANDexample 2 \ANDmark 2 \\ \\ \hline \\
+	\ANDexample 3 \ANDmark 3 & \ANDexample 4 \ANDmark 4 \\ \\ \hline \\
+	\ANDexample 5 \ANDmark 5 & \ANDexample 6 \ANDmark 6 \\ \\ \hline
+\end{array}
+\]
+\vspace{20pt}
+\[
+\begin{array}{c@{\hspace{30pt}}c@{\hspace{30pt}}c@{\hspace{30pt}}c}
+	\andexample 1 & \andexample 2 & \andexample 3 & \andexample 4 \\
+	\textbf{1} & \textbf{2} & \textbf{3~4~5} & \textbf{6}
+\end{array}
+\]
+\caption{Encoding an \textsc{and}-gate in proof nets}
+\label{fig:big example}
+\end{figure}
 
 %------------------------------------------------------------
 
+
+\newpage
+
+%\acks
+
+We would like to thank Lutz Stra{\ss}burger for taking a very careful look at our construction and our proofs, and Dominic Hughes for several useful suggestions on exposition.
+% and the anonymous referees for their constructive observations.
+
+%===========================
+\bibliographystyle{plain}
+\bibliography{LMCS}
+\end{document}
+%===========================
+
+\end{document}
 
 
 \section{Rewiring proof nets}
