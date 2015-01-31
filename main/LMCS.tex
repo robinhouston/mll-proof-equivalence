@@ -735,10 +735,12 @@ The example is then as follows. Figure~\ref{fig:boats} gives a reconfiguration s
 
 We will demonstrate the \capsabbrev{pspace}-hardness of \capsabbrev{mll} proof equivalence by an encoding of \capsabbrev{ncg}-reconfiguration in \capsabbrev{mll} proof nets. A sequent will encode a constraint graph, and a proof net a configuration, such that rewiring  the proof net corresponds to reconfiguration.
 
+The natural basis of the encoding is the use of jumps to indicate where the weight of an edge is allocated. The main problem then becomes, how to restrict the movement of such jumps, so that they may assign weight only to the vertices of one particular edge. The central design idea of the encoding is to use the combinatorics of connecting formulae of the form $\bigtn(\bot^n)$ to formulae $\bigparr(1^m)$ to solve this problem.
 
 The basis of the encoding of constraint graphs in \capsabbrev{mll} is formed by \emph{weight elements}, which encode one unit of weight on an edge, and \emph{constraint elements}, that encode one unit towards the inflow constraint of a vertex.
-%
-The arithmetic of linking formulae of the form $\bigtn(\bot^n)$ to formulae $\bigparr(1^m)$ will be used to ensure that a weight element may be linked to only two vertices.
+
+
+To ensure that a weight element may be linked to only two vertices. The arithmetic of linking will be used
 %
 Below left is a weight element, below right a constraint element.
 \[
