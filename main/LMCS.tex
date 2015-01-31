@@ -623,7 +623,7 @@ The graphs of NCL, called \emph{constraint graphs}, have directed, weighted edge
 
 The specific problem we will use is the \emph{configuration--to--configuration} problem, which asks whether a path of rewrite steps exists between two constraint graphs. This problem is PSPACE-complete, and remains so under various restrictions: inflow constraints can be fixed at the value 2, edge weights can be restricted to the value 1 and 2, the graphs can be required to be planar, and loops and double edges (edges connecting the same 2 vertices) can be prohibited, for example. 
 
-We will need no such restrictions, and will encode the general case. However, for simplicity of exposition, in the examples of constraint graphs in this section we will use the following conventions. Edges will have weight 1 or 2; those of weight 1 are drawn as thin red arrows, and those of weight 2 as thicker blue arrows. Vertices with inflow constraint 2 are drawn as grey circles. For convenience, we will assume that dangling edges are connected to vertices of weight 0, which are omitted from illustrations.
+We will need no such restrictions, and will encode the general case. However, for simplicity of exposition, in the examples of constraint graphs in this section we will use the following conventions. Edges will have weight 1 or 2; those of weight 1 are drawn as thin red arrows, and those of weight 2 as thicker blue arrows. Vertices with inflow constraint 2 are drawn as grey circles. For convenience, we will assume that dangling edges are connected to vertices of weight zero, which are omitted from illustrations. These zero-inflow vertices can be seen as ``connection points'', where the graph may be connected to a wider network of graphs.
 
 An example rewrite sequence is given in Figure~\ref{fig:NCL example}. This particular specimen encodes a logical conjunction, and is not unlike an \textsc{and}-gate: in order to invert the weight 2 edge on the right, both weight 1 edges on the left must be inverted first.
 
@@ -724,13 +724,7 @@ if $\gamma'$ and $\gamma''$ are total configurations that both agree with a part
 
 The PSPACE-completeness of NCG-reconfiguration may seem surprising at first. To give a feel for the dynamics that make this problem \capsabbrev{pspace}-hard, we shall exhibit an example where an exponentially-long reconfiguration sequence is needed. The existence of such rewiring sequences is an essential property for the hardness result: if reconfiguration sequences could be given a polynomial bound, they would be polynomial-time witnesses, placing the problem within NP.
 
-
-
-
-
-
-
-\newpage
+The example is then as follows. Figure~\ref{fig:boats} gives a reconfiguration sequence, clockwise from the top left, on a constraint graph with two connection points, top and bottom. As such, the graph is meant to replace a single edge from top to bottom, and the reconfiguration sequence inverts the direction of this would-be edge. The key point is that in doing so, the central horizontal edge must be inverted \emph{twice}. Then by nesting the graph within itself, where one graph replaces the central edge of another, as illustrated in Figure~\ref{fig:big boat}, a graph is created with an edge that requires 4 inversions. Each added level of nesting doubles the number of inversions that the central edge must make, while growing the graph by only a constant factor. Thus, the length of a rewiring path may grow exponentially with the size of the graph.
 
 \begin{figure}
 \[
@@ -740,16 +734,16 @@ The PSPACE-completeness of NCG-reconfiguration may seem surprising at first. To 
 	\boat9 &\perm& \boat8 &\perm& \boat7 &\perm& \boat6 &\perm& \boat5
 \end{array}
 \]
-\caption{The boat}
-\label{fig:boat}
+\caption{A reconfiguration path requiring two inversions of a single edge}
+\label{fig:boats}
 \end{figure}
 
 \begin{figure}
 \[
 	\boats
 \]
-\caption{Nested boats}
-\label{fig:boats}
+\caption{Nesting graphs to grow reconfiguration paths exponentially}
+\label{fig:big boat}
 \end{figure}
 
 
