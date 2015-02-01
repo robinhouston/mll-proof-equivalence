@@ -123,6 +123,7 @@ proof nets can still be defined in this case, they are no longer canonical. It h
 
 % It should be stressed that to consider MLL proofs modulo equivalence is a choice---one that is well motivated by semantics, but a choice nonetheless. Interesting alternatives are available, such as polarised linear logic, tensorial logic, multi-focussing, ... This gives us interesting and important references as well.
 
+The result that a canonical representation of multiplicative linear logic is essentially unfeasible raises the question, whether to turn to alternative notions of identity of proofs than that given by $*$-autonomous categories. The literature offers several interesting directions, including but not limited to \emph{polarised proof nets} \cite{Laurent-1999}, \emph{focused proof nets} \cite{Andreoli-Maieli-1999}, \emph{multi-focused proofs} \cite{Chaudhuri-Miller-Saurin-2008}, and Paul-Andr\'e Melli\`s's semantically appealing tensorial logic and dialogue categories \cite{Mellies-2012}.
 
 %------------------------------------------------------------
 
@@ -1034,7 +1035,8 @@ The empire $\emp v$ is determined by propagation from $v$:
 \end{enumerate}
 \end{proposition}
 
-It should be noted that the above characterisation of  empires relies on the restriction of jumps to target $\1$-formulae only. Otherwise, the first case of the definition should be specialised so that propagation does not traverse jumps into $v$. 
+\noindent
+It should be noted that the above characterisation of  empires relies on the restriction that we have imposed, that jumps target $\1$-formulae only. Otherwise, the first case of the definition should be specialised so that propagation does not traverse jumps into $v$. 
 
 The following three lemmata will show how empires are connected to rewiring. Firstly, a jump from $\named v\bot$ may be rewired to exactly those $\1$-occurences that are in the empire of $v$ (Lemma~\ref{lem:rewiring within empire}). Secondly, rewiring a jump from $\named v\bot$ preserves the empire of $v$, up to that rewiring (Lemma~\ref{lem:rewiring preserves empire}). Thirdly, rewiring the jump from $v$ may add subformulae to the empire of another vertex $w$, or remove subformulae from it, but not both (Lemma~\ref{lem:rewiring affects empires}).
 
