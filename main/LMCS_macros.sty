@@ -1160,6 +1160,79 @@
 }}
 
 
+
+\newcommand\CONexample[2]{%
+	\def\XA{0}\def\YA{5}%
+	\def\XC{17}\def\YC{5}%
+  \vc{\scalebox{#2}{%
+  \begin{tikzpicture}[x=5mm,y=5mm,octo]
+  		\node[big1] (Z1) at (10.5,11.5) {};
+		%
+  	  	\node[circ] (x) at (10.5,3) {};
+		\node[big1] (1) at ( 9,5) {}; 
+		\node[big1] (2) at (12,5) {};
+		\draw[rounded corners] (8,4) rectangle (10,6) (11,4) rectangle (13,6);
+		\draw (10,5)--(11,5);
+		\node[big1] (3) at ( 9,8) {};
+		\node[big1] (4) at (12,8) {};
+		\draw[rounded corners] (8,7) rectangle (10,9) (11,7) rectangle (13,9);
+		\draw (10,8)--(11,8);
+		\draw[rounded corners] (7.5,2.5) rectangle (13.5,9.5);
+		%
+		\node[big_] (A1) at ($(0,0) + (\XA,\YA)$) {}; 
+		\node[big_] (A2) at ($(2,0) + (\XA,\YA)$) {};
+		\node[big_] (A3) at ($(4,0) + (\XA,\YA)$) {};
+		\draw[rounded corners] ($(-1,-1) + (\XA,\YA)$) rectangle ($(5,1) + (\XA,\YA)$);
+	 	\draw ($(2,-1) + (\XA,\YA)$) -- ($(2,-2) + (\XA,\YA)$) node[bullet] (a) {};
+		%
+		\node[big_] (D1) at ($(0,3) + (\XC,\YC)$) {}; 
+		\node[big_] (D2) at ($(2,3) + (\XC,\YC)$) {};
+		\node[big_] (D3) at ($(4,3) + (\XC,\YC)$) {};
+		\draw[rounded corners] ($(-1,2) + (\XC,\YC)$) rectangle ($(5,4) + (\XC,\YC)$);
+		\draw ($(2,2) + (\XC,\YC)$) -- ($(2,1) + (\XC,\YC)$);
+		\node[big_] (C1) at ($(0,0) + (\XC,\YC)$) {}; 
+		\node[big_] (C2) at ($(2,0) + (\XC,\YC)$) {};
+		\node[big_] (C3) at ($(4,0) + (\XC,\YC)$) {};
+		\draw[rounded corners] ($(-1,-1) + (\XC,\YC)$) rectangle ($(5,1) + (\XC,\YC)$);
+	 	\draw ($(2,-1) + (\XC,\YC)$) -- ($(2,-2) + (\XC,\YC)$) node[bullet] (c) {};
+		%
+		\SWITCH {#1}
+		1  {\draw[jump,thicker,thered,bend left=10] (a) to (x);
+			\draw[jump,thicker,theblue,bend left=10] (c) to (x);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=20] (A1) to (Z1);
+      			\draw[bend left=20] (A2) to (Z1);
+      			\draw[bend left=20] (A3) to (Z1);
+    		\end{scope}
+    		\begin{scope}[big>,theblue]
+    	  		\draw[bend right=20] (D1) to (3);
+    	  		\draw[bend right=20] (D2) to (4);
+    	  		\draw[bend right=20] (D3) to (4);
+    	  		\draw[bend right=20] (C1) to (1);
+    	  		\draw[bend right=20] (C2) to (2);
+    	  		\draw[bend right=20] (C3) to (2);
+			\end{scope}	
+		}
+		2  {\draw[jump,thicker,thered,bend left=10] (a) to (x);
+			\draw[jump,thicker,theblue,bend left=10] (c) to (x);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=20] (A1) to (3);
+      			\draw[bend left=20] (A2) to (3);
+      			\draw[bend left=20] (A3) to (4);
+    		\end{scope}
+    		\begin{scope}[big>,theblue]
+    	  		\draw[bend right=20] (D1) to (Z1);
+    	  		\draw[bend right=20] (D2) to (Z1);
+    	  		\draw[bend right=20] (D3) to (Z1);
+    	  		\draw[bend right=20] (C1) to (1);
+    	  		\draw[bend right=20] (C2) to (2);
+    	  		\draw[bend right=20] (C3) to (2);
+			\end{scope}	
+		}
+		\DEFAULT{}
+  \end{tikzpicture}
+}}}
+
 \newcommand\andexample[1]{
   \vc{\begin{tikzpicture}[x=-3mm,y=3mm]
   \SWITCH{#1}

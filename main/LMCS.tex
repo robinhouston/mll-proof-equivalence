@@ -735,46 +735,39 @@ The example is then as follows. Figure~\ref{fig:boats} gives a reconfiguration s
 
 We will demonstrate the \capsabbrev{pspace}-hardness of \capsabbrev{mll} proof equivalence by an encoding of \capsabbrev{ncg}-reconfiguration in \capsabbrev{mll} proof nets. A sequent will encode a constraint graph, and a proof net a configuration, such that rewiring  the proof net corresponds to reconfiguration.
 
-The natural basis of the encoding is the use of jumps to indicate where the weight of an edge is allocated. The main problem then becomes, how to restrict the movement of such jumps, so that they may assign weight only to the vertices of one particular edge. The central design idea of the encoding is to use the combinatorics of connecting formulae of the form $\bigtn(\bot^n)$ to formulae $\bigparr(1^m)$ to solve this problem.
+The natural basis of the encoding is the use of jumps to indicate where the weight of an edge is allocated. The main problem is then how to restrict the movement of such jumps, so that they may assign weight only to the vertices of one particular edge, and not to any other vertices. The central design idea of our encoding is to use the combinatorics of connecting formulae of the form $\bigtn(\bot^n)$ to formulae $\bigparr(1^m)$ to solve this problem.
 
-The basis of the encoding of constraint graphs in \capsabbrev{mll} is formed by \emph{weight elements}, which encode one unit of weight on an edge, and \emph{constraint elements}, that encode one unit towards the inflow constraint of a vertex.
+The two basic components of our encoding will be \emph{weight elements}, representing the weight value of edges, and \emph{constraint elements}, which encode the inflow constraint of vertices. For now, we will work under the assumption that each unit of weight on an edge is encoded by exactly one weight element---later, we will amend this to use multiple weight elements for each unit of weight. A weight element will be a construction over a number of $\bot$-formulae, whose jumps may connect to the $\1$-formulae of a constraint element.
 
-
-To ensure that a weight element may be linked to only two vertices. The arithmetic of linking will be used
-%
-Below left is a weight element, below right a constraint element.
+Below top is a weight element, below bottom a constraint element.
 \[
-\begin{tikzpicture}[x=5mm,y=5mm,octo]
-	\node[big_] (A) at (0,0) {$i'$}; 
-	\node[big_] (B) at (2,0) {$j'$};
-	\node[big_] (C) at (4,0) {$k'$};
-	\draw[rounded corners] (-1,-1) rectangle (5,1);
-\end{tikzpicture}
-\qquad\qquad
-\begin{tikzpicture}[x=5mm,y=5mm,octo]
-	\node[big1] (1) at (0,0) {$m'$}; 
-	\node[big1] (2) at (3,0) {$n'$};
-	\draw[rounded corners] (-1,-1) rectangle (1,1) (2,-1) rectangle (4,1);
-	\draw (1,0)--(2,0);
-\end{tikzpicture}
+\begin{array}{ccc}
+	  \vc{\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	 	\node[big_] (A) at (0,0) {$i'$}; 
+	 	\node[big_] (B) at (2,0) {$j'$};
+		\node[big_] (C) at (4,0) {$k'$};
+		\draw[rounded corners] (-1,-1) rectangle (5,1);
+	  \end{tikzpicture}}
+	&=&
+	  \bigtn(\bot^{i+1})~~\pr~~\bigtn(\bot^{j+1})~~\pr~~\bigtn(\bot^{k+1})
+\\ \\
+	  \vc{\begin{tikzpicture}[x=5mm,y=5mm,octo]
+		\node[big1] (1) at (0,0) {$m'$}; 
+		\node[big1] (2) at (3,0) {$n'$};
+		\draw[rounded corners] (-1,-1) rectangle (1,1) (2,-1) rectangle (4,1);
+		\draw (1,0)--(2,0);
+	  \end{tikzpicture}}
+	&=&
+	  \bigparr(\1^{m+1})~\tn~\bigparr(\1^{n+1})
+\end{array}
 \]
-For all edges and vertices in the encoding of a constraint graph, the sum $i+j+k=m+n$ will be the same -- this way, a priori any weight element may connect to any constraint element.
-%
-The value of $m$ (and thus $n$) will differ for each vertex.
-%
-The weight element above will be able to connect naturally to those constraint elements where $m=i$ and where $m=i+j$, as illustrated below.
+For all edges and vertices in the encoding of a constraint graph, the sum $i+j+k=m+n$ will be the same---this way, a priori any weight element may connect to any constraint element. The value $m$ will be unique for each vertex, and used for all constraint elements in the encoding of that vertex. The weight element above is for an edge connecting the two vertices for which $m=i$ and $m=i+j$: with those constraint elements it is possible to form a proof net, as illustrated below.
 \[
 	\connectingElements 1 \qquad \connectingElements 2
 \]
-To ensure that no other connections can be made, values are chosen such that $m\equiv1$ and $n\equiv2 \pmod 3$, and accordingly $i\equiv1$, $j\equiv0$, and $k\equiv2\pmod 3$.
+To ensure that a weight element may not form a proof net with a constraint element of another vertex, the values of $m$ and $n$ are chosen such that $m\equiv1$ and $n\equiv2 \pmod 3$, and accordingly $i\equiv1$, $j\equiv0$, and $k\equiv2\pmod 3$. It then becomes impossible for $m$ to equal any other sum over $i$, $j$, and $k$, so that forming a proof net requires either $m=i$ or $m=i+j$.
 
-
-In a constraint graph, the sum of all weights is usually greater than the sum of all inflow constraints---otherwise, no edge can move, or no configuration exists.
-%
-An encoding will therefore have weight elements not connected to constraint elements.
-%
-These will instead connect to additional, separate $\1$-formulae, referred to as \emph{weight absorbers}, as follows.
-%
+Several further constructions are used in our encoding. Firstly, in a constraint graph, the sum of all weights is usually greater than the sum of all inflow constraints---otherwise, no edge can be mobile, or no configuration exists. Correspondingly, an encoding will have weight elements not connected to constraint elements. These will instead connect to additional, separate $\1$-formulae, referred to as \emph{weight absorbers}, as shown below. A weight element that is connected to absorbers will be called \emph{free}.
 \[
 \begin{tikzpicture}[x=5mm,y=5mm,octo]
 	\node[big_] (A) at (0,0) {}; 
@@ -789,11 +782,9 @@ These will instead connect to additional, separate $\1$-formulae, referred to as
 	\end{scope}
 \end{tikzpicture}
 \]
-%
-An edge will be encoded by an \emph{edge-gadget}, illustrated below left, constructed by stringing together a number of similar weight elements plus a single \emph{indicator} vertex.
-%
-Illustrated below right is a \emph{vertex-gadget} encoding a vertex, formed by a number of constraint elements plus a single \emph{indicator target}.
-%
+
+
+An edge in a constraint graph will be encoded by an \emph{edge-gadget}, illustrated below left, constructed by stringing together a number of similar weight elements, plus a single $\bot$-formula which we will refer to as the \emph{indicator}. Illustrated below right is a \emph{vertex-gadget} encoding a vertex, formed by a number of constraint elements plus a single \emph{indicator target}.
 \[
 \begin{tikzpicture}[x=5mm,y=5mm,octo]
 	\node[big_] (A) at (0,0) {$i'$}; 
@@ -824,13 +815,47 @@ Illustrated below right is a \emph{vertex-gadget} encoding a vertex, formed by a
 	\draw[rounded corners] (-1.5,-2.5) rectangle (4.5,5.5);
 \end{tikzpicture}
 \]
-%
-It would be natural to encode an edge of weight $n$ by an edge-gadget with $n$ weight elements.
-%
-However, there is a minor issue that prevents this straightforward approach.
-%
-Although one weight element cannot `fill' an inappropriate constraint element, two weight elements can, in the way illustrated below.
-%
+The natural way for edge-gadgets to link up with a vertex-gadget is shown in Figure~\ref{fig:connect example}: indicators connect to indicator targets, and weight elements connect to constraint elements or weight absorbers. The illustration depicts two equivalent proof nets, both encoding the same (fragment of a) constraint graph: a single vertex that is the target of a weight-1 edge (on the left, in red) and a weight-2 edge (on the right, in blue). The inflow of the vertex is 3, and its constraint is 2; then 2 weight elements are connected to the constraint elements in the vertex-gadget, while one remains free (connected to weight absorbers). It is essential to the functioning of the encoding that any re-distribution of weight elements gives an equivalent proof net, as illustrated by the example. Then in the second proof net, the single weight element of the left edge-gadget is free, which means the indicator jump can be rewired to connect to a different vertex.
+
+In the encoding, the indicator jumps determine which vertex is the target of the edge, and while they may in principle assign any vertex, the weight elements of the edge-gadget can only form proof nets with the constraint elements of the correct vertices. An edge-gadget will be called \emph{free} if all its weight elements are free. The vertex-gadgets in an encoding will all be gathered in a $\tn$-formula, which means they are connected, so that free edge-gadgets may attach their indicator to any of them.
+
+\begin{figure}
+
+\noindent$\CONexample 2{.60}\hfill\perm\hfill\CONexample 1{.60}$
+
+\caption{Two edge-gadgets connecting to one vertex-gadget}
+\label{fig:connect example}
+\end{figure}
+
+In Figure~\ref{fig:big example} we give a complete encoding of the example rewiring sequence shown in Figure~\ref{fig:NCL example}, a reconfiguration sequence for a constraint graph functioning as an \textsc{and}-gate. The given proof nets are all equivalent, and their corresponding constraint graphs are shown near the bottom of the figure. The central vertex-gadget encodes the central constraint-2 vertex in the graph, while its three implicit constraint-0 vertices, at the dangling ends of the three edges, are encoded by the three formulae connected to the central gadget. 
+
+
+\newcommand\ANDmark[1]{\makebox[0pt][r]{\Large{\textbf{#1}}}}
+
+\begin{figure}[p]
+\[
+\begin{array}{@{}r@{\hspace{16pt}}|@{\hspace{16pt}}l@{}}
+	\ANDexample 1 \ANDmark 1 & \ANDexample 2 \ANDmark 2 \\ \\ \hline \\
+	\ANDexample 3 \ANDmark 3 & \ANDexample 4 \ANDmark 4 \\ \\ \hline \\
+	\ANDexample 5 \ANDmark 5 & \ANDexample 6 \ANDmark 6 \\ \\ \hline
+\end{array}
+\]
+\vspace{20pt}
+\[
+\begin{array}{ccccccc}
+	\andexample 1 &\perm& \andexample 2 &\perm& \andexample 3 &\perm& \andexample 4 \\
+	\textbf{1} && \textbf{2} && \textbf{3~4~5} && \textbf{6}
+\end{array}
+\]
+\caption{Encoding an \textsc{and}-gate in proof nets}
+\label{fig:big example}
+\end{figure}
+
+
+
+\subsection*{Weight adjustment}
+
+So far we have assumed that one weight element may encode one unit of weight in the constraint graph. However, there is a minor issue that prevents this straightforward approach. Although one weight element cannot `fill' an inappropriate constraint element, two weight elements \emph{can}, in the way illustrated below. In such a situation, the weight element that should have been linked to this constraint element becomes free, and the edge it belongs to may inappropriately become free, too. 
 \[
 \begin{tikzpicture}[x=5mm,y=-5mm,octo]
 	\node[big_] (A) at (-1,0) {}; 
@@ -859,25 +884,13 @@ Although one weight element cannot `fill' an inappropriate constraint element, t
 	\end{scope}
 \end{tikzpicture}
 \]
-%
-In such an inappropriate linking, since both halves of the constraint element are connected, the weight elements must be disconnected---otherwise, the linking would violate the switching condition.
-%
-That means the weight elements must belong to different edges.
+To resolve this issue, it is sufficient to increase the number of weight elements used to encode one unit of weight. In the following, we will investigate how many are needed.
 
+In an inappropriate linking as shown above, since both halves of the constraint element are connected, the weight elements must be disconnected---otherwise, the switching condition would be violated. That means the weight elements must belong to different edges.
 
-As the linkings above illustrate, it may occur that one subformula of a weight element $A\pr B\pr C$ fills one half of a constraint element.
-%
-Consequently, a weight element can fill three halves, but only of different constraint elements.
-%
-The other three halves may be filled by weight elements of a different edge---so to fill 3 constraint elements requires 2 inappropriate edges.
-%
-To fill the next three constraint elements, at most 1 previous inappropriate edge may be used, and one additional one is needed.
-%
-To fill $3n$ constraint elements inappropriately therefore requires $n+1$ edges.
-%
-It thus suffices to multiply the number of constraint elements by three times the number of edges, and encode a vertex with inflow constraint $c$ by a vertex-gadget with $c\times3\times|E|$ constraint elements (where $|E|$ denotes the number of edges in the constraint graph).
+As the linkings above illustrate, it may occur that one subformula of a weight element $A\pr B\pr C$ fills one half of a constraint element. Consequently, a weight element can fill three halves, but only of different constraint elements. The other three halves may be filled by weight elements of a different edge---so to fill 3 constraint elements requires 2 inappropriate edges. To fill the next three constraint elements, at most 1 previous inappropriate edge may be used, and one additional one is needed. To fill $3n$ constraint elements inappropriately therefore requires $n+1$ edges. It thus suffices to encode one unit of weight on an edge by $3\times|E|$ weight elements (where $|E|$ is the number of edges in the constraint graph), and correspondingly to encode one unit of inflow constraint by $3\times|E|$ constraint elements.
 
-
+\subsection*{The complete encoding}
 
 The complete encoding of a constraint graph $G$ will then be a sequent $\Gamma$ consisting of:
 %
@@ -890,42 +903,9 @@ all edge-gadgets as individual formulae, and
 a sufficient number of weight absorbers ($\1$-formulae).
 \end{enumerate}
 %
-A configuration for $G$ will be encoded as a proof net for $\Gamma$, and conversely each proof net for $\Gamma$ may be interpreted as a (partial) configuration for $G$.
+A configuration for $G$ will be encoded as a proof net for $\Gamma$, and conversely each proof net for $\Gamma$ may be interpreted as a (partial) configuration for $G$. The encoding will be made formal in Section~\ref{sec:correctness}; first we will establish some basic results for rewiring on proof nets.
 
 
-Figure~\ref{fig:encoding example} displays an encoding of two edges of weight 1, and one of weight 2, connecting to a central vertex with inflow constraint 2, as in the example reconfiguration sequence in Figure~\ref{fig:NCL example}.
-%
-The jumps from the three indicator vertices, at the bottom, indicate which vertex an edge is directed at.
-%
-Indicator jumps can only be rewired between vertices when the edge-gadget is connected only to weight absorbers---in the first net of Figure~\ref{fig:encoding example}, the two leftmost edges are mobile, and in the third, the rightmost edge is mobile.
-%
-All three nets in Figure~\ref{fig:encoding example} then correspond to the third graph in Figure~\ref{fig:NCL example}, but the first net allows rewiring according to the second and first graph, whereas the third net allows rewiring according to the fourth graph.
-
-
-
-The encoding will be made formal in Section~\ref{sec:correctness}; first we will establish some basic results for rewiring on proof nets.
-
-
-\newcommand\ANDmark[1]{\makebox[0pt][r]{\Large{\textbf{#1}}}}
-
-\begin{figure}[p]
-\[
-\begin{array}{@{}r@{\hspace{16pt}}|@{\hspace{16pt}}l@{}}
-	\ANDexample 1 \ANDmark 1 & \ANDexample 2 \ANDmark 2 \\ \\ \hline \\
-	\ANDexample 3 \ANDmark 3 & \ANDexample 4 \ANDmark 4 \\ \\ \hline \\
-	\ANDexample 5 \ANDmark 5 & \ANDexample 6 \ANDmark 6 \\ \\ \hline
-\end{array}
-\]
-\vspace{20pt}
-\[
-\begin{array}{c@{\hspace{30pt}}c@{\hspace{30pt}}c@{\hspace{30pt}}c}
-	\andexample 1 & \andexample 2 & \andexample 3 & \andexample 4 \\
-	\textbf{1} & \textbf{2} & \textbf{3~4~5} & \textbf{6}
-\end{array}
-\]
-\caption{Encoding an \textsc{and}-gate in proof nets}
-\label{fig:big example}
-\end{figure}
 
 %------------------------------------------------------------
 
