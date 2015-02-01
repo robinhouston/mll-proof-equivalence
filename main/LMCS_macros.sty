@@ -608,48 +608,44 @@
 
 
 \newcommand\doubleExchange[4]{
-  \begin{tikzpicture}[x=1mm,y=-1mm,octo]
+\vc{
+  \begin{tikzpicture}[rotate=90,x=-1.3mm,y=-1.3mm,octo]
 	%
 	\path[use as bounding box] (-2,-2) rectangle (11,26);
 	%
-	\coordinate (a) at (0,0);  		\coordinate (b) at (9,0);
-	\node[circ] (u) at (0,8) {};	\node[circ] (v) at (9,8) {};
-	\node[circ] (x) at (0,16) {};	\node[circ] (y) at (9,16) {};
-	\coordinate (c) at (0,24);		\coordinate (d) at (9,24);
+	\node[bullet] (a) at (0,0)  {}; \node[bullet] (b) at (9,0)  {};
+	\node[circ]   (u) at (0,8)  {};	\node[circ]   (v) at (9,8)  {};
+	\node[circ]   (x) at (0,16) {};	\node[circ]   (y) at (9,16) {};
+	\node[bullet] (c) at (0,24) {};	\node[bullet] (d) at (9,24) {};
 	%
-	\coordinate (a1) at ($(a) + (2,0)$); \coordinate (b1) at ($(b) + (-2,0)$);
-	\coordinate (c1) at ($(c) + (2,0)$); \coordinate (d1) at ($(d) + (-2,0)$);
-	\draw (a)--(a1) (b1)--(b) (d)--(d1) (c1)--(c);
-	\draw[dashed,dash phase=3pt] (a1)--(b1) (d1)--(c1);
+	\draw[dashed] (a)--(b) (c)--(d);
 	\draw[dashed] (x)--(v);
 	%
 	\begin{scope}[thepink,->]
 	\SWITCH{#1} %% (a)
-		{u}{\draw (a)--(u.center);}
-		{v}{\draw[bend right=10] (a) to (v.center);}
+		{u}{\draw (a)--(u);}
+		{v}{\draw[bend right=10] (a) to (v);}
 	\DEFAULT{}
 	\SWITCH{#2} %% (b)
-		{u}{\draw[bend left=10] (b) to (u.center);}
-		{v}{\draw (b)--(v.center);}
-		%{y}{\draw[bend right=45] (b) to (y.center);}
-		{y}{\draw[bend left=45] (b) to (y.center);}
+		{u}{\draw[bend left=10] (b) to (u);}
+		{v}{\draw (b)--(v);}
+		{y}{\draw[bend right=45] (b) to (y);}
 	\DEFAULT{}
 	\SWITCH{#3} %% (c)
-		{x}{\draw (c)--(x.center);}
-		{y}{\draw[bend right=10] (c) to (y.center);}
+		{x}{\draw (c)--(x);}
+		{y}{\draw[bend right=10] (c) to (y);}
 	\DEFAULT{}
 	\SWITCH{#4} %% (d)
-		{x}{\draw[bend left=10] (d) to (x.center);}
-		{y}{\draw (d)--(y.center);}
-		{u}{\draw[bend right=10] (d) to (u.center);}
+		{x}{\draw[bend left=10] (d) to (x);}
+		{y}{\draw (d)--(y);}
+		{u}{\draw[bend right=10] (d) to (u);}
 	\DEFAULT{}
 	\end{scope}
 	%
-	\foreach \n in {a,b,c,d} {\node[bullet] at (\n) {};}
-	\foreach \n in {a,b,x,y} {\node[anchor=south] at (\n) {$\scriptstyle\vphantom(\n$};}
-	\foreach \n in {c,d,u,v} {\node[anchor=north] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\foreach \n/\i in {a/south east,b/north east,c/south west,d/north west}
+		 {\node[anchor=\i] at (\n) {$\scriptstyle\vphantom(\n$};}
   \end{tikzpicture}
-}
+}}
 
 
 
