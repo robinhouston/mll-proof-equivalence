@@ -85,9 +85,21 @@ An important consequence of the result is that the existence of a satisfactory n
 
 
 \section{Introduction}
+\noindent
+Sequent calculus was originally introduced by Gentzen as a way to better understand
+the properties of natural deduction -- in particular the eliminability of cut. In this
+view, a sequent calculus proof gives a recipe for the construction of a natural deduction
+proof.
 
+Linear logic was formulated as a sequent calculus system, and doesn’t have a corresponding
+natural deduction in the classical sense. The role of natural deduction is taken instead by
+proof nets. Each sequent calculus proof gives rise to a proof net. Furthermore, at least in
+the case of multiplicative linear logic without units, proof nets are canonical in the sense
+that two sequent calculus proofs give rise to the same proof net if and only if they are
+equivalent.
 
-%
+Proof nets do not work so well when the logical units 1 and $\bot$ are included. Although
+proof nets can still be defined in this case, they are no longer canonical. It has not
 
 \cite{Lambek-1968}
 
