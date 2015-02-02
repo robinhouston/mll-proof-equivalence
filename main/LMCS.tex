@@ -47,7 +47,7 @@
 %     clarify where possible
 
 
-\title{Proof equivalence in MLL is PSPACE-complete}
+\title{Proof equivalence in \capsabbrev{mll} is \capsabbrev{pspace}-complete}
 
 \author{Willem Heijltjes and Robin Houston}
 
@@ -236,7 +236,7 @@ The permutations of sequent proofs are exactly the identifications imposed by th
 
 For \capsabbrev{mll} without units, Girard's original proof nets \cite{Girard-1987} are canonical: two proofs translate into the same proof net if and only if they are equivalent. Since the translation from proofs to proof nets and the syntactic comparison of proof nets are both effectively computable (linear-time), proof nets provide an effective solution to the proof equivalence problem for \capsabbrev{mll} without units.
 
-There have been several proposals for (non-canonical) multiplicative proof nets with units \cite{Blute-Cockett-Seely-Trimble-1996, Koh-Ong-1999, Lamarche-Strassburger-2006, Hughes-2012-nets}, each providing a different take on the proof equivalence problem for \capsabbrev{mll}. We will use the formulation by Hughes \cite{Hughes-2012-nets}, which reduces proof equivalence to a simple rewiring relation, as the basis for our PSPACE-hardness reduction. In this section we will discuss how this notion of proof net arises from the sequent calculus, and introduce a compact notation for it.
+There have been several proposals for (non-canonical) multiplicative proof nets with units \cite{Blute-Cockett-Seely-Trimble-1996, Koh-Ong-1999, Lamarche-Strassburger-2006, Hughes-2012-nets}, each providing a different take on the proof equivalence problem for \capsabbrev{mll}. We will use the formulation by Hughes \cite{Hughes-2012-nets}, which reduces proof equivalence to a simple rewiring relation, as the basis for our \capsabbrev{pspace}-hardness reduction. In this section we will discuss how this notion of proof net arises from the sequent calculus, and introduce a compact notation for it.
 
 \begin{definition}[Proof nets]
 \label{def:proof nets}
@@ -644,7 +644,7 @@ The encoding of 3-partition serves to illustrate how simple numerical constraint
 
 The graphs of NCL, called \emph{constraint graphs}, have directed, weighted edges, and a rewrite step (or \emph{move}) consists of reversing the direction of exactly one edge. Each vertex in a constraint graph has an \emph{inflow constraint}, a natural number value, and moves are required to preserve the property that the \emph{inflow} at each vertex, the sum weight of its incoming edges, never drops below the inflow constraint (i.e.\ the inflow constraint dictates a \emph{minimum} inflow).
 
-The specific problem we will use is the \emph{configuration--to--configuration} problem, which asks whether a path of rewrite steps exists between two constraint graphs. This problem is PSPACE-complete, and remains so under various restrictions: inflow constraints can be fixed at the value 2, edge weights can be restricted to the value 1 and 2, the graphs can be required to be planar, and loops and double edges (edges connecting the same 2 vertices) can be prohibited, for example. 
+The specific problem we will use is the \emph{configuration--to--configuration} problem, which asks whether a path of rewrite steps exists between two constraint graphs. This problem is \capsabbrev{pspace}-complete, and remains so under various restrictions: inflow constraints can be fixed at the value 2, edge weights can be restricted to the value 1 and 2, the graphs can be required to be planar, and loops and double edges (edges connecting the same 2 vertices) can be prohibited, for example.
 
 We will need no such restrictions, and will encode the general case. However, for simplicity of exposition, in the examples of constraint graphs in this section we will use the following conventions. Edges will have weight 1 or 2; those of weight 1 are drawn as thin red arrows, and those of weight 2 as thicker blue arrows. Vertices with inflow constraint 2 are drawn as grey circles. For convenience, we will assume that dangling edges are connected to vertices of weight zero, which are omitted from illustrations. These zero-inflow vertices can be seen as ``connection points'', where the graph may be connected to a wider network of graphs.
 
@@ -701,7 +701,7 @@ A \emph{reconfiguration step} $(\perm*)$ relates two partial configurations for 
 The reflexive--transitive closure of $(\perm*)$ will be denoted $(\perm)$.
 \end{definition}
 
-\emph{Non-deterministic constraint graph reconfiguration} or \emph{\capsabbrev{ncg}-reconfiguration} is the problem of deciding whether two total configurations of a constraint graph are connected by a sequence of reconfiguration steps. This is the problem shown to be PSPACE-complete by Hearne and Demaine \cite{GamesPuzzlesAndComputation}:
+\emph{Non-deterministic constraint graph reconfiguration} or \emph{\capsabbrev{ncg}-reconfiguration} is the problem of deciding whether two total configurations of a constraint graph are connected by a sequence of reconfiguration steps. This is the problem shown to be \capsabbrev{pspace}-complete by Hearne and Demaine \cite{GamesPuzzlesAndComputation}:
 
 \begin{theorem}[\cite{GamesPuzzlesAndComputation}, Theorem~5.15]
 \capsabbrev{ncg}-reconfiguration is \capsabbrev{pspace}-complete.
@@ -723,7 +723,7 @@ if $\gamma'$ and $\gamma''$ are total configurations that both agree with a part
 %
 \end{proof}
 
-The PSPACE-completeness of NCG-reconfiguration may seem surprising at first. To give a feel for the dynamics that make this problem \capsabbrev{pspace}-hard, we shall exhibit an example where an exponentially-long reconfiguration sequence is needed. The existence of such rewiring sequences is an essential property for the hardness result: if reconfiguration sequences could be given a polynomial bound, they would be polynomial-time witnesses, placing the problem within NP.
+The \capsabbrev{pspace}-completeness of \capsabbrev{ncg}-reconfiguration may seem surprising at first. To give a feel for the dynamics that make this problem \capsabbrev{pspace}-hard, we shall exhibit an example where an exponentially-long reconfiguration sequence is needed. The existence of such rewiring sequences is an essential property for the hardness result: if reconfiguration sequences could be given a polynomial bound, they would be polynomial-time witnesses, placing the problem within NP.
 
 The example is then as follows. Figure~\ref{fig:boats} gives a reconfiguration sequence, clockwise from the top left, on a constraint graph with two connection points, top and bottom. As such, the graph is meant to replace a single edge from top to bottom, and the reconfiguration sequence inverts the direction of this would-be edge. The key point is that in doing so, the central horizontal edge must be inverted \emph{twice}. Then by nesting the graph within itself, where one graph replaces the central edge of another, as illustrated in Figure~\ref{fig:big boat}, a graph is created with an edge that requires 4 inversions. Each added level of nesting doubles the number of inversions that the central edge must make, while growing the graph by only a constant factor. Thus, the length of a rewiring path may grow exponentially with the size of the graph.
 
