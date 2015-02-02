@@ -92,8 +92,8 @@ Sequent calculus was originally introduced by Gentzen as a way to better underst
 the properties of natural deduction -- in particular the eliminability of cut. In this
 view, a sequent calculus proof gives a recipe for the construction of a natural deduction
 proof.
-
-Linear logic was formulated as a sequent calculus system, and doesn’t have a corresponding
+%
+Linear logic was formulated as a sequent calculus system, and doesn't have a corresponding
 natural deduction in the classical sense. The role of natural deduction is taken instead by
 proof nets. Each sequent calculus proof gives rise to a proof net. Furthermore, at least in
 the case of multiplicative linear logic without units, proof nets are canonical in the sense
@@ -101,29 +101,47 @@ that two sequent calculus proofs give rise to the same proof net if and only if 
 equivalent.
 
 Proof nets do not work so well when the logical units 1 and $\bot$ are included. Although
-proof nets can still be defined in this case, they are no longer canonical. It has not
+proof nets can still be defined in this case, they are no longer canonical. Firstly the
+translation from proofs to proof nets is not canonical, so a proof may be translated
+to several possible proof nets with no privileged choice. Also, equivalent proofs are not
+in general translated to the same possible proof nets. So proof nets lose their principal
+advantage, compared to proofs, of being canonical, and are subject to a non-trivial
+equivalence relation.
 
-\cite{Lambek-1968}
+Equivalence of proofs (in the sense we are interested in here) was first considered
+by Lambek \cite{Lambek-1968}, who introduced the idea of category-theoretic logic and used
+it to define a natural notion of equivalence of proofs.
 
-\cite{Girard-1987,Danos-Regnier-1989}
-\cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996}
-\cite{Koh-Ong-1999}
-\cite{Lamarche-Strassburger-2006}
-\cite{Hughes-2012-categories,Hughes-2012-nets}
+Proof nets were introduced at the birth of linear logic by Girard \cite{Girard-1987}, and
+the correctness criterion was simplified by Danos and Regnier \cite{Danos-Regnier-1989}.
+These proof nets did not include the logical units, and are canonical for multiplicative linear logic.
+%
+Canonical proof nets also exist for larger fragments of linear logic, such as the combined multiplicative-additive fragment without units \cite{Hughes-vanGlabbeek-2005}, and the additive fragment, including the additive units \cite{Heijltjes-2011}. Canonical proof nets may also be defined for \emph{intuitionistic} multiplicative linear logic with units.
 
+Proof nets incorporating units were defined by Blute, Cockett, Seely and Trimble \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996}, though these proof nets cease to be canonical. The `joker games' of Koh and Ong \cite{Koh-Ong-1999} have a very similar structure to proof nets, and include units. Another explicit treatment of proof nets for \capsabbrev{mll} with units is given by Lamarche and Stra\ss burger \cite{Lamarche-Strassburger-2006}, and later a particularly simple and elegant version by Hughes \cite{Hughes-2012-categories,Hughes-2012-nets}.
 
-\cite{Hughes-vanGlabbeek-2005}
-\cite{Heijltjes-2011}
+The idea of the present work is to look at proof equivalence through the lens of computational
+complexity, and use this to settle the question of whether there can be canonical proof nets
+for \capsabbrev{mll} with units. The canonical proof nets for \capsabbrev{mll} without units
+give an efficient decision procedure for proof equivalence: to decide whether two such proofs
+are equivalent, it is sufficient to translate both to proof nets and compare the proof nets
+for equality.
 
-\cite{Demaine-Hearn-2008}
-
-\cite{ReconfigurationProblems}
-\cite{Kanovich-1992,Lincoln-Winkler-1994}.
-
+The corresponding decision procedure for \capsabbrev{mll} \emph{with} units is shown to be
+\capsabbrev{pspace}-complete, which is generally supposed to preclude the existence of a
+polynomial-time algorithm for this problem. So there can be no canonical proof nets in the
+usual sense: if the proof nets are syntactically equal just when their corresponding proofs
+are equivalent, then the translation from proofs to proof nets must be intractable.
 
 % It should be stressed that to consider MLL proofs modulo equivalence is a choice---one that is well motivated by semantics, but a choice nonetheless. Interesting alternatives are available, such as polarised linear logic, tensorial logic, multi-focussing, ... This gives us interesting and important references as well.
 
 Since there can be no canonical representation of multiplicative linear logic proofs in accordance with the categorical semantics, it is tempting to consider other ways of defining the identity of proofs. The literature contains several interesting ideas in this direction, such as \emph{polarised proof nets} \cite{Laurent-1999}, \emph{focused proof nets} \cite{Andreoli-Maieli-1999}, \emph{multi-focused proofs} \cite{Chaudhuri-Miller-Saurin-2008}, and Paul-Andr\'e Melli\`es's semantically appealing \emph{tensorial logic} and \emph{dialogue categories} \cite{Mellies-2012}.
+
+Our proof of \capsabbrev{pspace}-completeness uses the \emph{nondeterministic constraint logic} of \cite{Hearn-Demaine-2005,Demaine-Hearn-2008,GamesPuzzlesAndComputation}. This is a graph rewriting
+system introduced as a tool for use in complexity proofs, originally for games and puzzles.
+
+It is not uncommon for an \capsabbrev{np}-complete problem to have an associated reconfiguration problem that is \capsabbrev{pspace}-complete \cite{ReconfigurationProblems}; an example of this is \capsabbrev{sat}-reconfiguration. \capsabbrev{mll} proof equivalence may be regarded as the reconfiguration problem associated with \capsabbrev{mll} proof search, which is \capsabbrev{np}-complete \cite{Kanovich-1992,Lincoln-Winkler-1994}.
+
 
 %------------------------------------------------------------
 
