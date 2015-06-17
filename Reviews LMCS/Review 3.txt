@@ -1,0 +1,38 @@
+* The paper can be accepted for Logical Methods in Computer Science after minor revisions
+
+Review for 
+"Proof equivalence in MLL is PSPACE-complete"
+Willem Heijltjes, Robin Houston
+
+
+This is a well-written paper containing a non-trivial result. I
+reviewed it already for CSL-LICS2014, and all my concerns back then
+have been taken into account. Since my review from then is available
+to the editor, there is not need for writing a detailed review now. 
+
+There is only one concern: The content of the paper is essential
+the same as the CSL-LICS2014 publication. Except for some better
+explanations here and there, there is no added value in the current
+paper. I don't know what the policy of LMCS is in this respect, so I
+have to leave the decision to the editor.
+
+Some technical comments (yes, I still found things to complain about)
+-----------------------
+
+- Section 6 is totally out of place. It should come right after all
+ the proof-net stuff and not brutally separate sections 5 and 7 which
+ should be immediately one after the other.
+
+- check the capitalization in the bibliography.
+
+- p.19, after def 16:  s(v) < s(v)  ????
+
+- p.19, def 18: isn't the empire the largest subnet with ... ?
+
+- p.21: the bijection associates f(1) to j and c(3) to f (or did I
+ miss something?)
+
+- p.24, def 33: The C is used in two different meanings here.
+
+- p.26, lem 38: The sentence is grammatically ambiguous, and the wrong
+ meaning comes in first. (just make it two sentences)

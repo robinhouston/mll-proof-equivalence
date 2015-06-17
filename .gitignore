@@ -34,6 +34,10 @@
 
 notes/.DS_Store
 
-*.pdf
+main/*.pdf
+boat/*.pdf
+LIX colloquium/*.pdf
 
 .DS_Store
+
+main/MLLavatar.tex

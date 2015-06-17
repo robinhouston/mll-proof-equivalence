@@ -1,0 +1,98 @@
+* This is an excellent paper and can be accepted for Logical Methods in Computer Science as it is
+
+The main result of this paper is the following:
+
+Theorem.  The problem of deciding equality of morphisms in the free *-autonomous category (on a 
+discrete category) is PSPACE-complete.
+
+This has important consequences for the proof theory of linear logic because it poses a possibly 
+insurmountable obstacle to the existence of canonical proof nets for multiplicative linear logic with 
+units (MLL).  As a matter of fact, a (cut-free) proof in MLL sequent calculus is just a composition of 
+basic morphisms in the free *-autonomous category.  Two different proofs D,D' may or may not denote the 
+same morphism in the category, which induces an equivalence D ~ D'.  A proof net notation for MLL is a 
+system of graphs of some kind representing proofs, i.e., each sequent calculus derivation D may be 
+mapped to a proof net [D].  Now, the above Theorem tells us that, unless an unlikely collapse of 
+complexity classes holds, the following cannot simultaneously be true:
+
+1. there exists a proof net notation for MLL which is canonical, in the sense that D ~ D' implies [D] = 
+[D'];
+
+2. the function [.] (sometimes called "desequentialization") is polytime computable.
+
+Indeed, since proof nets are essentially graphs, their equality is at worst in NP (the complexity of 
+graph isomorphism), hence, by the paper's Theorem, (1) and (2) together would imply at least NP=PSPACE.  
+In reality, all variants of proof nets considered in the literature are more structured than just plain 
+graphs and their equality is decidable in polynomial (even linear) time, so we would get the yet more 
+unlikely collapse P=PSPACE.
+
+All extant proof net notations for linear logic (including for MLL with units) verify (2).  In some 
+cases (MLL without units, MALL without units, ALL with or without units, MELL without weakening and 
+units), they also verify (1).  The question of finding proof nets verifying also (1) in presence of 
+units (or weakening) revealed itself to be quite elusive, with numerous proposals by different 
+researchers always falling short of the goal in one way or another.  One of the highlights of this work 
+is explaining why all these attempts failed.
+
+Technically, the above Theorem is proved by reducing the NCG-reconfiguration problem to the problem at 
+stake.  NCG-reconfiguration, which was shown to be PSPACE-complete by Demaine and Hearn in the late 
+2000s, is a kind of game based on flow graphs, in which the direction of edges may be changed provided 
+certain flow constraints are respected.  The game consists in trying to reach a goal configuration from 
+a given initial configuration, by switching one edge at a time.
+
+The authors make an essential use of previous results by Hughes, who gave a (non-canonical) proof net 
+notation for MLL with units, using so-called "jumps", and proved that the problem of deciding equality 
+of two morphisms in the *-autonomous category is equivalent to deciding whether two proof nets may be 
+rewritten one to the other by changing one jump at a time, while keeping the proof net correct.  So the 
+authors' idea is to use the following "dictionary":
+
+   proof net                configuration (flow graph)
+	target of a jump         direction of an edge
+	correctness              flow constraint
+	
+The core of the paper is implementing the above dictionary, i.e., showing that configurations may be 
+(efficiently) mapped to proof nets in such a way that the moves of a reconfiguration game are mapped to 
+rewiring jumps.
+
+The above task requires the introduction of clever encodings and a substantial amount of 
+technicalities, but the authors manage to present everything in a fairly clear and understandable way.  
+In fact, the current version of the paper incorporates suggestions made by the reviewers on the 
+conference version, therefore improving on it.  I have essentially no comments to make, just a couple 
+of minor remarks, which I give below.
+
+The explanatory power of this paper's result, combined with a certain degree of surprise (PSPACE-
+completeness seems an awful lot for such a simple system, although a posteriori it is very natural and 
+the surprise comes just from having ignored reconfiguration games) makes this an extremely important 
+contribution to linear logic proof theory which definitely needs to be published.  My overall 
+evaluation as requested by the LMCS refereeing guidelines is 10/10.
+
+
+MINOR REMARKS
+
+p.1, l.-1: "Canonical proof nets may also be defined for intuitionistic MLL with units": are you 
+referring to (some of) the same papers you cite in the next paragraphs (i.e. Blute et al., Trimble, 
+Lamarche, etc.)?  In any case, you should add a reference here.
+
+p.10, notations: why do you use a "prime" in your notation for sequents/formulas?  I mean, why n' (in a 
+circle) instead of just n?  Since n',i',j', etc. are common notations for variables (as n,i,j...), the 
+notation is quite misleading at first.
+
+p.25, Definition 37: I find this definition a bit disturbing, it seems ad hoc at first and leaves one 
+wondering whether something is wrong with your encoding.  Of course nothing is wrong, it's just that I 
+would have preferred the encoding to be a relation rather than a function, i.e., a configuration may be 
+represented by two proof nets.  Then, your Lemma 40 becomes
+
+Lemma 40.  If gamma ~ delta, then for every encoding [gamma] of gamma, there exists an encoding [delta] 
+of delta such that [gamma] ~ [delta].
+
+Soundness is not affected by this more liberal definition because the decoding function (|.|) maps any 
+encoding [gamma] of gamma to gamma itself.
+
+p.30, Theorem 46: just a minor quibble: you could make explicit the reduction from NCG-reconfiguration 
+to the proof net equivalence problem, in order for the reader to better understand the complexity of 
+such a reduction, which must be at least polytime computable.  Given a pair of configurations 
+(gamma,delta), the reduction computes [gamma] and [delta] (which, if I am not mistaken, may be done in 
+logspace, perhaps less), then checks whether the parity is even; if it is, the reduction outputs the 
+pair ([gamma],[delta]), otherwise it outputs the pair ([gamma],[delta]') (the inversion to get [delta]' 
+is also logspace-computable).  This shows that the reduction hides another decision problem, whose 
+complexity determines the complexity of the reduction: given two proof nets, do they have even relative 
+parity?  Since the problem of deciding the parity of a permutation is in L, it seems to me that you 
+actually have a logspace reduction.
