@@ -1,0 +1,1455 @@
+
+
+\RequirePackage{nicefrac,proof,rotating,stmaryrd,willemtools}
+
+\RequirePackage{tikz}
+\usetikzlibrary{arrows,calc,decorations.markings}
+
+
+% UNSORTED
+
+\let\origalt=\alt
+\let\alt=\underline
+\let\bigtn=\bigotimes
+
+\newcommand\emp{\@ifstar\@@emp\@emp}
+\newcommand\@@emp[1]{\links'|_{#1}}
+\newcommand\@emp[1]{\links|_{#1}}
+
+\newcommand\NoIndent[1]{\par\vbox{\parbox[t]{\columnwidth}{#1}}}
+
+\newcommand\scalefactor{1}
+\newcommand\scale[1]{\scalebox{\scalefactor}{$\m@th{#1}$}}
+
+%\newcommand\alt{\underline}
+\newcommand\itn[1]{\llbracket#1\rrbracket}
+\newcommand\coitn[1]{\llparenthesis#1\rrparenthesis}
+\newcommand\downdagger{\spin\dagger}
+
+
+
+
+%---------- Hacking
+
+\newcommand\mkspin[3]{\smash{\rotatebox[origin=c]{#1}{$#2#3$}}}
+\renewcommand\spin[1][180]{\mathpalette{\mkspin{#1}}}
+
+%\def\mkspin#1#2{\smash{%
+%  \rotatebox[origin=c]{180}{\mathsurround=0pt$#1#2$}}}
+%\def\spin{\mathpalette\mkspin}
+
+
+%---------- Formatting
+
+\newcommand\vc[1]{\vcenter{\hbox{$\m@th{#1}$}}}
+
+
+
+%---------- General
+
+\newcommand*{\coloneq}{
+ \mathrel{%
+  \rlap{\raisebox{0.3ex}{$\m@th\cdot$}}\raisebox{-0.3ex}{$\m@th\cdot$}\kern-0.8pt%
+  \rlap{\raisebox{0.3ex}{$\m@th\cdot$}}\raisebox{-0.3ex}{$\m@th\cdot$}%
+ }=}
+ 
+\newcommand\Mid{\mid}
+\newcommand\Coloneq{\coloneq}
+
+\newcommand\setMidspace[2][-]{%
+	\renewcommand\Mid{\kern#2\mid\kern#2}%
+	\ifx#1-\renewcommand\Coloneq{\kern#2\coloneq\kern#2}\else\renewcommand\Coloneq{\kern#1\coloneq\kern#1}\fi%
+}
+
+%---------- Formulae, proofs, nets
+
+\newcommand\MLL{\textsc{mll}}
+
+\newcommand\@pr[2]{\rotatebox[origin=c]{180}{$#1#2$}}
+\newcommand\pr{\mathbin{\mathpalette\@pr\&}}
+
+%\def\pr{\mathbin{\spin{\mathrm{\&}}}}
+\let\tn\otimes
+
+\def\bigparr{\mathop{\raisebox{-3pt}{\rotatebox[origin=c]{180}{\scalebox{1.4}{$\&$}}}}}
+
+\newcommand\1{1}
+
+\newcommand\named[2]{#2_{#1}}
+
+\newcommand\dual{\@ifstar\doubledual\singledual}
+\newcommand\singledual[1]{#1^\star}
+\newcommand\doubledual[1]{#1^{\star\star}}
+
+\newcommand\links{\ell}%{\mathit l}
+
+\newcommand\toNet{\Mapsto}
+
+\newcommand\perm{\@ifstar\@perm\sim}
+\newcommand\@perm{\stackrel{\scriptscriptstyle 1}\sim}
+\newcommand\vperm{\mathbin{\spin[90]{\sim}}}
+
+
+%---------- Edges, paths, jumps in text
+
+\newcommand\xedge{\hskip1pt\rule[.5ex]{7pt}{.5pt}\hskip1pt}
+\newcommand\xdash{\rule[.5ex]{2pt}{.5pt}}
+\newcommand\xpath{\hskip1pt%
+  \xdash\hskip1.5pt%
+  \xdash\hskip1.5pt%
+  \xdash\hskip1pt
+}
+\newcommand\xjump{%
+  \raisebox{.5ex}{%
+    \begin{tikzpicture}
+    	\draw[jump,thick] (0,0) -- (8pt,0pt);
+	\end{tikzpicture}%
+}}
+\newcommand\xpmuj{%
+  \raisebox{.5ex}{%
+    \begin{tikzpicture}
+    	\draw[jump,thick] (0,0) -- (-8pt,0pt);
+	\end{tikzpicture}%
+}}
+
+\newcommand\path[2]{#1{\xpath}#2}
+\newcommand\edge[2]{#1{\xedge}#2}
+\newcommand\jump[2]{#1{\xjump}#2}
+\newcommand\pmuj[2]{#1{\xpmuj}#2}
+
+%---------- Other
+
+\newcommand\prm[1][\links]{\mathit p_{#1}}		% combinatorial permutations as bijective functions
+
+%---------- Inference rules
+
+\newcommand\MLLlabel[1]{
+ \kern-3pt\scriptstyle{
+ \SWITCH{#1}
+  1 {1}
+  a {\mathsf{ax}}
+  b {\bot}
+  c {\mathsf{cut}}
+  p {\pr}
+  t {\tn}
+ \DEFAULT{#1}
+}}
+
+\newcommand\MLLrule[1]{\vc{
+ \SWITCH{#1}
+  1 {\infer[\MLLlabel 1]{1\vphantom\Gamma}{\vphantom\Gamma}}
+  a {\infer[\MLLlabel a]{A,\dual A\vphantom\Gamma}{\vphantom\Gamma}}
+  b {\infer[\MLLlabel b]{\Gamma,\bot}{\Gamma}}
+  c {\infer[\MLLlabel c]{\Gamma,\Delta}{\Gamma,A && \Delta,\dual A}}
+  p {\infer[\MLLlabel p]{\Gamma,A\pr B}{\Gamma,A,B}}
+  t {\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B}{\Gamma,A && \Delta,B}}
+ \DEFAULT{}
+}}
+
+
+%---------- Permutations
+
+\newcommand\MLLperm[1]{\vc{%
+ \SWITCH{#1}
+  {bb1} {\infer[\MLLlabel b]{\Gamma,\named a\bot,\named b\bot}{\infer[\MLLlabel b]{\Gamma,\named a\bot}{\Gamma}}}
+  {bb2} {\infer[\MLLlabel b]{\Gamma,\named a\bot,\named b\bot}{\infer[\MLLlabel b]{\Gamma,\named b\bot}{\Gamma}}}
+  {bp1} {\infer[\MLLlabel b]{\Gamma,A\pr B,\bot}{\MLLrule p}}
+  {bp2} {\infer[\MLLlabel p]{\Gamma,A\pr B,\bot}{\infer[\MLLlabel b]{\Gamma,A,B,\bot}{\Gamma,A,B}}}
+  {bt1} {\infer[\MLLlabel b]{\Gamma,\Delta,A\tn B,\bot}{\MLLrule t}}
+  {bt2} {\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B,\bot}{\infer[\MLLlabel b]{\Gamma,A,\bot}{\Gamma,A} && \Delta,B}}
+  {bt3} {\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B,\bot}{\Gamma,A &&\infer[\MLLlabel b]{\Delta,B,\bot}{\Delta,B}}}
+  {pp1} {\infer[\MLLlabel p]{\Gamma,A\pr B,C\pr D}{\infer[\MLLlabel p]{\Gamma,A\pr B,C,D}{\Gamma,A,B,C,D}}}
+  {pp2} {\infer[\MLLlabel p]{\Gamma,A\pr B,C\pr D}{\infer[\MLLlabel p]{\Gamma,A,B,C\pr D}{\Gamma,A,B,C,D}}}
+  {pt1} {\infer[\MLLlabel p]{\Gamma,\Delta,A\tn B,C\pr D}{\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B,C,D}{\Gamma,A && \Delta,B,C,D}}}
+  {pt2} {\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B,C\pr D}{\Gamma,A && \infer[\MLLlabel p]{\Delta,B,C\pr D}{\Delta,B,C,D}}}
+  {tt1} {\infer[\MLLlabel t]{\Gamma,\Delta,\Lambda,A\tn B,C\tn D}{\Gamma,A && \infer[\MLLlabel t]{\Delta,\Lambda,B,C\tn D}{\Delta,B,C && \Lambda,D}}}
+  {tt2} {\infer[\MLLlabel t]{\Gamma,\Delta,\Lambda,A\tn B,C\tn D}{\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B,C}{\Gamma,A && \Delta,B,C} && \Lambda,D}}
+ \DEFAULT{}
+}}
+
+%---------- Cut / identity elimination
+
+\newcommand\MLLelim[1]{\vc{%
+ \SWITCH{#1}
+  {a0} {\infer[\MLLlabel a]{\1,\bot}{\vphantom\Gamma}}
+  {a1} {\infer[\MLLlabel b]{\1,\bot}{\infer[\MLLlabel 1]{\1}{\vphantom\Gamma}}}
+  {a2} {\infer[\MLLlabel a]{A\tn B,\dual A\pr\dual B}{\vphantom\Gamma}}
+  {a3} {\infer[\MLLlabel p]{A\tn B,\dual A\pr\dual B}{\infer[\MLLlabel t]{A\tn B,\dual A,\dual B}{\infer[\MLLlabel a]{A,\dual A}{} && \infer[\MLLlabel a]{B,\dual B}{}}}}
+  {c0} {\infer[\MLLlabel c]{\Gamma}{\infer[\MLLlabel 1]{1\vphantom\Gamma}{} && \infer[\MLLlabel b]{\Gamma,\bot}{\Gamma}}}
+  {c1} {\infer[\MLLlabel c]{\Gamma,\Delta,\Lambda}{\infer[\MLLlabel t]{\Gamma,\Delta,A\tn B}{\Gamma,A && \Delta,B} && \infer[\MLLlabel p]{\Lambda,\dual A\pr\dual B}{\Lambda,\dual A,\dual B}}}
+  {c2} {\infer[\MLLlabel c]{\Gamma,\Delta,\Lambda}{\Gamma,A && \infer[\MLLlabel c]{\Delta,\Lambda,\dual A}{\Delta,B && \Lambda,\dual A,\dual B}}}
+ \DEFAULT{}
+}}
+
+%---------- Constraint graphs
+
+%\tikzset{->-/.style={decoration={
+%  markings,
+%  mark=at position #1 with {\arrow{>}}},postaction={decorate}}}
+
+\tikzset{->-/.style={decoration={
+  markings,
+  mark=at position .75 with {\arrow{>}}},postaction={decorate}}}
+\tikzset{-<-/.style={decoration={
+  markings,
+  mark=at position .4 with {\arrow{<}}},postaction={decorate}}}
+
+\definecolor{thegrey1}{rgb}{.72,.72,.72}
+\definecolor{thegrey2}{rgb}{.50,.50,.50}
+\definecolor{thered}{rgb}{1,.29,.27}
+\definecolor{theblue}{rgb}{0,.24,.98}
+
+\tikzstyle{nclnode}=[draw=thegrey2,fill=thegrey1,circle,inner sep=0pt, minimum size=4pt]
+\tikzstyle{ncl1}=[line cap=round,line width=1.5pt,thered]
+\tikzstyle{ncl2}=[line cap=round,line width=3pt,theblue]
+
+\newcommand\boat[1]{\vc{
+  \SWITCH{#1}
+  0 {\@boat00000000}
+  1 {\@boat10000000}
+  2 {\@boat11000000}
+  3 {\@boat11100000}
+  4 {\@boat11110000}
+  5 {\@boat11111000}
+  6 {\@boat11111100}
+  7 {\@boat11011100}
+  8 {\@boat11011110}
+  9 {\@boat11011111}
+  \DEFAULT{}
+}}
+
+\newcommand\@boat[8]{
+  \begin{tikzpicture}[x=3mm,y=6mm,rotate=0]
+	\foreach \a/\p in 
+		{a/{(0,2)},b/{(3,3)},c/{(3,1)},d/{(6,3)},e/{(6,1)},f/{(4,2)}} %1/{(3,4.5)},0/{(3,-.5)}
+		{\node[nclnode,minimum size=5pt,outer sep=2pt] (\a) at \p {};}
+	\node[minimum size=5pt,outer sep=2pt] (1) at (3,4.5) {};
+	\node[minimum size=5pt,outer sep=2pt] (0) at (3,-.5) {};
+	%
+	\begin{scope}[thered,line width=1.2pt,->,cap = butt]
+	  \ifx#20\draw (a) to[out= 60,in=180] (b);\else\draw (b) to[out=180,in= 60] (a);\fi
+	  \ifx#70\draw (c) to[out=180,in=300] (a);\else\draw (a) to[out=300,in=180] (c);\fi
+	  \ifx#20\draw (d) -- (b);\else\draw (b) -- (d);\fi
+	  \ifx#70\draw (c) -- (e);\else\draw (e) -- (c);\fi
+	  \ifx#50\draw (d) -- (e);\else\draw (e) -- (d);\fi
+	\end{scope}
+	%
+	\begin{scope}[theblue,line width=2pt,->,cap = butt]
+	  \ifx#30\draw (f) -- (a);\else \draw (a)--(f);\fi
+	  \ifx#10\draw (b) -- (1);\else \draw (1)--(b);\fi
+	  \ifx#80\draw (0) -- (c);\else \draw (c)--(0);\fi
+	  \ifx#60\draw (f) -- (d);\else \draw (d)--(f);\fi
+	  \ifx#40\draw (e) -- (f);\else \draw (f)--(e);\fi
+	\end{scope}
+	%
+  \end{tikzpicture}
+}
+
+\newcommand\boats{
+  \begin{tikzpicture}[x=3mm,y=3mm]
+	\node[minimum size=5pt,outer sep=2pt] (1) at (-5.5,4) {};
+	\node[minimum size=5pt,outer sep=2pt] (0) at (11.5,4) {};
+	%
+	\foreach \a/\p in 
+		{a/{3,-3},b/{-2,4},c/{8,4},d/{-2,12},e/{8,12},f/{3,9}}
+		{\node[nclnode,minimum size=5pt,outer sep=2pt] (\a0) at (\p) {};}
+	\foreach \a/\p in
+		{a/{0,4},b/{3,6},c/{3,2},d/{6,6},e/{6,2},f/{4,4}}
+		{\node[nclnode,minimum size=5pt,outer sep=2pt] (\a1) at (\p) {};}
+	%
+	\begin{scope}[thered,line width=1.2pt,->,cap = butt]
+	  \draw (b0) to[out=270,in=150] (a0);
+	  \draw (a0) to[out= 30,in=270] (c0);
+	  \draw (b1) to[out=180,in= 60] (a1);
+	  \draw (a1) to[out=300,in=180] (c1);
+	  \foreach \i in {0,1} {
+		\draw (b\i) -- (d\i);
+		\draw (e\i) -- (c\i);
+		\draw (e\i) -- (d\i);
+	   }
+	 \end{scope}
+	 \begin{scope}[theblue,line width=2pt,->,cap = butt]
+	  \draw (a1)--(f1);
+	  \draw  (1)--(b0);
+	  \draw (c0)--(0);
+	  \draw (c1)--(a0);
+	  \draw (f0)--(b1);
+	  \foreach \i in {0,1} {
+		\draw (d\i)--(f\i);
+		\draw (f\i)--(e\i);
+	  }
+	\end{scope}
+  \end{tikzpicture}
+}
+
+
+%---------- Proof nets
+
+\definecolor{thepink}{rgb}{1,0,.65}
+
+\tikzstyle{octo}  =[line width=.8pt,>=latex]
+\tikzstyle{circ}  =[draw,circle,minimum size=6pt,inner sep=0pt]
+\tikzstyle{bullet}=[draw,solid,fill=black,circle,minimum size=6pt,inner sep=0pt]
+
+\tikzstyle{big1} = [draw,circle,minimum size=16pt,inner sep=0pt,font=\scriptsize]
+\tikzstyle{big_} = [big1,text=white,fill=black,font=\boldmath\scriptsize]
+\tikzstyle{big>} = [line width=3pt,thepink,->]
+
+\tikzstyle{octoroll}=[x=5mm,y=-5mm,octo]
+\tikzstyle{octar}=[thepink,->,octo]
+\tikzstyle{pn}=[inner sep=1pt]
+\tikzstyle{jump}=[thepink,->,thick]
+
+\tikzstyle{thicker} = [line width=1.5pt]
+
+\newcommand\nx[2]{#2_{\smash{\makebox[0pt][l]{\ensuremath{\scriptstyle{#1}}}}}}
+
+\newcommand\bignodes[1]{
+  \vc{\begin{tikzpicture}[octo,x=6mm,y=4mm]
+	\ifx#13\node[big_]{$n'$};\else\node[big1]{$n'$};\fi
+	\ifx#12\draw[rounded corners]\else\path[use as bounding box]\fi
+	   (-1,-1) rectangle (1,1);
+  \end{tikzpicture}}
+}
+
+\newcommand\examplenet{
+  \begin{tikzpicture}[x=8mm,y=8mm,inner sep=1pt]
+	\node (a) at (0,1) {$\bot$};
+	\node (b) at (2,1) {$\bot$};
+	\node (c) at (1,0) {$\tn$};
+	\node (d) at (3,0) {1};
+	\node (e) at (4,2) {$\bot$};
+	\node (f) at (6,2) {1};
+	\node (g) at (5,1) {$\pr$};
+	\node (h) at (7,1) {$\bot$};
+	\node (i) at (6,0) {$\tn$};
+	\node (j) at (8,1) {1};
+	\node (k) at (10,1) {$\bot$};
+	\node (l) at (9,0) {$\pr$};
+	%
+	\draw[thick] (a)--(c)--(b) (g)--(i)--(h);
+	\draw[thick,dashed] (e)--(g)--(f) (j)--(l)--(k);
+	%
+	\draw[jump,out=90,in=135,looseness=0.8] (a) to (f.north);
+	\draw[jump,out=45,in=90] (b) to (d);
+	\draw[jump,out=135,in=90] (e) to (d);
+	\draw[jump,out=45,in=90,looseness=1.5] (h) to (l.north);
+	\draw[jump,out=135,in=45] (k) to (j);
+  \end{tikzpicture}
+}
+
+\newcommand\exampletransA{
+  \begin{tikzpicture}[inner sep=0pt,outer sep=0pt]
+	\node (a) {$\bot$};
+	\node[anchor=base west] (b) at (a.base east) {$,\named b1$};
+	\draw[jump] ([yshift=1pt] a.north) to[out=45,in=135] ([yshift=1pt] b.north);
+  \end{tikzpicture}
+}
+
+\newcommand\exampletransB{
+  \begin{tikzpicture}[inner sep=0pt,outer sep=0pt]
+	\node (a) {$\named a1$};
+	\node[anchor=base west] (b) at (a.base east) {$,\bot$};
+	\draw[jump] ([yshift=1pt] b.north) to[out=135,in=45] ([yshift=1pt] a.north);
+  \end{tikzpicture}
+}
+
+\newcommand\exampletransC{
+  \begin{tikzpicture}[inner sep=0pt,outer sep=0pt]
+	\node (a) {$\bot$};
+	\node[anchor=base west] (b) at (a.base east) {$,\named a1$};
+	\node[anchor=base west] (c) at (b.base east) {$,\bot$};
+	\draw[jump] ([yshift=1pt] a.north) to[out=45,in=135] ([yshift=1pt] b.north);
+  \end{tikzpicture}
+}
+
+\newcommand\exampletransD{
+  \begin{tikzpicture}[inner sep=0pt,outer sep=0pt]
+	\node (a) {$\bot$};
+	\node[anchor=base west] (b) at (a.base east) {$,\named c1$};
+	\node[anchor=base west] (c) at (b.base east) {${}\pr{}$};
+	\node[anchor=base west] (d) at (c.base east) {$\bot$};
+	\draw[jump] ([yshift=1pt] a.north) to[out=45,in=135] ([yshift=1pt] c.north);
+  \end{tikzpicture}
+}
+
+\newcommand\exampletransE{
+  \begin{tikzpicture}[inner sep=0pt,outer sep=0pt]
+	\node (a) {$\named c1$};
+	\node[anchor=base west] (b) at (a.base east) {$,\bot$};
+	\draw[jump] ([yshift=1pt] b.north) to[out=135,in=45] ([yshift=1pt] a.north);
+  \end{tikzpicture}
+}
+
+\newcommand\exampletrans{
+	\infer{\bot\tn\bot,\named a1,(\bot\pr\named b1)\tn\bot,\named c1\pr\bot}{
+	 \infer{\bot\tn\bot,\named a1,\bot\pr\named b1}{
+	  \infer{\bot\tn\bot,\named a1,\bot,\named b1}{
+	   \infer{\exampletransA}{\infer{\named b1}{}} 
+	   &&
+	   \infer{\exampletransC}{
+	    \infer{\exampletransB}{\infer{\named a1}{}}   
+	 }}}
+	 &&
+	 \infer{\exampletransD}{
+	  \infer{\named c1\pr\bot}{
+	   \infer{\exampletransE}{\infer{\named c1}{}}
+	}}}
+}
+
+\newcommand\PN[2]{\vc{
+  \SWITCH{#1}
+  b	{\begin{tikzpicture}[x=6mm,y=6mm]
+		\node[inner sep=1pt] (A) at (-1,1) {$\bot$};
+		\node[inner sep=1pt] (B) at ( 1,1) {$a$};
+		\node[inner sep=0pt] (t) at (0,0) {$\phantom\tn$};
+		\node (b) at (0,3) {$\bot$};
+		%
+		\draw[jump,overlay,bend right] (A) to (B);
+		\SWITCH{#2}
+		{1} {\draw[jump,overlay,bend left]  (b) to (A);}
+		{2} {\draw[jump,overlay,bend right] (b) to (B);}
+		\DEFAULT{}
+  	\end{tikzpicture}}
+  p {\begin{tikzpicture}[x=6mm,y=6mm]
+		\node[inner sep=1pt] (A) at (-1,1) {$a$};
+		\node[inner sep=1pt] (B) at ( 1,1) {$b$};
+		\node[inner sep=0pt] (p) at (0,0) {$\pr$};
+		\node (b) at (0,3) {$\bot$};
+		%
+		\draw[thick,dashed] (A)--(t)--(B);
+		\SWITCH{#2}
+		{1} {\draw[jump,overlay,bend left]  (b) to (A);}
+		{2} {\draw[jump,overlay]		    (b) to (p);}
+		{3} {\draw[jump,overlay,bend right] (b) to (B);}
+		\DEFAULT{}
+	\end{tikzpicture}}
+  q	{\begin{tikzpicture}[x=6mm,y=6mm]
+		\node[inner sep=1pt] (A) at (-1,1) {$a$};
+		\node[inner sep=1pt] (B) at ( 1,1) {$b$};
+		\node[inner sep=0pt] (t) at (0,0) {$\phantom\pr$};
+		\node (b) at (0,3) {$\bot$};
+		%
+		\SWITCH{#2}
+		{1} {\draw[jump,overlay,bend left]  (b) to (A);}
+		{2} {\draw[jump,overlay,bend right] (b) to (B);}
+		\DEFAULT{}
+  	\end{tikzpicture}}
+  t {\begin{tikzpicture}[x=6mm,y=6mm]
+		\node[inner sep=1pt] (A) at (-1,1) {$a$};
+		\node[inner sep=1pt] (B) at ( 1,1) {$b$};
+		\node[inner sep=0pt] (t) at (0,0) {$\tn$};
+		\node (b) at (0,3) {$\bot$};
+		%
+		\draw[thick] (A)--(t)--(B);
+		\SWITCH{#2}
+		{1} {\draw[jump,overlay,bend left]  (b) to (A);}
+		{2} {\draw[jump,overlay]    		(b) to (t);}
+		{3} {\draw[jump,overlay,bend right] (b) to (B);}
+		\DEFAULT{}
+  	\end{tikzpicture}}
+  \DEFAULT{}
+}}
+
+
+\newcommand\netA[4]{\vcenter{\hbox{
+  \begin{tikzpicture}[x=3mm,y=8mm,octo] %[x=2.5mm,y=7mm,octo]
+	\node[circ]   (1) at (0,1) {};
+	\node[circ]   (2) at (2,1) {};
+	\node[circ]   (3) at (4,1) {};
+	%
+	\coordinate (a) at (1,2);
+	\coordinate (b) at (3,2);
+	\coordinate (c) at (1,0);
+	\coordinate (d) at (3,0);
+	%
+	\draw[thick] (a)--(b) (c)--(d);
+	%
+	\SWITCH{#1}
+	  {1}{\draw[thepink,->] (a) .. controls +(-.6,-.2) and +( .1, .5) .. (1.center);}
+	  {2}{\draw[thepink,->] (a) .. controls +( .6,-.2) and +(-.1, .5) .. (2.center);}
+	  {3}{\draw[thepink,->] (a) .. controls +(  2,-.2) and +(-.4, .3) .. (3.center);}
+    \DEFAULT{}
+	\SWITCH{#2}
+	  {1}{\draw[thepink,->] (b) .. controls +(- 2,-.2) and +( .4, .3) .. (1.center);}
+	  {2}{\draw[thepink,->] (b) .. controls +(-.6,-.2) and +( .1, .5) .. (2.center);}
+	  {3}{\draw[thepink,->] (b) .. controls +( .6,-.2) and +(-.1, .5) .. (3.center);}
+	\DEFAULT{}
+	\SWITCH{#3}
+	  {1}{\draw[thepink,->] (c) .. controls +(-.6, .2) and +( .1,-.5) .. (1.center);}
+	  {2}{\draw[thepink,->] (c) .. controls +( .6, .2) and +(-.1,-.5) .. (2.center);}
+	  {3}{\draw[thepink,->] (c) .. controls +(  2, .2) and +(-.4,-.3) .. (3.center);}
+    \DEFAULT{}
+	\SWITCH{#4}
+	  {1}{\draw[thepink,->] (d) .. controls +(- 2, .2) and +( .4,-.3) .. (1.center);}
+	  {2}{\draw[thepink,->] (d) .. controls +(-.6, .2) and +( .1,-.5) .. (2.center);}
+	  {3}{\draw[thepink,->] (d) .. controls +( .6, .2) and +(-.1,-.5) .. (3.center);}
+	\DEFAULT{}
+	%
+	\node[bullet] at (a) {};
+	\node[bullet] at (b) {};
+	\node[bullet] at (c) {};
+	\node[bullet] at (d) {};
+  \end{tikzpicture}
+}}}
+
+
+
+\newcommand\netB[4]{\vcenter{\hbox{%
+  \begin{tikzpicture}[x=-.9mm,y=1mm,octo]
+	\coordinate (a) at (0,0); \coordinate (d) at (0,20);
+	\coordinate (b) at (5,0); \coordinate (c) at (5,20);
+	%\coordinate (E) at (20,10); \node at (E) {};
+	%
+	\node[circ] (z) at (0,10) {}; \node[circ] (y) at (5,10) {};
+	\node[circ] (x) at (12,5) {}; \node[circ] (w) at (12,15) {};
+	%
+	\draw (a)--(b) (c)--(d);
+	%
+	\draw[dashed] (x)--(w);
+	%\draw[thepink,->] (16,5)--(x.center);
+	%\draw[thepink,->] (16,15)--(w.center);
+	%\draw[thepink,dashed,rounded corners,dash phase=1pt] (E) |- (16,5) (E) |- (16,15);
+	%
+	\begin{scope}[thepink,->]
+	\SWITCH{#1}
+	  {x}{\draw (a.center) .. controls +(2,5) and +(-2,0) .. (x.center);}
+	  {y}{\draw (a.center) .. controls +(3,4) .. (y.center);}
+	  {z}{\draw (a.center) .. controls +(-2,4) and +(-2,-4) .. (z.center);}
+	\DEFAULT{}
+	\SWITCH{#2}
+	  {x}{\draw (b.center) .. controls +(1,4) and +(-3,0) .. (x.center);}
+	  {y}{\draw (b.center) .. controls +(-2,4) and +(-2,-4) .. (y.center);}
+	\DEFAULT{}
+	\SWITCH{#3}
+	  {w}{\draw (c.center) .. controls +(1,-4) and +(-3,0) .. (w.center);}
+	  {y}{\draw (c.center) .. controls +(-2,-4) and +(-2,4) .. (y.center);}
+	\DEFAULT{}
+	\SWITCH{#4}
+	  {w}{\draw (d.center) .. controls +(2,-5) and +(-2,0) .. (w.center);}
+	  {y}{\draw (d.center) .. controls +(3,-4) .. (y.center);}
+	  {z}{\draw (d.center) .. controls +(-2,-4) and +(-2,4) .. (z.center);}
+	\DEFAULT{}
+	\end{scope}
+	%
+	\foreach \n in {a,b,c,d} {\node[bullet] at (\n) {};}
+	\foreach \n in {a,b,x} {\node[anchor=north] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\foreach \n in {c,d,w} {\node[anchor=south] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\node[anchor=east,inner sep=5pt] at (y) {$\scriptstyle\vphantom(y$};
+	\node[anchor=west,inner sep=5pt] at (z) {$\scriptstyle\vphantom(z$};
+  \end{tikzpicture}%
+}}}
+
+
+\newcommand\netC[4]{\vcenter{\hbox{%
+  \begin{tikzpicture}[x=-1mm,y=1mm,octo]
+	\coordinate (a) at (2.5,0);
+	\coordinate (b) at (7.5,0);
+	\coordinate (c) at (12.5,0);
+	\coordinate (d) at (10,20);
+	\coordinate (e) at (5,20);
+	%
+	\node[circ] (z) at (0,10) {}; \node[circ] (y) at (5,10) {};
+	\node[circ] (x) at (10,10) {}; \node[circ] (w) at (15,10) {};
+	%
+	\draw (a)--(b)--(c) (d)--(e);
+	%
+	\SWITCH{#1}
+	  {y}{\draw[thepink,->] (a.center) .. controls +(3,4) and +(0,-4) .. (y.center);}
+	  {z}{\draw[thepink,->] (a.center) .. controls +(-3,4) and +(0,-4) .. (z.center);}
+	\DEFAULT{}
+	\SWITCH{#2}
+	  {x}{\draw[thepink,->] (b.center) .. controls +(3,4) and +(0,-4) .. (x.center);}
+	  {z}{\draw[thepink,->] (b.center) .. controls +(-6,3) and +(1,-4) .. (z.center);}
+	\DEFAULT{}
+	\draw[thepink,->] (c.center) .. controls +(3,4) and +(0,-4) .. (w.center);
+	\SWITCH{#3}
+	  {w}{\draw[thepink,->] (d.center) .. controls +(3,-2) and +(-0,6) .. (w.center);}
+	  {x}{\draw[thepink,->] (d.center) .. controls +(-2,-4) and +(-2,4) .. (x.center);}
+	  {z}{\draw[thepink,->] (d.center) .. controls +(-6,-4) and +(3,5) .. (z.center);}
+	\DEFAULT{}
+	\SWITCH{#4}
+	  {x}{\draw[thepink,->] (e.center) .. controls +(3,-2) and +(-0,6) .. (x.center);}
+	  {y}{\draw[thepink,->] (e.center) .. controls +(-2,-4) and +(-2,4) .. (y.center);}
+	\DEFAULT{}
+	%
+	\foreach \n in {a,b,c,d,e} {\node[bullet] at (\n) {};}
+	\foreach \n in {a,b,c} {\node[anchor=north] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\foreach \n in {d,e} {\node[anchor=south] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\foreach \n in {w,x} {\node[anchor=south east] at (\n) {$\scriptstyle\vphantom(\n$};}
+	\foreach \n in {y,z} {\node[anchor=north west] at (\n) {$\scriptstyle\vphantom(\n$};}
+  \end{tikzpicture}%
+}}}
+
+
+\newcommand\connectingElements[1]{
+  \begin{tikzpicture}[x=5mm,y=5mm,octo]
+	\node[big_] (A) at (-.5,3.5) {$i'$}; 
+	\node[big_] (B) at (1.5,3.5) {$j'$};
+	\node[big_] (C) at (3.5,3.5) {};
+	\draw[rounded corners] (-1.5,4.5) rectangle (4.5,2.5);
+	\SWITCH{#1}
+		{1}{\node[big1] (1) at (0,0) {$i'$};}
+		{2}{\node[big1] (1) at (0,0) {\makebox[0pt][c]{$i{\scriptscriptstyle +}j'$}};}
+	\DEFAULT{}
+	\node[big1] (2) at (3,0) {};
+	\draw[rounded corners] (-1,-1) rectangle (1,1) (2,-1) rectangle (4,1);
+	\draw (1,0)--(2,0);
+	\begin{scope}[thepink,->,big>]
+	\draw[bend right=20] (A) to (1);
+	\draw[bend left =20] (C) to (2);
+	  \SWITCH{#1}
+	    {1}{\draw[bend right=20] (B) to (2);}
+	    {2}{\draw[bend left =20] (B) to (1);}
+	  \DEFAULT{}
+	\end{scope}
+  \end{tikzpicture}
+}
+
+
+\newcommand\doubleExchange[4]{
+\vc{
+  \begin{tikzpicture}[rotate=90,x=-1.3mm,y=-1.3mm,octo]
+	%
+	\path[use as bounding box] (-2,-2) rectangle (11,26);
+	%
+	\node[bullet] (a) at (0,0)  {}; \node[bullet] (b) at (9,0)  {};
+	\node[circ]   (u) at (0,8)  {};	\node[circ]   (v) at (9,8)  {};
+	\node[circ]   (x) at (0,16) {};	\node[circ]   (y) at (9,16) {};
+	\node[bullet] (c) at (0,24) {};	\node[bullet] (d) at (9,24) {};
+	%
+	\draw[dashed] (a)--(b) (c)--(d);
+	\draw[dashed] (x)--(v);
+	%
+	\begin{scope}[thepink,->]
+	\SWITCH{#1} %% (a)
+		{u}{\draw (a)--(u);}
+		{v}{\draw[bend right=10] (a) to (v);}
+	\DEFAULT{}
+	\SWITCH{#2} %% (b)
+		{u}{\draw[bend left=10] (b) to (u);}
+		{v}{\draw (b)--(v);}
+		{y}{\draw[bend right=45] (b) to (y);}
+	\DEFAULT{}
+	\SWITCH{#3} %% (c)
+		{x}{\draw (c)--(x);}
+		{y}{\draw[bend right=10] (c) to (y);}
+	\DEFAULT{}
+	\SWITCH{#4} %% (d)
+		{x}{\draw[bend left=10] (d) to (x);}
+		{y}{\draw (d)--(y);}
+		{u}{\draw[bend right=10] (d) to (u);}
+	\DEFAULT{}
+	\end{scope}
+	%
+	\foreach \n/\i in {a/south east,b/north east,c/south west,d/north west}
+		 {\node[anchor=\i] at (\n) {$\scriptstyle\vphantom(\n$};}
+  \end{tikzpicture}
+}}
+
+
+
+
+\newcommand\parityNetA{
+  \begin{tikzpicture}[x=6mm,y=-7mm]
+	\node[pn] (a) at (-2,2) {$\nx a\1$};
+	\node[pn] (b) at (-1,2) {$\nx b\1$};
+	\node[pn] (c) at (1,2) {$\nx c\tn$};
+	\node[pn] (d) at (0,1) {$\nx d\bot$};
+	\node[pn] (e) at (1,1) {$\nx e\bot$};
+	\node[pn] (f) at (2,1) {$\nx f\bot$};
+	\node[pn] (g) at (4,2) {$\nx g\tn$};
+	\node[pn] (h) at (3,1) {$\nx h\bot$};
+	\node[pn] (i) at (5,1) {$\nx i\pr$};
+	\node[pn] (j) at (4,0) {$\nx j\1$};
+	\node[pn] (k) at (6,0) {$\nx k\1$};
+	\node[pn] (r) at (1,3) {$\nx r\pr$};
+	%
+	\draw (c)--(d) (c)--(e) (c)--(f) (g)--(h) (g)--(i);
+	\draw[thick,dash pattern=on 3pt off 2pt] (i)--(j) (i)--(k) (c)--(r) (g)--(r) ($(a)!0.15!(r)$)--(r) ($(b)!0.20!(r)$)--(r);
+	%
+	\draw[octar,bend right=45] (d) to (b);
+	\draw[octar,bend left=60]  (e) to (k);
+	\draw[octar,bend left=45]  (f) to (j);
+	\draw[octar,bend right=60] (h) to (a);
+  \end{tikzpicture}
+}
+
+\newcommand\parityNetB{
+  \begin{tikzpicture}[x=6mm,y=-4mm]
+	\node[pn] (a) at (-1,3) {$\nx a\1$};
+	\node[pn] (b) at (0,10) {$\nx b\1$};
+	\node[pn] (c) at (1,7) {$\nx c\tn$};
+	\node[pn] (d) at (0,8) {$\nx d\bot$};
+	\node[pn] (e) at (2,8) {$\nx e\bot$};
+	\node[pn] (f) at (1,5) {$\nx f\bot$};
+	\node[pn] (g) at (0,0) {$\nx g\tn$};
+	\node[pn] (h) at (-1,1) {$\nx h\bot$};
+	\node[pn] (i) at (1,1) {$\nx i\pr$};
+	\node[pn] (j) at (1,3) {$\nx j\1$};
+	\node[pn] (k) at (2,10) {$\nx k\1$};
+	\node[pn] (r) at (0,-2) {$\nx r\pr$};
+	%
+	\draw (c)--(d) (c)--(f) (g)--(h);
+	\draw ($(g)!0.45!(i)$) -- (i);
+	\draw ($(c)!0.4!(e)$) -- (e);
+	\draw[thick,dash pattern=on 2pt off 2pt] (i)--(j) (r)--(g);
+	%
+	\draw[octar,bend right=45] (d) to (b);
+	\draw[octar,bend right=45]  (e) to (k);
+	\draw[octar,bend left=45]  (f) to (j);
+	\draw[octar,bend right=45] (h) to (a);
+  \end{tikzpicture}
+}
+
+\newcommand\parityNetC[1]{
+	\begin{tikzpicture}[x=5mm,y=-4mm,octo]
+	  \node[pn] (1) at (-1,2) {$\nx a\1$};
+	  \node[pn] (2) at ( 1,2) {$\nx b\1$};
+	  \node[pn] (a) at ( 0,5) {$\bot$};
+	  %
+	  \draw (-.5,2) -- (2) -- (0,0) -- (1);
+	  \draw (a) -- (1,7) -- (-1,7) -- (a);
+	  %
+	  \SWITCH{#1}
+	    {1}{\draw[thepink,->,bend right=25] (a) to ($(1)+(.5,.5)$);}
+	    {2}{\draw[thepink,->,bend left]  (a) to (2);}
+	  \DEFAULT{}
+	  \node[circ,outer sep=2pt,draw opacity=0] at (0,9) {};
+	\end{tikzpicture}
+}
+
+\newcommand\parityNetD[1]{
+  \SWITCH{#1}
+  {3}{\begin{tikzpicture}[x=5mm,y=-4mm,octo]
+	  \node[pn] (a) at (0,2) {$\bot$};
+	  \node[pn] (2) at (1,7) {$\nx b\1$};
+	  \node[pn] (1) at (0,9) {$\nx a\1$};
+	  %
+	  \draw (0,0) -- (1,2) -- (a) -- (-1,2) -- (0,0);
+	  \draw (1) -- (2) -- (2,9) -- (1);
+	  %
+	  \draw[thepink,->,bend left] (a) to (2);
+	\end{tikzpicture}
+  }
+  \DEFAULT{
+	\begin{tikzpicture}[x=5mm,y=-4mm,octo]
+	  \node[pn] (a) at (0,2) {$\bot$};
+	  \node[pn] (1) at (0,5) {$\nx a\1$};
+	  \node[pn] (2) at (1,7) {$\nx b\1$};
+	  %
+	  \draw (0,0) -- (1,2) -- (a) -- (-1,2) -- (0,0);
+	  \draw (1) -- (2) -- (-1,7) -- (1);
+	  %
+	  \SWITCH{#1}
+	    {1}{\draw[thepink,->,bend left]  (a) to (1);}
+	    {2}{\draw[thepink,->,bend left] (a) to (2);}
+	  \DEFAULT{}
+	  \node[circ,outer sep=2pt,draw opacity=0] at (0,9) {};
+	\end{tikzpicture}
+  }
+}
+\newcommand\parityNetE{
+  \begin{tikzpicture}[x=1mm,y=-7mm]
+	\node[pn] (a1) at ( 0,0) {$a$};
+	\node[pn] (a2) at (10,0) {$v_0$};
+	\node[pn] (a3) at (20,0) {$v_1$};
+	\node[pn] (an) at (40,0) {$v_{2n}$};
+	\node[pn] (b) at (50,0) {$b$};
+	\node at (30,.5) {$\dots$};
+	%
+	\draw ($(a1)+(2,0)$)--(a2)--(a3)--($(a3)+(4,0)$) ($(an)+(-5,0)$)--(an)--(b);
+	%
+	\foreach \a in {a1,a2,a3,an,b} {
+	  \draw (\a)--+(4,1)--+(-4,1)--(\a);
+	}
+  \end{tikzpicture}
+}
+
+
+\newcommand\octorollA[1]{
+  \begin{tikzpicture}[octoroll]
+	\node[big1] (a) at (0,0) {\normalsize $\1^n$};
+	\node[big_] (d1) at (-8.5,4) {\normalsize $A$};
+	\node[big_] (d2) at (-6  ,4) {\normalsize $B$};
+	\node[big_] (d3) at (-3.5,4) {\normalsize $C$};
+	\draw[rounded corners] (-10,3) rectangle (-2,5);
+	\draw[dashed] (-2,4)--(-1,4) node[bullet] (d) {}; \node[anchor=south west] at (d) {$i\vphantom)$};
+	\node[big_] (e1) at ( 3.5,4) {\normalsize $D$};
+	\node[big_] (e2) at ( 6  ,4) {\normalsize $E$};
+	\node[big_] (e3) at ( 8.5,4) {\normalsize $F$};
+	\draw[rounded corners] (10,3) rectangle (2,5);
+	\draw[dashed] (2,4)--(1,4) node[bullet] (e) {}; \node[anchor=south east] at (e) {$j\vphantom)$};
+	\node[big1] (v1) at (-2,8) {\normalsize $X$};
+	\node[big1] (v2) at ( 2,8) {\normalsize $Y$};
+	\draw[rounded corners] (-3.5,7) rectangle (-0.5,9);
+	\draw[rounded corners] ( 3.5,7) rectangle ( 0.5,9);
+	\draw (-0.5,8)--(0.5,8);
+	\node[circ] (v) at (0,6) {}; 
+	\SWITCH{#1}
+		{1}{\node[anchor=north west] at (v) {$v$};}
+		{2}{\node[anchor=north east] at (v) {$v$};}
+	\DEFAULT{}
+	%
+	\begin{scope}[thepink,->]
+		\draw[bend left=15] (e) to (v);\draw[bend right=15] (d) to (v);
+	\SWITCH{#1}
+	{1}{\draw[big>,bend right] (d1) to (v1); \draw[big>,bend right=20] (d2) to (v1); \draw[big>, bend right=20] (d3) to (v2);
+		\draw[big>,bend right=10] (e1) to (a);  \draw[big>,bend right=20] (e2) to (a);  \draw[big>, bend right=30] (e3) to (a);}
+	{2}{\draw[big>,bend left] (d1) to (a); \draw[big>,bend left=20] (d2) to (a); \draw[big>, bend left=20] (d3) to (a);
+		\draw[big>,bend left=15] (e1) to (v1);  \draw[big>,bend left=15] (e2) to (v2);  \draw[big>, bend left=15] (e3) to (v2);}
+	\DEFAULT{}
+	\end{scope}
+  \end{tikzpicture}
+}
+\newcommand\octorollB[1]{
+  \begin{tikzpicture}[octoroll]
+	\node[circ] (a1a) at (0,2) {}; \node[big1] (a1) at (-2.5,0) {}; \node[big1] (a2) at (0,0) {}; \node[big1] (a3) at (2.5,0) {};
+	\node[big_] (d1) at (-8.5,4) {\normalsize $A$};
+	\node[big_] (d2) at (-6  ,4) {\normalsize $B$};
+	\node[big_] (d3) at (-3.5,4) {\normalsize $C$};
+	\draw[rounded corners] (-10,3) rectangle (-2,5);
+	\draw[dashed] (-2,4)--(-1,4) node[bullet] (d) {};
+	\draw ( 3  ,4) node[bullet] (e1a) {} -- ( 4  ,4) node[big_] (e1) {\normalsize $D$};
+	\draw ( 5.5,4) node[bullet] (e2a) {} -- ( 6.5,4) node[big_] (e2) {\normalsize $E$};
+	\draw ( 8  ,4) node[bullet] (e3a) {} -- ( 9  ,4) node[big_] (e3) {\normalsize $F$};
+	\draw[rounded corners] (10,3) rectangle (2,5);
+	\draw[dashed] (2,4)--(1,4) node[bullet] (e) {};
+	\node[big1] (v1) at (-2,8) {\normalsize $X$};
+	\node[big1] (v2) at ( 2,8) {\normalsize $Y$};
+	\draw[rounded corners] (-3.5,7) rectangle (-0.5,9);
+	\draw[rounded corners] ( 3.5,7) rectangle ( 0.5,9);
+	\draw (-0.5,8)--(0.5,8);
+	\node[circ] (v) at (0,6) {};
+	%
+	\begin{scope}[thepink,->]
+		\draw[bend left=15] (e) to (v);
+	\SWITCH{#1}{1}{\draw[bend right=15] (d) to (v);}\DEFAULT{\draw[bend left=15] (d) to (a1a);}
+		\draw[big>,bend right] (d1) to (v1); \draw[big>,bend right=20] (d2) to (v1); \draw[big>, bend right=20] (d3) to (v2);
+	\SWITCH{#1}
+	{3}{
+		\draw[bend left=15] (e1a) to (v1); \draw[bend left=15] (e2a) to (v2); \draw[bend left=15] (e3a) to (v2);
+		}
+	\DEFAULT{
+		\draw[bend right=15] (e1a) to (a1a); \draw[bend right=15] (e2a) to (a1a); \draw[bend right=15] (e3a) to (a1a); 
+		}
+		\draw[big>,bend right=15] (e1) to (a1);  \draw[big>,bend right=15] (e2) to (a2);  \draw[big>, bend right=15] (e3) to (a3);
+	\end{scope}
+  \end{tikzpicture}
+}
+\newcommand\octorollC{
+  \begin{tikzpicture}[octoroll]
+	\node[circ] (a1a) at (0,2) {}; \node[big1] (a1) at (-2.5,0) {}; \node[big1] (a2) at (0,0) {}; \node[big1] (a3) at (2.5,0) {};
+	\node[big_] (d1) at (-9,4) {\normalsize $A$};
+	\draw (-7.25,4) node[big_] (d2) {\normalsize $B$} -- (-6.25,4) node[bullet] (d2a) {};
+	\draw (-5,4) node[big_] (d3) {\normalsize $C$} -- (-3.5,4) node[big_] (d3a) {\normalsize $C$} -- (-2.5,4) node[bullet] (d3b) {};
+	\draw[rounded corners] (-10,3) rectangle (-2,5);
+	\draw[dashed] (-2,4)--(-1,4) node[bullet] (d) {};
+	\node[big_] (e1) at ( 3.5,4) {\normalsize $D$};
+	\node[big_] (e2) at ( 6  ,4) {\normalsize $E$};
+	\node[big_] (e3) at ( 8.5,4) {\normalsize $F$};
+	\draw[rounded corners] (10,3) rectangle (2,5);
+	\draw[dashed] (2,4)--(1,4) node[bullet] (e) {};
+	\node[big1] (v1) at (-2,8) {\normalsize $X$};
+	\node[big1] (v2) at ( 2,8) {\normalsize $Y$};
+	\draw[rounded corners] (-3.5,7) rectangle (-0.5,9);
+	\draw[rounded corners] ( 3.5,7) rectangle ( 0.5,9);
+	\draw (-0.5,8)--(0.5,8);
+	\node[circ] (v) at (0,6) {};
+	%
+	\begin{scope}[thepink,->]
+		\draw[bend left=15] (e) to (v); \draw[bend left=15] (d) to (a1a);
+		\draw[bend right=15] (d2a) to (v1); \draw[bend right=15] (d3b) to (v2);
+		\draw[big>,bend left] (d1) to (a1); \draw[big>,bend left=20] (d2) to (a1);
+		\draw[big>,bend left=20] (d3) to (a2); \draw[big>,bend left=20] (d3a) to (a3);
+		\draw[big>,bend left=15] (e1) to (v1);  \draw[big>,bend left=15] (e2) to (v2);  \draw[big>, bend left=15] (e3) to (v2);
+	\end{scope}
+  \end{tikzpicture}
+}
+\newcommand\octorollD[1]{
+  \begin{tikzpicture}[octoroll]
+	\node[big1] (a1) at (0,0) {}; \node[circ] (a1a) at (0,2) {};
+	\node[big_] (d1) at (-8.5,4) {\normalsize $A$};
+	\draw (-6,4) node[big_] (d2a) {\normalsize $B$} -- (-5,4) node[bullet] (d2b) {};
+	\node[big_] (d3) at (-3.5,4) {\normalsize $C$};
+	\draw[rounded corners] (-10,3) rectangle (-2,5);
+	\draw[dashed] (-2,4)--(-1,4) node[bullet] (d) {};
+	\node[big_] (e1) at ( 3.5,4) {\normalsize $D$};
+	\node[big_] (e2) at ( 6  ,4) {\normalsize $E$};
+	\node[big_] (e3) at ( 8.5,4) {\normalsize $F$};
+	\draw[rounded corners] (10,3) rectangle (2,5);
+	\draw[dashed] (2,4)--(1,4) node[bullet] (e) {};
+	\node[big1] (v1) at (-2,8) {\normalsize $X$};
+	\node[big1] (v2) at ( 2,8) {\normalsize $Y$};
+	\draw[rounded corners] (-3.5,7) rectangle (-0.5,9);
+	\draw[rounded corners] ( 3.5,7) rectangle ( 0.5,9);
+	\draw (-0.5,8)--(0.5,8);
+	\node[circ] (v) at (0,6) {};
+	%
+	\begin{scope}[thepink,->]
+		\draw[bend left=15] (e) to (v);
+		\SWITCH{#1}
+			{1}{\draw[bend left=15] (d) to (a1a); \draw[bend right=15] (d2b) to (v1);}
+			{2}{\draw[bend left=15] (d) to (v1); \draw[bend left=20] (d2b) to (a1a);}
+		\DEFAULT{}
+		\draw[big>,bend left] (d1) to (a1); \draw[big>,bend left=20] (d2a) to (a1); \draw[big>,bend left=20] (d3) to (a1);
+		\draw[big>,bend left=15] (e1) to (v1);  \draw[big>,bend left=15] (e2) to (v2);  \draw[big>, bend left=15] (e3) to (v2);
+	\end{scope}
+  \end{tikzpicture}
+}
+\newcommand\octorollE[1]{
+  \begin{tikzpicture}[octoroll]
+	\node[big1] (a1) at (0,0) {}; \node[circ] (a1a) at (0,2) {};
+	\node[big_] (d1) at (-8.5,4) {\normalsize $A$};
+	\draw (-6,4) node[big_] (d2a) {} -- (-5,4) node[bullet] (d2b) {};
+	\node[big_] (d3) at (-3.5,4) {};
+	\draw[rounded corners] (-10,3) rectangle (-2,5);
+	\draw[dashed] (-2,4)--(-1,4) node[bullet] (d) {};
+	\draw (2.75,4) node[bullet] (e1a) {} -- (3.5,4) node[bullet] (e1b) {} -- (4.5,4) node[big_] (e1c) {};
+	\node[big_] (e2) at ( 6.5,4) {\normalsize $B$};
+	\node[big_] (e3) at ( 8.5,4) {\normalsize $C$};
+	\draw[rounded corners] (10,3) rectangle (2,5);
+	\draw[dashed] (2,4)--(1,4) node[bullet] (e) {};
+	\node[circ] (v1a) at (-3.25,8) {}; \node[circ] (v1b) at (-2.5,8) {}; \node[big1] (v1c) at (-1.5,8) {};
+	\node[big1] (v2) at ( 2,8) {};
+	\draw[rounded corners] (-4,7) rectangle (-0.5,9);
+	\draw[rounded corners] ( 3.5,7) rectangle ( 0.5,9);
+	\draw (-0.5,8)--(0.5,8);
+	\node[circ] (v) at (0,6) {};
+	%
+	\begin{scope}[thepink,->]
+		\draw[bend left=15] (e) to (v);
+	\SWITCH{#1}
+	{1}{
+		\draw[bend left=15] (d) to (a1a);
+		\draw[bend right=15] (d2b) to (v1a); \draw[bend right=15] (e1a) to (v1a); \draw[bend left=10] (e1b) to (v1b);
+		}
+	{2}{
+		\draw[bend left=15] (d) to (a1a);
+		\draw[bend right=15] (d2b) to (v1a); \draw[bend right=15] (e1a) to (a1a); \draw[bend left=10] (e1b) to (v1b);
+		}
+	{3}{
+		\draw[bend right=15] (d) to (v1b);
+		\draw[bend right=15] (d2b) to (v1a); \draw[bend right=15] (e1a) to (a1a); \draw[bend left=10] (e1b) to (v1b);
+		}
+	{4}{
+		\draw[bend right=15] (d) to (v1b);
+		\draw[bend right=15] (d2b) to (v1a); \draw[bend right=15] (e1a) to (a1a); \draw[bend right=15] (e1b) to (v1a);
+		}
+	{5}{
+		\draw[bend right=15] (d) to (v1b);
+		\draw[bend left=25] (d2b) to (a1a); \draw[bend right=15] (e1a) to (a1a); \draw[bend right=15] (e1b) to (v1a);
+		}
+	{6}{
+		\draw[bend right=15] (d) to (v1b);
+		\draw[bend left=25] (d2b) to (a1a); \draw[bend left=15] (e1a) to (v1b); \draw[bend right=15] (e1b) to (v1a);
+		}
+	{7}{
+		\draw[bend right=15] (d) to (v);
+		\draw[bend left=25] (d2b) to (a1a); \draw[bend left=15] (e1a) to (v1b); \draw[bend right=15] (e1b) to (v1a);
+		}
+	\DEFAULT{}
+		\draw[big>,bend left] (d1) to (a1); \draw[big>,bend left=20] (d2a) to (a1); \draw[big>,bend left=20] (d3) to (a1);
+		\draw[big>,bend left=15] (e1c) to (v1c);  \draw[big>,bend left=15] (e2) to (v2);  \draw[big>, bend left=15] (e3) to (v2);
+	\end{scope}
+  \end{tikzpicture}
+}
+
+
+\newcommand\BIGexample[1]{\ensuremath{
+  \SWITCH{#1}
+	{1}{\def\XA{-7.5}
+    	\def\XB{0}
+		\def\XC{15}
+		\def\XD{15}}
+	{2}{\def\XA{15}
+    	\def\XB{0}
+		\def\XC{-7.5}
+		\def\XD{15}}
+	{3}{\def\XA{15}
+    	\def\XB{15}
+		\def\XC{-7.5}
+		\def\XD{0}}
+  \DEFAULT{}
+	\def\YB{7}
+	\def\YC{14}
+	\def\YD{21}
+  \begin{tikzpicture}[x=5mm,y=5mm,octo]
+	%% VERTEX
+	\node[circ] (v) at (9.5,-2) {};
+	\node[big1] (1) at (8,0) {}; 
+	\node[big1] (2) at (11,0) {};
+	\draw[rounded corners] (7,-1) rectangle (9,1) (10,-1) rectangle (12,1);
+	\draw (9,0)--(10,0);
+	\node[big1] (3) at (8,4) {};
+	\node[big1] (4) at (11,4) {};
+	\draw[rounded corners] (7,3) rectangle (9,5) (10,3) rectangle (12,5);
+	\draw (9,4)--(10,4);
+	\draw[dotted] (9.5,1.5)--(9.5,2.6);
+	\node[big1] (5) at (8,7) {};
+	\node[big1] (6) at (11,7) {};
+	\draw[rounded corners] (7,6) rectangle (9,8) (10,6) rectangle (12,8);
+	\draw (9,7)--(10,7);
+	\node[big1] (7) at (8,11) {};
+	\node[big1] (8) at (11,11) {};
+	\draw[rounded corners] (7,10) rectangle (9,12) (10,10) rectangle (12,12);
+	\draw (9,11)--(10,11);
+	\draw[dotted] (9.5,8.5)--(9.5,9.6);
+	\node[big1] (9) at (9.5,14) {};
+	\node[big1] (10) at (9.5,18) {};
+	\draw[dotted] (9.5,15.5)--(9.5,16.6);
+	\node[big1] (11) at (9.5,21) {};
+	\node[big1] (12) at (9.5,25) {};
+	\draw[dotted] (9.5,22.5)--(9.5,23.6);
+	\draw[rounded corners] (6.5,-2.5) rectangle (12.5,12.5);
+	%% EDGE-WEIGHTS
+	\node[big_] (A) at ($(0,0) + (\XA,0)$) {}; 
+	\node[big_] (B) at ($(2,0) + (\XA,0)$) {};
+	\node[big_] (C) at ($(4,0) + (\XA,0)$) {};
+	\draw[rounded corners] ($(-1,-1) + (\XA,0)$) rectangle ($(5,1) + (\XA,0)$);
+	\node[big_] (D) at ($(0,4) + (\XA,0)$) {}; 
+	\node[big_] (E) at ($(2,4) + (\XA,0)$) {};
+	\node[big_] (F) at ($(4,4) + (\XA,0)$) {};
+	\draw[rounded corners] ($(-1,3) + (\XA,0)$) rectangle ($(5,5) + (\XA,0)$);
+	\draw ($(2,1) + (\XA,0)$)--($(2,1.5) + (\XA,0)$) ($(2,2.5) + (\XA,0)$)--($(2,3) + (\XA,0)$);
+	\draw[dotted] ($(2,1.5) + (\XA,0)$)--($(2,2.5) + (\XA,0)$);
+	%%
+	\node[big_] (G) at ($(0,0) + (\XB,\YB)$) {}; 
+	\node[big_] (H) at ($(2,0) + (\XB,\YB)$) {};
+	\node[big_] (I) at ($(4,0) + (\XB,\YB)$) {};
+	\draw[rounded corners] ($(-1,-1) + (\XB,\YB)$) rectangle ($(5,1) + (\XB,\YB)$);
+	\node[big_] (J) at ($(0,4) + (\XB,\YB)$) {}; 
+	\node[big_] (K) at ($(2,4) + (\XB,\YB)$) {};
+	\node[big_] (L) at ($(4,4) + (\XB,\YB)$) {};
+	\draw[rounded corners] ($(-1,3) + (\XB,\YB)$) rectangle ($(5,5) + (\XB,\YB)$);
+	\draw ($(2,1) + (\XB,\YB)$)--($(2,1.5) + (\XB,\YB)$) ($(2,2.5) + (\XB,\YB)$)--($(2,3) + (\XB,\YB)$);
+	\draw[dotted] ($(2,1.5) + (\XB,\YB)$)--($(2,2.5) + (\XB,\YB)$);
+	%%
+	\node[big_] (M) at ($(0,0) + (\XC,\YC)$) {}; 
+	\node[big_] (N) at ($(2,0) + (\XC,\YC)$) {};
+	\node[big_] (O) at ($(4,0) + (\XC,\YC)$) {};
+	\draw[rounded corners] ($(-1,-1) + (\XC,\YC)$) rectangle ($(5,1) + (\XC,\YC)$);
+	\node[big_] (P) at ($(0,4) + (\XC,\YC)$) {}; 
+	\node[big_] (Q) at ($(2,4) + (\XC,\YC)$) {};
+	\node[big_] (R) at ($(4,4) + (\XC,\YC)$) {};
+	\draw[rounded corners] ($(-1,3) + (\XC,\YC)$) rectangle ($(5,5) + (\XC,\YC)$);
+	\draw ($(2,1) + (\XC,\YC)$)--($(2,1.5) + (\XC,\YC)$) ($(2,2.5) + (\XC,\YC)$)--($(2,3) + (\XC,\YC)$);
+	\draw[dotted] ($(2,1.5) + (\XC,\YC)$)--($(2,2.5) + (\XC,\YC)$);
+	%%
+	\node[big_] (S) at ($(0,0) + (\XD,\YD)$) {}; 
+	\node[big_] (T) at ($(2,0) + (\XD,\YD)$) {};
+	\node[big_] (U) at ($(4,0) + (\XD,\YD)$) {};
+	\draw[rounded corners] ($(-1,-1) + (\XD,\YD)$) rectangle ($(5,1) + (\XD,\YD)$);
+	\node[big_] (V) at ($(0,4) + (\XD,\YD)$) {}; 
+	\node[big_] (W) at ($(2,4) + (\XD,\YD)$) {};
+	\node[big_] (X) at ($(4,4) + (\XD,\YD)$) {};
+	\draw[rounded corners] ($(-1,3) + (\XD,\YD)$) rectangle ($(5,5) + (\XD,\YD)$);
+	\draw ($(2,1) + (\XD,\YD)$)--($(2,1.5) + (\XD,\YD)$) ($(2,2.5) + (\XD,\YD)$)--($(2,3) + (\XD,\YD)$);
+	\draw[dotted] ($(2,1.5) + (\XD,\YD)$)--($(2,2.5) + (\XD,\YD)$);
+	%% EDGE-CONNECTORS
+  \SWITCH{#1}
+	{1}{\draw (-5.5,-1)--(-5.5,-2) node[bullet] (e1) {};
+		\draw ( 2, 6)--( 2,-2) node[bullet] (e2) {};
+		\draw (17,13)--(17,-2) node[bullet] (e3) {};
+		\draw (17,19)--(17,20);}
+	{2}{\draw (-5.5,13)--(-5.5,-2) node[bullet] (e1) {};
+		\draw ( 2, 6)--( 2,-2) node[bullet] (e2) {};
+		\draw (17,-1)--(17,-2) node[bullet] (e3) {};
+		\draw (17,5)--(17,20);}
+	{3}{\draw (-5.5,13)--(-5.5,-2) node[bullet] (e1) {};
+		\draw ( 2,20)--( 2,-2) node[bullet] (e2) {};
+		\draw (17,-1)--(17,-2) node[bullet] (e3) {};
+		\draw (17,5)--(17,6);}
+  \DEFAULT{}
+	%% LINKS
+	\begin{scope}[thepink,->]
+		\draw[bend left=10] (e1) to (v);
+		\draw[bend left=10] (e2) to (v);
+		\draw[bend right=10] (e3) to (v);
+	\end{scope}
+	\begin{scope}[thepink,->,big>]
+  \SWITCH{#1}
+	{1}{\draw[bend left=15]  (A) to (1);
+		\draw[out=15,in=165] (B) to (1);
+		\draw[bend left=15]  (C) to (2);
+		\draw[bend left=15]  (D) to (3);
+		\draw[out=15,in=165] (E) to (3);
+		\draw[bend left=15]  (F) to (4);
+		%%
+		\draw[bend left=24]  (G) to (5);
+		\draw[out=27,in=168] (H) to (5);
+		\draw[bend left=24]  (I) to (6);
+		\draw[bend left=24]  (J) to (7);
+		\draw[out=27,in=168] (K) to (7);
+		\draw[bend left=24]  (L) to (8);
+		%%
+		\draw (M) to (9);
+		\draw[in=12,out=156] (N) to (9);
+		\draw[bend right=24] (O) to (9);
+		\draw (P) to (10);
+		\draw[in=12,out=156] (Q) to (10);
+		\draw[bend right=24] (R) to (10);
+		%%
+		\draw (S) to (11);
+		\draw[in=12,out=156] (T) to (11);
+		\draw[bend right=24] (U) to (11);
+		\draw (V) to (12);
+		\draw[in=12,out=156] (W) to (12);
+		\draw[bend right=24] (X) to (12);}
+	{2}{\draw[bend right=24] (A) to (1);
+		\draw[in=12,out=153] (B) to (2);
+		\draw[bend right=24] (C) to (2);
+		\draw[bend right=24] (D) to (3);
+		\draw[in=12,out=153] (E) to (4);
+		\draw[bend right=24] (F) to (4);
+		%%
+		\draw[bend left=24]  (G) to (5);
+		\draw[out=27,in=168] (H) to (5);
+		\draw[bend left=24]  (I) to (6);
+		\draw[bend left=24]  (J) to (7);
+		\draw[out=27,in=168] (K) to (7);
+		\draw[bend left=24]  (L) to (8);
+		%%
+		\draw[bend left=12] (M) to (9);
+		\draw[out=12,in=174] (N) to (9);
+		\draw (O) to (9);
+		\draw[bend left=12] (P) to (10);
+		\draw[out=12,in=174] (Q) to (10);
+		\draw (R) to (10);
+		%%
+		\draw (S) to (11);
+		\draw[in=12,out=156] (T) to (11);
+		\draw[bend right=24] (U) to (11);
+		\draw (V) to (12);
+		\draw[in=12,out=156] (W) to (12);
+		\draw[bend right=24] (X) to (12);}
+	{3}{\draw[bend right=24] (A) to (1);
+		\draw[in=12,out=153] (B) to (2);
+		\draw[bend right=24] (C) to (2);
+		\draw[bend right=24] (D) to (3);
+		\draw[in=12,out=153] (E) to (4);
+		\draw[bend right=24] (F) to (4);
+		%%
+		\draw[bend right=24] (G) to (5);
+		\draw[in=12,out=153] (H) to (6);
+		\draw[bend right=24] (I) to (6);
+		\draw[bend right=24] (J) to (7);
+		\draw[in=12,out=153] (K) to (8);
+		\draw[bend right=24] (L) to (8);
+		%%
+		\draw[bend left=12]  (M) to (9);
+		\draw[out=12,in=174] (N) to (9);
+		\draw (O) to (9);
+		\draw[bend left=12]  (P) to (10);
+		\draw[out=12,in=174] (Q) to (10);
+		\draw (R) to (10);
+		%%
+		\draw[bend left=24]  (S) to (11);
+		\draw[out=24,in=168] (T) to (11);
+		\draw (U) to (11);
+		\draw[bend left=24]  (V) to (12);
+		\draw[out=24,in=168] (W) to (12);
+		\draw (X) to (12);}
+  \DEFAULT{}
+	\end{scope}
+\end{tikzpicture}
+}}
+
+
+
+\newcommand\CONexample[2]{%
+	\def\XA{0}\def\YA{5}%
+	\def\XC{17}\def\YC{5}%
+  \vc{\scalebox{#2}{%
+  \begin{tikzpicture}[x=5mm,y=5mm,octo]
+  		\node[big1] (Z1) at (10.5,11.5) {};
+		%
+  	  	\node[circ] (x) at (10.5,3) {};
+		\node[big1] (1) at ( 9,5) {}; 
+		\node[big1] (2) at (12,5) {};
+		\draw[rounded corners] (8,4) rectangle (10,6) (11,4) rectangle (13,6);
+		\draw (10,5)--(11,5);
+		\node[big1] (3) at ( 9,8) {};
+		\node[big1] (4) at (12,8) {};
+		\draw[rounded corners] (8,7) rectangle (10,9) (11,7) rectangle (13,9);
+		\draw (10,8)--(11,8);
+		\draw[rounded corners] (7.5,2.5) rectangle (13.5,9.5);
+		%
+		\node[big_] (A1) at ($(0,0) + (\XA,\YA)$) {}; 
+		\node[big_] (A2) at ($(2,0) + (\XA,\YA)$) {};
+		\node[big_] (A3) at ($(4,0) + (\XA,\YA)$) {};
+		\draw[rounded corners] ($(-1,-1) + (\XA,\YA)$) rectangle ($(5,1) + (\XA,\YA)$);
+	 	\draw ($(2,-1) + (\XA,\YA)$) -- ($(2,-2) + (\XA,\YA)$) node[bullet] (a) {};
+		%
+		\node[big_] (D1) at ($(0,3) + (\XC,\YC)$) {}; 
+		\node[big_] (D2) at ($(2,3) + (\XC,\YC)$) {};
+		\node[big_] (D3) at ($(4,3) + (\XC,\YC)$) {};
+		\draw[rounded corners] ($(-1,2) + (\XC,\YC)$) rectangle ($(5,4) + (\XC,\YC)$);
+		\draw ($(2,2) + (\XC,\YC)$) -- ($(2,1) + (\XC,\YC)$);
+		\node[big_] (C1) at ($(0,0) + (\XC,\YC)$) {}; 
+		\node[big_] (C2) at ($(2,0) + (\XC,\YC)$) {};
+		\node[big_] (C3) at ($(4,0) + (\XC,\YC)$) {};
+		\draw[rounded corners] ($(-1,-1) + (\XC,\YC)$) rectangle ($(5,1) + (\XC,\YC)$);
+	 	\draw ($(2,-1) + (\XC,\YC)$) -- ($(2,-2) + (\XC,\YC)$) node[bullet] (c) {};
+		%
+		\SWITCH {#1}
+		1  {\draw[jump,thicker,thered,bend left=10] (a) to (x);
+			\draw[jump,thicker,theblue,bend left=10] (c) to (x);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=20] (A1) to (Z1);
+      			\draw[bend left=20] (A2) to (Z1);
+      			\draw[bend left=20] (A3) to (Z1);
+    		\end{scope}
+    		\begin{scope}[big>,theblue]
+    	  		\draw[bend right=20] (D1) to (3);
+    	  		\draw[bend right=20] (D2) to (4);
+    	  		\draw[bend right=20] (D3) to (4);
+    	  		\draw[bend right=20] (C1) to (1);
+    	  		\draw[bend right=20] (C2) to (2);
+    	  		\draw[bend right=20] (C3) to (2);
+			\end{scope}	
+		}
+		2  {\draw[jump,thicker,thered,bend left=10] (a) to (x);
+			\draw[jump,thicker,theblue,bend left=10] (c) to (x);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=20] (A1) to (3);
+      			\draw[bend left=20] (A2) to (3);
+      			\draw[bend left=20] (A3) to (4);
+    		\end{scope}
+    		\begin{scope}[big>,theblue]
+    	  		\draw[bend right=20] (D1) to (Z1);
+    	  		\draw[bend right=20] (D2) to (Z1);
+    	  		\draw[bend right=20] (D3) to (Z1);
+    	  		\draw[bend right=20] (C1) to (1);
+    	  		\draw[bend right=20] (C2) to (2);
+    	  		\draw[bend right=20] (C3) to (2);
+			\end{scope}	
+		}
+		\DEFAULT{}
+  \end{tikzpicture}
+}}}
+
+\newcommand\andexample[1]{
+  \vc{\begin{tikzpicture}[x=-3mm,y=3mm]
+  \SWITCH{#1}
+  1{\draw[ncl2,->-] (0,0) -- (3,0);
+	\draw[ncl1,->-] (3,0) -- (5,2);
+	\draw[ncl1,->-] (3,0) -- (5,-2); }
+  2{\draw[ncl2,->-] (0,0) -- (3,0);
+	\draw[ncl1,-<-] (3,0) -- (5,2);
+	\draw[ncl1,->-] (3,0) -- (5,-2); }
+  3{\draw[ncl2,->-] (0,0) -- (3,0);
+	\draw[ncl1,-<-] (3,0) -- (5,2);
+	\draw[ncl1,-<-] (3,0) -- (5,-2); }
+  4{\draw[ncl2,-<-] (0,0) -- (3,0);
+	\draw[ncl1,-<-] (3,0) -- (5,2);
+	\draw[ncl1,-<-] (3,0) -- (5,-2); }
+  \DEFAULT{}
+  \node[nclnode] at (3,0) {};
+  \end{tikzpicture}
+}}
+
+
+\newcommand\ANDexample[1]{
+	\def\XA{-1}\def\YA{14}
+	\def\XB{-1}\def\YB{-2}
+	\def\XC{18}\def\YC{8}
+	\def\XU{1}
+	\def\XV{1}
+	\def\XW{20}
+	{\scalebox{0.55}{
+	\begin{tikzpicture}[x=5mm,y=5mm,octo]
+	    %% EDGES
+		\node[big_] (A1) at ($(0,0) + (\XA,\YA)$) {}; 
+		\node[big_] (A2) at ($(2,0) + (\XA,\YA)$) {};
+		\node[big_] (A3) at ($(4,0) + (\XA,\YA)$) {};
+		\draw[rounded corners] ($(-1,-1) + (\XA,\YA)$) rectangle ($(5,1) + (\XA,\YA)$);
+	 	\draw ($(2,-1) + (\XA,\YA)$) -- ($(2,-2) + (\XA,\YA)$) node[bullet] (a) {};
+		%
+		\node[big_] (B1) at ($(0,0) + (\XB,\YB)$) {}; 
+		\node[big_] (B2) at ($(2,0) + (\XB,\YB)$) {};
+		\node[big_] (B3) at ($(4,0) + (\XB,\YB)$) {};
+		\draw[rounded corners] ($(-1,-1) + (\XB,\YB)$) rectangle ($(5,1) + (\XB,\YB)$);
+	 	\draw ($(2,1) + (\XB,\YB)$) -- ($(2,2) + (\XB,\YB)$) node[bullet] (b) {};
+		%
+		\node[big_] (D1) at ($(0,3) + (\XC,\YC)$) {}; 
+		\node[big_] (D2) at ($(2,3) + (\XC,\YC)$) {};
+		\node[big_] (D3) at ($(4,3) + (\XC,\YC)$) {};
+		\draw[rounded corners] ($(-1,2) + (\XC,\YC)$) rectangle ($(5,4) + (\XC,\YC)$);
+		\draw ($(2,2) + (\XC,\YC)$) -- ($(2,1) + (\XC,\YC)$);
+		\node[big_] (C1) at ($(0,0) + (\XC,\YC)$) {}; 
+		\node[big_] (C2) at ($(2,0) + (\XC,\YC)$) {};
+		\node[big_] (C3) at ($(4,0) + (\XC,\YC)$) {};
+		\draw[rounded corners] ($(-1,-1) + (\XC,\YC)$) rectangle ($(5,1) + (\XC,\YC)$);
+	 	\draw ($(2,-1) + (\XC,\YC)$) -- ($(2,-2) + (\XC,\YC)$) node[bullet] (c) {};
+		%% VERTICES
+	  	\node[circ] (x) at (10.5,3) {};
+		\node[big1] (1) at ( 9,5) {}; 
+		\node[big1] (2) at (12,5) {};
+		\draw[rounded corners] (8,4) rectangle (10,6) (11,4) rectangle (13,6);
+		\draw (10,5)--(11,5);
+		\node[big1] (3) at ( 9,8) {};
+		\node[big1] (4) at (12,8) {};
+		\draw[rounded corners] (8,7) rectangle (10,9) (11,7) rectangle (13,9);
+		\draw (10,8)--(11,8);
+		\draw[rounded corners] (7.5,2.5) rectangle (13.5,9.5);
+		%
+		\node[circ] (u) at ($(0,9) + (\XU,0)$) {};
+		\draw[rounded corners] ($(-3,8.5) + (\XU,0)$) rectangle ($(3,9.5) + (\XU,0)$);
+		\draw ($(3,9) + (\XU,0)$)--(7.5,9);
+		%
+		\node[circ] (v) at ($(0,3) + (\XV,0)$) {};
+		\draw[rounded corners] ($(-3,2.5) + (\XV,0)$) rectangle ($(3,3.5) + (\XV,0)$);
+		\draw ($(3,3) + (\XV,0)$)--(7.5,3);
+		%
+		\node[circ] (w) at ($(0,3) + (\XW,0)$) {};
+		\draw[rounded corners] ($(-3,2.5) + (\XW,0)$) rectangle ($(3,3.5) + (\XW,0)$);
+		\draw ($(-3,3) + (\XW,0)$)--(13.5,3);
+		%% ABSORBERS
+		\node[big1] (Z1) at (10.5,14) {};
+		\node[big1] (Z2) at (10.5,-2) {};
+		%% LINKS
+		\SWITCH {#1}
+		1  {\draw[jump,thicker,thered,bend left=10] (a) to (u);
+			\draw[jump,thicker,thered,bend right=10](b) to (v);
+			\draw[jump,thicker,theblue,bend left=10] (c) to (x);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=10] (A1) to (Z1);
+      			\draw[bend left=10] (A2) to (Z1);
+      			\draw[bend left=10] (A3) to (Z1);
+          		\draw[bend left=10] (B1) to (Z2);
+          		\draw[bend left=10] (B2) to (Z2);
+          		\draw[bend left=10] (B3) to (Z2);
+    		\end{scope}
+    		\begin{scope}[big>,theblue]
+    	  		\draw[bend left=20] (D1) to (3);
+    	  		\draw[bend left=10] (D2) to (4);
+    	  		\draw[bend left=10] (D3) to (4);
+    	  		\draw[bend left=20] (C1) to (1);
+    	  		\draw[bend left=10] (C2) to (2);
+    	  		\draw[bend left=10] (C3) to (2);
+			\end{scope}	
+		}
+		2  {\draw[jump,thicker,thered,bend right=35](a) to (x);
+			\draw[jump,thicker,thered,bend right=10](b) to (v);
+			\draw[jump,thicker,theblue,bend left=10](c) to (x);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=10] (A1) to (Z1);
+      			\draw[bend left=10] (A2) to (Z1);
+      			\draw[bend left=10] (A3) to (Z1);
+          		\draw[bend left=10] (B1) to (Z2);
+          		\draw[bend left=10] (B2) to (Z2);
+          		\draw[bend left=10] (B3) to (Z2);
+    		\end{scope}
+			\begin{scope}[big>,theblue]
+		  		\draw[bend left=20] (D1) to (3);
+	  			\draw[bend left=10] (D2) to (4);
+	  			\draw[bend left=10] (D3) to (4);
+				\draw[bend left=20] (C1) to (1);
+    	  		\draw[bend left=10] (C2) to (2);
+    	  		\draw[bend left=10] (C3) to (2);
+			\end{scope}
+		}
+		3  {\draw[jump,thicker,thered,bend right=35](a) to (x);
+			\draw[jump,thicker,thered,bend right=10](b) to (x);
+			\draw[jump,thicker,theblue,bend left=10](c) to (x);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=10] (A1) to (Z1);
+      			\draw[bend left=10] (A2) to (Z1);
+      			\draw[bend left=10] (A3) to (Z1);
+          		\draw[bend left=10] (B1) to (Z2);
+          		\draw[bend left=10] (B2) to (Z2);
+          		\draw[bend left=10] (B3) to (Z2);
+    		\end{scope}
+			\begin{scope}[big>,theblue]
+		  		\draw[bend left=20] (D1) to (3);
+	  			\draw[bend left=10] (D2) to (4);
+	  			\draw[bend left=10] (D3) to (4);
+				\draw[bend left=20] (C1) to (1);
+    	  		\draw[bend left=10] (C2) to (2);
+    	  		\draw[bend left=10] (C3) to (2);
+			\end{scope}
+		}
+		4  {\draw[jump,thicker,thered,bend right=35](a) to (x);
+			\draw[jump,thicker,thered,bend left=20] (b) to (x);
+			\draw[jump,thicker,theblue,bend left=10](c) to (x);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=10] (A1) to (3);
+    	  		\draw[bend left=10] (A2) to (3);
+    	  		\draw[bend right=10](A3) to (4);
+          		\draw[bend left=10] (B1) to (Z2);
+          		\draw[bend left=10] (B2) to (Z2);
+          		\draw[bend left=10] (B3) to (Z2);
+    		\end{scope}
+			\begin{scope}[big>,theblue]
+    	  		\draw[bend left=10] (D1) to (Z1);
+    	  		\draw[bend left=10] (D2) to (Z1);
+    	  		\draw[bend left=10] (D3) to (Z1);
+    	  		\draw[bend left=20] (C1) to (1);
+    	  		\draw[bend left=10] (C2) to (2);
+    	  		\draw[bend left=10] (C3) to (2);
+    		\end{scope}
+		}
+		5  {\draw[jump,thicker,thered,bend right=35](a) to (x);
+			\draw[jump,thicker,thered,bend left=20] (b) to (x);
+			\draw[jump,thicker,theblue,bend left=10] (c) to (x);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=10] (A1) to (3);
+    	  		\draw[bend left=10] (A2) to (3);
+    	  		\draw[bend right=10](A3) to (4);
+          		\draw[bend right=10](B1) to (1);
+          		\draw[bend right=10](B2) to (1);
+          		\draw[bend left=10] (B3) to (2);
+    		\end{scope}
+			\begin{scope}[big>,theblue]
+    	  		\draw[bend left=10] (D1) to (Z1);
+    	  		\draw[bend left=10] (D2) to (Z1);
+    	  		\draw[bend left=10] (D3) to (Z1);
+    	  		\draw[bend right=10] (C1) to (Z2);
+    	  		\draw[bend right=16] (C2) to (Z2);
+    	  		\draw[bend right=20] (C3) to (Z2);
+    		\end{scope}
+		}
+		6  {\draw[jump,thicker,thered,bend right=35](a) to (x);
+			\draw[jump,thicker,thered,bend left=20] (b) to (x);
+			\draw[jump,thicker,theblue,bend left=10] (c) to (w);
+			\begin{scope}[big>,thered]
+    			\draw[bend left=10] (A1) to (3);
+    	  		\draw[bend left=10] (A2) to (3);
+    	  		\draw[bend right=10](A3) to (4);
+          		\draw[bend right=10](B1) to (1);
+          		\draw[bend right=10](B2) to (1);
+          		\draw[bend left=10] (B3) to (2);
+    		\end{scope}
+			\begin{scope}[big>,theblue]
+    	  		\draw[bend left=10] (D1) to (Z1);
+    	  		\draw[bend left=10] (D2) to (Z1);
+    	  		\draw[bend left=10] (D3) to (Z1);
+    	  		\draw[bend right=10] (C1) to (Z2);
+    	  		\draw[bend right=16] (C2) to (Z2);
+    	  		\draw[bend right=20] (C3) to (Z2);
+    		\end{scope}
+		}
+		\DEFAULT{}
+%
+\end{tikzpicture}
+}}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
