@@ -146,13 +146,16 @@ are equivalent, then the translation from proofs to proof nets must be intractab
 
 % NEW
 
-The result has a similar consequence for MELL without units, which may emulate the unit $\bot$ via carefully chosen formulae $?A$: there are no canonical normal forms (unless there is an unlikely collapse in the complexity hierarchy). This is in sharp contrast with intuitionistic calculi such as the simply typed lambda-calculus, where normal forms are unique. But it does not impact the complexity of proof equivalence for MELL, which is dominated by normalisation (MELL encodes the simply-typed lambda-calculus, which is not elementary recursive \cite{Statman-1977}).
-
-% OLD
+The result has a similar consequence for MELL without units, which may emulate the unit $\bot$ via carefully chosen formulae $?A$: equivalence of MELL proofs in normal form is \capsabbrev{pspace}-hard. This is in sharp contrast with many intuitionistic calculi such as the simply typed lambda-calculus, where normal forms are unique. However, it does not impact the complexity of proof equivalence for MELL in general, which is dominated by cut-elimination (MELL encodes the simply-typed lambda-calculus, which is not elementary recursive \cite{Statman-1977}).
 
 % It should be stressed that to consider MLL proofs modulo equivalence is a choice---one that is well motivated by semantics, but a choice nonetheless. Interesting alternatives are available, such as polarised linear logic, tensorial logic, multi-focussing, ... This gives us interesting and important references as well.
 
-Since there can be no canonical representation of multiplicative linear logic proofs in accordance with the categorical semantics, it is tempting to consider other ways of defining the identity of proofs. The literature contains several interesting ideas in this direction, such as \emph{polarised proof nets} \cite{Laurent-1999}, \emph{focused proof nets} \cite{Andreoli-Maieli-1999}, \emph{multi-focused proofs} \cite{Chaudhuri-Miller-Saurin-2008}, and Paul-Andr\'e Melli\`es's semantically appealing \emph{tensorial logic} and \emph{dialogue categories} \cite{Mellies-2012}.
+%Since there can be no canonical representation of multiplicative linear logic proofs in accordance with the semantics of *-autonomous categories, 
+
+Given our results for classical linear logic, which effectively rule out canonical forms for MELL, it becomes tempting to consider possible alternatives. One is intuitionistic linear logic, mentioned above. Another is Melli\`es's game-semantics inspired \emph{tensorial logic} \cite{Mellies-2012}, which embeds linear logic via a double-negation translation. Furthermore, the \emph{polarised} fragment of linear logic has canonical proof nets \cite{Laurent-1999}. A different direction to the above three, aimed more at proof search than semantics of programming, is \emph{focusing}, which retains classical linear logic but weakens the notion of proof equivalence; this gives canonical representations in \emph{focused proof nets} \cite{Andreoli-Maieli-1999} and \emph{multi-focused proofs} \cite{Chaudhuri-Miller-Saurin-2008}.
+
+% OLD
+
 
 Our proof of \capsabbrev{pspace}-completeness uses the \emph{nondeterministic constraint logic} of \cite{Hearn-Demaine-2005,Demaine-Hearn-2008,GamesPuzzlesAndComputation}. This is a graph rewriting
 system introduced as a tool for use in complexity proofs, originally for games and puzzles.
