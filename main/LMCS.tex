@@ -19,7 +19,6 @@
 \newcommand\jumpsto{\jump}
 \newcommand\Perm{\mathbf\sim}
 
-\newcommand\ap{'}
 
 % MLL
 %   x remove naming - work with occurrences instead ??
@@ -80,6 +79,8 @@ Previous work has shown the problem to be equivalent to a rewiring problem on pr
 Drawing from recent work on reconfiguration problems, in this paper it is shown that \capsabbrev{mll} proof equivalence is \capsabbrev{pspace}-complete, using a reduction from Nondeterministic Constraint Logic.
 %
 An important consequence of the result is that the existence of a satisfactory notion of proof nets for \capsabbrev{mll} with units is ruled out (under current complexity assumptions).
+%
+Another is that for \capsabbrev{mell}, even without units, equivalence of normal forms is \capsabbrev{pspace}-hard.
 \end{abstract}
 
 
@@ -96,7 +97,8 @@ view, a sequent calculus proof gives a recipe for the construction of a natural 
 proof.
 %
 Linear logic was formulated as a sequent calculus system, and doesn't have a corresponding
-natural deduction in the classical sense. The role of natural deduction is taken instead by
+natural deduction in the %classical
+traditional sense. The role of natural deduction is taken instead by
 proof nets. Each sequent calculus proof gives rise to a proof net. Furthermore, at least in
 the case of multiplicative linear logic without units, proof nets are canonical in the sense
 that two sequent calculus proofs give rise to the same proof net if and only if they are
@@ -121,12 +123,12 @@ These proof nets did not include the logical units, and are canonical for multip
 Canonical proof nets also exist for larger fragments of linear logic, such as the combined multiplicative-additive fragment without units \cite{Hughes-vanGlabbeek-2005}, and the additive fragment, including the additive units \cite{Heijltjes-2011}.
 % Canonical proof nets may also be defined for \emph{intuitionistic} multiplicative linear logic with units.
 
-Proof nets incorporating units were defined by Blute, Cockett, Seely and Trimble \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996}, though these proof nets cease to be canonical. The `joker games' of Koh and Ong \cite{Koh-Ong-1999}, for MLL and its intuitionistic variant IMLL, have a very similar structure to proof nets, and include units. Another explicit treatment of proof nets for \capsabbrev{mll} with units is given by Lamarche and Stra\ss burger \cite{Lamarche-Strassburger-2006}, and later a particularly simple and elegant version by Hughes \cite{Hughes-2012-categories,Hughes-2012-nets}.
+Proof nets incorporating units were defined by Blute, Cockett, Seely and Trimble \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996}, though these proof nets cease to be canonical. The `joker games' of Koh and Ong \cite{Koh-Ong-1999}, for \capsabbrev{mll} and its intuitionistic variant \capsabbrev{imll}, have a very similar structure to proof nets, and include units. Another explicit treatment of proof nets for \capsabbrev{mll} with units is given by Lamarche and Stra\ss burger \cite{Lamarche-Strassburger-2006}, and later a particularly simple and elegant version by Hughes \cite{Hughes-2012-categories,Hughes-2012-nets}. However, none of these notions gives proof nets that are canonical.
 
 % NEW
 
-The difficulty with the multiplicative units is that each instance of $\bot$, the unit to the par, must be attached to the main proof structure, while there isn't always a canonical point where to attach it. In the sequent calculus, $\bot$-instances are introduced by a weakening rule, which permutes with many (but not all) other rules. In proof nets, $\bot$-instances are commonly attached by edges called jumps, which may be re-attached via local graph-rewrite rules \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996}. For intuitionistic MLL the rewrite rules may be directed towards the unique conclusion, to yield canonical forms.\footnote{The canonical representation for IMLL described here appears to be folklore; established proof nets for intuitionistic linear logic, called essential nets \cite{Lamarche-2008,Murawsky-Ong-2003}, (non-canonically) attach jumps to the leaves of the formula tree, for easier composition.}
-For classical MLL with units however, there is not an obvious preferred point to attach jumps. And this problem extends to multiplicative--exponential linear logic (MELL) without units, where a formula $?A$ may be introduced via a weakening rule with similar permutability to the $\bot$-introduction rule.
+The difficulty with the multiplicative units is that each instance of $\bot$, the unit to the par, must be attached to the main proof structure, while there isn't always a canonical point where to attach it. In the sequent calculus, $\bot$-instances are introduced by a weakening rule, which permutes with many (but not all) other rules. In proof nets, $\bot$-instances are commonly attached by edges called jumps, which may be \emph{rewired} via local graph-rewrite rules \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996}. For intuitionistic \capsabbrev{mll} rewiring may be directed towards the unique conclusion, to yield canonical forms.\footnote{The canonical nets for \capsabbrev{imll} described here appear to be folklore; established proof nets for intuitionistic linear logic, called essential nets \cite{Lamarche-2008,Murawski-Ong-2003}, (non-canonically) attach jumps to the leaves of the formula tree, for easier composition.}
+For classical MLL with units however, there is not an obvious preferred point to attach jumps. And this problem extends to multiplicative--exponential linear logic (\capsabbrev{mell}) without units, where a formula $?A$ may be introduced via a weakening rule with similar permutability to the $\bot$-introduction rule.
 
 % OLD
 
@@ -146,13 +148,13 @@ are equivalent, then the translation from proofs to proof nets must be intractab
 
 % NEW
 
-The result has a similar consequence for MELL without units, which may emulate the unit $\bot$ via carefully chosen formulae $?A$: equivalence of MELL proofs in normal form is \capsabbrev{pspace}-hard. This is in sharp contrast with many intuitionistic calculi such as the simply typed lambda-calculus, where normal forms are unique. However, it does not impact the complexity of proof equivalence for MELL in general, which is dominated by cut-elimination (MELL encodes the simply-typed lambda-calculus, which is not elementary recursive \cite{Statman-1977}).
+In \capsabbrev{mell}, even without units, the unit $\bot$ may be emulated via carefully chosen formulae $?A$. Consequently, our result means that equivalence of cut-free MELL proofs is \capsabbrev{pspace}-hard. This is in sharp contrast with many intuitionistic calculi such as the simply typed lambda-calculus, where normal forms are unique. However, it does not impact the complexity of proof equivalence for \capsabbrev{mell} in general, which is dominated by cut-elimination (\capsabbrev{mell} encodes the simply-typed lambda-calculus, which is not elementary recursive \cite{Statman-1977}).
 
 % It should be stressed that to consider MLL proofs modulo equivalence is a choice---one that is well motivated by semantics, but a choice nonetheless. Interesting alternatives are available, such as polarised linear logic, tensorial logic, multi-focussing, ... This gives us interesting and important references as well.
 
 %Since there can be no canonical representation of multiplicative linear logic proofs in accordance with the semantics of *-autonomous categories, 
 
-Given our results for classical linear logic, which effectively rule out canonical forms for MELL, it becomes tempting to consider possible alternatives. One is intuitionistic linear logic, mentioned above. Another is Melli\`es's game-semantics inspired \emph{tensorial logic} \cite{Mellies-2012}, which embeds linear logic via a double-negation translation. Furthermore, the \emph{polarised} fragment of linear logic has canonical proof nets \cite{Laurent-1999}. A different direction to the above three, aimed more at proof search than semantics of programming, is \emph{focusing}, which retains classical linear logic but weakens the notion of proof equivalence; this gives canonical representations in \emph{focused proof nets} \cite{Andreoli-Maieli-1999} and \emph{multi-focused proofs} \cite{Chaudhuri-Miller-Saurin-2008}.
+Given our results for classical linear logic, which effectively rule out canonical forms for \capsabbrev{mll} and \capsabbrev{mell}, it becomes tempting to consider possible alternatives. One is intuitionistic linear logic, mentioned above. Another is Melli\`es's game-semantics inspired \emph{tensorial logic} \cite{Mellies-2012}, with a semantics in \emph{dialogue categories}. Tensorial logic rejects double-negation elimination, and embeds linear logic via a double-negation translation; the presence of explicit negations in formulae renders jumps immobile, so that the re-wiring problem for the unit does not occur. A further alternative is the \emph{polarised} fragment of linear logic, which has canonical proof nets \cite{Laurent-1999}; here, the rewiring of jumps is blocked by the presence of exponentials rather than negations. Finally, in a direction aimed more at proof search, \emph{focusing} retains classical linear logic but weakens the notion of proof equivalence. This gives canonical representations in \emph{focused proof nets} \cite{Andreoli-Maieli-1999} and \emph{multi-focused proofs} \cite{Chaudhuri-Miller-Saurin-2008}.
 
 % OLD
 
@@ -215,15 +217,19 @@ The proof system we shall be working with is that consisting of just the introdu
 
 \begin{definition}[\capsabbrev{mll} proof equivalence]
 \label{def:equivalence}
-\emph{Equivalence} $(\perm)$ of proofs in (cut-free, identity-free, unit-only) multiplicative linear logic is the congruence generated by the permutations given in Figure~\ref{fig:permutations}. \emph{\capsabbrev{mll}\ proof equivalence} is the problem of deciding whether two given proofs are equivalent.
+\emph{Equivalence} $(\perm)$ of proofs in (unit-only, cut-free, identity-free) multiplicative linear logic is the congruence generated by the permutations given in Figure~\ref{fig:permutations}. \emph{\capsabbrev{mll} proof equivalence} is the problem of deciding whether two given proofs are equivalent.
 \end{definition}
 
 
 \begin{figure}
 \[
+\begin{array}{c}
+\\
 	\MLLelim{a0}\quad\rightsquigarrow\quad\MLLelim{a1}
 \qquad\qquad\qquad
 	\MLLelim{a2}\quad\rightsquigarrow\quad\MLLelim{a3}
+\\[5pt]
+\end{array}
 \]
 \caption{Identity-elimination transformations}
 \label{fig:id-elim}
@@ -233,8 +239,10 @@ The proof system we shall be working with is that consisting of just the introdu
 \begin{figure}
 \[
 \begin{array}{rcl}
-	\MLLelim{c0} & \rightsquigarrow & \Gamma \\ \\[5pt]
+\\[5pt]
+	\MLLelim{c0} & \rightsquigarrow & \Gamma \\ \\[10pt]
 	\MLLelim{c1} & \rightsquigarrow & \MLLelim{c2}
+\\[5pt]
 \end{array}
 \]
 \caption{Cut-elimination transformations}
@@ -244,19 +252,21 @@ The proof system we shall be working with is that consisting of just the introdu
 \begin{figure}
 \[
 \begin{array}{c}
+\\[5pt]
 	\MLLperm{bb1}\quad\sim\quad\MLLperm{bb2}
 	\qquad\qquad
 	\MLLperm{bp1}\quad\sim\quad\MLLperm{bp2}
-\\ \\[5pt]
+\\ \\[10pt]
 	\MLLperm{bt2}\quad\sim\quad\MLLperm{bt1}\quad\sim\quad\MLLperm{bt3}
-\\ \\[5pt]
+\\ \\[10pt]
   \begin{array}{rcl}
 	\MLLperm{pp1} & \sim & \MLLperm{pp2}
-  \\ \\[5pt]
+  \\ \\[10pt]
 	\MLLperm{pt1} & \sim & \MLLperm{pt2}
-  \\ \\[5pt]
+  \\ \\[10pt]
 	\MLLperm{tt1} & \sim & \MLLperm{tt2}
   \end{array}
+\\[5pt]
 \end{array}
 \]
 \caption{Permutations}
@@ -269,8 +279,7 @@ The proof system we shall be working with is that consisting of just the introdu
 \subsection*{Star-autonomous categories}
 
 
-The permutations of sequent proofs are exactly the identifications imposed by the categorical semantics of \capsabbrev{mll}, star-autonomous categories \cite{Barr-1991} (and semi-star-autonomous categories \cite{Houston-2008,Heijltjes-Strassburger} for \capsabbrev{mll} without units). Proof equivalence for \capsabbrev{mll} is therefore equivalent to the \emph{word problem} for star-autonomous categories: the problem whether two term representations denote the same morphism in any star-autonomous category.
-
+The permutations of sequent proofs are exactly the identifications imposed by the categorical semantics of \capsabbrev{mll}, star-autonomous categories \cite{Barr-1991} (and semi-star-autonomous categories \cite{Houston-2008,Heijltjes-Strassburger} for \capsabbrev{mll} without units). Proof equivalence for \capsabbrev{mll} is thus equivalent to the \emph{word problem} for star-autonomous categories: the problem whether two term representations denote the same morphism in any star-autonomous category.
 
 
 %------------------------------------------------------------
@@ -280,7 +289,14 @@ The permutations of sequent proofs are exactly the identifications imposed by th
 
 For \capsabbrev{mll} without units, Girard's original proof nets \cite{Girard-1987} are canonical: two proofs translate into the same proof net if and only if they are equivalent. Since the translation from proofs to proof nets and the syntactic comparison of proof nets are both effectively computable (linear-time), proof nets provide an effective solution to the proof equivalence problem for \capsabbrev{mll} without units.
 
-There have been several proposals for (non-canonical) multiplicative proof nets with units \cite{Blute-Cockett-Seely-Trimble-1996, Koh-Ong-1999, Lamarche-Strassburger-2006, Hughes-2012-nets}, each providing a different take on the proof equivalence problem for \capsabbrev{mll}. We will use the formulation by Hughes \cite{Hughes-2012-nets}, which reduces proof equivalence to a simple rewiring relation, as the basis for our \capsabbrev{pspace}-hardness reduction. In this section we will discuss how this notion of proof net arises from the sequent calculus, and introduce a compact notation for it.
+There have been several proposals for (non-canonical) multiplicative proof nets with units \cite{Blute-Cockett-Seely-Trimble-1996, Koh-Ong-1999, Lamarche-Strassburger-2006, Hughes-2012-nets}, each providing a different take on the proof equivalence problem for \capsabbrev{mll}.
+% We will use the formulation by Hughes \cite{Hughes-2012-nets}, which reduces proof equivalence to a simple rewiring relation, as the basis for our \capsabbrev{pspace}-hardness reduction.
+We will use essentially the formulation by Hughes \cite{Hughes-2012-nets}. A proof net is a sequent, seen as a forest of formula trees, for which a set of \emph{links} or \emph{jumps} attaches the instances of $\bot$ to other vertices (occurrences of connectives and units) in the forest.
+%
+Rewiring is the re-attachment of one jump, either as a small-step relation that moves jumps only to neighbouring vertices, or as a big-step relation that moves a jump anywhere in the forest. Hughes relates both flavours of rewiring, which allows us to switch between the two at will. In addition, we may at any point impose the restriction that jumps connect only to occurrences of the unit $1$.
+
+
+In this section we will discuss how this notion of proof net arises from the sequent calculus, and introduce a compact notation for it.
 
 \begin{definition}[Proof nets]
 \label{def:proof nets}
@@ -324,9 +340,9 @@ The present notion of proof net can be seen as a direct interpretation of the se
 
 \begin{definition}
 \label{def:proofs to nets}
-The relation $(\toNet)$ interprets a proof $\Pi$ by a linking $\links$ as follows: $\Pi\toNet\links$ if for each $\named a\bot$ in $\Pi$, $\links(a)$ is a name in $\Gamma$, where $\Gamma$ is the context of the inference introducing $\named a\bot$, as illustrated below.
+The relation $(\toNet)$ interprets a proof $\Pi$ by a linking $\links$ as follows: $\Pi\toNet\links$ if for each $\named a\bot$ in $\Pi$, $\links(a)$ is a name in the context $\Gamma$ of the inference introducing $\named a\bot$:
 \[
-	\infer[\MLLlabel b]{\Gamma,\named a\bot}{\Gamma}
+	\infer[\MLLlabel b]{\Gamma,\named a\bot}{\Gamma}~.
 \]
 \end{definition}
 
@@ -363,7 +379,7 @@ A \emph{rewiring} $(\perm*)$ between proof nets changes the target of exactly on
 
 We will write $\links[\jumpsto ab]$ for the linking where $\jump ab$, and $\jump c{\links(c)}$ for any $\named c\bot$ other than $a$. Then in a rewiring $\links\perm*\links[\jumpsto ab]$, the jump being rewired is that from $a$.
 
-The above definition, which is due to Hughes~\cite{Hughes-2012-nets}, gives a ``big-step'' rewrite relation for equivalence. In turn, this rewiring relation is generated by smaller local steps, which correspond more closely to the permutations in the sequent calculus. These smaller steps are illustrated in Figure~\ref{fig:rewiring}. In the top row, a jump can be rewired across another jump and across a tensor without breaking correctness; these rewiring steps can be seen to correspond to $(\bot-\bot)$ and $(\tn-\bot)$ permutations. In the bottom row, rewiring a jump into the par, from $a$ or $b$, only preserves correctness if the jump can be rewired between $a$ and $b$ independently of the par. Intuitively, this corresponds to the $(\pr-\bot)$ permutation in the following way: the positions that a jump may rewire to correspond to the context of the rule introducing the $\bot$; then to have the premise of the $\pr$-introduction as its context, the jump should be able to rewire to both $a$ and $b$.
+The above definition, which is due to Hughes~\cite{Hughes-2012-nets}, gives the ``big-step'' rewrite relation for equivalence. In turn, this rewiring relation is generated by smaller local steps, which correspond more closely to the permutations in the sequent calculus. These smaller steps are illustrated in Figure~\ref{fig:rewiring}. In the top row, a jump can be rewired across another jump and across a tensor without breaking correctness; these rewiring steps can be seen to correspond to $(\bot-\bot)$ and $(\tn-\bot)$ permutations. In the bottom row, rewiring a jump into the par, from $a$ or $b$, only preserves correctness if the jump can be rewired between $a$ and $b$ independently of the par. Intuitively, this corresponds to the $(\pr-\bot)$ permutation in the following way: the positions that a jump may rewire to correspond to the context of the rule introducing the $\bot$; then to have the premise of the $\pr$-introduction as its context, the jump should be able to rewire to both $a$ and $b$.
 
 That the rewiring relation is generated by the small-step relation in Figure~\ref{fig:rewiring} is a main theorem in \cite{Hughes-2012-nets}.
 
@@ -384,15 +400,17 @@ Rewiring $(\perm*)$ is generated by the local steps in Figure~\ref{fig:rewiring}
 \label{fig:rewiring}
 \end{figure}
 
-A further refinement in the proof nets introduced by Hughes \cite{Hughes-2012-nets}, is that jumps may be restricted to target only $1$-formulae. For the remainder of the paper, unless otherwise indicated, we will assume that proof nets are of this form.
+A further refinement in the proof nets introduced by Hughes \cite{Hughes-2012-nets}, is that jumps may be restricted to target only $1$-formulae. This will be convenient for the compact diagrammatic notation introduced below, and unless otherwise indicated, we will assume that proof nets are of this form.
+ 
+%For the remainder of the paper, unless otherwise indicated, we will assume that proof nets are of this form.
 
 \begin{proposition}[\cite{Hughes-2012-nets}]
 Any proof net is equivalent to one where the codomain of $\links$ is restricted to occurrences of the formula $1$.
 \end{proposition}
 
-A main technical advantage of this restriction is that cut-elimination can be performed in a one-shot operation, by path composition over jumps. Then, without the need to define cut-elimination by local transformations, cuts may be omitted from proof nets altogether, which justifies the present definition.
+A main technical advantage of this restriction is that cut-elimination can be performed in a one-shot operation, by path composition over jumps. Then, without the need to define cut-elimination by local transformations, proof nets may omit an explicit representation of cuts, as the present definition does.
 
-Finally, the following proposition states that equivalence is preserved when translating between proofs and proof nets, which means that \capsabbrev{mll}\ proof equivalence is equivalent to the problem of deciding equivalence of proof nets.
+Finally, the following proposition states that equivalence is preserved when translating between proofs and proof nets, which means that \capsabbrev{mll} proof equivalence is equivalent to the problem of deciding equivalence of proof nets.
 
 
 \begin{proposition}[\cite{Blute-Cockett-Seely-Trimble-1996,Hughes-2012-nets}]
@@ -413,11 +431,10 @@ To concisely represent larger sequents and proof nets, we will introduce a compa
 %
 Briefly, the units $1$ and $\bot$ are represented by a circle~($\circ$) and a disc~($\bullet$) respectively, a tensor $(\tn)$ will be indicated by an edge, and a par $(\pr)$ will be indicated by a box.
 %
-For example, the sequent below left is represented as a diagram below right.
+For example, the diagram below left represents the sequent below right.
 %
 \[
-	\bot\tn\bot~,~\bot\tn\bot~,~\1~,~(\1\pr\1\pr\1)\tn\bot
-\qquad\qquad
+\begin{array}{c}
 \vc{\begin{tikzpicture}[x=5mm,y=-5mm,octo]
 	\draw (0,0) node[bullet] (a) {} -- (1,0) node[bullet] (b) {} (2,0) node[bullet] (c) {} -- (3,0) node[bullet] (d) {};
 	\node[circ] (1) at (4,0) {};
@@ -425,6 +442,9 @@ For example, the sequent below left is represented as a diagram below right.
 	\draw[rounded corners] (4.75,-1) rectangle (7.75,1);
 	\draw (7.75,0) -- (8.75,0) node[bullet] (e) {};
 \end{tikzpicture}}
+\qquad\qquad
+	\bot\tn\bot~,~\bot\tn\bot~,~\1~,~(\1\pr\1\pr\1)\tn\bot
+\end{array}
 \]
 %
 The salient features of a diagram are the connectedness by $\tn$-edges and containment within a $\pr$-box. Respecting these, we will lay out a diagram in the plane in any way that is convenient, while ensuring (of course) that the layout is kept consistent when comparing different proof nets over the same sequent. More formally, then, sequents and formulae are interpreted as diagrams as follows:
@@ -526,7 +546,7 @@ The above examples illustrate how the diagrammatic notation replaces the connect
 
 To lay out a sequent as a diagram in two dimensions may lead to ambiguity when multiple occurrences of the same formula are present, as is the case for the formula $\bot\tn\bot$ in the above examples. Where necessary, this will be resolved by adding the names of chosen $\bot$-formulae and $1$-formulae to a diagram. When discussing different proof nets over the same sequent, the sequent will be laid out in a consistent manner.
 
-Figure~\ref{fig:_*_,1,1,1,_*_} uses the diagrammatic notation to display the rewiring relation over the proof nets for the sequent $\bot\tn\bot,1,1,1,\bot\tn\bot$, an interesting example also highlighted in \cite{Strassburger-Lamarche-2004}. There are 24 proof nets in total, forming two equivalence classes, each consisting of a single cyclic rewiring path. 
+Figure~\ref{fig:_*_,1,1,1,_*_} uses the diagrammatic notation to display the rewiring relation over the proof nets for the sequent $\bot\tn\bot,1,1,1,\bot\tn\bot$, an interesting example also highlighted in \cite{Strassburger-Lamarche-2004}. There are 24 proof nets in total (under the restriction that jumps only connect to $1$-occurrences), forming two equivalence classes, each consisting of a single cyclic rewiring path. 
 
 
 \begin{figure}
@@ -549,7 +569,7 @@ Figure~\ref{fig:_*_,1,1,1,_*_} uses the diagrammatic notation to display the rew
 
 \section{Encoding numerical constraints}
 
-In this section we will show how numerical constraints may be encoded in \capsabbrev{mll}, a necessary ingredient for our main construction. We will illustrate the ideas with an example: an encoding of 3-partition into the problem of \capsabbrev{mll} proof search.
+In this section we will show how numerical constraints may be encoded in \capsabbrev{mll}, a necessary ingredient for our main construction. We will illustrate the ideas with an example from the literature: an encoding of 3-partition into the problem of \capsabbrev{mll} proof search \cite{Kanovich-1992,Lincoln-Winkler-1994}.
 
 The problem of deciding whether a given \capsabbrev{mll} sequent is provable is \capsabbrev{np}-complete. This was shown first for an extension of \capsabbrev{mll} with weakening \cite{Lincoln-Mitchell-Scedrov-Shankar-1992}, and subsequently for unit-free \capsabbrev{mll} \cite{Kanovich-1992} and for unit-only  \capsabbrev{mll} \cite{Lincoln-Winkler-1994}---note that since \capsabbrev{mll} is conservative over both its unit-only and its unit-free fragment, each of the latter two implies \capsabbrev{np}-completeness for provability in full \capsabbrev{mll}.
 
@@ -643,7 +663,7 @@ We will give a simple encoding of 3-partition in MLL proof search, similar to th
 	\item a formula $\bigtn(\bot^{i+1})$ for each $i\in I$, and
 	\item the formula $\bigtn(K^n)$ where $K=\bigparr(\1^{k+1})$.
 \end{itemize}
-A solution to the 3-partition problem is encoded as a proof net as follows. If the numbers $a$, $b$, and $c$ are assigned to a triple corresponding to a formula $K_j$, then the corresponding formulae have $a+1$, $b+1$, and $c+1$ occurrences of $\bot$, and $k+1=a+b+c+1$ occurrences of $\1$, respectively. Then as described previously, there is a proof net for these formulae, obtained by attaching each jump to a distinct $\1$, with the exception of three jumps, one each from $a$, $b$, and $c$, overlapping on exactly one intance.
+A solution to the 3-partition problem is encoded as a proof net as follows. If the numbers $a$, $b$, and $c$ are assigned to a triple corresponding to a formula $K_j$, then the corresponding formulae have $a+1$, $b+1$, and $c+1$ occurrences of $\bot$, and $k+1=a+b+c+1$ occurrences of $\1$, respectively. Then as described previously, there is a proof net for these formulae, obtained by attaching each jump to a distinct $\1$, with the exception of three jumps, one each from $a$, $b$, and $c$, overlapping on exactly one instance.
 
 The construction is illustrated below, where the numbers $i$ are conveniently ordered to give the solution $(i_1,i_2,i_3)$, $(i_4,i_5,i_6)$, etc.
 
@@ -689,7 +709,7 @@ The encoding of 3-partition serves to illustrate how simple numerical constraint
 
 In this section we will explore the global rewiring behaviour of proof nets. We will look at notions of subnets; we will introduce a notion of relative \emph{parity} between nets, which if odd, guarantees inequivalence; and we will give a simple account of equivalence for the fragment of \capsabbrev{mll} that omits the par.
 
-The notions and results introduced in this section will be used in the main proofs of the paper, in Section~\ref{sec:correctness}, which show that the encoding of \capsabbrev{ncg}-reconfiguration in \capsabbrev{mll} proof equivalence, as described informally in the previous section, is correct.
+The notions and results introduced in this section will be used in the main proofs of the paper, in Section~\ref{sec:correctness}, which show that the encoding of \capsabbrev{ncg}-reconfiguration in \capsabbrev{mll} proof equivalence is correct.
 
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

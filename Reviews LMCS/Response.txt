@@ -7,17 +7,18 @@ Review 1
 
 p.1, l.-1: "Canonical proof nets may also be defined for intuitionistic MLL with units": are you referring to (some of) the same papers you cite in the next paragraphs (i.e. Blute et al., Trimble, Lamarche, etc.)?  In any case, you should add a reference here.
 
-*** We have tried and failed to find a decent reference for the kind of proof nets we have in mind here, although private discussions have convinced us that the issue is quite widely understood. The principle is simple: re-wiring jumps towards the unique conclusion yields a canonical form. But Lamarche's "essential nets", extended with units by Murawski and Ong (both of which we have added as a reference), attach jumps to the leaves of the tree instead.
+*** We have tried and failed to find a decent reference for the kind of proof nets we have in mind here, although private discussions have convinced us that they are quite widely understood. The principle is simple: re-wiring jumps towards the unique conclusion yields a canonical form. But Lamarche's "essential nets", extended with units by Murawski and Ong (both of which we have added as a reference), attach jumps to the leaves of the tree instead.
 
 
 p.10, notations: why do you use a "prime" in your notation for sequents/formulas?  I mean, why n' (in a circle) instead of just n?  Since n',i',j', etc. are common notations for variables (as n,i,j...), the notation is quite misleading at first.
 
-*** The prime is used as a notation for 'successor', to indicate that a node labelled n' has n + 1 bottoms or ones, while n' and m' connect to (n+m)'. 
+*** We have removed the primes.
 
 
 p.25, Definition 37: I find this definition a bit disturbing, it seems ad hoc at first and leaves one wondering whether something is wrong with your encoding. [...]
 
 *** We agree that Definition 37 is not well-explained. We have opted for the following solution: we now explicitly define the translation of an instance of NCL-reconfiguration (which consists of a constraint graph with two configurations).
+
 
 p.30, Theorem 46: just a minor quibble: you could make explicit the reduction from NCG-reconfiguration to the proof net equivalence problem, in order for the reader to better understand the complexity of such a reduction, which must be at least polytime computable. [...]
 
@@ -32,12 +33,20 @@ Review 2
 
 Another issue concerns the paragraph of the introduction that mentions the fragments of linear logic for which canonical proof nets are known. I think that the polarized case should be added. 
 
-Moreover it is said that Intuitionistic MLL with units has a canonical presentation but no citations are given. [...] Of course, *a citation has to be given*, but that is not the point. Given the results in the paper, Intuitionistic (ME)LL is the only hope for a tractable and expressive theory of proof nets. The intuitionistic case should then be discussed precisely, explaining the differences with the classical case. The canonical presentation of the intuitionistic case that the authors have in mind probably relies on jumps, and thus rewiring and proof equivalence make sense there too. Why is that case tractable? And does tractability rely on the fact that cut­-elimination in the linear case is trivial? Would Intuitionistic MELL be tractable as well?
+*** We have now mentioned more explicitly that polarized proof nets are canonical, further down from that paragraph.
+
+
+Moreover it is said that Intuitionistic MLL with units has a canonical presentation but no citations are given. [...]
 
 *** We have expanded the explanation of IMLL proof nets that we have in mind. (See also above in the response to Review 1.) We view intuitionistic LL as one of several alternatives to classical LL (as remarked on in the next comment).
 
-I also find the third paragraph of page 2 (“Since there can be no canonical representation...”) unsatisfying. It points to alternative ideas in the literature to define the identity of proofs. They have to be discussed, at least briefly. At present the alternative approaches are just cited, without giving any hint of why they would help to treat the units.I am also surprised by the total absence of a discussion of the case of MLL with the MIX rules.A better treatment of the context of the problem cannot be avoided, because it is the reason why the result is interesting. Moreover, it is also the reason that justifies to not take too seriously the many technicalities of the
-*** While in principle we agree that these alternatives could be discussed in more detail, the general picture is simply that each drops one or more of the axioms of a *-autonomous category. We did not want to turn this 
+I also find the third paragraph of page 2 (“Since there can be no canonical representation...”) unsatisfying. It points to alternative ideas in the literature to define the identity of proofs. They have to be discussed, at least briefly. [...]
+
+*** We have expanded the discussion of these alternatives, giving brief hints as to how they avoid the unit problem.
+
+I am also surprised by the total absence of a discussion of the case of MLL with the MIX rules.
+
+*** We opted not to discuss MIX - depending on which rules are added, either the units are equated, which is semantically equivalent to omitting them, or they are not, in which case the logic is conservative over MLL and the unit problem remains.
 
  
 

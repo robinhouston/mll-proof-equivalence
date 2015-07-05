@@ -27,6 +27,7 @@
 \newcommand\downdagger{\spin\dagger}
 
 
+\newcommand\ap{}
 
 
 %---------- Hacking
@@ -306,7 +307,7 @@
 
 \newcommand\bignodes[1]{
   \vc{\begin{tikzpicture}[octo,x=6mm,y=4mm]
-	\ifx#13\node[big_]{$n'$};\else\node[big1]{$n'$};\fi
+	\ifx#13\node[big_]{$n\ap$};\else\node[big1]{$n\ap$};\fi
 	\ifx#12\draw[rounded corners]\else\path[use as bounding box]\fi
 	   (-1,-1) rectangle (1,1);
   \end{tikzpicture}}
