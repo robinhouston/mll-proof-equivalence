@@ -68,7 +68,7 @@ Moreover it is said that Intuitionistic MLL with units has a canonical presentat
 
 Second, in section 4 it is said that the reconfiguration problem remains PSPACE­complete under a number of restrictions, e.g. fixing constraint at the value 2, but the authors choose the encode the general case, without restrictions. [...]
 
-*** 
+*** We don't think these restrictions would actually simplify the encoding - in fact, it would be exactly the same. It would still be necessary, for instance, to correct for parity, and to multiply weights by 3 times the number of edges.
 
 
 Review 3
