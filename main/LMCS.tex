@@ -58,7 +58,7 @@
 \begin{document}
 
 
-
+%\end{document}
 
 % ACM classifications:
 % F.2.2 - Nonnumerical Algorithms and Problems (Complexity of proof procedures)
@@ -895,7 +895,19 @@ A sequent is \emph{balanced} if its balance is zero.
 An unbalanced sequent is uninhabited.
 \end{proposition}
 
-Here, we will introduce a similar necessary condition for the equivalence of two proof nets. We shall associate a \emph{parity} with any pair of linkings $\links$ and $\links'$ over the same sequent $\Gamma$, and we shall find that the parity of equivalent linkings is always even.
+% NEW
+
+Here, we will introduce a similar necessary condition for the equivalence of two proof nets. Consider the example of the identity and twist maps on $\bot\tn\bot$, below. The two maps are semantically distinct; hence they are often given as a minimal example showing the necessity of having jumps in proof nets.
+\[
+	\twistid0 \qquad\qquad \twistid1
+\]
+In this case, it is easily seen that neither jump can be rewired, and that the two nets are thus inequivalent; to change from one net to the other, two jumps would need to be rewired simultaneously. This prompts the question of what would happen in a larger net: would a complicated series of rewirings be able to exchange two jumps configured like those of the above nets? Or phrased semantically: are there maps that equalise the identity and twist on $\bot\tn\bot$ in the free $*$-autonomous category?
+
+It turns out that this is not the case. Most provable sequents have at least two equivalence classes of proofs, such that for each proof in one class there is a corresponding proof, equal up to the exchange of two jumps, in the other. An example of this is Figure~\ref{fig:_*_,1,1,1,_*_}.
+
+We will capture this idea as follows: we shall associate a \emph{parity} with any pair of linkings $\links$ and $\links'$ over the same sequent $\Gamma$, which may be \emph{even} or \emph{odd}, and we shall find that the parity of equivalent linkings is always even.
+
+% OLD
 
 For this argument we will work with $n$-ary connectives $\tn$ and $\pr$, and alternating formulae, i.e.\ every argument of a $\tn$ is a $\pr$ and vice versa. The units are given by the $0$-ary connectives, and we need not rule out unary ones. We will consider a given named sequent $\Gamma$, but will assume that it consists of a single formula, if necessary by introducing a $\pr$ at the root.
 

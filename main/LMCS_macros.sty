@@ -452,6 +452,17 @@
   \DEFAULT{}
 }}
 
+\newcommand\twistid[1]{
+  \begin{tikzpicture}[octo,x=6mm,y=8mm]
+	\node[circ]   (1) at (0,1) {};
+	\node[circ]   (2) at (1,1) {};
+	\node[bullet] (a) at (0,0) {};
+	\node[bullet] (b) at (1,0) {};
+	\draw (a)--(b);
+	\ifx#10{\draw[jump] (a)--(1);\draw[jump] (b)--(2);}\else
+	\ifx#11{\draw[jump] (a)--(2);\draw[jump] (b)--(1);}\fi\fi
+  \end{tikzpicture}
+}
 
 \newcommand\netA[4]{\vcenter{\hbox{
   \begin{tikzpicture}[x=3mm,y=8mm,octo] %[x=2.5mm,y=7mm,octo]
