@@ -48,7 +48,27 @@ Moreover it is said that Intuitionistic MLL with units has a canonical presentat
 
 *** We opted not to discuss MIX - depending on which rules are added, either the units are equated, which is semantically equivalent to omitting them, or they are not, in which case the logic is conservative over MLL and the unit problem remains.
 
- 
+ 1) Numerical constraints [...]
+
+***
+
+
+2) Parity [...]
+
+*** We have added some introductory paragraphs to the subsection on parity, and adjusted Definition 37 for clarity (see also the response to Review 1 above).
+
+
+3) Soundness/readback[...]
+
+***
+
+First, the authors choose to restrict jumps to target 1­formulae and to rewire jumps according to a big­step strategy, building on the work of Hughes. [...]
+
+*** We have more clearly motivated this choice: it is mostly cosmetic, as it simplifies the diagrammatic notation for proof nets - though it does impact the formulation of some lemmas in the section "Rewiring proof nets".
+
+Second, in section 4 it is said that the reconfiguration problem remains PSPACE­complete under a number of restrictions, e.g. fixing constraint at the value 2, but the authors choose the encode the general case, without restrictions. [...]
+
+*** 
 
 
 Review 3
