@@ -1,6 +1,6 @@
 
 
-We thank the referees for their careful reading of our paper, and for the detailed and helpful feedback they have provided. Here, we will discuss each review in turn, as well as the changes we have made in response. We omit comments whose 
+We thank the referees for their careful reading of our paper, and for the detailed and helpful feedback they have provided. Here, we will discuss each review in turn, as well as the changes we have made in response. We omit the suggested minor changes that we have implemented, but comment on those we chose not to.
 
 
 Review 1
@@ -50,7 +50,7 @@ Moreover it is said that Intuitionistic MLL with units has a canonical presentat
 
  1) Numerical constraints [...]
 
-***
+*** We have added a further illustration showing where the multiplication by 3x the number of edges is needed.
 
 
 2) Parity [...]
@@ -60,13 +60,13 @@ Moreover it is said that Intuitionistic MLL with units has a canonical presentat
 
 3) Soundness/readback[...]
 
-***
+*** We have put the read-back or decoding function in a separate proposition, with justification. The only concern for decoding is the following lemma: if two linkings are equivalent, there is a reconfiguration path between their decodings.
 
-First, the authors choose to restrict jumps to target 1­formulae and to rewire jumps according to a big­step strategy, building on the work of Hughes. [...]
+First, the authors choose to restrict jumps to target 1-­formulae and to rewire jumps according to a big-­step strategy, building on the work of Hughes. [...]
 
-*** We have more clearly motivated this choice: it is mostly cosmetic, as it simplifies the diagrammatic notation for proof nets - though it does impact the formulation of some lemmas in the section "Rewiring proof nets".
+*** We now have more clearly motivated this choice: it is mostly cosmetic, as it simplifies the diagrammatic notation for proof nets - though it does impact the formulation of some lemmas in the section "Rewiring proof nets".
 
-Second, in section 4 it is said that the reconfiguration problem remains PSPACE­complete under a number of restrictions, e.g. fixing constraint at the value 2, but the authors choose the encode the general case, without restrictions. [...]
+Second, in Section 4 it is said that the reconfiguration problem remains PSPACE-­complete under a number of restrictions, e.g. fixing constraint at the value 2, but the authors choose the encode the general case, without restrictions. [...]
 
 *** We don't think these restrictions would actually simplify the encoding - in fact, it would be exactly the same. It would still be necessary, for instance, to correct for parity, and to multiply weights by 3 times the number of edges.
 

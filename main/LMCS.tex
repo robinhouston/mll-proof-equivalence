@@ -1188,6 +1188,7 @@ The natural basis of the encoding is the use of jumps to indicate where the weig
 The two basic components of our encoding will be \emph{weight elements}, representing the weight value of edges, and \emph{constraint elements}, which encode the inflow constraint of vertices. For now, we will work under the assumption that each unit of weight on an edge is encoded by exactly one weight element---later, we will amend this to use multiple weight elements for each unit of weight. A weight element will be a construction over a number of $\bot$-formulae, whose jumps may connect to the $\1$-formulae of a constraint element.
 
 Below top is a weight element, below bottom a constraint element.
+
 \[
 \begin{array}{ccc}
 	  \vc{\begin{tikzpicture}[x=5mm,y=5mm,octo]
@@ -1209,10 +1210,15 @@ Below top is a weight element, below bottom a constraint element.
 	  \bigparr(\1^{m+1})~\tn~\bigparr(\1^{n+1})
 \end{array}
 \]
+
+\noindent
 For all edges and vertices in the encoding of a constraint graph, the sum $i+j+k=m+n$ will be the same---this way, a priori any weight element may connect to any constraint element. The value $m$ will be unique for each vertex, and used for all constraint elements in the encoding of that vertex. The weight element above is for an edge connecting the two vertices for which $m=i$ and $m=i+j$: with those constraint elements it is possible to form a proof net, as illustrated below.
+
 \[
 	\connectingElements 1 \qquad \connectingElements 2
 \]
+
+\noindent
 To ensure that a weight element may not form a proof net with a constraint element of another vertex, the values of $m$ and $n$ are chosen such that $m\equiv1$ and $n\equiv2 \pmod 3$, and accordingly $i\equiv1$, $j\equiv0$, and $k\equiv2\pmod 3$. It then becomes impossible for $m$ to equal any other sum over $i$, $j$, and $k$, so that forming a proof net requires either $m=i$ or $m=i+j$.
 
 Several further constructions are used in our encoding. Firstly, in a constraint graph, the sum of all weights is usually greater than the sum of all inflow constraints---otherwise, no edge can be mobile, or no configuration exists. Correspondingly, an encoding will have weight elements not connected to constraint elements. These will instead connect to additional, separate $\1$-formulae, referred to as \emph{weight absorbers}, as shown below. A weight element that is connected to absorbers will be called \emph{free}.
@@ -1233,6 +1239,7 @@ Several further constructions are used in our encoding. Firstly, in a constraint
 
 
 An edge in a constraint graph will be encoded by an \emph{edge-gadget}, illustrated below left, constructed by stringing together a number of similar weight elements, plus a single $\bot$-formula which we will refer to as the \emph{indicator}. Illustrated below right is a \emph{vertex-gadget} encoding a vertex, formed by a number of constraint elements plus a single \emph{indicator target}.
+
 \[
 \begin{tikzpicture}[x=5mm,y=5mm,octo]
 	\node[big_] (A) at (0,0) {$i\ap$}; 
@@ -1263,6 +1270,7 @@ An edge in a constraint graph will be encoded by an \emph{edge-gadget}, illustra
 	\draw[rounded corners] (-1.5,-2.5) rectangle (4.5,5.5);
 \end{tikzpicture}
 \]
+
 The natural way for edge-gadgets to link up with a vertex-gadget is shown in Figure~\ref{fig:connect example}: indicators connect to indicator targets, and weight elements connect to constraint elements or weight absorbers. The illustration depicts two equivalent proof nets, both encoding the same (fragment of a) constraint graph: a single vertex that is the target of a weight-1 edge (on the left, in red) and a weight-2 edge (on the right, in blue). The inflow of the vertex is 3, and its constraint is 2; then 2 weight elements are connected to the constraint elements in the vertex-gadget, while one remains free (connected to weight absorbers). It is essential to the functioning of the encoding that any re-distribution of weight elements gives an equivalent proof net, as illustrated by the example. Then in the second proof net, the single weight element of the left edge-gadget is free, which means the indicator jump can be rewired to connect to a different vertex.
 
 In the encoding, the indicator jumps determine which vertex is the target of the edge, and while they may in principle assign any vertex, the weight elements of the edge-gadget can only form proof nets with the constraint elements of the correct vertices. An edge-gadget will be called \emph{free} if all its weight elements are free. The vertex-gadgets in an encoding will all be gathered in a $\tn$-formula, which means they are connected, so that free edge-gadgets may attach their indicator to any of them.
@@ -1338,9 +1346,62 @@ To resolve this issue, it is sufficient to increase the number of weight element
 
 In an inappropriate linking as shown above, since both halves of the constraint element are connected, the weight elements must be disconnected---otherwise, the switching condition would be violated. That means the weight elements must belong to different edges. Note that it is possible to use more than one weight element from the same edge to fill one half of a constraint element; or even weight elements from different edges, but we are interested here only in the \emph{minimum} number of edges needed to inappropriately fill a vertex-gadget.
 
-Since the different halves of a constraint element must be filled by different edge-gadgets, the switching condition forces inappropriately connected edge-gadgets and constraint elements to form a tree, with edge-gadgets as nodes and constraint elements as edges. Since in a tree the number of nodes is always one greater than the number of edges, it requires $n+1$ edge-gadgets to fill $n$ constraint elements. It thus suffices to multiply the number of weight elements by the number of edges: we will encode one unit of weight on an edge by $|E|$ weight elements (where $|E|$ is the number of edges in the constraint graph), and correspondingly encode one unit of inflow constraint by $|E|$ constraint elements.
+%Since the different halves of a constraint element must be filled by different edge-gadgets, the switching condition forces inappropriately connected edge-gadgets and constraint elements to form a tree, with edge-gadgets as nodes and constraint elements as edges. Since in a tree the number of nodes is always one greater than the number of edges, it requires $n+1$ edge-gadgets to fill $n$ constraint elements. It thus suffices to multiply the number of weight elements by the number of edges: we will encode one unit of weight on an edge by $|E|$ weight elements (where $|E|$ is the number of edges in the constraint graph), and correspondingly encode one unit of inflow constraint by $|E|$ constraint elements.
 
-%As the linkings above illustrate, it may occur that one subformula of a weight element $A\pr B\pr C$ fills one half of a constraint element. Consequently, a weight element can fill three halves, but only of different constraint elements. The other three halves may be filled by weight elements of a different edge---so to fill 3 constraint elements requires 2 inappropriate edges. To fill the next three constraint elements, at most 1 previous inappropriate edge may be used, and one additional one is needed. To fill $3n$ constraint elements inappropriately therefore requires $n+1$ edges. It thus suffices to encode one unit of weight on an edge by $3\times|E|$ weight elements (where $|E|$ is the number of edges in the constraint graph), and correspondingly to encode one unit of inflow constraint by $3\times|E|$ constraint elements.
+As the linkings above illustrate, it may occur that one subformula of a weight element $A\pr B\pr C$ fills one half of a constraint element. In the pathological case for $(v_i)$ where $i$ is very small or very large, a weight element can fill three halves of different constraint elements, as illustrated in Figure~\ref{fig:pathological}. As in the illustration, the other three halves may be filled by weight elements of a different edge---so to fill 3 constraint elements requires 2 inappropriate edges. To fill the next three constraint elements, at most 1 previous inappropriate edge may be used, and one additional one is needed. To fill $3n$ constraint elements inappropriately therefore requires $n+1$ edges. It thus suffices to encode one unit of weight on an edge by $3\times|E|$ weight elements (where $|E|$ is the number of edges in the constraint graph), and correspondingly to encode one unit of inflow constraint by $3\times|E|$ constraint elements.
+
+\begin{figure}
+\[
+\begin{tikzpicture}[x=-5mm,y=-5mm,octo]
+	\node[big1] (1) at (0,3) {};
+	\foreach \i in {0,3,6} {
+		\node[big_] (A\i) at (3.5,\i) {}; 
+		\node[big_] (B\i) at (5,  \i) {}; 
+		\node[big_] (C\i) at (7,  \i) {};
+		\node[big_] (D\i) at (9,  \i) {};
+		\draw (A\i)--(B\i);
+		\draw[rounded corners] ($(2.5,-1) + (0,\i)$) rectangle ($(10,1) + (0,\i)$);
+		%
+		\node[big1] (2\i) at (13,\i) {}; 
+		\node[big1] (3\i) at (16,\i) {};
+		\draw[rounded corners] ($(12,-1) + (0,\i)$) rectangle ($(14,1) + (0,\i)$);
+		\draw[rounded corners] ($(15,-1) + (0,\i)$) rectangle ($(17,1) + (0,\i)$);
+		\draw (14,\i)--(15,\i);
+		%
+		\begin{scope}[thepink,->,big>]
+			\draw[bend left=30] (B\i) to (2\i);
+			\draw[bend left=15]  (C\i) to (2\i);
+			\draw (D\i) to (2\i);
+		\end{scope}
+	}
+	\begin{scope}[thepink,->,big>]
+		\draw[bend right=20] (A6) to (1);
+		\draw                (A3) -- (1);
+		\draw[bend left=20]  (A0) to (1);
+	\end{scope}
+	\draw (6.25,1) -- +(0,1) (6.25,4) -- +(0,1);
+	\draw[rounded corners] (11.5,-1.5) rectangle (17.5,7.5);
+	\foreach \i in {1,3,5} {
+		\node[big_] (E\i) at (20,  \i) {};
+		\node[big_] (F\i) at (21.5,\i) {};
+		\draw (E\i)--(F\i);
+	}
+	\draw[rounded corners] (19,0) rectangle (22.5,6);
+	\node[big1] (4) at (24,3) {};
+	\begin{scope}[thepink,->,big>]
+		\draw[bend right=20] (E5) to (36);
+		\draw                (E3) -- (33);
+		\draw[bend left=20]  (E1) to (30);
+		\draw[bend left=20]  (F5) to (4);
+		\draw                (F3) -- (4);
+		\draw[bend right=20] (F1) to (4);
+	\end{scope}
+\end{tikzpicture}
+\]
+\caption{A weight element connecting to three constraint elements}
+\label{fig:pathological}
+\end{figure}
+
 
 % OLD
 
@@ -1357,7 +1418,7 @@ all edge-gadgets as individual formulae, and
 a sufficient number of weight absorbers ($\1$-formulae).
 \end{enumerate}
 %
-A configuration for $G$ will be encoded as a proof net for $\Gamma$, and conversely each proof net for $\Gamma$ may be interpreted as a (partial) configuration for $G$. The encoding will be made formal in the next section. %Section~\ref{sec:correctness}.
+A configuration for $G$ will be encoded as a proof net for $\Gamma$, and conversely each proof net for $\Gamma$ may be interpreted as a (partial) configuration for $G$. The encoding will be made formal in the next section.
 
 
 %------------------------------------------------------------
@@ -1367,8 +1428,7 @@ A configuration for $G$ will be encoded as a proof net for $\Gamma$, and convers
 \label{sec:correctness}
 
 
-We will formalise the encoding of \capsabbrev{ncg}-reconfiguration into \capsabbrev{mll} proof equivalence that was informally introduced in the previous section. %Section~\ref{sec:encoding}.
-A constraint graph $G$ will be encoded as a sequent $\itn G$, and a configuration $\gamma$ for $G$ will be encoded as a proof net $\itn\gamma$ for $\itn G$. We will show that $\gamma\perm\delta$ if and only if $\itn\gamma\perm\itn\delta$ (modulo a small adjustment to ensure even parity between $\itn\gamma$ and $\itn\delta$).
+We will formalise the encoding of \capsabbrev{ncg}-reconfiguration into \capsabbrev{mll} proof equivalence that was informally introduced in the previous section. A constraint graph $G$ will be encoded as a sequent $\itn G$, and a configuration $\gamma$ for $G$ will be encoded as a proof net $\itn\gamma$ for $\itn G$. We will show that $\gamma\perm\delta$ if and only if $\itn\gamma\perm\itn\delta$ (modulo a small adjustment to ensure even parity between $\itn\gamma$ and $\itn\delta$).
 
 For a constraint graph $G=(V,E,c,v,w)$, let $|V|$ and $|E|$ denote the number of vertices and edges, and let $|c|$ and $|w|$ denote the sum of all inflow constraints and the sum of all weights, respectively:
 \[
@@ -1384,9 +1444,9 @@ Let $G=(V,E,c,v,w)$ with $|V|=n$, $|E|=m$, $V=\{v_1,\dotsc,v_n\}$, and $E=\{e_1,
 \noindent
 The encoding of a vertex $v_k$ is the formula
 \[
-	\itn{v_k} = \bigparr\big(C_n(k)^{m\,\times\,c(v_k)} \big)\pr\1
+	\itn{v_k} = \bigparr\big(C(k,n)^{3m\,\times\,c(v_k)} \big)\pr\1
 \]
-where each \emph{constraint element} $C_n(k)$ is the formula
+where each \emph{constraint element} $C(k,n)$ is the formula
 \[
 	C_n(k) = \bigparr\big(1^{3k+2}\big) \tn \bigparr\big(1^{3(n-k)+3}\big)~.
 \]
@@ -1394,11 +1454,11 @@ where each \emph{constraint element} $C_n(k)$ is the formula
 \noindent
 The encoding of an edge $e$ connecting vertices $v_i$ and $v_j$ with $i\leq j$ is the formula
 \[
-	\itn{e} = \bigtn\big(W_n(i,j)^{m\,\times\,w(e)}\big)\tn\bot
+	\itn{e} = \bigtn\big(W(i,j,n)^{3m\,\times\,w(e)}\big)\tn\bot
 \]
-where each \emph{weight element} $W_n(i,j)$ is the formula
+where each \emph{weight element} $W(i,j,n)$ is the formula
 \[
-	W_n(i,j) = \bigtn\big(\bot\!^{3i+2}\big)\pr\bigtn\big(\bot\!^{3(j-i)+1}\big)\pr\bigtn\big(\bot\!^{3(n-j)+3}\big)\,.
+	W(i,j,n) = \bigtn\big(\bot\!^{3i+2}\big)\pr\bigtn\big(\bot\!^{3(j-i)+1}\big)\pr\bigtn\big(\bot\!^{3(n-j)+3}\big)\,.
 \]
 
 \noindent
@@ -1406,7 +1466,7 @@ The encoding of the graph $G$ is the sequent
 \[
 	\itn G = \itn{v_1}\tn\dotso\tn\itn{v_n}, \itn{e_1},\dotsc,\itn{e_m}, 1^p
 \]
-where $p=m\times(|w|-|c|)\times(3n+4)$.
+where $p=3m\times(|w|-|c|)\times(3n+4)$.
 
 \end{definition}
 
@@ -1427,14 +1487,14 @@ Firstly we will define a standard way of linking a weight element to a constrain
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
 \begin{definition}
 \label{def:standard linkings}
-For $W=W_n(i,j)=A\pr B\pr C$ a weight element,
+For $W=W(i,j,n)=X\pr Y\pr Z$ a weight element,
 \begin{enumerate}
 	\item
-for a constraint element $V=C_n(i)=X\tn Y$, the \emph{standard linking} for the sequent $W,V$ links the first $\bot$ in $A$ to the first $\1$ in $X$, the first $\bot$ in $B$ and $C$ each to the first $\1$ in $Y$, and each remaining $\bot$ in $A,B,C$ to a remaining $\1$ in $X,Y$ in their order of occurrence;
+for a constraint element $C=C(i,n)=A\tn B$, the \emph{standard linking} for the sequent $C,W$ links the first $\bot$ in $X$ to the first $\1$ in $A$, the first $\bot$ in $Y$ and $Z$ each to the first $\1$ in $B$, and each remaining $\bot$ in $X,Y,Z$ to a remaining $\1$ in $A,B$ in their order of occurrence;
 	\item
-for $V=C_n(j)=X\tn Y$, the \emph{standard linking} for $W,V$ is defined as above, except the first $\bot$ in $B$ links to the first $\1$ in $X$;
+for $C=C(j,n)=A\tn B$, the \emph{standard linking} for $C,W$ is defined as above, except the first $\bot$ in $Y$ links to the first $\1$ in $A$;
 	\item
-the \emph{standard linking} for the sequent $W,\1^{3n+4}$ links the first $\bot$ in $A$, $B$, and $C$ to the first $\1$, and each remaining $\bot$ to a remaining $\1$ in order of occurrence.
+the \emph{standard linking} for the sequent $W,\1^{3n+4}$ links the first $\bot$ in $X$, $Y$, and $Z$ to the first $\1$, and each remaining $\bot$ to a remaining $\1$ in order of occurrence.
 \end{enumerate}
 \end{definition}
 
@@ -1502,7 +1562,7 @@ The \emph{encoding} $\itn\gamma$ of a total configuration $\gamma$ for a constra
 %
 Let $\gamma(e)=v$; firstly, the indicator of $\itn e$ is linked to the indicator target of $\itn v$.
 %
-Then successively for each weight element $W$ in $e$, if $\itn v$ has a first free constraint element $C$, extend $\itn\gamma$ to include the standard linking on $W,C$; otherwise, extend $\itn\gamma$ by the standard linking on the sequent consisting of $W$ plus the first $3n+4$ free weight absorbers.
+Then successively for each weight element $W$ in $e$, if $\itn v$ has a first free constraint element $C$, extend $\itn\gamma$ to include the standard linking on $C,W$; otherwise, extend $\itn\gamma$ by the standard linking on the sequent consisting of $W$ plus the first $3n+4$ free weight absorbers.
 \end{definition}
 
 
@@ -1514,7 +1574,7 @@ If $\gamma$ is a total configuration for $G$ then $\itn\gamma$ is a proof net fo
 \begin{proof}
 Using Proposition~\ref{prop:scoping correctness}, it is sufficient to give a suitable box for each $\pr$. 
 %
-The box of each weight element $W$ is the sequent $W,C$ or $W,1^{3n+4}$ of its standard linking, which forms a proof net by Proposition~\ref{prop:element linkings}.
+The box of each weight element $W$ is the sequent $C,W$ or $W,1^{3n+4}$ of its standard linking, which forms a proof net by Proposition~\ref{prop:element linkings}.
 %
 The box of each vertex-gadget $\itn v$ contains the edge-gadgets $\itn e$ such that $\gamma(e)=v$, plus all the weight absorbers within boxes of weight elements inside $\itn e$.
 %
@@ -1524,9 +1584,7 @@ After closing the box of each $W$, each edge-gadget in the box of $\itn v$ becom
 \end{proof}
 
 
-Finally, we will encode an instance of the NCL reconfiguration problem: a pair of configurations $\gamma$ and $\delta$ for a given NCL graph $G$, for which the problem asks whether $\gamma\perm\delta$. Here we need to ensure that the two encodings as proof nets have even parity; otherwise, they will never be equivalent. We have opted for a simple and straightforward solution: first we encode both configurations as $\itn\gamma$ and $\itn\delta$; then we check their parity, and if it is odd, we adjust it by swapping two weight absorbers on $\itn\delta$.
-
-%Finally, if two connected configurations $\gamma\perm\delta$ are encoded individually as $\itn\gamma$ and $\itn\delta$, these may not be equivalent simply because their parity happens to be odd. For that reason we shall adjust the encoding of the second to guarantee an even parity.
+Finally, we will encode an instance of the NCL reconfiguration problem, consisting of an NCL graph $G$ with two configurations $\gamma$ and $\delta$, for which the problem asks whether $\gamma\perm\delta$. Here we need to ensure that the two encodings as proof nets have even parity; otherwise, they will never be equivalent. We have opted for a simple and straightforward solution: first we encode both configurations as $\itn\gamma$ and $\itn\delta$; then we check their parity, and if it is odd, we adjust it by swapping two weight absorbers on $\itn\delta$.
 
 
 \begin{definition}
@@ -1537,17 +1595,11 @@ The \emph{encoding} of an instance of NCL-reconfiguration $(G,\gamma,\delta)$ is
 	 \begin{array}{ll}\itn\delta & \text{if $\itn\gamma$ and $\itn\delta$ have even parity} \\
 	 				  \itn\delta' & \text{otherwise}\end{array}\right.
 \]
-and $\itn\delta'$ is $\itn\delta$ with the first two weight absorbers exchanged.
+and $\itn\delta'$ is $\itn\delta$ with the first two weight absorbers $a$ and $b$ exchanged: $v\mathbin{\xjump}a$ in $\itn\delta'$ if and only if $v\mathbin{\xjump}b$ in $\itn\delta$, and vice versa.
 \end{definition}
 
 
-%Let $\itn\delta'$ be $\itn\delta$ with the first two weight absorbers exchanged. For configurations $\gamma$ and $\delta$ for $G$, let $\itn\delta_\gamma$ be $\itn\delta$ if it has even parity with $\itn\gamma$, and $\itn\delta'$ otherwise.
-%
-
-
-In the remainder, we will show that our encoding is correct, i.e.\ that $\gamma\perm\delta$ if and only if $\itn\gamma\perm\itn\delta_\gamma$.
-%
-This will be separated into two parts: completeness ($\Rightarrow$) and soundness ($\Leftarrow$) .
+In the remainder, we will show that our encoding is correct, i.e.\ that $\gamma\perm\delta$ if and only if $\itn\gamma\perm\itn\delta_\gamma$. This will be separated into two parts: completeness ($\Rightarrow$) and soundness ($\Leftarrow$).
 
 
 
@@ -1584,7 +1636,7 @@ To describe the intermediate stages of such a rewiring sequence, call an edge-ga
 
 \begin{lemma}
 \label{lem:octopus roll}
-Let $\links$ be a proof net for $\Gamma=\itn v,\itn{e_1},\dotsc,\itn{e_m},1^p$ such that each edge-gadget $\itn e_i$ is well linked. Let $W_i$ and $W_j$ be weight elements in edge-gadgets $\itn{e_i}$ and $\itn{e_j}$ respectively; let $W_i$ be linked to $V$ in $\itn v$, and let $W_j$ be linked to weight absorbers $1^n$. Then there is a net $\links'\perm\links$ in which $W_j$ is well linked to $V$, $W_i$ is linked to $1^n$, and $\links'$ agrees with $\links$ otherwise.
+Let $\links$ be a proof net for $\Gamma=\itn v,\itn{e_1},\dotsc,\itn{e_m},1^p$ such that each edge-gadget $\itn e_i$ is well linked. Let $W_i$ and $W_j$ be weight elements in edge-gadgets $\itn{e_i}$ and $\itn{e_j}$ respectively; let $W_i$ be linked to $C$ in $\itn v$, and let $W_j$ be linked to weight absorbers $1^n$. Then there is a net $\links'\perm\links$ in which $W_j$ is well linked to $C$, $W_i$ is linked to $1^n$, and $\links'$ agrees with $\links$ otherwise.
 \end{lemma}
 
 
@@ -1599,9 +1651,9 @@ Let $\links$ be a proof net for $\Gamma=\itn v,\itn{e_1},\dotsc,\itn{e_m},1^p$ s
 }
 
 \begin{proof}
-Let $W_i=A\pr B\pr C$, $W_j=D\pr E\pr F$, and $V=X\tn Y$.
+Let $W_i=X\pr Y\pr Z$, $W_j=P\pr Q\pr R$, and $C=A\tn B$.
 %
-The rewiring path will be illustrated for the case where $A,B,X$ and $D,X$, and thus also $C,Y$ and $E,F,Y$, are balanced sequents; other cases are similar.
+The rewiring path will be illustrated for the case where $X,Y,A$ and $P,A$, and thus also $Z,B$ and $Q,R,B$, are balanced sequents; other cases are similar.
 
 \medskip
 
@@ -1611,27 +1663,27 @@ The rewiring path will be illustrated for the case where $A,B,X$ and $D,X$, and 
 \displayOcto{\octorollA1}
 
 \noindent
-\textbf{2.}\quad The jump $\jump iv$ is rewired to a weight absorber together with only the jumps from the first $\bot$ of each of $D$, $E$, and $F$:
+\textbf{2.}\quad The jump $\jump iv$ is rewired to a weight absorber, together with only the jumps from the first $\bot$ of each of $P$, $Q$, and $R$:
 
 \displayOcto{\octorollB2}
 
 \noindent
-\textbf{3.}\quad The jump from the first $\bot$ of $D$ is moved to $X$, and those from the first $\bot$ of $E$ and $F$ are moved to $Y$:
+\textbf{3.}\quad The jump from the first $\bot$ of $P$ is moved to $A$, and those from the first $\bot$ of $Q$ and $R$ are moved to $B$:
 
 \displayOcto{\octorollB3}
 
 \noindent
-\textbf{4.}\quad In the present configuration, the jumps from the weight elements form two subnets: one over the sub-sequent $A,B,X,D,1^m$, and one over the sub-sequent $C,Y,E,F,1^k$, for some $m$ and $k$. By Proposition~\ref{prop:parity determines equivalence}, these subnets are equivalent to any other over the same sequent, as long as their parity is preserved. It is then sufficient to choose linkings so that $D\pr E\pr F$ is in a standard linking with $X\tn Y$, with a minor adjustment: two jumps from $D$ to $X$ should remain exchanged, compared to the standard linking, for step 6 below. The jumps of $A,B,C$ link to the weight absorbers $1^m$ and $1^k$, with one remaining jump from $B$ to $X$ and one from $C$ to $Y$.
+\textbf{4.}\quad In the present configuration, the jumps from the weight elements form two subnets: one over the sub-sequent $X,Y,A,P,1^m$, and one over the sub-sequent $Z,B,Q,R,1^k$, for some $m$ and $k$. By Proposition~\ref{prop:parity determines equivalence}, these subnets are equivalent to any other over the same sequent with which they have even parity. It is then sufficient to choose linkings so that $P\pr Q\pr R$ is in a standard linking with $A\tn B$, with a minor adjustment: two jumps from $P$ to $A$ should remain exchanged, compared to the standard linking, for step 6 below. The jumps of $X,Y,Z$ link to the weight absorbers $1^m$ and $1^k$, with one remaining jump from $Y$ to $A$ and one from $Z$ to $B$.
 
 \displayOcto{\octorollC}
 
 \noindent
-\textbf{5.}\quad The jump from $C$ to $Y$ is moved towards a weight absorber connected to $A,B$.
+\textbf{5.}\quad The jump from $Z$ to $B$ is moved towards a weight absorber connected to $X,Y$.
 
 \displayOcto{\octorollD1}
 
 \noindent
-\textbf{6.}\quad The jump from $B$ to $X$ is the one remaining connection between the edge-gadgets $\itn{e_i}$ and $\itn{e_j}$. Lemma~\ref{lem:double exchange} allows to swap the targets of the jump from $B$ to $X$ and the jump from $i$, and simultaneously undo the exchange in the jumps from $D$ to $X$ added in step 4 above.
+\textbf{6.}\quad The jump from $Y$ to $A$ is the one remaining connection between the edge-gadgets $\itn{e_i}$ and $\itn{e_j}$. Lemma~\ref{lem:double exchange} allows to swap the targets of the jump from $Y$ to $A$ and the jump from $i$, and simultaneously undo the exchange in the jumps from $P$ to $A$ added in step 4 above.
 
 \displayOcto{\octorollD2}
 
@@ -1700,7 +1752,7 @@ Let $\gamma$ and $\delta$ agree on every edge except $e$, where $\gamma(e)=v$ an
 %
 Firstly, using Lemma~\ref{lem:octopus roll}, for the edges $d$ other than $e$ such that $\gamma(d)=v$, the weight elements of the edge-gadgets $\itn d$ may be linked to the constraint elements of $\itn v$, in accordance with the target configuration $\itn\delta$.
 %
-Since $e$ is mobile in $\gamma$, the weights of the edges $d$ suffice to fill the inflow constraint of $v$, and correspondingly the weight elements of edge-gadgets $\itn d$ suffice to fill the constraint elements of $\itn v$, so that $\itn e$ is mobile.
+Since $e$ is mobile in $\gamma$, the weights of the edges $d$ suffice to fill the inflow constraint of $v$, and correspondingly the weight elements of edge-gadgets $\itn d$ suffice to fill the constraint elements of $\itn v$, so that $\itn e$ is free.
 %
 Next, the indicator vertex of $\itn e$, which links to the indicator target of $\itn v$, is re-attached to the indicator target of $\itn w$.
 %
@@ -1715,13 +1767,13 @@ The resulting proof net is $\itn\delta$ modulo a permutation of weight absorbers
 \subsection*{Soundness}
 
 
-It will be shown that proof net rewiring $\itn\gamma\perm\itn\delta_\gamma$ is sound for \capsabbrev{ncg}-reconfiguration, $\gamma\perm\delta$.
+It will be shown that proof net rewiring $\itn\gamma\perm\itn\delta_\gamma$ is sound for \capsabbrev{ncg}-reconfiguration, i.e\ that it implies $\gamma\perm\delta$.
 %
 To each proof net $\links$ for an encoded constraint graph $\itn G$ we will associate a partial configuration $\gamma=\coitn\links$, such that 1) a rewiring step between $\links$ and $\links'$ corresponds to a reconfiguration path $\coitn\links\perm\coitn{\links'}$, and 2) the function $\coitn-$ is a retraction of the encoding of configurations, $\coitn{\itn\gamma}=\gamma$.
 
 
 
-The configuration $\coitn\links$ will assign an edge $e$ to a vertex $v$ when, in the proof net $(\links,\itn G)$, the edge-gadget $\itn e$ is in the empire of the vertex-gadget $\itn v$.
+The configuration $\coitn\links$ will assign an edge $e$ to a vertex $v$ when, in the proof net $(\itn G,\links)$, the edge-gadget $\itn e$ is in the empire of the vertex-gadget $\itn v$.
 %
 Firstly, it will be shown that $\coitn\links$ is a partial function.
 
@@ -1760,26 +1812,17 @@ Since weight elements come in multiples of $m$, it follows that to fill the $m\t
 
 
 
-Let $e$ be inappropriate for $v$; let $C=A\tn B$ be a constraint element in $\itn v$, and $W=X\pr Y\pr Z$ weight element  in $\itn e$.
-%
-To find a proof net for the sequent $W,C$ requires to assign balanced boxes to the par-formulae $A$ and $B$.
-%
-Since $e$ is inappropriate, the sequents $A,X$ and $A,X,Y$ are not balanced, while the balance of each of the other sequents of $A$ with one or more of $X,Y,Z$ is always $1$ or $2$ $\pmod 3$.
-%
-It follows that there is no proof net for $W,C$.
+Let $e$ be inappropriate for $v$; let $C=A\tn B$ be a constraint element in $\itn v$, and $W=X\pr Y\pr Z$ a weight element  in $\itn e$. To find a proof net for the sequent $C,W$ requires to assign balanced boxes to the par-formulae $A$ and $B$. Since $e$ is inappropriate, the sequents $A,X$ and $A,X,Y$ are not balanced, while the balance of each of the other sequents of $A$ with one or more of $X,Y,Z$ is always $1$ or $2\pmod 3$. It follows that there is no proof net for $C,W$.
 
 
-{\color{red}TO DO!!!}
+Next, it will be shown that to balance $m$ constraint elements requires at least $m+1$ inappropriate edge-gadgets.
+%
+Two edge-gadgets may balance at most three constraint elements: one weight element $W$ has three subformulae, which may each balance at most one half of a constraint element; the other halves may be balanced by different weight elements of the second edge-gadget.
+%
+In the same way, adding one further edge-gadget allows at most three further constraint elements to be filled, since previous edges may connect to only one half of each constraint element.
+%
+Then to balance $3m$ constraint elements inappropriately requires $m+1$ edge-gadgets.
 
-%
-%Next, it will be shown that to balance $m$ constraint elements requires at least $m+1$ inappropriate edge-gadgets.
-%%
-%Two edge-gadgets may balance at most three constraint elements: one weight element $W$ has three subformulae, which may each balance at most one half of a constraint element; the other halves may be balanced by different weight elements of the second edge-gadget.
-%%
-%In the same way, adding one further edge-gadget allows at most three further constraint elements to be filled, since previous edges may connect to only one half of each constraint element.
-%%
-%Then to balance $3m$ constraint elements inappropriately requires $m+1$ edge-gadgets.
-%
 \end{proof}
 
 
@@ -1789,12 +1832,27 @@ Using the above, a proof net for $\itn G$ may be interpreted as a configuration 
 
 
 \begin{definition}
-For a proof net $\links$ for $\itn G$, let $\coitn\links$ be the partial configuration for $G$ where $\coitn\links(e)$ is $v$ if both $e$ is appropriate for $v$ and $\itn e$ belongs to the empire of $\itn v$, and  undefined otherwise.
+For a proof net $\links$ for $\itn G$, let $\coitn\links$ be the partial configuration for $G$ where
+% $\coitn\links(e)$ is $v$ if both $e$ is appropriate for $v$ and $\itn e$ belongs to the empire of $\itn v$, and  undefined otherwise.
+\[
+	\coitn\links(e)=
+	\left\{\begin{array}{ll}
+		v & \text{if $e$ is appropriate for $v$ and $\itn e$ is in the empire of $\itn v$} \\
+		\star & \text{otherwise.}
+	\end{array}\right.
+\]
 \end{definition}
 
 
-The following lemma then shows that rewiring corresponds to reconfiguration under $\coitn-$.
+To observe that an encoding $\itn\gamma$ decodes back to $\gamma$, note that whenever $\gamma(e)=v$ the indicator of $\itn e$ in $\itn\gamma$ connects to the indicator target of $\itn v$; this is sufficient to place $\itn e$ in the empire of $\itn v$. We have the following proposition.
 
+\begin{proposition}
+\label{prop:retraction}
+$\coitn{\itn\gamma}=\gamma$ and $\coitn{\itn\gamma'}=\gamma$.
+\end{proposition}
+
+
+The following lemma then shows that rewiring corresponds to reconfiguration under $\coitn-$.
 
 
 \begin{lemma}
@@ -1839,18 +1897,18 @@ We are now ready to state our main theorem.
 Then by Savitch's Theorem \cite{Savitch-1970} \capsabbrev{mll} proof equivalence is in \capsabbrev{pspace}.
 
 
-\capsabbrev{pspace}-hardness is by the encoding of \capsabbrev{ncg}-reconfiguration. Recall that an instance of \capsabbrev{ncg}-reconfiguration $(G,\gamma,\delta)$ is encoded by the triple $(\itn G,\itn\gamma,\itn\gamma_\delta)$. Then:
+\capsabbrev{pspace}-hardness is by the encoding of \capsabbrev{ncg}-reconfiguration. Recall that an instance of \capsabbrev{ncg}-reconfiguration $(G,\gamma,\delta)$ is encoded by the triple $(\itn G,\itn\gamma,\itn\delta_\gamma)$. Then:
 \[
 	\gamma\perm\delta \qquad\iff\qquad \itn\gamma\perm\itn\delta_\gamma~.
 \]
 %
-The direction $(\Rightarrow)$ is by Lemma~\ref{lem:completeness}; the direction $(\Leftarrow)$ is by Lemma~\ref{lem:soundness} and the observation that $\coitn{\itn\gamma}=\gamma$ and $\coitn{\itn\delta_\gamma}=\delta$.
+The direction $(\Rightarrow)$ is by Lemma~\ref{lem:completeness}; the direction $(\Leftarrow)$ is by Lemma~\ref{lem:soundness} and Proposition \ref{prop:retraction}.
 \end{proof}
 
 
 
 \subsection*{Acknowledgements}
-We would like to thank Lutz Stra{\ss}burger for taking a very careful look at our construction, and Dominic Hughes for useful suggestions on exposition. We would also like to thank the anonymous referees for insightful remarks, in particular regarding the consequences for MELL.
+We would like to thank Beniamino Accattoli, Dominic Hughes, and Lutz Stra{\ss}burger for helpful discussions and comments. We would also like to thank the anonymous referees for insightful remarks.
 
 %===========================
 \bibliographystyle{plain}
