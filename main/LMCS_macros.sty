@@ -596,13 +596,13 @@
 
 \newcommand\connectingElements[1]{
   \begin{tikzpicture}[x=5mm,y=5mm,octo]
-	\node[big_] (A) at (-.5,3.5) {$i'$}; 
-	\node[big_] (B) at (1.5,3.5) {$j'$};
+	\node[big_] (A) at (-.5,3.5) {$i\ap$}; 
+	\node[big_] (B) at (1.5,3.5) {$j\ap$};
 	\node[big_] (C) at (3.5,3.5) {};
 	\draw[rounded corners] (-1.5,4.5) rectangle (4.5,2.5);
 	\SWITCH{#1}
-		{1}{\node[big1] (1) at (0,0) {$i'$};}
-		{2}{\node[big1] (1) at (0,0) {\makebox[0pt][c]{$i{\scriptscriptstyle +}j'$}};}
+		{1}{\node[big1] (1) at (0,0) {$i\ap$};}
+		{2}{\node[big1] (1) at (0,0) {\makebox[0pt][c]{$i{\scriptscriptstyle +}j\ap$}};}
 	\DEFAULT{}
 	\node[big1] (2) at (3,0) {};
 	\draw[rounded corners] (-1,-1) rectangle (1,1) (2,-1) rectangle (4,1);

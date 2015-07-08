@@ -1334,9 +1334,15 @@ So far we have assumed that one weight element may encode one unit of weight in 
 \]
 To resolve this issue, it is sufficient to increase the number of weight elements used to encode one unit of weight. In the following, we will investigate how many are needed.
 
-In an inappropriate linking as shown above, since both halves of the constraint element are connected, the weight elements must be disconnected---otherwise, the switching condition would be violated. That means the weight elements must belong to different edges.
+% NEW
 
-As the linkings above illustrate, it may occur that one subformula of a weight element $A\pr B\pr C$ fills one half of a constraint element. Consequently, a weight element can fill three halves, but only of different constraint elements. The other three halves may be filled by weight elements of a different edge---so to fill 3 constraint elements requires 2 inappropriate edges. To fill the next three constraint elements, at most 1 previous inappropriate edge may be used, and one additional one is needed. To fill $3n$ constraint elements inappropriately therefore requires $n+1$ edges. It thus suffices to encode one unit of weight on an edge by $3\times|E|$ weight elements (where $|E|$ is the number of edges in the constraint graph), and correspondingly to encode one unit of inflow constraint by $3\times|E|$ constraint elements.
+In an inappropriate linking as shown above, since both halves of the constraint element are connected, the weight elements must be disconnected---otherwise, the switching condition would be violated. That means the weight elements must belong to different edges. Note that it is possible to use more than one weight element from the same edge to fill one half of a constraint element; or even weight elements from different edges, but we are interested here only in the \emph{minimum} number of edges needed to inappropriately fill a vertex-gadget.
+
+Since the different halves of a constraint element must be filled by different edge-gadgets, the switching condition forces inappropriately connected edge-gadgets and constraint elements to form a tree, with edge-gadgets as nodes and constraint elements as edges. Since in a tree the number of nodes is always one greater than the number of edges, it requires $n+1$ edge-gadgets to fill $n$ constraint elements. It thus suffices to multiply the number of weight elements by the number of edges: we will encode one unit of weight on an edge by $|E|$ weight elements (where $|E|$ is the number of edges in the constraint graph), and correspondingly encode one unit of inflow constraint by $|E|$ constraint elements.
+
+%As the linkings above illustrate, it may occur that one subformula of a weight element $A\pr B\pr C$ fills one half of a constraint element. Consequently, a weight element can fill three halves, but only of different constraint elements. The other three halves may be filled by weight elements of a different edge---so to fill 3 constraint elements requires 2 inappropriate edges. To fill the next three constraint elements, at most 1 previous inappropriate edge may be used, and one additional one is needed. To fill $3n$ constraint elements inappropriately therefore requires $n+1$ edges. It thus suffices to encode one unit of weight on an edge by $3\times|E|$ weight elements (where $|E|$ is the number of edges in the constraint graph), and correspondingly to encode one unit of inflow constraint by $3\times|E|$ constraint elements.
+
+% OLD
 
 \subsection*{The complete encoding}
 
@@ -1378,7 +1384,7 @@ Let $G=(V,E,c,v,w)$ with $|V|=n$, $|E|=m$, $V=\{v_1,\dotsc,v_n\}$, and $E=\{e_1,
 \noindent
 The encoding of a vertex $v_k$ is the formula
 \[
-	\itn{v_k} = \bigparr\big(C_n(k)^{3m\,\times\,c(v_k)} \big)\pr\1
+	\itn{v_k} = \bigparr\big(C_n(k)^{m\,\times\,c(v_k)} \big)\pr\1
 \]
 where each \emph{constraint element} $C_n(k)$ is the formula
 \[
@@ -1388,7 +1394,7 @@ where each \emph{constraint element} $C_n(k)$ is the formula
 \noindent
 The encoding of an edge $e$ connecting vertices $v_i$ and $v_j$ with $i\leq j$ is the formula
 \[
-	\itn{e} = \bigtn\big(W_n(i,j)^{3m\,\times\,w(e)}\big)\tn\bot
+	\itn{e} = \bigtn\big(W_n(i,j)^{m\,\times\,w(e)}\big)\tn\bot
 \]
 where each \emph{weight element} $W_n(i,j)$ is the formula
 \[
@@ -1400,7 +1406,7 @@ The encoding of the graph $G$ is the sequent
 \[
 	\itn G = \itn{v_1}\tn\dotso\tn\itn{v_n}, \itn{e_1},\dotsc,\itn{e_m}, 1^p
 \]
-where $p=3m\times(|w|-|c|)\times(3n+4)$.
+where $p=m\times(|w|-|c|)\times(3n+4)$.
 
 \end{definition}
 
@@ -1748,9 +1754,9 @@ In a proof net for $\itn G$, for each node $v$ in $G$, the weights of the approp
 %
 Let $|E|=m$.
 %
-We will show that the inappropriate edge-gadgets in $G$ are insufficient to fill $3m$ weight elements in $\itn v$.
+We will show that the inappropriate edge-gadgets in $G$ are insufficient to fill $m$ weight elements in $\itn v$.
 %
-Since weight elements come in multiples of $3m$, it follows that to fill the $3m\times c(v)$ constraint elements of $v$, there must be at least as many appropriate weight elements available.
+Since weight elements come in multiples of $m$, it follows that to fill the $m\times c(v)$ constraint elements of $v$, there must be at least as many appropriate weight elements available.
 
 
 
@@ -1763,13 +1769,16 @@ Since $e$ is inappropriate, the sequents $A,X$ and $A,X,Y$ are not balanced, whi
 It follows that there is no proof net for $W,C$.
 
 
-Next, it will be shown that to balance $3m$ constraint elements requires at least $m+1$ inappropriate edge-gadgets.
+{\color{red}TO DO!!!}
+
 %
-Two edge-gadgets may balance at most three constraint elements: one weight element $W$ has three subformulae, which may each balance at most one half of a constraint element; the other halves may be balanced by different weight elements of the second edge-gadget.
-%
-In the same way, adding one further edge-gadget allows at most three further constraint elements to be filled, since previous edges may connect to only one half of each constraint element.
-%
-Then to balance $3m$ constraint elements inappropriately requires $m+1$ edge-gadgets.
+%Next, it will be shown that to balance $m$ constraint elements requires at least $m+1$ inappropriate edge-gadgets.
+%%
+%Two edge-gadgets may balance at most three constraint elements: one weight element $W$ has three subformulae, which may each balance at most one half of a constraint element; the other halves may be balanced by different weight elements of the second edge-gadget.
+%%
+%In the same way, adding one further edge-gadget allows at most three further constraint elements to be filled, since previous edges may connect to only one half of each constraint element.
+%%
+%Then to balance $3m$ constraint elements inappropriately requires $m+1$ edge-gadgets.
 %
 \end{proof}
 
