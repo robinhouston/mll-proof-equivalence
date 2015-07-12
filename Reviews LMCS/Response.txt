@@ -1,6 +1,6 @@
 
 
-We thank the referees for their careful reading of our paper, and for the detailed and helpful feedback they have provided. Here, we will discuss each review in turn, as well as the changes we have made in response. We omit the suggested minor changes that we have implemented, but comment on those we chose not to.
+We thank the referees for their careful reading of our paper, and for the detailed and helpful feedback they have provided. Here, we will discuss each review in turn, and highlight the changes we have made in response. For the suggested minor changes, we have implemented most, and will comment only on those we chose not to.
 
 
 Review 1
@@ -22,14 +22,14 @@ p.25, Definition 37: I find this definition a bit disturbing, it seems ad hoc at
 
 p.30, Theorem 46: just a minor quibble: you could make explicit the reduction from NCG-reconfiguration to the proof net equivalence problem, in order for the reader to better understand the complexity of such a reduction, which must be at least polytime computable. [...]
 
- ??? We have also made the complexity of this translation more explicit (in Theorem 46).
+*** We have also made this translation more explicit (in the final theorem as well as earlier in the paper).
 
 
 
 Review 2
 I have the impression that the authors do not realize the importance of their own result. [...]
 
-*** While we were aware that MELL- may encode MLL, we indeed did not realise that the consequence of our result (that MELL has no canonical normal forms) would be unexpected or considered interesting. And we remain cautious: surely proof equivalence for MELL is completely dominated by the complexity of cut-elimination? We have added a paragraph to this effect to the introduction.
+*** While we were aware that MELL (without units) may encode MLL, we indeed did not realise that this consequence of our result (that MELL has no canonical normal forms) would be unexpected, or considered more interesting than the consequence for MLL. And we remain slightly cautious: surely proof equivalence for MELL is completely dominated by the complexity of cut-elimination? We have added a paragraph to this effect to the introduction.
 
 Another issue concerns the paragraph of the introduction that mentions the fragments of linear logic for which canonical proof nets are known. I think that the polarized case should be added. 
 
@@ -69,6 +69,8 @@ Moreover it is said that Intuitionistic MLL with units has a canonical presentat
 Second, in Section 4 it is said that the reconfiguration problem remains PSPACE-­complete under a number of restrictions, e.g. fixing constraint at the value 2, but the authors choose the encode the general case, without restrictions. [...]
 
 *** We don't think these restrictions would actually simplify the encoding - in fact, it would be exactly the same. It would still be necessary, for instance, to correct for parity, and to multiply weights by 3 times the number of edges.
+
+
 
 
 Review 3

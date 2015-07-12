@@ -80,7 +80,7 @@ Drawing from recent work on reconfiguration problems, in this paper it is shown 
 %
 An important consequence of the result is that the existence of a satisfactory notion of proof nets for \capsabbrev{mll} with units is ruled out (under current complexity assumptions).
 %
-Another is that for \capsabbrev{mell}, even without units, equivalence of normal forms is \capsabbrev{pspace}-hard.
+The \capsabbrev{pspace}-hardness result extends to equivalence of normal forms in \capsabbrev{mell} without units, where the weakening rule for the ``why-not'' exponential induces a similar rewiring problem.
 \end{abstract}
 
 
@@ -1902,13 +1902,13 @@ Then by Savitch's Theorem \cite{Savitch-1970} \capsabbrev{mll} proof equivalence
 	\gamma\perm\delta \qquad\iff\qquad \itn\gamma\perm\itn\delta_\gamma~.
 \]
 %
-The direction $(\Rightarrow)$ is by Lemma~\ref{lem:completeness}; the direction $(\Leftarrow)$ is by Lemma~\ref{lem:soundness} and Proposition \ref{prop:retraction}.
+The direction $(\Rightarrow)$ is by Lemma~\ref{lem:completeness}; the direction $(\Leftarrow)$ is by Lemma~\ref{lem:soundness} and Proposition \ref{prop:retraction}. The encoding involves computing $\itn G$, $\itn\gamma$, and $\itn\delta$, then computing the parity of $\itn\gamma$ and $\itn\delta$ and adjusting $\itn\delta$ if needed; each can be done in polynomial time in the size of $(G,\gamma,\delta)$.
 \end{proof}
 
 
 
 \subsection*{Acknowledgements}
-We would like to thank Beniamino Accattoli, Dominic Hughes, and Lutz Stra{\ss}burger for helpful discussions and comments. We would also like to thank the anonymous referees for insightful remarks.
+We would like to thank Beniamino Accattoli, Dominic Hughes, and Lutz Stra{\ss}burger for helpful discussions and comments. We would also like to thank the anonymous referees for their insightful remarks.
 
 %===========================
 \bibliographystyle{plain}
