@@ -7,7 +7,7 @@ Review 1
 
 p.1, l.-1: "Canonical proof nets may also be defined for intuitionistic MLL with units": are you referring to (some of) the same papers you cite in the next paragraphs (i.e. Blute et al., Trimble, Lamarche, etc.)?  In any case, you should add a reference here.
 
-*** We have tried and failed to find a decent reference for the kind of proof nets we have in mind here, although private discussions have convinced us that they are quite widely understood. The principle is simple: re-wiring jumps towards the unique conclusion yields a canonical form. But Lamarche's "essential nets", extended with units by Murawski and Ong (both of which we have added as a reference), attach jumps to the leaves of the tree instead.
+*** We have tried and failed to find a decent reference for the kind of proof nets we have in mind here, although private discussions have convinced us that they are quite widely understood. The principle is simple: re-wiring jumps towards the unique conclusion yields a canonical form. But Lamarche's "essential nets", extended with units by Murawski and Ong (both of which we have added as a reference), attach jumps to the leaves of the tree instead. We have added a comment along these lines to the paper.
 
 
 p.10, notations: why do you use a "prime" in your notation for sequents/formulas?  I mean, why n' (in a circle) instead of just n?  Since n',i',j', etc. are common notations for variables (as n,i,j...), the notation is quite misleading at first.
@@ -38,7 +38,7 @@ Review 2
 
 Moreover it is said that Intuitionistic MLL with units has a canonical presentation but no citations are given. [...]
 
-*** We have expanded the explanation of IMLL proof nets that we have in mind. (See also above in the response to Review 1.) We view intuitionistic LL as one of several alternatives to classical LL (as remarked on in the next comment).
+*** We have tried and failed to find a decent reference for the kind of proof nets we have in mind here, although private discussions have convinced us that they are quite widely understood. The principle is simple: re-wiring jumps towards the unique conclusion yields a canonical form. But Lamarche's "essential nets", extended with units by Murawski and Ong (both of which we have added as a reference), attach jumps to the leaves of the tree instead. We have added a comment along these lines to the paper. We view intuitionistic LL as one of several alternatives to classical LL (as remarked on in the next comment).
 
 I also find the third paragraph of page 2 (“Since there can be no canonical representation...”) unsatisfying. It points to alternative ideas in the literature to define the identity of proofs. They have to be discussed, at least briefly. [...]
 
@@ -55,7 +55,7 @@ Moreover it is said that Intuitionistic MLL with units has a canonical presentat
 
 2) Parity [...]
 
-*** We have added some introductory paragraphs to the subsection on parity, and adjusted Definition 37 for clarity (see also the response to Review 1 above).
+*** We have added some introductory paragraphs to the subsection on parity. We agree that Definition 37 was not well-explained; we now explicitly define the translation of an instance of NCL-reconfiguration (which consists of a constraint graph with two configurations).
 
 
 3) Soundness/readback[...]

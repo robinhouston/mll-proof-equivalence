@@ -6,51 +6,20 @@
 \usepackage{textcomp}
 \usepackage{mathtools}
 
-
 \usepackage{LMCS_macros,willemtools}
 
-\graphicspath{{../notes/}}
-
 \longJournalNames
-\makeTheoremDefs
-
 \let\capsabbrev=\uppercase
-
-\newcommand\jumpsto{\jump}
-\newcommand\Perm{\mathbf\sim}
-
-
-% MLL
-%   x remove naming - work with occurrences instead ??
-%   v explain cut-elimination
-%     define *-autonomous categories
-
-% PROOF NETS
-%   v separate section for proof nets
-%   v discuss both small-step and big-step equivalence
-%      connect jumps anywhere / to positive leaves (1,a) only
-%   v example translation: proof => net
-% 
-%   v add 3-partition example
-%
-
-% CONSTRAINT LOGIC
-%	  add separate section for constraint logic
-%	
-
-% PARITY
-%     stress alternation over n-arity
-%     explain n-arity is safe
-%     mention alternatives ??
-%     clear up argument where possible
-
-% CONSTRUCTION
-%     clarify where possible
-
 
 \title{Proof equivalence in \capsabbrev{mll} is \capsabbrev{pspace}-complete}
 
-\author{Willem Heijltjes and Robin Houston}
+\author{Willem Heijltjes}
+\address{University of Bath}
+\email{w.b.heijltjes@bath.ac.uk}
+
+\author{Robin Houston}
+\address{Kiln Enterprises}
+\email{robin@kiln.it}
 
 
 %============================================================
@@ -67,7 +36,9 @@
 %\category{F.4.1}{Mathematical logic and formal languages}{Mathematical logic}[Proof theory]
 %\category{F.2.2}{Analysis of algorithms and problem complexity}{Nonnumerical algorithms and problems}[Complexity of proof procedures]
 
-%\keywords{linear logic, proof equivalence, proof nets, constraint logic, \capsabbrev{pspace}-completeness}
+\keywords{linear logic, proof equivalence, proof nets, constraint logic, \capsabbrev{pspace}-completeness}
+\subjclass{F.4.1 Mathematical logic and formal languages---Mathematical logic} %(Proof theory)
+%\subjclass{F.2.2: Analysis of algorithms and problem complexity; Nonnumerical algorithms and problems; Complexity of proof procedures}
 
 \begin{abstract}
 \capsabbrev{mll} proof equivalence is the problem of deciding whether two proofs in multiplicative linear logic are related by a series of inference permutations.
@@ -80,7 +51,7 @@ Drawing from recent work on reconfiguration problems, in this paper it is shown 
 %
 An important consequence of the result is that the existence of a satisfactory notion of proof nets for \capsabbrev{mll} with units is ruled out (under current complexity assumptions).
 %
-The \capsabbrev{pspace}-hardness result extends to equivalence of normal forms in \capsabbrev{mell} without units, where the weakening rule for the ``why-not'' exponential induces a similar rewiring problem.
+The \capsabbrev{pspace}-hardness result extends to equivalence of normal forms in \capsabbrev{mell} without units, where the weakening rule for the exponentials induces a similar rewiring problem.
 \end{abstract}
 
 
@@ -210,13 +181,6 @@ Within a proof, the names of units and connectives are preserved through inferen
 \label{fig:MLL}
 \end{figure}
 
-A one-sided sequent calculus for unit-only \capsabbrev{mll} is given in Figure~\ref{fig:MLL}. The rules for identity ($\mathsf{ax}$) and cut ($\mathsf{cut}$) are admissible, and are eliminated via the identity-elimination and cut-elimination transformations displayed in Figure~\ref{fig:id-elim} and Figure~\ref{fig:cut-elim} respectively. The cut-elimination process in addition makes essential use of \emph{permutations} of inference rules, displayed in Figure~\ref{fig:permutations}, to match up a cut-rule with the two inferences that introduce both cut-formulae. Note that the symmetric variants of various transformations have been omitted from the figures, as well as permutations involving the cut-rule, which are similar to those of the tensor rule.
-
-
-The proof system we shall be working with is that consisting of just the introduction rules for the two units and the two connectives, the four rules $(\bot)$, $(\1)$, $(\pr)$, and $(\tn)$ of Figure~\ref{fig:MLL}. The problem we consider is the following.
-
-
-
 \begin{figure}
 \[
 \begin{array}{c}
@@ -229,10 +193,7 @@ The proof system we shall be working with is that consisting of just the introdu
 \]
 \caption{Identity-elimination transformations}
 \label{fig:id-elim}
-\end{figure}
-
-
-\begin{figure}
+\bigskip
 \[
 \begin{array}{rcl}
 \\[5pt]
@@ -243,9 +204,7 @@ The proof system we shall be working with is that consisting of just the introdu
 \]
 \caption{Cut-elimination transformations}
 \label{fig:cut-elim}
-\end{figure}
-
-\begin{figure}
+\bigskip
 \[
 \begin{array}{c}
 \\[5pt]
@@ -269,18 +228,23 @@ The proof system we shall be working with is that consisting of just the introdu
 \label{fig:permutations}
 \end{figure}
 
+A one-sided sequent calculus for unit-only \capsabbrev{mll} is given in Figure~\ref{fig:MLL}. The rules for identity ($\mathsf{ax}$) and cut ($\mathsf{cut}$) are admissible, and are eliminated via the identity-elimination and cut-elimination transformations displayed in Figure~\ref{fig:id-elim} and Figure~\ref{fig:cut-elim} respectively. The cut-elimination process in addition makes essential use of \emph{permutations} of inference rules, displayed in Figure~\ref{fig:permutations}, to match up a cut-rule with the two inferences that introduce both cut-formulae. Note that the symmetric variants of various transformations have been omitted from the figures, as well as permutations involving the cut-rule, which are similar to those of the tensor rule.
 
-\begin{definition}[\capsabbrev{mll} proof equivalence]
+
+The proof system we shall be working with is that consisting of just the introduction rules for the two units and the two connectives, the four rules $(\bot)$, $(\1)$, $(\pr)$, and $(\tn)$ of Figure~\ref{fig:MLL}. The problem we consider is the following.
+
+\begin{defi}[\capsabbrev{mll} proof equivalence]
 \label{def:equivalence}
 \emph{Equivalence} $(\perm)$ of proofs in (unit-only, cut-free, identity-free) multiplicative linear logic is the congruence generated by the permutations given in Figure~\ref{fig:permutations}. \emph{\capsabbrev{mll} proof equivalence} is the problem of deciding whether two given proofs are equivalent.
-\end{definition}
+\end{defi}
+
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 \subsection*{Star-autonomous categories}
 
 
-The permutations of sequent proofs are exactly the identifications imposed by the categorical semantics of \capsabbrev{mll}, star-autonomous categories \cite{Barr-1991} (and semi-star-autonomous categories \cite{Houston-2008,Heijltjes-Strassburger} for \capsabbrev{mll} without units). Proof equivalence for \capsabbrev{mll} is thus equivalent to the \emph{word problem} for star-autonomous categories: the problem whether two term representations denote the same morphism in any star-autonomous category.
+The permutations of sequent proofs are exactly the identifications imposed by the categorical semantics of \capsabbrev{mll}, star-autonomous categories \cite{Barr-1991} (and semi-star-autonomous categories \cite{Houston-2008,Heijltjes-Strassburger} for \capsabbrev{mll} without units). Proof equivalence for \capsabbrev{mll} is equivalent to the \emph{word problem} for star-autonomous categories: the problem whether two term representations denote the same morphism in any star-autonomous category.
 
 
 %------------------------------------------------------------
@@ -299,7 +263,7 @@ Rewiring is the re-attachment of one jump, either as a small-step relation that 
 
 In this section we will discuss how this notion of proof net arises from the sequent calculus, and introduce a compact notation for it.
 
-\begin{definition}[Proof nets]
+\begin{defi}[Proof nets]
 \label{def:proof nets}
 %
 For a sequent $\Gamma$,
@@ -323,7 +287,7 @@ For a sequent $\Gamma$,
 	a \emph{proof net} $(\Gamma,\links)$ consists of the sequent $\Gamma$ and a correct linking $\links$ for $\Gamma$.
 
 \end{itemize}
-\end{definition}
+\end{defi}
 
 
 An example proof net is given in Figure~\ref{fig:example net}. The edges from a $\pr$-node, which are subject to being switched, are drawn as dashed lines, while edges from a $\tn$-node are solid lines. An edge $\edge a{\links(a)}$ in a proof net or switching graph is called a \emph{link} or a \emph{jump}, and may also be indicated $\jump a{\links(a)}$, to match the illustrations. Note that unlike the axiom links of proof nets without units, a jump may connect to any connective or unit, even another $\bot$-instance, and multiple jumps may point to the same position. A path between vertices $a$ and $b$ in a switching graph is indicated as $\path ab$.
@@ -339,13 +303,13 @@ An example proof net is given in Figure~\ref{fig:example net}. The edges from a 
 
 The present notion of proof net can be seen as a direct interpretation of the sequent calculus, in the following way. As there are inequivalent proofs of the sequent $\bot\tn\bot,1\pr1$, some way of attaching the $\bot$-formulae to the remainder of the proof net appears necessary. The introduction rule for $\bot$, in Figure~\ref{fig:MLL}, attaches a $\bot$-formula to a sequent---but sequents are not explicit in proof nets. The notion of a jump, which attaches the $\bot$ to an arbitrary subformula in the sequent $\Gamma$, is then a natural generalisation of the axiom links of unit-free \capsabbrev{mll} proof nets. This gives the following translation from proofs to proof nets.
 
-\begin{definition}
+\begin{defi}
 \label{def:proofs to nets}
 The relation $(\toNet)$ interprets a proof $\Pi$ by a linking $\links$ as follows: $\Pi\toNet\links$ if for each $\named a\bot$ in $\Pi$, $\links(a)$ is a name in the context $\Gamma$ of the inference introducing $\named a\bot$:
 \[
 	\infer[\MLLlabel b]{\Gamma,\named a\bot}{\Gamma}~.
 \]
-\end{definition}
+\end{defi}
 
 An example is given in Figure~\ref{fig:example trans}, where a proof is interpreted as the proof net of Figure~\ref{fig:example net}, by indicating the chosen jumps in the conclusion of each $\bot$-inference. (In the example, to trace formulae through inferences, the five $\bot$-formulae are kept in order from left to right, while the three $1$-formulae have explicit names.)
 
@@ -358,25 +322,25 @@ An example is given in Figure~\ref{fig:example trans}, where a proof is interpre
 \end{figure}
 
 
-\begin{proposition}[\cite{Danos-Regnier-1989,Lamarche-Strassburger-2006}]
+\begin{prop}[\cite{Danos-Regnier-1989,Lamarche-Strassburger-2006}]
 \label{prop:correctness and sequentialisation}
 If $\Pi\toNet\links$ and $\Pi$ has conclusion $\Gamma$, then $(\Gamma,\links)$ is a proof net. For any proof net $(\Gamma,\links)$ there is a proof $\Pi$ of $\Gamma$ such that $\Pi\toNet\links$ (sequentialisation).
-\end{proposition}
+\end{prop}
 
-\begin{remark}
+\begin{rem}
 The proof nets of \cite{Blute-Cockett-Seely-Trimble-1996} may appear to be formulated in quite a distinct way from our presentation, in particular in that their jumps from $\bot$-vertices connect to edges, rather than vertices. The difference is only superficial: in their proof nets, vertices represent inferences, and edges represent formulae; in both presentations, therefore, jumps may be seen to attach to formulae. This way of attaching jumps (to formulae, rather than inferences) is the natural choice also in their setting, which is motivated categorically, where $\bot$-introduction corresponds to the isomorphism $A\to A\pr\bot$.
-\end{remark}
+\end{rem}
 
 
 \subsection*{Rewiring}
 
 The use of proof nets factors out the bottom three permutations in Figure~\ref{fig:permutations}, $(\pr-\pr$), $(\tn-\pr)$, and $(\tn-\tn)$. The remaining permutations, involving the $\bot$-introduction rule, impose an equivalence on proof nets, consisting of the \emph{rewiring} of jumps from one target to another. This is defined as follows.
 
-\begin{definition}
+\begin{defi}
 \label{def:proof net equivalence}
 A \emph{rewiring} $(\perm*)$ between proof nets changes the target of exactly one jump.
 \emph{Equivalence} $(\perm)$ of proof nets over a sequent $\Gamma$ is the equivalence generated by rewiring.
-\end{definition}
+\end{defi}
 
 We will write $\links[\jumpsto ab]$ for the linking where $\jump ab$, and $\jump c{\links(c)}$ for any $\named c\bot$ other than $a$. Then in a rewiring $\links\perm*\links[\jumpsto ab]$, the jump being rewired is that from $a$.
 
@@ -384,9 +348,9 @@ The above definition, which is due to Hughes~\cite{Hughes-2012-nets}, gives the 
 
 That the rewiring relation is generated by the small-step relation in Figure~\ref{fig:rewiring} is a main theorem in \cite{Hughes-2012-nets}.
 
-\begin{proposition}[\cite{Hughes-2012-nets}]
+\begin{prop}[\cite{Hughes-2012-nets}]
 Rewiring $(\perm*)$ is generated by the local steps in Figure~\ref{fig:rewiring}.
-\end{proposition}
+\end{prop}
 
 
 \begin{figure}
@@ -405,21 +369,21 @@ A further refinement in the proof nets introduced by Hughes \cite{Hughes-2012-ne
  
 %For the remainder of the paper, unless otherwise indicated, we will assume that proof nets are of this form.
 
-\begin{proposition}[\cite{Hughes-2012-nets}]
+\begin{prop}[\cite{Hughes-2012-nets}]
 Any proof net is equivalent to one where the codomain of $\links$ is restricted to occurrences of the formula $1$.
-\end{proposition}
+\end{prop}
 
 A main technical advantage of this restriction is that cut-elimination can be performed in a one-shot operation, by path composition over jumps. Then, without the need to define cut-elimination by local transformations, proof nets may omit an explicit representation of cuts, as the present definition does.
 
 Finally, the following proposition states that equivalence is preserved when translating between proofs and proof nets, which means that \capsabbrev{mll} proof equivalence is equivalent to the problem of deciding equivalence of proof nets.
 
 
-\begin{proposition}[\cite{Blute-Cockett-Seely-Trimble-1996,Hughes-2012-nets}]
+\begin{prop}[\cite{Blute-Cockett-Seely-Trimble-1996,Hughes-2012-nets}]
 \label{prop:proof nets work}
 %
-If $\Pi\toNet\links$ and $\Pi'\toNet\links'$, then $\Pi\perm\Pi'$ if and only if $\links\perm\links'$.
+If $\Pi\toNet\links$ and $\Pi'\toNet\links'$, then $\Pi\perm\Pi'$ iff $\links\perm\links'$.
 %
-\end{proposition}
+\end{prop}
 
 
 
@@ -547,7 +511,7 @@ The above examples illustrate how the diagrammatic notation replaces the connect
 
 To lay out a sequent as a diagram in two dimensions may lead to ambiguity when multiple occurrences of the same formula are present, as is the case for the formula $\bot\tn\bot$ in the above examples. Where necessary, this will be resolved by adding the names of chosen $\bot$-formulae and $1$-formulae to a diagram. When discussing different proof nets over the same sequent, the sequent will be laid out in a consistent manner.
 
-Figure~\ref{fig:_*_,1,1,1,_*_} uses the diagrammatic notation to display the rewiring relation over the proof nets for the sequent $\bot\tn\bot,1,1,1,\bot\tn\bot$, an interesting example also highlighted in \cite{Strassburger-Lamarche-2004}. There are 24 proof nets in total (under the restriction that jumps only connect to $1$-occurrences), forming two equivalence classes, each consisting of a single cyclic rewiring path. 
+Figure~\ref{fig:_*_,1,1,1,_*_} uses the diagrammatic notation to display the rewiring relation over the proof nets for the sequent $\bot\tn\bot,1,1,1,\bot\tn\bot$ (an example also highlighted in \cite{Strassburger-Lamarche-2004}). There are 24 proof nets in total (under the restriction that jumps only connect to $1$-occurrences), forming two equivalence classes, each consisting of a single cyclic rewiring path. 
 
 
 \begin{figure}
@@ -720,13 +684,13 @@ The notions and results introduced in this section will be used in the main proo
 
 We will discuss (and adapt) some convenient standard notions for \capsabbrev{mll} proofs and proof nets, and relate them to rewiring. Firstly we will look at subnets---see also \cite{Bellin-vandeWiele-1995}.
 
-\begin{definition}
+\begin{defi}
 A \emph{sub-sequent} $\Delta\leq\Gamma$ of a sequent $\Gamma$ is a sequent consisting of disjoint subformulae of $\Gamma$, preserving names.
-\end{definition}
+\end{defi}
 
-\begin{definition}
+\begin{defi}
 A \emph{subnet} $(\Delta,\links') \leq (\Gamma,\links)$ of a proof net is a net such that $\Delta\leq\Gamma$ and $\links'$ is the restriction of $\links$ to the names in $\Delta$.
-\end{definition}
+\end{defi}
 
 The \emph{ports} of a sub-sequent $\Gamma'$ or subnet $(\Gamma',\links')$ are the root vertices of $\Gamma'$. For a vertex $v$ naming a par, tensor, or bottom, the subnets of which it is a port correspond to the possible subproofs of the rule introducing $v$ in a sequentialisation (the subproof of a $\1$-subformula must always be empty).
 
@@ -770,32 +734,32 @@ In the graph of a proof net, a chosen subnet for a par can be made explicit as a
 
 \newcommand\bx{s}
 
-\begin{definition}
+\begin{defi}
 A \emph{boxing} $\bx$ for a linking $\links$ for $\Gamma$ assigns a sub-sequent $\bx(v)\leq\Gamma$ to each par-vertex $\named v\pr$ such that 1) $v$ is a port of $\bx(v)$ and 2) boxes are either disjoint or strictly nested: if $\bx(v)\cap\bx(w)\neq\varnothing$ then $\bx(w)<\bx(v)$ or $\bx(v)<\bx(w)$.
-\end{definition}
+\end{defi}
 
 \noindent
 In the graph for $\links$ and $\Gamma$, a box $\bx(v)$ may be \emph{closed} by replacing the subgraph over $\bx(v)$ by the single vertex $v$, and replacing every arc into $\bx(v)$ by one onto $v$. For each box $\bx(v)$ we define the \emph{local graph} to be that formed by the subgraph over $\bx(v)$ where each immediately smaller box $\bx(w)<\bx(v)$ is closed. The following is then a variation on the local retraction algorithm by Danos \cite{Danos-1990}.
 
-\begin{proposition}
+\begin{prop}
 \label{prop:scoping correctness}
 A linking $\links$ for $\Gamma$ is a proof net if and only if it has a boxing $\bx$ such that each local graph is a tree.
-\end{proposition}
+\end{prop}
 
-\begin{proof}
+\proof
 Given a boxing $\bx$, it follows by induction on the nesting of boxes that the graph over each $\bx(v)$ satisfies the switching condition. In the other direction, given a sequentialisation of $(\Gamma,\links)$, a box $\bx(v)\leq\Gamma$ for each $\named v\pr$ is found by taking the conclusion $\Delta, A\named v\pr B$ of its introduction rule, below.
 \[
 	\infer[\MLLlabel p]{\Delta,A\named v\pr B}{\Delta,A,B}
 \]
-\end{proof}
+\qed
 
 In a proof net, the \emph{kingdom} and the \emph{empire} of a vertex $v$ are respectively the smallest and largest subnet that have $v$ as a port. In working with the rewiring relation, the notion of empire can be particularly useful.
 
-\begin{definition}
+\begin{defi}
 The \emph{empire} $\emp v$ of a vertex $v$ in $(\Gamma,\links)$ is the largest subnet $(\Delta,\links')$ of which $v$ is a port.
-\end{definition}
+\end{defi}
 
-\begin{proposition}[{\cite[Proposition 2.b]{Bellin-vandeWiele-1995}}]
+\begin{prop}[{\cite[Proposition 2.b]{Bellin-vandeWiele-1995}}]
 \label{prop:empire propagation}
 The empire $\emp v$ is determined by propagation from $v$:
 \begin{enumerate}
@@ -804,7 +768,7 @@ The empire $\emp v$ is determined by propagation from $v$:
 	\item into a tensor if one of its subformulae is in $\emp v-\{v\}$;
 	\item into a par if all its subformulae are in $\emp v-\{v\}$.
 \end{enumerate}
-\end{proposition}
+\end{prop}
 
 \noindent
 It should be noted that the above characterisation of  empires relies on the restriction that we have imposed, that jumps target $\1$-formulae only. Otherwise, the first case of the definition should be specialised so that propagation does not traverse jumps into $v$. 
@@ -812,7 +776,7 @@ It should be noted that the above characterisation of  empires relies on the res
 The following three lemmata will show how empires are connected to rewiring. Firstly, a jump from $\named v\bot$ may be rewired to exactly those $\1$-occurences that are in the empire of $v$ (Lemma~\ref{lem:rewiring within empire}). Secondly, rewiring a jump from $\named v\bot$ preserves the empire of $v$, up to that rewiring (Lemma~\ref{lem:rewiring preserves empire}). Thirdly, rewiring the jump from $v$ may add subformulae to the empire of another vertex $w$, or remove subformulae from it, but not both (Lemma~\ref{lem:rewiring affects empires}).
 
 
-\begin{lemma}
+\begin{lem}
 \label{lem:rewiring within empire}
 For a proof net $(\Gamma,\links)$ where $\links(a)=v$, and $w$ names a $\1$-occurrence in $\Gamma$, the following are equivalent:
 \begin{enumerate}
@@ -823,35 +787,35 @@ $w$ is in the empire $\emp a$; and
 	\item
 in any switching graph for $(\Gamma,\links)$, the path $\path vw$ does not pass through $a$.
 \end{enumerate}
-\end{lemma}
+\end{lem}
 
-\begin{proof}
+\proof
 By \cite[Proposition 2.a]{Bellin-vandeWiele-1995} 2 and 3 are equivalent.
 
-Next, it is shown that 2 implies 1. The empire $\emp a$ corresponds to the largest subproof $\Sigma$, with as conclusion the introduction rule of $\named a\bot$, in any sequentialisation $\Pi$ of $\links$. By Definition~\ref{def:proofs to nets}, in the translation of $\Sigma$ to a net, $a$ may link to any $1$-occurrence, including to $w$.
+Next, it is shown that 2 implies 1. The empire $\emp a$ corresponds to the largest subproof $\Sigma$, with as conclusion the introduction rule of $\named a\bot$, in any sequentialisation $\Pi$ of $\links$. By Definition~\ref{def:proofs to nets}, in the translation of $\Sigma$ to a net, $a$ may link to any $1$-occurrence, including $w$.
 
 Finally, it is shown that 1 implies 3, by contraposition. If for some switching of $\links$ the path $\path vw$ passes through $a$, then in $\links[\jumpsto aw]$ there is no path $\path av$ (and two paths $\path aw$) for that switching, so that $(\Gamma,\links[\jumpsto aw])$ is not a net.
-\end{proof}
+\qed
 
 
-\begin{lemma}
+\begin{lem}
 \label{lem:rewiring preserves empire}
 If $\links\perm*\links[\jumpsto vw]=\links'$ then $\emp v\perm*\emp*v$.
-\end{lemma}
+\end{lem}
 
-\begin{proof}
+\proof
 Since $v$ may rewire to exactly the same $\1$-occurrences in $\links$ as in $\links'$, by Lemma~\ref{lem:rewiring within empire} the empires $\emp v$ and $\emp*v$ contain the same $\1$-subformulae. That they also share any other subformula $A$ follows by the observation that $A\tn\1$ may replace $A$: by Proposition~\ref{prop:empire propagation} the new $\1$ is in a given empire if and only if $A$ is (unless $v$ names $A$, but in this case $A$ is included in both $\emp v$ and $\emp*v$).
-\end{proof}
+\qed
 
 
 
-\begin{lemma}
+\begin{lem}
 \label{lem:rewiring affects empires}
 If $\links\perm*\links'$ where $\emp v$ is a net for the sequent $\Delta$, and $\emp*v$ a net for $\Delta'$, then $\Delta\leq\Delta'$ or $\Delta\geq\Delta'$.
-\end{lemma}
+\end{lem}
 
 
-\begin{proof}
+\proof
 Let $\links'=\links[\jumpsto aw]$, where $\links(a)=u$ and $\links'(a)=w$. We will distinguish five cases, depending on three factors: 1) whether $\emp v$ contains $u$; 2) if so, whether $\emp v$ is propagated from $u$ to $a$ or from $a$ to $u$ in case~\ref{case:empire propagation 1} of Proposition~\ref{prop:empire propagation}; and 3) whether $\emp v$ contains $w$.
 %
 \begin{itemize}
@@ -868,9 +832,9 @@ If $\emp v$ is propagated from $u$ to $a$, but does not contain $w$, then $\Delt
 If $\emp v$ contains $w$ but not $u$, then $\Delta\leq\Delta'$.
 
 	\item
-If $\emp v$ contains neither $u$ nor $w$, then it also does not contain $a$. Then also $\emp*v$ contains neither $u$, $w$, nor $a$, and $\Delta=\Delta'$. \hfill\qedhere
+If $\emp v$ contains neither $u$ nor $w$, then it also does not contain $a$. Then also $\emp*v$ contains neither $u$, $w$, nor $a$, and $\Delta=\Delta'$.\qed
 \end{itemize}
-\end{proof}
+
 
 % TO DO: 
 %  * Fix notion of empire for arbitrary jump targets
@@ -885,16 +849,16 @@ If $\emp v$ contains neither $u$ nor $w$, then it also does not contain $a$. The
 
 The linearity of \capsabbrev{mll} means that in a proof or proof net, there is always a certain balance to the number of $\bot$- and $\pr$-occurrences. This observation gives a well-known necessary condition for the provability of a sequent.
 
-\begin{definition}
+\begin{defi}
 The \emph{balance} of a sequent is the number of $\bot$s minus the number of $\pr$s and commas.
 %
 A sequent is \emph{balanced} if its balance is zero.
-\end{definition}
+\end{defi}
 
-\begin{proposition}
+\begin{prop}
 \label{prop:unbalanced then uninhabited}
 An unbalanced sequent is uninhabited.
-\end{proposition}
+\end{prop}
 
 % NEW
 
@@ -931,9 +895,9 @@ The example in Figure~\ref{fig:directed switching graph} displays a proof net on
 
 Given two proof nets $\links$ and $\links'$ for $\Gamma$, and a switching graph for each (not necessarily given by the same switching of $\Gamma$), we obtain two bijections between edges and (non-root) vertices. Composing these gives a permutation on the non-root vertices.
 
-\begin{definition}
+\begin{defi}
 The \emph{parity} of two switching graphs for proof nets $\links$ and $\links'$ for a sequent $\Gamma$ is the parity of their induced permutation.
-\end{definition}
+\end{defi}
 
 \noindent
 We will show that both 1) rewiring and 2) choosing a different switching induce even parity. By 2) we may define the parity of two proof nets $\links$ and $\links'$ to be that over arbitrary switching graphs; then by 1) it follows that proof nets with odd parity are inequivalent.
@@ -957,9 +921,9 @@ Since the connectives in $\Gamma$ were assumed to be strictly alternating, there
 
 The above argument gives us 1), that rewiring has even parity. To see that the same argument also gives 2), it is sufficient to consider that choosing a different switching for a single par is essentially the same operation as rewiring, if the par is considered a $\bot$ and the switched edge a jump. We may thus conclude that:
 
-\begin{proposition}
+\begin{prop}
 Two equivalent proof nets have even parity.
-\end{proposition}
+\end{prop}
 
 % NEW
 
@@ -1006,55 +970,55 @@ For our encoding, in Section~\ref{sec:encoding}, this poses the following challe
 
 Let a \emph{basic} sequent be one of formulae constructed only over $\1$, $\bot$, and $\tn$. After removing dangling $\bot$-formulae and replacing subformulae $\1\tn A$ with $A$, basic sequents consist of formulae of the form $1$ or $\bigtn(\bot^n)$ with $n\geq2$. Provability for basic sequents is entirely determined by balance:
 
-\begin{proposition}
+\begin{prop}
 A balanced basic sequent is inhabited.
-\end{proposition}
+\end{prop}
 
 We will show that, similarly, equivalence for basic sequents is determined by parity. An immediate observation is that a proof net for a basic sequent with only one tensor-formula (a formula of the form $\bigtn(\bot^n)$ for $n\geq 2$), every $\1$ is linked to by exactly one jump, which means that no rewiring is possible.
 
-\begin{proposition}
+\begin{prop}
 A basic sequent $\1^n,\bigtn(\bot^n)$ is inhabited by $n!$ inequivalent proof nets.
-\end{proposition}
+\end{prop}
 
 In the following we will characterise equivalence for basic sequents with two or more tensor-formulae.
 
-\begin{lemma}
+\begin{lem}
 \label{lem:double exchange}
 Let $\links$ be a proof net with for every switching a path
 \[
 	\links(a)\mathrel{\xpmuj}a\mathrel{\xpath}b\mathrel{\xjump}\links(b)\mathrel{\xpath}\links(c)\mathrel{\xpmuj}c\mathrel{\xpath}d\mathrel{\xjump}\links(d)~.
 \]
 Then $\links\perm\links[\jumpsto a{\links(b)}][\jumpsto b{\links(a)}][\jumpsto c{\links(d)}][\jumpsto d{\links(c)}]$.
-\end{lemma}
+\end{lem}
 
-\begin{proof}
+\proof
 By the rewiring path shown in Figure~\ref{fig:double exchange}.
-\end{proof}
+\qed
 
 
-\begin{lemma}
+\begin{lem}
 \label{lem:level0 max binary}
 A basic sequent with at least two tensor-formulae has at most two equivalence classes of proof nets.
-\end{lemma}
+\end{lem}
 
 
-\begin{proof}
+\proof
 By induction on the size of a sequent $\Gamma$. The base case is the sequent $\1,\1,\bot\tn\bot$, which has two inequivalent proof nets. For the inductive step, let $\Gamma=\Gamma',A\tn\named a\bot,\named z\1$ where $A\tn\named a\bot$ is a largest $\tn$-formula in $\Gamma$. It will be shown that any net $\links$ is equivalent to one $\links'$ where $\links'(a)=z$; then by induction, the subnet $\links'$ restricted to $\Gamma',A$ belongs to one of two equivalence classes. To find $\links'$, there are two cases.
 
 1) The path $\path az$ is via $\links(a)$. If $\links(a)=z$, we are done. Otherwise, by Lemma~\ref{lem:rewiring within empire} $\links'$ may be obtained from $\links$ by changing only $\links'(a)=z$.
 
 2) The path $\path az$ is via some $\named b\bot$ in $A$. Firstly, if $\links(b)\neq z$, use Lemma~\ref{lem:rewiring within empire} to re-attach $b$ to $z$. Next, let $\named c\bot$ and $\named d\bot$ be occurrences in a separate formula $B$ such that $c$ links to the same $\1$-occurrence as some $\bot$ in $A$. Then $\links'$ is obtained by linking $c$ to $b$, and applying Lemma~\ref{lem:double exchange} to exchange the targets of $a$ and $b$, as well as those of $c$ and $d$.
-\end{proof}
+\qed
 
 
-\begin{proposition}
+\begin{prop}
 \label{prop:parity determines equivalence}
 For a basic sequent with at least two tensor-formulae, two proof nets with even parity are equivalent.
-\end{proposition}
+\end{prop}
 
-\begin{proof}
+\proof
 By Lemma~\ref{lem:level0 max binary} the sequent has at most 2 equivalence classes. Given two proof nets of even parity, both must be in the other equivalence class than a proof net with odd relative parity to both, which exists by exchanging two jumps from one tensor-formula.
-\end{proof}
+\qed
 
 
 %------------------------------------------------------------
@@ -1089,7 +1053,7 @@ An example rewrite sequence is given in Figure~\ref{fig:NCL example}. This parti
 
 In the formal definition, a constraint graph is an \emph{undirected} graph, for which a \emph{configuration} assigns an orientation to each edge. It is useful for us to generalise the notion of configuration a little: we will allow \emph{partial} configurations, where the direction of edges may be left undefined, as long as the inflow constraints are satisfied by the directed edges. We will use $\star$ to indicate an undefined value, to avoid overloading $\bot$.
 
-\begin{definition} 
+\begin{defi} 
 A \emph{constraint graph} $G=(V,E,c,v,w)$ consists of:
 \begin{itemize}
 	\item $V$ a set of vertices,
@@ -1098,9 +1062,9 @@ A \emph{constraint graph} $G=(V,E,c,v,w)$ consists of:
 	\item $v\colon E\to\mathcal P(V)$ where $|v(e)|\in\{1,2\}$ for $e\in E$, a set of 1 or 2 vertices for each edge,
  	\item $w\colon E\to\mathbb N$ a \emph{weight} on each edge.
 \end{itemize}
-\end{definition}
+\end{defi}
 
-\begin{definition}
+\begin{defi}
 A \emph{(partial) configuration} for a constraint graph $G=(V,E,c,v,w)$ is a (partial) function $\gamma\colon E\to V$ such that
 \begin{itemize}
 	\item
@@ -1111,47 +1075,43 @@ for every vertex $v$,
 	c(v) \leq \sum\{w(e)\mid\gamma(e)=v\}~.
 \]
 \end{itemize} 
-\end{definition}
+\end{defi}
 
 In the above definition, the first condition states that the weight of an edge may be assigned only to one of its vertices, or left undefined, but not to any other vertex in the constraint graph. The second condition states that the total weight of the incoming edges of a vertex must be at least its inflow constraint.
 
 We will write $\gamma[e\mapsto v]$ for the partial configuration that directs $e$ to $v$, and any other edge $e'$ to $\gamma(e')$. An edge that may be reversed will be called \emph{mobile}; formally, an edge $e$ is \emph{mobile} in $\gamma$ if $\gamma[e\mapsto\star]$ is a partial configuration.
 
-\begin{definition}
+\begin{defi}
 A \emph{reconfiguration step} $(\perm*)$ relates two partial configurations for $G$ that differ in value (or definedness) on exactly one edge:
 \[
 	\gamma~\perm*~\gamma[e\mapsto u]\qquad\text{ if }\gamma(e)\neq u\text{ and }u\in v(e)\cup\{\star\}~.
 \]
 The reflexive--transitive closure of $(\perm*)$ will be denoted $(\perm)$.
-\end{definition}
+\end{defi}
 
 \emph{Non-deterministic constraint graph reconfiguration} or \emph{\capsabbrev{ncg}-reconfiguration} is the problem of deciding whether two total configurations of a constraint graph are connected by a sequence of reconfiguration steps. More formally, an instance of \capsabbrev{ncg}-reconfiguration is a triple $(G,\gamma,\delta)$ consisting of a constraint graph $G$ and two configurations $\gamma$ and $\delta$ for $G$. The decision problem then asks whether $\gamma\perm\delta$.
 
 This is the problem shown to be \capsabbrev{pspace}-complete by Hearne and Demaine \cite{GamesPuzzlesAndComputation}:
 
-\begin{theorem}[\cite{GamesPuzzlesAndComputation}, Theorem~5.15]
+\begin{thm}[\cite{GamesPuzzlesAndComputation}, Theorem~5.15]
 \capsabbrev{ncg}-reconfiguration is \capsabbrev{pspace}-complete.
-\end{theorem}
+\end{thm}
 
 To show that this result extends to our setting, with partial configurations, we have the following proposition.
 
-\begin{proposition}
+\begin{prop}
 \label{prop:partial simulates total reconfiguration}
 For total configurations $\gamma$ and $\delta$, if $\gamma\perm\delta$ then $\gamma$ and $\delta$ are also connected by a sequence of reconfiguration steps over total configurations only.
-\end{proposition}
+\end{prop}
 
-\begin{proof}
+\proof
 By the following two observations: firstly, 
 %
 if $\gamma\perm*\delta$ for partial configurations, then these may be completed to total configurations $\gamma'\perm*\delta'$ or $\gamma'=\delta'$; and secondly,
 %
 if $\gamma'$ and $\gamma''$ are total configurations that both agree with a partial configuration $\gamma$ where the latter is defined, then $\gamma'$ and $\gamma''$ are connected by reversing the edges on which they disagree one after another.
 %
-\end{proof}
-
-The \capsabbrev{pspace}-completeness of \capsabbrev{ncg}-reconfiguration may seem surprising at first. To give a feel for the dynamics that make this problem \capsabbrev{pspace}-hard, we shall exhibit an example where an exponentially-long reconfiguration sequence is needed. The existence of such rewiring sequences is an essential property for the hardness result: if reconfiguration sequences could be given a polynomial bound, they would be polynomial-time witnesses, placing the problem within NP.
-
-The example is then as follows. Figure~\ref{fig:boats} gives a reconfiguration sequence, clockwise from the top left, on a constraint graph with two connection points, top and bottom. As such, the graph operates as would a single edge from top to bottom, and the reconfiguration sequence inverts the direction of this would-be edge. The key point is that in doing so, the central horizontal edge must be inverted \emph{twice}. Then by nesting the graph within itself, where one graph replaces the central edge of another, as illustrated in Figure~\ref{fig:big boat}, a graph is created with an edge that requires 4 inversions. Each added level of nesting doubles the number of inversions that the central edge must make, while growing the graph by only a constant factor. Thus, the length of a rewiring path may grow exponentially with the size of the graph.
+\qed
 
 \begin{figure}
 \[
@@ -1172,6 +1132,12 @@ The example is then as follows. Figure~\ref{fig:boats} gives a reconfiguration s
 \caption{Nesting graphs to grow reconfiguration paths exponentially}
 \label{fig:big boat}
 \end{figure}
+
+The \capsabbrev{pspace}-completeness of \capsabbrev{ncg}-reconfiguration may seem surprising at first. To give a feel for the dynamics that make this problem \capsabbrev{pspace}-hard, we shall exhibit an example where an exponentially-long reconfiguration sequence is needed. The existence of such rewiring sequences is an essential property for the hardness result: if reconfiguration sequences could be given a polynomial bound, they would be polynomial-time witnesses, placing the problem within NP.
+
+The example is then as follows. Figure~\ref{fig:boats} gives a reconfiguration sequence, clockwise from the top left, on a constraint graph with two connection points, top and bottom. As such, the graph operates as would a single edge from top to bottom, and the reconfiguration sequence inverts the direction of this would-be edge. The key point is that in doing so, the central horizontal edge must be inverted \emph{twice}. Then by nesting the graph within itself, where one graph replaces the central edge of another, as illustrated in Figure~\ref{fig:big boat}, a graph is created with an edge that requires 4 inversions. Each added level of nesting doubles the number of inversions that the central edge must make, while growing the graph by only a constant factor. Thus, the length of a rewiring path may grow exponentially with the size of the graph.
+
+
 
 
 %------------------------------------------------------------
@@ -1344,7 +1310,7 @@ To resolve this issue, it is sufficient to increase the number of weight element
 
 % NEW
 
-In an inappropriate linking as shown above, since both halves of the constraint element are connected, the weight elements must be disconnected---otherwise, the switching condition would be violated. That means the weight elements must belong to different edges. Note that it is possible to use more than one weight element from the same edge to fill one half of a constraint element; or even weight elements from different edges, but we are interested here only in the \emph{minimum} number of edges needed to inappropriately fill a vertex-gadget.
+In an inappropriate linking as shown above, since both halves of the constraint element are connected, the weight elements must be disconnected---otherwise, the switching condition would be violated. That means the weight elements must belong to different edges. Note that it is possible to use more than one weight element from the same edge to fill one half of a constraint element, or even weight elements from different edges, but we are interested here only in the \emph{minimum} number of edges needed to inappropriately fill a vertex-gadget.
 
 %Since the different halves of a constraint element must be filled by different edge-gadgets, the switching condition forces inappropriately connected edge-gadgets and constraint elements to form a tree, with edge-gadgets as nodes and constraint elements as edges. Since in a tree the number of nodes is always one greater than the number of edges, it requires $n+1$ edge-gadgets to fill $n$ constraint elements. It thus suffices to multiply the number of weight elements by the number of edges: we will encode one unit of weight on an edge by $|E|$ weight elements (where $|E|$ is the number of edges in the constraint graph), and correspondingly encode one unit of inflow constraint by $|E|$ constraint elements.
 
@@ -1436,7 +1402,7 @@ For a constraint graph $G=(V,E,c,v,w)$, let $|V|$ and $|E|$ denote the number of
 \]
 
 
-\begin{definition}
+\begin{defi}
 \label{def:graph encoding}
 The \emph{encoding} $\itn G$ of a constraint graph $G$ is a sequent constructed as follows. 
 Let $G=(V,E,c,v,w)$ with $|V|=n$, $|E|=m$, $V=\{v_1,\dotsc,v_n\}$, and $E=\{e_1,\dotsc,e_m\}$.
@@ -1468,7 +1434,7 @@ The encoding of the graph $G$ is the sequent
 \]
 where $p=3m\times(|w|-|c|)\times(3n+4)$.
 
-\end{definition}
+\end{defi}
 
 
 
@@ -1485,7 +1451,7 @@ A configuration $\gamma$ for a constraint graph $G$ will be encoded as a proof n
 Firstly we will define a standard way of linking a weight element to a constraint element.
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-\begin{definition}
+\begin{defi}
 \label{def:standard linkings}
 For $W=W(i,j,n)=X\pr Y\pr Z$ a weight element,
 \begin{enumerate}
@@ -1496,7 +1462,7 @@ for $C=C(j,n)=A\tn B$, the \emph{standard linking} for $C,W$ is defined as above
 	\item
 the \emph{standard linking} for the sequent $W,\1^{3n+4}$ links the first $\bot$ in $X$, $Y$, and $Z$ to the first $\1$, and each remaining $\bot$ to a remaining $\1$ in order of occurrence.
 \end{enumerate}
-\end{definition}
+\end{defi}
 
 The standard linkings defined in the second and third case of the above definition are illustrated below.
 
@@ -1546,32 +1512,32 @@ The standard linkings defined in the second and third case of the above definiti
 \end{tikzpicture}
 \]
 
-\begin{proposition}
+\begin{prop}
 \label{prop:element linkings}
 Standard linkings are proof nets.
-\end{proposition}
+\end{prop}
 
 
 The encoding of a configuration is then as follows.
 
 
 
-\begin{definition}
+\begin{defi}
 \label{def:configuration encoding}
 The \emph{encoding} $\itn\gamma$ of a total configuration $\gamma$ for a constraint graph $G$ is a linking $\links$ for $\itn G$, constructed incrementally for each successive edge $e$ and for each successive weight element $W$ within $e$, as follows.
 %
 Let $\gamma(e)=v$; firstly, the indicator of $\itn e$ is linked to the indicator target of $\itn v$.
 %
 Then successively for each weight element $W$ in $e$, if $\itn v$ has a first free constraint element $C$, extend $\itn\gamma$ to include the standard linking on $C,W$; otherwise, extend $\itn\gamma$ by the standard linking on the sequent consisting of $W$ plus the first $3n+4$ free weight absorbers.
-\end{definition}
+\end{defi}
 
 
 
-\begin{proposition}
+\begin{prop}
 If $\gamma$ is a total configuration for $G$ then $\itn\gamma$ is a proof net for $\itn G$.
-\end{proposition}
+\end{prop}
 
-\begin{proof}
+\proof
 Using Proposition~\ref{prop:scoping correctness}, it is sufficient to give a suitable box for each $\pr$. 
 %
 The box of each weight element $W$ is the sequent $C,W$ or $W,1^{3n+4}$ of its standard linking, which forms a proof net by Proposition~\ref{prop:element linkings}.
@@ -1581,13 +1547,13 @@ The box of each vertex-gadget $\itn v$ contains the edge-gadgets $\itn e$ such t
 Since the weights of the connected edges $e$ sum to more than the inflow constraint of $v$, there are no unused constraint elements remaining in $\itn v$.
 %
 After closing the box of each $W$, each edge-gadget in the box of $\itn v$ becomes a single string of connected vertices, connected to other edge-gadgets only via the indicator target of $\itn v$, thus forming a tree.
-\end{proof}
+\qed
 
 
 Finally, we will encode an instance of the NCL reconfiguration problem, consisting of an NCL graph $G$ with two configurations $\gamma$ and $\delta$, for which the problem asks whether $\gamma\perm\delta$. Here we need to ensure that the two encodings as proof nets have even parity; otherwise, they will never be equivalent. We have opted for a simple and straightforward solution: first we encode both configurations as $\itn\gamma$ and $\itn\delta$; then we check their parity, and if it is odd, we adjust it by swapping two weight absorbers on $\itn\delta$.
 
 
-\begin{definition}
+\begin{defi}
 %
 The \emph{encoding} of an instance of NCL-reconfiguration $(G,\gamma,\delta)$ is the triple $(\itn G,\itn\gamma,\itn\delta_\gamma)$ where
 \[
@@ -1595,8 +1561,8 @@ The \emph{encoding} of an instance of NCL-reconfiguration $(G,\gamma,\delta)$ is
 	 \begin{array}{ll}\itn\delta & \text{if $\itn\gamma$ and $\itn\delta$ have even parity} \\
 	 				  \itn\delta' & \text{otherwise}\end{array}\right.
 \]
-and $\itn\delta'$ is $\itn\delta$ with the first two weight absorbers $a$ and $b$ exchanged: $v\mathbin{\xjump}a$ in $\itn\delta'$ if and only if $v\mathbin{\xjump}b$ in $\itn\delta$, and vice versa.
-\end{definition}
+and $\itn\delta'$ is $\itn\delta$ with the first two weight absorbers $a$ and $b$ exchanged: $v\mathbin{\xjump}a$ in $\itn\delta'$ if and only if $v\mathbin{\xjump}b$ in $\itn\delta$, and vice versa, while $\itn\delta'$ agrees with $\itn\delta$ on any other jump.
+\end{defi}
 
 
 In the remainder, we will show that our encoding is correct, i.e.\ that $\gamma\perm\delta$ if and only if $\itn\gamma\perm\itn\delta_\gamma$. This will be separated into two parts: completeness ($\Rightarrow$) and soundness ($\Leftarrow$).
@@ -1634,10 +1600,10 @@ Next, the weight elements connecting to $\itn w$ are rewired to match $\itn\delt
 To describe the intermediate stages of such a rewiring sequence, call an edge-gadget $\itn e$ \emph{well linked} if: 1) its indicator connects to the indicator target of an appropriate vertex-gadget $\itn v$, and 2) each weight element is either in a standard linking with a constraint element of $\itn v$, or is free (linked only to weight absorbers, in arbitrary fashion). In the following main lemma we will exchange the weight element linking to a constraint element. The lemma considers a sequent consisting of just a vertex-gadget, some appropriate edge-gadgets, and sufficiently many weight absorbers.
 
 
-\begin{lemma}
+\begin{lem}
 \label{lem:octopus roll}
 Let $\links$ be a proof net for $\Gamma=\itn v,\itn{e_1},\dotsc,\itn{e_m},1^p$ such that each edge-gadget $\itn e_i$ is well linked. Let $W_i$ and $W_j$ be weight elements in edge-gadgets $\itn{e_i}$ and $\itn{e_j}$ respectively; let $W_i$ be linked to $C$ in $\itn v$, and let $W_j$ be linked to weight absorbers $1^n$. Then there is a net $\links'\perm\links$ in which $W_j$ is well linked to $C$, $W_i$ is linked to $1^n$, and $\links'$ agrees with $\links$ otherwise.
-\end{lemma}
+\end{lem}
 
 
 \renewcommand\scalefactor{0.80}
@@ -1650,7 +1616,7 @@ Let $\links$ be a proof net for $\Gamma=\itn v,\itn{e_1},\dotsc,\itn{e_m},1^p$ s
   \medskip%
 }
 
-\begin{proof}
+\proof
 Let $W_i=X\pr Y\pr Z$, $W_j=P\pr Q\pr R$, and $C=A\tn B$.
 %
 The rewiring path will be illustrated for the case where $X,Y,A$ and $P,A$, and thus also $Z,B$ and $Q,R,B$, are balanced sequents; other cases are similar.
@@ -1683,7 +1649,7 @@ The rewiring path will be illustrated for the case where $X,Y,A$ and $P,A$, and 
 \displayOcto{\octorollD1}
 
 \noindent
-\textbf{6.}\quad The jump from $Y$ to $A$ is the one remaining connection between the edge-gadgets $\itn{e_i}$ and $\itn{e_j}$. Lemma~\ref{lem:double exchange} allows to swap the targets of the jump from $Y$ to $A$ and the jump from $i$, and simultaneously undo the exchange in the jumps from $P$ to $A$ added in step 4 above.
+\textbf{6.}\quad The jump from $Y$ to $A$ is the one remaining connection between the edge-gadgets $\itn{e_i}$ and $\itn{e_j}$. Lemma~\ref{lem:double exchange} allows to swap the two targets of the jump from $Y$ to $A$ and the jump from $i$, and simultaneously undo the exchange in the two jumps from $P$ to $A$ added in step 4.
 
 \displayOcto{\octorollD2}
 
@@ -1692,16 +1658,16 @@ The rewiring path will be illustrated for the case where $X,Y,A$ and $P,A$, and 
 
 \displayOcto{\octorollA2}
 
-\end{proof}
+\qed
 
 In the exchange of weight elements in the above lemma, weight elements link to weight absorbers in arbitrary fashion. To be able to correct for this, the next lemma will demonstrate that, modulo parity, weight absorbers can be re-arranged at will.
 
-\begin{lemma}
+\begin{lem}
 \label{lem:permute weight absorbers}
 If $\links$ and $\links'$ are well-linked proof nets for $\itn G$ that are equal up to an even permutation of weight absorbers, then $\links\perm\links'$ if $\links$ and $\links'$ have at least one free edge-gadget $\itn e$.
-\end{lemma}
+\end{lem}
 
-\begin{proof}
+\proof
 To reconfigure $\links'$ into $\links$, we will use the double exchange operation of Lemma~\ref{lem:double exchange} to exchange two arbitrary weight absorbers at a time, as well as two chosen jumps in the free edge-gadget $\itn e$.
 %
 Firstly, let $e_0$ be the indicator of $\itn e$.
@@ -1729,17 +1695,17 @@ Operation 2) is performed similarly.
 %
 In both cases, if one of the weight absorbers exchanged is linked to by multiple $\bot$-occurrences within the same weight element, these may be temporarily attached elsewhere.
 %
-\end{proof}
+\qed
 
 
 
 
-\begin{lemma}
+\begin{lem}
 \label{lem:completeness}
 If $\gamma\perm\delta$ for total configurations $\gamma$ and $\delta$, then $\itn\gamma\perm\itn\delta_\gamma$.
-\end{lemma}
+\end{lem}
 
-\begin{proof}
+\proof
 By Proposition~\ref{prop:partial simulates total reconfiguration} we may assume that $\gamma\perm\delta$ by a sequence of reconfiguration steps over total configurations.
 %
 We will prove that if $\gamma\perm*\delta$ then $\itn\gamma\perm\itn\delta$ or $\itn\gamma\perm\itn\delta'$.
@@ -1759,7 +1725,7 @@ Next, the indicator vertex of $\itn e$, which links to the indicator target of $
 Again using Lemma~\ref{lem:octopus roll}, the weight elements of edge-gadgets connected to $\itn w$, including $\itn e$, may be linked in accordance with $\itn\delta$.
 %
 The resulting proof net is $\itn\delta$ modulo a permutation of weight absorbers; then it is equivalent to either $\itn\delta$ or $\itn\delta'$ by Lemma~\ref{lem:permute weight absorbers}.
-\end{proof}
+\qed
 
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1778,31 +1744,31 @@ The configuration $\coitn\links$ will assign an edge $e$ to a vertex $v$ when, i
 Firstly, it will be shown that $\coitn\links$ is a partial function.
 
 
-\begin{proposition}[{\cite[Proposition 1.i]{Bellin-vandeWiele-1995}}]
+\begin{prop}[{\cite[Proposition 1.i]{Bellin-vandeWiele-1995}}]
 \label{prop:tensor has disjoint subnets}
 In a proof net, if vertices $v$ and $w$ are joined by a tensor, then any two subnets of which they are respective ports are disjoint.
-\end{proposition}
+\end{prop}
 
 
-\begin{lemma}
+\begin{lem}
 In a proof net for $\itn G$, an edge-gadget $\itn e$ belongs to the empire of at most one vertex-gadget $\itn v$.
-\end{lemma}
+\end{lem}
 
-\begin{proof}
+\proof
 Since vertex-gadgets are joined by a tensor, the lemma is immediate from Proposition~\ref{prop:tensor has disjoint subnets}.
-\end{proof}
+\qed
 
 
 Next, it will be shown that the appropriate edge-gadgets in the empire of a vertex-gadget $\itn v$ contain sufficient weight elements to fill the constraint elements of $\itn v$.
 
 
-\begin{lemma}
+\begin{lem}
 \label{lem:appropriate edge weights}
 In a proof net for $\itn G$, for each node $v$ in $G$, the weights of the appropriate edge-gadgets in the empire of $\itn v$ are equal to or greater than the constraint of $v$.
-\end{lemma}
+\end{lem}
 
 
-\begin{proof}
+\proof
 %
 Let $|E|=m$.
 %
@@ -1822,8 +1788,7 @@ Two edge-gadgets may balance at most three constraint elements: one weight eleme
 In the same way, adding one further edge-gadget allows at most three further constraint elements to be filled, since previous edges may connect to only one half of each constraint element.
 %
 Then to balance $3m$ constraint elements inappropriately requires $m+1$ edge-gadgets.
-
-\end{proof}
+\qed
 
 
 
@@ -1831,7 +1796,7 @@ Using the above, a proof net for $\itn G$ may be interpreted as a configuration 
 
 
 
-\begin{definition}
+\begin{defi}
 For a proof net $\links$ for $\itn G$, let $\coitn\links$ be the partial configuration for $G$ where
 % $\coitn\links(e)$ is $v$ if both $e$ is appropriate for $v$ and $\itn e$ belongs to the empire of $\itn v$, and  undefined otherwise.
 \[
@@ -1841,26 +1806,26 @@ For a proof net $\links$ for $\itn G$, let $\coitn\links$ be the partial configu
 		\star & \text{otherwise.}
 	\end{array}\right.
 \]
-\end{definition}
+\end{defi}
 
 
 To observe that an encoding $\itn\gamma$ decodes back to $\gamma$, note that whenever $\gamma(e)=v$ the indicator of $\itn e$ in $\itn\gamma$ connects to the indicator target of $\itn v$; this is sufficient to place $\itn e$ in the empire of $\itn v$. We have the following proposition.
 
-\begin{proposition}
+\begin{prop}
 \label{prop:retraction}
 $\coitn{\itn\gamma}=\gamma$ and $\coitn{\itn\gamma'}=\gamma$.
-\end{proposition}
+\end{prop}
 
 
 The following lemma then shows that rewiring corresponds to reconfiguration under $\coitn-$.
 
 
-\begin{lemma}
+\begin{lem}
 \label{lem:soundness}
 If $\links\perm\links'$ are proof nets for $\itn G$ then $\coitn\links\perm\coitn{\links'}$.
-\end{lemma}
+\end{lem}
 
-\begin{proof}
+\proof
 The proof will consider the case where $\links\perm*\links'$; the general case follows by transitivity.
 %
 By Lemma~\ref{lem:rewiring affects empires}, the empire of each vertex-gadget $\itn v$ contains either a subset of, a superset of, or exactly the same edge-gadgets in $\links'$ as it does in $\links$.
@@ -1873,7 +1838,7 @@ Then the corresponding edges $e_1$ through $e_n$ are mobile in $\coitn\links$.
 %
 It follows that $\coitn\links\perm\coitn{\links'}$ by moving each $e_i$ in turn, and repeating the process for other vertices.
 %
-\end{proof}
+\qed
 
 
 %------------------------------------------------------------
@@ -1887,11 +1852,11 @@ It follows that $\coitn\links\perm\coitn{\links'}$ by moving each $e_i$ in turn,
 We are now ready to state our main theorem.
 
 
-\begin{theorem}
+\begin{thm}
 \capsabbrev{mll} proof equivalence is \capsabbrev{pspace}-complete.
-\end{theorem}
+\end{thm}
 
-\begin{proof}
+\proof
 \capsabbrev{mll} proof equivalence has at most non-deterministic polynomial space complexity: a proof net may be represented in linear space (with respect to a proof); a single rewiring step is performed without requiring additional space; and a non-deterministic algorithm may guess the correct rewiring sequence.
 %
 Then by Savitch's Theorem \cite{Savitch-1970} \capsabbrev{mll} proof equivalence is in \capsabbrev{pspace}.
@@ -1902,17 +1867,19 @@ Then by Savitch's Theorem \cite{Savitch-1970} \capsabbrev{mll} proof equivalence
 	\gamma\perm\delta \qquad\iff\qquad \itn\gamma\perm\itn\delta_\gamma~.
 \]
 %
-The direction $(\Rightarrow)$ is by Lemma~\ref{lem:completeness}; the direction $(\Leftarrow)$ is by Lemma~\ref{lem:soundness} and Proposition \ref{prop:retraction}. The encoding involves computing $\itn G$, $\itn\gamma$, and $\itn\delta$, then computing the parity of $\itn\gamma$ and $\itn\delta$ and adjusting $\itn\delta$ if needed; each can be done in polynomial time in the size of $(G,\gamma,\delta)$.
-\end{proof}
+The direction $(\Rightarrow)$ is by Lemma~\ref{lem:completeness}; the direction $(\Leftarrow)$ is by Lemma~\ref{lem:soundness} and Proposition \ref{prop:retraction}. Encoding an instance of \capsabbrev{ncg}-reconfiguration $(G,\gamma,\delta)$ involves first computing $\itn G$, $\itn\gamma$, and $\itn\delta$, and next computing the parity of $\itn\gamma$ and $\itn\delta$ and adjusting $\itn\delta$ if needed. This can be done in polynomial time in the size of $(G,\gamma,\delta)$.
+\qed
 
 
 
-\subsection*{Acknowledgements}
+\section*{Acknowledgements}
 We would like to thank Beniamino Accattoli, Dominic Hughes, and Lutz Stra{\ss}burger for helpful discussions and comments. We would also like to thank the anonymous referees for their insightful remarks.
 
 %===========================
-\bibliographystyle{plain}
+\bibliographystyle{alpha}
 \bibliography{LMCS}
+%\begin{thebibliography}{ladida}
+%\end{thebibliography}
 \end{document}
 %===========================
 
