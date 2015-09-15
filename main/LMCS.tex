@@ -1003,7 +1003,7 @@ A basic sequent with at least two tensor-formulae has at most two equivalence cl
 
 
 \proof
-By induction on the size of a sequent $\Gamma$. The base case is the sequent $\1,\1,\bot\tn\bot$, which has two inequivalent proof nets. For the inductive step, let $\Gamma=\Gamma',A\tn\named a\bot,\named z\1$ where $A\tn\named a\bot$ is a largest $\tn$-formula in $\Gamma$. It will be shown that any net $\links$ is equivalent to one $\links'$ where $\links'(a)=z$; then by induction, the subnet $\links'$ restricted to $\Gamma',A$ belongs to one of two equivalence classes. To find $\links'$, there are two cases.
+By induction on the size of a sequent $\Gamma$. The base case is the sequent $\1,\1,\1,\bot\tn\bot,\bot\tn\bot$, which has two equivalence classes of proof nets, shown in Figure~\ref{fig:_*_,1,1,1,_*_}. For the inductive step, let $\Gamma=\Gamma',A\tn\named a\bot,\named z\1$ where $A\tn\named a\bot$ is a largest $\tn$-formula in $\Gamma$. It will be shown that any net $\links$ is equivalent to one $\links'$ where $\links'(a)=z$; then by induction, the subnet $\links'$ restricted to $\Gamma',A$ belongs to one of two equivalence classes. To find $\links'$, there are two cases.
 
 1) The path $\path az$ is via $\links(a)$. If $\links(a)=z$, we are done. Otherwise, by Lemma~\ref{lem:rewiring within empire} $\links'$ may be obtained from $\links$ by changing only $\links'(a)=z$.
 
