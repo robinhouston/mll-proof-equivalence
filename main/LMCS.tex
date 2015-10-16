@@ -99,7 +99,7 @@ Proof nets incorporating units were defined by Blute, Cockett, Seely and Trimble
 % NEW
 
 The difficulty with the multiplicative units is that each instance of $\bot$, the unit to the par, must be attached to the main proof structure, while there isn't always a canonical point where to attach it. In the sequent calculus, $\bot$-instances are introduced by a weakening rule, which permutes with many (but not all) other rules. In proof nets, $\bot$-instances are commonly attached by edges called jumps, which may be \emph{rewired} via local graph-rewrite rules \cite{Trimble-1994,Blute-Cockett-Seely-Trimble-1996}. For intuitionistic \capsabbrev{mll} rewiring may be directed towards the unique conclusion, to yield canonical forms.\footnote{The canonical nets for \capsabbrev{imll} described here appear to be folklore; established proof nets for intuitionistic linear logic, called essential nets \cite{Lamarche-2008,Murawski-Ong-2003}, (non-canonically) attach jumps to the leaves of the formula tree, for easier composition.}
-For classical MLL with units however, there is not an obvious preferred point to attach jumps. And this problem extends to multiplicative--exponential linear logic (\capsabbrev{mell}) without units, where a formula $?A$ may be introduced via a weakening rule with similar permutability to the $\bot$-introduction rule.
+For classical MLL with units, however, there is not an obvious preferred point to attach jumps. And this problem extends to multiplicative--exponential linear logic (\capsabbrev{mell}) without units, where a formula $?A$ may be introduced via a weakening rule with similar permutability to the $\bot$-introduction rule.
 
 % OLD
 
@@ -244,7 +244,7 @@ The proof system we shall be working with is that consisting of just the introdu
 \subsection*{Star-autonomous categories}
 
 
-The permutations of sequent proofs are exactly the identifications imposed by the categorical semantics of \capsabbrev{mll}, star-autonomous categories \cite{Barr-1991} (and semi-star-autonomous categories \cite{Houston-2008,Heijltjes-Strassburger} for \capsabbrev{mll} without units). Proof equivalence for \capsabbrev{mll} is equivalent to the \emph{word problem} for star-autonomous categories: the problem whether two term representations denote the same morphism in any star-autonomous category.
+The permutations of sequent proofs are exactly the identifications imposed by the categorical semantics of \capsabbrev{mll}, star-autonomous categories \cite{Barr-1991} (and semi-star-autonomous categories \cite{Houston-2008,Heijltjes-Strassburger} for \capsabbrev{mll} without units). Proof equivalence for \capsabbrev{mll} is equivalent to the \emph{word problem} for star-autonomous categories: the problem of deciding whether two term representations denote the same morphism in any star-autonomous category.
 
 
 %------------------------------------------------------------
